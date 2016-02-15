@@ -1,0 +1,9 @@
+--[[
+Use these values to initialise the OpenGL window
+]]--
+
+PROGRAM_NAME = "C++ and Lua Script Testing for OpenGL"
+PROGRAM_VERSION = "1.0"
+Health = 10
+posX = 500
+posZ = 488
