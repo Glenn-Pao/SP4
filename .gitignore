@@ -1,3 +1,15 @@
 *.tlog
 *.sdf
 *.idb
+*.opensdf
+*.suo
+SP4/Base/Debug/
+SP4/Common/Debug/
+SP4/Base/Release/
+SP4/Common/Release/
+SP4/Debug/Base.exe
+SP4/Debug/Base.pdb
+SP4/Debug/Common.lib
+SP4/Release/Base.exe
+SP4/Release/Base.pdb
+SP4/Release/Common.lib

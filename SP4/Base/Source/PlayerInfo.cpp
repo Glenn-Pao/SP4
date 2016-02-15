@@ -45,7 +45,7 @@ CPlayerInfo::CPlayerInfo(void)
 	if (!lua_isnumber(L, -1)) {
 		printf("`animationDirection' should be a number\n");
 	}
-	heroAnimationDirection = (int)lua_tonumber(L, -1);
+	heroAnimationDirection = (int)lua_tointeger(L, -1);
 
 	// animation speed
 	lua_getglobal(L, "animationSpeed");
@@ -53,6 +53,13 @@ CPlayerInfo::CPlayerInfo(void)
 		printf("`animationSpeed' should be a number\n");
 	}
 	animationSpeed = (float)lua_tonumber(L, -1);
+
+	// no. of animation counter moving
+	lua_getglobal(L, "animationMaxCounter");
+	if (!lua_isnumber(L, -1)) {
+		printf("`animationMaxCounter' should be a number\n");
+	}
+	heroAnimationMaxCounter = (int)lua_tointeger(L, -1);
 
 	lua_close(L);
 }

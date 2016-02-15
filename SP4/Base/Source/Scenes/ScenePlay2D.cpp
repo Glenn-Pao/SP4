@@ -67,9 +67,6 @@ void CScenePlay2D::Init(int level)
 	// Init the base scene
 	sceneManager2D.Init(level);
 
-	// Initialise the Meshes
-	InitMeshes();
-
 	lua_State *L = lua_open();
 
 	//Read a value from the lua text file
@@ -187,6 +184,9 @@ void CScenePlay2D::Init(int level)
 		}
 	}
 
+	// Initialise the Meshes
+	InitMeshes();
+
 	/*theArrayOfGoodies = new CGoodies*[10];
 	for (int i = 0; i<10; i++)
 	{
@@ -223,14 +223,24 @@ void CScenePlay2D::InitMeshes()
 	meshList[GEO_TILESTRUCTURE] = MeshBuilder::Generate2DMesh("GEO_TILESTRUCTURE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
 	// Hero
-	meshList[GEO_TILEHERO_FRAME0] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_FRAME0", 1, 1, 21, 13, 10, 0);
-	meshList[GEO_TILEHERO_FRAME0]->textureID = LoadTGA("Image//player1.tga");
-	meshList[GEO_TILEHERO_FRAME1] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME1", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEHERO_FRAME1]->textureID = LoadTGA("Image//tile2_hero_frame_1.tga");
-	meshList[GEO_TILEHERO_FRAME2] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME2", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEHERO_FRAME2]->textureID = LoadTGA("Image//tile2_hero_frame_2.tga");
-	meshList[GEO_TILEHERO_FRAME3] = MeshBuilder::Generate2DMesh("GEO_TILEHERO_FRAME3", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEHERO_FRAME3]->textureID = LoadTGA("Image//tile2_hero_frame_3.tga");
+	// Side
+	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
+	{
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + i] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_SIDE_FRAME" + to_string(i), 1, 1, 21, 13, 11, 0 + i);
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
+	}
+	// Up
+	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_UP - CPlayerInfo::NUM_GEOMETRY_SIDE - 1; i++)
+	{
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + i] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_UP_FRAME" + to_string(i), 1, 1, 21, 13, 8, 0 + i);
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
+	}
+	// Down
+	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_DOWN - CPlayerInfo::NUM_GEOMETRY_UP - 1; i++)
+	{
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_DOWN_FRAME" + to_string(i), 1, 1, 21, 13, 10, 0 + i);
+		theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
+	}
 	// AI
 	meshList[GEO_TILE_KILLZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_KILLZONE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_KILLZONE]->textureID = LoadTGA("Image//tile10_killzone.tga");
@@ -270,8 +280,12 @@ void CScenePlay2D::Update(double dt)
 	if (prevHeroPos != Vector3(theHero->GetPos_x(), theHero->GetPos_y()))
 	{
 		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-		if (theHero->GetAnimationCounter()>3)
+		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
 			theHero->SetAnimationCounter(1);
+	}
+	else
+	{
+		theHero->SetAnimationCounter(0);
 	}
 	theHero->HeroUpdate(m_cMap, dt);
 
@@ -430,58 +444,22 @@ void CScenePlay2D::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		if ((int)theHero->GetAnimationCounter() == 0)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 1)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME1], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 2)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME2], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 3)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME3], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
 	}
 	break;
 	case CPlayerInfo::LEFT:
 	{
-		if ((int)theHero->GetAnimationCounter() == 0)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
-		else if ((int)theHero->GetAnimationCounter() == 1)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME1], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
-		else if ((int)theHero->GetAnimationCounter() == 2)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME2], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
-		else if ((int)theHero->GetAnimationCounter() == 3)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME3], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
 	}
 	break;
 	case CPlayerInfo::UP:
 	{
-		if ((int)theHero->GetAnimationCounter() == 0)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 1)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME1], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 2)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME2], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 3)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME3], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
 	}
 	break;
 	case CPlayerInfo::DOWN:
 	{
-		if ((int)theHero->GetAnimationCounter() == 0)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 1)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME1], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 2)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME2], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else if ((int)theHero->GetAnimationCounter() == 3)
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME3], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEHERO_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
 	}
 	break;
 	}

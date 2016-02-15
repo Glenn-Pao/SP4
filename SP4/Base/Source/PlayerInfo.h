@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "Map.h"
+#include "Mesh.h"
 
 class CPlayerInfo
 {
@@ -10,12 +11,42 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_TILEHERO_FRAME0,
-		GEO_TILEHERO_FRAME1,
-		GEO_TILEHERO_FRAME2,
-		GEO_TILEHERO_FRAME3,
+		// Side right
+		GEO_TILEHERO_SIDE_FRAME0,
+		GEO_TILEHERO_SIDE_FRAME1,
+		GEO_TILEHERO_SIDE_FRAME2,
+		GEO_TILEHERO_SIDE_FRAME3,
+		GEO_TILEHERO_SIDE_FRAME4,
+		GEO_TILEHERO_SIDE_FRAME5,
+		GEO_TILEHERO_SIDE_FRAME6,
+		GEO_TILEHERO_SIDE_FRAME7,
+		GEO_TILEHERO_SIDE_FRAME8,
+		NUM_GEOMETRY_SIDE,
+		// Up
+		GEO_TILEHERO_UP_FRAME0,
+		GEO_TILEHERO_UP_FRAME1,
+		GEO_TILEHERO_UP_FRAME2,
+		GEO_TILEHERO_UP_FRAME3,
+		GEO_TILEHERO_UP_FRAME4,
+		GEO_TILEHERO_UP_FRAME5,
+		GEO_TILEHERO_UP_FRAME6,
+		GEO_TILEHERO_UP_FRAME7,
+		GEO_TILEHERO_UP_FRAME8,
+		NUM_GEOMETRY_UP,
+		// Down
+		GEO_TILEHERO_DOWN_FRAME0,
+		GEO_TILEHERO_DOWN_FRAME1,
+		GEO_TILEHERO_DOWN_FRAME2,
+		GEO_TILEHERO_DOWN_FRAME3,
+		GEO_TILEHERO_DOWN_FRAME4,
+		GEO_TILEHERO_DOWN_FRAME5,
+		GEO_TILEHERO_DOWN_FRAME6,
+		GEO_TILEHERO_DOWN_FRAME7,
+		GEO_TILEHERO_DOWN_FRAME8,
+		NUM_GEOMETRY_DOWN,
 		NUM_GEOMETRY,
 	};
+	Mesh* meshList[NUM_GEOMETRY];
 
 	// Initialise this class instance
 	void Init(void);
@@ -81,6 +112,8 @@ public:
 	void SetAnimationCounter(float heroAnimationCounter) { this->heroAnimationCounter = heroAnimationCounter; };
 	// Get Animation Counter of the player
 	float GetAnimationCounter(void) { return heroAnimationCounter; };
+	// Get Animation Max Counter of the player
+	int GetAnimationMaxCounter(void) { return heroAnimationMaxCounter; };
 
 	// Constrain the position of the Hero to within the border
 	void ConstrainHero(const int leftBorder, const int rightBorder, 
@@ -106,6 +139,7 @@ private:
 	bool hero_inMidAir_Up;
 	bool hero_inMidAir_Down;
 	float heroAnimationCounter;
+	int heroAnimationMaxCounter;
 	int heroAnimationDirection;
 	float animationSpeed;
 

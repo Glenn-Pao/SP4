@@ -5,4 +5,5 @@ Use these values to initialise the player variables
 movementSpeed = 5.0
 animationCounter = 0.0
 animationDirection = 1
-animationSpeed = 0.05
+animationSpeed = 0.1
+animationMaxCounter = 8
