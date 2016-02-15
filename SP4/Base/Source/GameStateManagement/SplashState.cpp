@@ -14,6 +14,7 @@ void CSplashState::Init()
 #endif
 	scene = new CSceneSplash(800, 600);
 	scene->Init(0);
+	
 }
 
 void CSplashState::Init(const int width, const int height, int level)
@@ -23,6 +24,7 @@ void CSplashState::Init(const int width, const int height, int level)
 #endif
 	scene = new CSceneSplash(800, 600);
 	scene->Init(level);
+	
 }
 
 void CSplashState::Cleanup()
@@ -30,7 +32,8 @@ void CSplashState::Cleanup()
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Cleanup\n" << endl;
 #endif
-	// Delete the scene
+	
+	
 	scene->Exit();
 	delete scene;
 	scene = NULL;

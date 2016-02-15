@@ -33,4 +33,6 @@ private:
 	static CSplashState theSplashState;
 
 	CSceneSplash *scene;
+
+	
 };
