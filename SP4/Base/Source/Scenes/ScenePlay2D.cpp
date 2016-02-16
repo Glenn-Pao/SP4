@@ -30,6 +30,7 @@ CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
 , JellybeanSystem(NULL)
 , theHero(NULL)
 , waypoints(NULL)
+, object(NULL)
 {
 	sceneManager2D.m_window_width = m_window_width;
 	sceneManager2D.m_window_height = m_window_height;
@@ -67,6 +68,11 @@ CScenePlay2D::~CScenePlay2D()
 		delete waypoints;
 		waypoints = NULL;
 	}
+	if (object)
+	{
+		delete object;
+		object = NULL;
+	}
 }
 
 void CScenePlay2D::Init(int level)
@@ -102,6 +108,10 @@ void CScenePlay2D::Init(int level)
 	waypoints = new CWaypoints();
 	waypoints->LoadWaypoints(m_cMap);
 	temp = waypoints->getWaypointsVector();
+
+	//initialise the object
+	object = new CObjects();
+	object->Init(Vector3(tileSize * 4, tileSize * 5, 0), false, 0.f, MeshBuilder::Generate2DMesh("object", Color(1, 1, 1), 0, 0, 1, 1), "");
 
 	// Initialise and load the REAR tile map
 	/*m_cRearMap = new CMap();
@@ -564,4 +574,5 @@ void CScenePlay2D::RenderWaypoints()
 	{
 		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
 	}
+	sceneManager2D.Render2DMesh(object->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), object->getPositionX(), object->getPositionY());
 }

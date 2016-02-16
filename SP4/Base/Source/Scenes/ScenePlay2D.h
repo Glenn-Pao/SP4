@@ -10,6 +10,7 @@
 #include "..\Enemy.h"
 #include "..\Jellybean\JellybeanSystem.h"
 #include "..\Waypoints.h"
+#include "..\Objects\Objects.h"
 
 // Goodies and Goodies Factory
 #include "..\GoodiesFactory.h"
@@ -95,8 +96,12 @@ private:
 
 	CSceneManager2D sceneManager2D;
 
+	//Waypoints
 	CWaypoints *waypoints;
 	std::vector<Vector3> temp;
+
+	//Objects
+	CObjects *object;
 };
 
 #endif
