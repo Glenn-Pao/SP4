@@ -10,8 +10,8 @@
 #include "GameStateManagement\PlayState.h"
 #include "GameStateManagement\PauseState.h"
 #include "GameStateManagement\SplashState.h"
-
-#define TYPE_OF_VIEW 3	// 2 = 2D, 3 = 3D
+#include "Sound.h"
+#define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
 class Application
 {
@@ -54,6 +54,9 @@ private:
 
 	// Game State Management
 	CGameStateManager* theGSM;
+
+	//Sound system
+	CSound *sound;
 };
 
 #endif

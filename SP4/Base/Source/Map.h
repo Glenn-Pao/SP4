@@ -24,6 +24,9 @@ public:
 	int getNumOfTiles_MapHeight(void);		// Get the number of tiles for height of the map
 	int getNumOfTiles_MapWidth(void);		// Get the number of tiles for width of the map
 
+	int GetScreenHeight(void);				//Get the screen height of map
+	int GetScreenWidth(void);				//Get the screen width of map
+
 	vector<vector<int> > theScreenMap;
 
 private:

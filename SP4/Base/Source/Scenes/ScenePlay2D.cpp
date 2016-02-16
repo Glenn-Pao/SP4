@@ -35,10 +35,10 @@ CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
 
 CScenePlay2D::~CScenePlay2D()
 {
-	for (int i = 0; i<10; i++)
-	{
-		//delete theArrayOfGoodies[i];
-	}
+	//for (int i = 0; i<10; i++)
+	//{
+	//	//delete theArrayOfGoodies[i];
+	//}
 	//delete theArrayOfGoodies;
 	for (int i = 0; i < theEnemies.size(); i++)
 	{

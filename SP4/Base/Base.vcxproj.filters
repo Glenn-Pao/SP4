@@ -37,6 +37,9 @@
     <Filter Include="Sound">
       <UniqueIdentifier>{787f36df-d7b6-4611-9bd7-6368ac5a083c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Waypoints">
+      <UniqueIdentifier>{a6cec702-7c58-45b9-bdf3-89af5ae0e835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -194,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Waypoints.cpp">
+      <Filter>Waypoints</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="Source\Sound.h">
       <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Waypoints.h">
+      <Filter>Waypoints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

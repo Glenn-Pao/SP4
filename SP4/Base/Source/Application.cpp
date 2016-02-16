@@ -106,7 +106,7 @@ bool Application::GetMouseUpdate()
 	const int Button_Right = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT);
 
 	static bool Button_LeftDown = false;
-	if (Button_Left == true && Button_LeftDown == false)
+	if (Button_Left && !Button_LeftDown)
 	{
 		Button_LeftDown = true;
 		// Update the GSM
@@ -117,7 +117,7 @@ bool Application::GetMouseUpdate()
 		Button_LeftDown = false;
 	}
 
-	if (Button_Left == true && Button_LeftDown == true)
+	if (Button_Left && Button_LeftDown)
 	{
 		// Update the GSM
 		theGSM->HandleEvents(mouse_current_x, mouse_current_y, 0, Button_Middle, Button_Right, m_window_width, m_window_height);
@@ -286,6 +286,7 @@ bool Application::GetKeyboardUpdate()
 Application::Application()
 	: scene(NULL)
 	, theGSM(NULL)
+	, sound(NULL)
 {
 }
 
@@ -298,6 +299,11 @@ Application::~Application()
 	{
 		delete theGSM;
 		theGSM = NULL;
+	}
+	if (sound)
+	{
+		delete sound;
+		sound = NULL;
 	}
 }
 
@@ -348,6 +354,12 @@ void Application::Init()
 	theGSM->Init("Game State Management", 800, 600);
 	//theGSM->ChangeState(CSplashState::Instance());
 	theGSM->ChangeState(CMenuState::Instance());
+
+	if (sound == NULL)
+	{
+		sound = new CSound();
+		sound->Init();
+	}
 }
 
 /********************************************************************************
@@ -355,14 +367,12 @@ void Application::Init()
  ********************************************************************************/
 void Application::Run()
 {
-	/*
 	#if TYPE_OF_VIEW == 3
-		scene = new CSceneManager(m_window_width, m_window_height);	// Use this for 3D gameplay
+		sound->PauseMainMenu();
 	#else
-		scene = new CSceneManager2D(m_window_width, m_window_height);	// Use this for 2D gameplay
+		sound->PlayMainMenu();
 	#endif
-	scene->Init();
-	*/
+	
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && theGSM->Running())
 	{
