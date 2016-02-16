@@ -10,6 +10,7 @@
 #include "GameStateManagement\PlayState.h"
 #include "GameStateManagement\PauseState.h"
 #include "GameStateManagement\SplashState.h"
+#include "GameStateManagement\HubState.h"
 #include "Sound.h"
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 

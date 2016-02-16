@@ -362,7 +362,7 @@ void Application::Init()
 	theGSM = new CGameStateManager();
 	theGSM->Init("Game State Management", 800, 600);
 	//theGSM->ChangeState(CSplashState::Instance());
-	theGSM->ChangeState(CMenuState::Instance());
+	theGSM->ChangeState(CHubState::Instance());
 
 	if (sound == NULL)
 	{

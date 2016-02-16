@@ -219,11 +219,19 @@
     <ClCompile Include="Source\UsingLua.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+
     <ClCompile Include="Source\Objects\Objects.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Source\Objects\BondingBox.cpp">
       <Filter>Objects</Filter>
+
+    <ClCompile Include="Source\Scenes\SceneHub.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\HubState.cpp">
+      <Filter>Game State Management</Filter>
+
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,11 +418,19 @@
     <ClInclude Include="Source\UsingLua.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+
     <ClInclude Include="Source\Objects\Objects.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\BondingBox.h">
       <Filter>Objects</Filter>
+
+    <ClInclude Include="Source\Scenes\SceneHub.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\HubState.h">
+      <Filter>Game State Management</Filter>
+
     </ClInclude>
   </ItemGroup>
 </Project>
