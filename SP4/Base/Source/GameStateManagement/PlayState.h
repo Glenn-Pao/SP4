@@ -31,6 +31,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
+	short GetStateID() { return stateID; };
 
 	static CPlayState* Instance() {
 		return &thePlayState;
@@ -42,6 +43,8 @@ protected:
 private:
 	static CPlayState thePlayState;
 	int counter;
+
+	short stateID = 2;
 
 	//Declare variables to store the last and current mouse position
 	double mouse_last_x, mouse_last_y, mouse_diff_x, mouse_diff_y;

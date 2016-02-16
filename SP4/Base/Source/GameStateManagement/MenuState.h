@@ -22,6 +22,8 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 
+	short GetStateID() { return stateID; };
+
 	static CMenuState* Instance() {
 		return &theMenuState;
 	}
@@ -31,6 +33,7 @@ protected:
 
 private:
 	static CMenuState theMenuState;
+	short stateID = 1;
 
 	CSceneMenu *scene;
 };

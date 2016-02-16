@@ -21,7 +21,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
-
+	short GetStateID() { return stateID; };
 	static CPauseState* Instance() {
 		return &thePauseState;
 	}
@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CPauseState thePauseState;
-
+	short stateID = 6;
 	CScenePause *scene;
 };

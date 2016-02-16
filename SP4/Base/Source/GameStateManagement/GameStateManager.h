@@ -3,6 +3,7 @@
 //Include GLFW
 #include <GLFW/glfw3.h>
 #include <vector>
+#include "..\Sound.h"
 using namespace std;
 
 class CGameState;
@@ -30,6 +31,8 @@ public:
 	bool Running() { return m_bRunning; }
 	void Quit() { m_bRunning = false; }
 
+	void UpdateSound(const double m_dElapsedTime);
+
 	bool m_bHideMouse;
 	bool m_bUnhideMouse;
 	bool m_bWarpMouse;
@@ -43,4 +46,7 @@ private:
 
 	bool m_bRunning;
 	bool m_bFullscreen;
+
+	//Sound system
+	CSound *sound;
 };

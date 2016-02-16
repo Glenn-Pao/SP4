@@ -294,7 +294,6 @@ bool Application::GetKeyboardUpdate()
 Application::Application()
 	: scene(NULL)
 	, theGSM(NULL)
-	, sound(NULL)
 {
 }
 
@@ -308,12 +307,7 @@ Application::~Application()
 		delete theGSM;
 		theGSM = NULL;
 	}
-	if (sound)
-	{
-		delete sound;
-		sound = NULL;
-	}
-	_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks();
 }
 
 /********************************************************************************
@@ -362,6 +356,7 @@ void Application::Init()
 	theGSM = new CGameStateManager();
 	theGSM->Init("Game State Management", 800, 600);
 	//theGSM->ChangeState(CSplashState::Instance());
+<<<<<<< HEAD
 	theGSM->ChangeState(CHubState::Instance());
 
 	if (sound == NULL)
@@ -369,6 +364,9 @@ void Application::Init()
 		sound = new CSound();
 		sound->Init();
 	}
+=======
+	theGSM->ChangeState(CMenuState::Instance());
+>>>>>>> Added sound into game state manager. Fixed memory leak spotted by Gregory.
 }
 
 /********************************************************************************
@@ -377,9 +375,7 @@ void Application::Init()
 void Application::Run()
 {
 	#if TYPE_OF_VIEW == 3
-		sound->PauseMainMenu();
 	#else
-		sound->PlayMainMenu();
 	#endif
 	
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame

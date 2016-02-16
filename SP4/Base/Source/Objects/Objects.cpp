@@ -13,13 +13,13 @@ CObjects::~CObjects()
 {
 }
 //initialise the entity's items
-void CObjects::Init(Vector3 position, bool interactable, float velocity, Mesh* m_cModelMesh, std::string dialogue)
+void CObjects::Init(Vector3 position, bool interactable, float velocity, std::string dialogue, Mesh* m_cModelMesh)
 {
 	this->position = position;
 	this->interactable = interactable;
 	this->velocity = velocity;
-	this->m_cModelMesh = m_cModelMesh;
 	this->dialogue = dialogue;
+	this->m_cModelMesh = m_cModelMesh;
 }
 
 //set and get the position of the entity

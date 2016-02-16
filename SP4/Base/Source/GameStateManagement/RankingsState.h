@@ -21,7 +21,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
-
+	short GetStateID() { return stateID; };
 	static CRankingsState* Instance() {
 		return &theRankingState;
 	}
@@ -31,6 +31,7 @@ protected:
 
 private:
 	static CRankingsState theRankingState;
+	short stateID = 4;
 
 	CSceneRankings *scene;
 };

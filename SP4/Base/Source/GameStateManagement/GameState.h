@@ -26,6 +26,7 @@ public:
 	void ChangeState(CGameStateManager* theGSM, CGameState* state) {
 		theGSM->ChangeState(state);
 	}
+	virtual short GetStateID() = 0;
 
 protected:
 	CGameState() { }

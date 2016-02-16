@@ -16,6 +16,13 @@ void CGameStateManager::Init(const char* title, int width, int height,
 	m_bHideMouse = false;
 	m_bUnhideMouse = false;
 	m_bWarpMouse = false;
+	
+	sound = NULL;
+	if (sound == NULL)
+	{
+		sound = new CSound();
+		sound->Init();
+	}
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::Init\n" << endl;
 #endif
@@ -27,6 +34,11 @@ void CGameStateManager::Cleanup()
 	while ( !StackOfStates.empty() ) {
 		StackOfStates.back()->Cleanup();
 		StackOfStates.pop_back();
+	}
+	if (sound)
+	{
+		delete sound;
+		sound = NULL;
 	}
 
 	// switch back to windowed mode so other 
@@ -115,7 +127,22 @@ void CGameStateManager::HandleEvents(const double mouse_x, const double mouse_y,
 	cout << "CGameStateManager::HandleEvents\n" << endl;
 #endif
 }
+void CGameStateManager::UpdateSound(const double m_dElapsedTime)
+{
+	short i = StackOfStates.back()->GetStateID();
 
+	//if it is not play state
+	if (i != 2)
+	{
+		sound->PlayMainMenu();
+	}
+	else
+	{
+		//stop main menu music
+		sound->StopMainMenu();
+	}
+
+}
 void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window)
 {
 	if (m_bHideMouse == true)
@@ -130,6 +157,10 @@ void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window
 		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		m_bUnhideMouse = false;
 	}
+
+	//Update the sound
+	UpdateSound(m_dElapsedTime);
+
 	// let the state update the theGSM
 	StackOfStates.back()->Update(this, m_dElapsedTime);
 #if GSM_DEBUG_MODE

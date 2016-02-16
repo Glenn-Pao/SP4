@@ -17,12 +17,16 @@ public:
 	void UpdateSound(double &dt);
 
 	void PlayMainMenu();			//plays the main menu
-	void PauseMainMenu();		//pause the main menu
+	void StopMainMenu();			//stop the main menu
+
+	void AdjustVol();					//adjust the volume
 
 private:
 	//Handles to play different sounds
 	ISoundEngine *TheSound;	//main sound system
 
 	ISound *MainMenu;		//background music for main menu
+
+	float volume;
 };
 

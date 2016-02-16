@@ -1,8 +1,9 @@
 #include "Sound.h"
-
+#include "Application.h"
 
 CSound::CSound()
 	: MainMenu(NULL)
+	, volume(1)
 {
 	//create the new sound system
 	TheSound = createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_MULTI_THREADED | ESEO_LOAD_PLUGINS | ESEO_USE_3D_BUFFERS);
@@ -36,7 +37,19 @@ void CSound::PlayMainMenu()
 		MainMenu->setIsPaused(false);
 	}
 }
-void CSound::PauseMainMenu()
+void CSound::StopMainMenu()
 {
-	MainMenu->setIsPaused(true);
+	MainMenu->stop();
+}
+void CSound::AdjustVol()
+{
+	if (Application::IsKeyPressed(VK_UP) && volume < 1.f)
+	{ 
+		volume += 0.01f;
+	}
+	if (Application::IsKeyPressed(VK_DOWN) && volume > 0.f)
+	{
+		volume -= 0.01f;
+	}
+	TheSound->setSoundVolume(volume);
 }

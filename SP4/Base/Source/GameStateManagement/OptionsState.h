@@ -21,7 +21,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
-
+	short GetStateID() { return stateID; };
 	static COptionsState* Instance() {
 		return &theOptionsState;
 	}
@@ -31,6 +31,6 @@ protected:
 
 private:
 	static COptionsState theOptionsState;
-
+	short stateID = 5;
 	CSceneOptions *scene;
 };

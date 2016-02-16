@@ -264,7 +264,7 @@ void CSceneManager2D::Render()
 void CSceneManager2D::Exit()
 {
 	// Cleanup VBO
-	for(int i = 0; i < NUM_GEOMETRY; ++i)
+	for(int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		if(meshList[i])
 			delete meshList[i];

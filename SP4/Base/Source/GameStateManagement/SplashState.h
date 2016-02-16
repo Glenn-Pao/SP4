@@ -22,6 +22,8 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 
+	short GetStateID() { return stateID; };
+	
 	static CSplashState* Instance() {
 		return &theSplashState;
 	}
@@ -33,6 +35,6 @@ private:
 	static CSplashState theSplashState;
 
 	CSceneSplash *scene;
-
+	short stateID = 0;
 	
 };

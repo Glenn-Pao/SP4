@@ -21,6 +21,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
+	short GetStateID() { return stateID; };
 
 	static CInstructionState* Instance() {
 		return &theInstructionState;
@@ -31,6 +32,6 @@ protected:
 
 private:
 	static CInstructionState theInstructionState;
-
+	short stateID = 3;
 	CSceneInstruction *scene;
 };

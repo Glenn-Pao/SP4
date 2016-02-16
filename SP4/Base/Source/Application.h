@@ -10,8 +10,11 @@
 #include "GameStateManagement\PlayState.h"
 #include "GameStateManagement\PauseState.h"
 #include "GameStateManagement\SplashState.h"
+<<<<<<< HEAD
 #include "GameStateManagement\HubState.h"
 #include "Sound.h"
+=======
+>>>>>>> Added sound into game state manager. Fixed memory leak spotted by Gregory.
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
 class Application
@@ -55,9 +58,6 @@ private:
 
 	// Game State Management
 	CGameStateManager* theGSM;
-
-	//Sound system
-	CSound *sound;
 };
 
 #endif

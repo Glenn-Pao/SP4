@@ -21,7 +21,7 @@ public:
 	void Update(CGameStateManager* theGSM);
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
-
+	short GetStateID() { return stateID; };
 	static CLevelSelectionState* Instance() {
 		return &theLevelSelectionState;
 	}
@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CLevelSelectionState theLevelSelectionState;
-
+	short stateID = 5;
 	CSceneLevelSelection *scene;
 };

@@ -57,6 +57,7 @@ public:
 		WA_TOTAL,
 	};
 	void RenderWaypoints();
+	void RenderObjects();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

@@ -23,7 +23,7 @@ public:
 	~CObjects();
 
 	//initialise the entity's items
-	void Init(Vector3 position, bool interactable, float velocity, Mesh* m_cModelMesh, std::string dialogue);
+	void Init(Vector3 position, bool interactable, float velocity, std::string dialogue, Mesh* m_cModelMesh);
 
 	//set and get the position of the entity
 	void setPosition(Vector3);
