@@ -239,7 +239,7 @@ void CPlayState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 void CPlayState::Draw(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	cout << "CPlayState::Draw : " << counter << "\n" << endl;
+	//cout << "CPlayState::Draw : " << counter << "\n" << endl;
 #endif
 
 	// Render the scene

@@ -29,6 +29,7 @@ CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
 , rearWallFineOffset_y(0)
 , JellybeanSystem(NULL)
 , theHero(NULL)
+, waypoints(NULL)
 {
 	sceneManager2D.m_window_width = m_window_width;
 	sceneManager2D.m_window_height = m_window_height;
@@ -61,6 +62,11 @@ CScenePlay2D::~CScenePlay2D()
 		delete m_cMinimap;
 		m_cMinimap = NULL;
 	}
+	if (waypoints)
+	{
+		delete waypoints;
+		waypoints = NULL;
+	}
 }
 
 void CScenePlay2D::Init(int level)
@@ -91,6 +97,11 @@ void CScenePlay2D::Init(int level)
 	m_cMap = new CMap();
 	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, sceneManager2D.m_window_height / tileSize, sceneManager2D.m_window_width / tileSize, 29 * tileSize, 64 * tileSize, tileSize);
 	m_cMap->LoadMap("Image//MapDesign.csv");
+
+	//initialise the waypoints
+	waypoints = new CWaypoints();
+	waypoints->LoadWaypoints(m_cMap);
+	temp = waypoints->getWaypointsVector();
 
 	// Initialise and load the REAR tile map
 	/*m_cRearMap = new CMap();
@@ -374,6 +385,8 @@ void CScenePlay2D::Render()
 	RenderHero();
 	// Render AIs
 	RenderAIs();
+	//Render Waypoints
+	RenderWaypoints();
 	// Render the goodies
 	//RenderGoodies();
 
@@ -542,5 +555,13 @@ void CScenePlay2D::RenderGoodies()
 	for (int i = 0; i<10; i++)
 	{
 		sceneManager2D.Render2DMesh(theArrayOfGoodies[i]->GetMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theArrayOfGoodies[i]->GetPos_x(), theArrayOfGoodies[i]->GetPos_y());
+	}
+}
+
+void CScenePlay2D::RenderWaypoints()
+{
+	for (int i = 0; i < temp.size(); i++)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
 	}
 }

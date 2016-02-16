@@ -331,7 +331,7 @@ void Application::Init()
 	ReadLuaTextFile();
 
 	// Hide console window
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	//ShowWindow(GetConsoleWindow(), SW_HIDE);
 
 	glewExperimental = true; // Needed for core profile
 	//Initialize GLEW

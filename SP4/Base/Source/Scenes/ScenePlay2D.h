@@ -9,6 +9,7 @@
 #include "..\PlayerInfo.h"
 #include "..\Enemy.h"
 #include "..\Jellybean\JellybeanSystem.h"
+#include "..\Waypoints.h"
 
 // Goodies and Goodies Factory
 #include "..\GoodiesFactory.h"
@@ -54,7 +55,7 @@ public:
 		WA_CHANGEWEAPON,
 		WA_TOTAL,
 	};
-
+	void RenderWaypoints();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -93,6 +94,9 @@ private:
 	CJellybeanSystem* JellybeanSystem;
 
 	CSceneManager2D sceneManager2D;
+
+	CWaypoints *waypoints;
+	std::vector<Vector3> temp;
 };
 
 #endif

@@ -16,7 +16,10 @@ public:
 	CWaypoints();
 	~CWaypoints();
 
-	void LoadWaypoints(CMap &map);		//get a reference of the map
+	void LoadWaypoints(CMap *map);		//get a reference of the map
 
-	std::vector<Vector3>&getWaypointsVector() const;							
+	const std::vector<Vector3> getWaypointsVector()
+	{
+		return myWaypointList;
+	}
 };
