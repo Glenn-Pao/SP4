@@ -222,6 +222,9 @@
     <ClCompile Include="Source\Objects\Objects.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Objects\BondingBox.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -408,6 +411,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\Objects.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\BondingBox.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

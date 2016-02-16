@@ -36,6 +36,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Minimap.cpp" />
+    <ClCompile Include="Source\Objects\BondingBox.cpp" />
     <ClCompile Include="Source\Objects\Objects.cpp" />
     <ClCompile Include="Source\Occlusion\Occlusion.cpp" />
     <ClCompile Include="Source\PlayerInfo.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Minimap.h" />
+    <ClInclude Include="Source\Objects\BondingBox.h" />
     <ClInclude Include="Source\Objects\Objects.h" />
     <ClInclude Include="Source\Occlusion\Occlusion.h" />
     <ClInclude Include="Source\PlayerInfo.h" />

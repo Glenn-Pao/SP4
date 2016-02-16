@@ -9,8 +9,16 @@
 
 //Include the standard C++ headers
 #include <stdio.h>
-#include <stdlib.h>
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif
+#endif  // _DEBUG
 
 extern "C" {
 #include "Lua\lua.h"
@@ -305,6 +313,7 @@ Application::~Application()
 		delete sound;
 		sound = NULL;
 	}
+	_CrtDumpMemoryLeaks();
 }
 
 /********************************************************************************
@@ -427,6 +436,7 @@ void Application::Exit()
 	glfwDestroyWindow(m_window);
 	//Finalize and clean up GLFW
 	glfwTerminate();
+	
 }
 
 int Application::ReadLuaTextFile()

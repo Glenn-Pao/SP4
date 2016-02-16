@@ -12,6 +12,8 @@ CJellybeanSystem::CJellybeanSystem(void)
 
 CJellybeanSystem::~CJellybeanSystem(void)
 {
+	if (mesh)
+		delete mesh;
 	writeToFile();
 }
 

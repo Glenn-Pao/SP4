@@ -35,6 +35,14 @@ CPlayerInfo::CPlayerInfo(void)
 
 CPlayerInfo::~CPlayerInfo(void)
 {
+	for (int i = 0; i < NUM_GEOMETRY; i++)
+	{
+		if (meshList[i])
+		{
+			delete meshList[i];
+			meshList[i] = NULL;
+		}
+	}
 }
 
 // Initialise this class instance
