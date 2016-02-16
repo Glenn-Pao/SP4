@@ -307,7 +307,7 @@ Application::~Application()
 		delete theGSM;
 		theGSM = NULL;
 	}
-	//_CrtDumpMemoryLeaks();
+	_CrtDumpMemoryLeaks();
 }
 
 /********************************************************************************

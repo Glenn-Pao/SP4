@@ -7,6 +7,7 @@ using namespace std;
 
 CJellybeanSystem::CJellybeanSystem(void)
 {
+	mesh = NULL;
 	readFile();
 }
 

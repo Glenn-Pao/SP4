@@ -2,10 +2,10 @@
 Use these values to initialise the jellybeans variables
 ]]--
 
-noOfJellybeans = 10
-easyMinDeposit = 1
-mediumMinDeposit = 6
-hardMinDeposit = 11
-easyMaxDeposit = 5
-mediumMaxDeposit = 10
-hardMaxDeposit = 15
+noOfJellybeans = -17891602
+easyMinDeposit = -17891602
+mediumMinDeposit = -17891602
+hardMinDeposit = -17891602
+easyMaxDeposit = -17891602
+mediumMaxDeposit = -17891602
+hardMaxDeposit = -17891602

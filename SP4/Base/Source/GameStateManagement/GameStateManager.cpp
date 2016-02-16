@@ -131,17 +131,19 @@ void CGameStateManager::UpdateSound(const double m_dElapsedTime)
 {
 	short i = StackOfStates.back()->GetStateID();
 
-	//if it is not play state
-	if (i != 2)
+	if (sound != NULL)
 	{
-		sound->PlayMainMenu();
+		//if it is not play state
+		if (i != 2)
+		{
+			sound->PlayMainMenu();
+		}
+		else
+		{
+			//stop main menu music
+			sound->StopMainMenu();
+		}
 	}
-	else
-	{
-		//stop main menu music
-		sound->StopMainMenu();
-	}
-
 }
 void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window)
 {

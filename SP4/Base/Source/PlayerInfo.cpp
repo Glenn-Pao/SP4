@@ -31,6 +31,12 @@ CPlayerInfo::CPlayerInfo(void)
 
 	// no. of animation counter moving
 	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
+	
+	for (int i = 0; i < NUM_GEOMETRY; i++)
+	{
+		meshList[i] = NULL;
+	}
+
 }
 
 CPlayerInfo::~CPlayerInfo(void)

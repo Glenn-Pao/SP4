@@ -3,7 +3,6 @@
 
 #include "SceneManager2D.h"
 #include "..\Light.h"
-#include "..\Minimap.h"
 #include "..\Map.h"
 #include "Vector2.h"
 #include "..\PlayerInfo.h"
@@ -11,11 +10,6 @@
 #include "..\Jellybean\JellybeanSystem.h"
 #include "..\Waypoints.h"
 #include "..\Objects\Objects.h"
-
-// Goodies and Goodies Factory
-#include "..\GoodiesFactory.h"
-#include "..\Goodies.h"
-#include "..\TreasureChest.h"
 
 class CScenePlay2D : public Scene
 {
@@ -63,9 +57,6 @@ private:
 	Mesh* meshList[NUM_GEOMETRY];
 	void InitMeshes();
 
-	// Handle to the minimap
-	CMinimap* m_cMinimap;
-
 	// Handle to the tilemaps
 	CMap* m_cMap;
 	void RenderTileMap();
@@ -77,20 +68,15 @@ private:
 	int tileOffset_x, tileOffset_y;
 
 	// Codes for Parallax Scrolling
-	CMap* m_cRearMap;
-	void RenderRearTileMap();
-	int rearWallOffset_x, rearWallOffset_y;
+	//CMap* m_cRearMap;
+	//void RenderRearTileMap();
+	/*int rearWallOffset_x, rearWallOffset_y;
 	int rearWallTileOffset_x, rearWallTileOffset_y;
 	int rearWallFineOffset_x, rearWallFineOffset_y;
-
+*/
 	// Enemies
 	vector<CEnemy*> theEnemies;
 	void RenderAIs();
-
-	// Goodies and Goodies Factory
-	CGoodiesFactory theGoodiesFactory;
-	CGoodies** theArrayOfGoodies;
-	void RenderGoodies(void);
 
 	// Jellybeans System
 	CJellybeanSystem* JellybeanSystem;

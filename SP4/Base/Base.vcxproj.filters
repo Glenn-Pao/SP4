@@ -1,96 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="2D">
-      <UniqueIdentifier>{78a69225-fe6f-4174-b4c6-ada9c7bd7b5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game State Management">
-      <UniqueIdentifier>{650e9f46-cf47-416f-8cb2-0fb9228fea56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Graph">
-      <UniqueIdentifier>{4a84cf1e-351b-4e88-a5aa-3cf5dad74f21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Spatial Partition">
-      <UniqueIdentifier>{4a513885-6194-427d-8fea-b470a81a0e42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Occlusion">
-      <UniqueIdentifier>{2947b88f-4e2f-4700-aac3-cd6eef666242}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Projectile">
-      <UniqueIdentifier>{4d0678ff-cf08-45cf-ae09-0563aa2de9c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{e3aaa439-6d97-4fc5-9ded-0654121a0fc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{787f36df-d7b6-4611-9bd7-6368ac5a083c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Waypoints">
-      <UniqueIdentifier>{a6cec702-7c58-45b9-bdf3-89af5ae0e835}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Jellybean">
-      <UniqueIdentifier>{c7641d12-2cdc-420a-8a96-72ad60b17626}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Difficulty">
-      <UniqueIdentifier>{e26a9a22-a381-424a-84b7-a93d17a0653f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Objects">
-      <UniqueIdentifier>{3c189704-4025-4ca3-8627-11e0d67dba78}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Application Items</Filter>
     </ClCompile>
     <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MeshBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadTGA.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Application Items</Filter>
     </ClCompile>
     <ClCompile Include="Source\Camera3.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\LoadOBJ.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
+      <Filter>Game State Management</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Strategy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Strategy_Kill.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\TreasureChest.cpp">
+    <ClCompile Include="Source\Enemy.cpp">
       <Filter>2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Goodies.cpp">
@@ -99,17 +22,38 @@
     <ClCompile Include="Source\GoodiesFactory.cpp">
       <Filter>2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>2D</Filter>
+    <ClCompile Include="Source\GameStateManagement\HubState.cpp">
+      <Filter>Game State Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\InstructionState.cpp">
+      <Filter>Game State Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\LevelSelectionState.cpp">
+      <Filter>Game State Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadOBJ.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadTGA.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Map.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshBuilder.cpp">
+      <Filter>Application Items</Filter>
     </ClCompile>
     <ClCompile Include="Source\Minimap.cpp">
-      <Filter>2D</Filter>
+      <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerInfo.cpp">
-      <Filter>2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayInfo3PV.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\GameStateManagement\MenuState.cpp">
+      <Filter>Game State Management</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneGraph\Model.cpp">
       <Filter>Scene Graph</Filter>
@@ -117,41 +61,41 @@
     <ClCompile Include="Source\SceneGraph\Node.cpp">
       <Filter>Scene Graph</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneGraph\SceneNode.cpp">
-      <Filter>Scene Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneGraph\Transform.cpp">
-      <Filter>Scene Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpatialPartition\Grid.cpp">
-      <Filter>Spatial Partition</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpatialPartition\SpatialPartition.cpp">
-      <Filter>Spatial Partition</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpriteAnimation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Occlusion\Occlusion.cpp">
       <Filter>Occlusion</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Projectile\Projectile.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile\ProjectileManager.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
-      <Filter>Game State Management</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\MenuState.cpp">
+    <ClCompile Include="Source\GameStateManagement\OptionsState.cpp">
       <Filter>Game State Management</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManagement\PauseState.cpp">
       <Filter>Game State Management</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlayerInfo.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayInfo3PV.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Projectile\ProjectileManager.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Projectile\Projectile.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\PlayState.cpp">
       <Filter>Game State Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\RankingsState.cpp">
+      <Filter>Game State Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneHub.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneInstruction.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneLevelSelection.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneManager.cpp">
       <Filter>Scenes</Filter>
@@ -162,177 +106,91 @@
     <ClCompile Include="Source\Scenes\SceneMenu.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneOptions.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Scenes\ScenePause.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\ScenePlay2D.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneRankings.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneSplash.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneGraph\SceneNode.cpp">
+      <Filter>Scene Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpatialPartition\SpatialPartition.cpp">
+      <Filter>Spatial Partition</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpatialPartition\Grid.cpp">
+      <Filter>Spatial Partition</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManagement\SplashState.cpp">
       <Filter>Game State Management</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\InstructionState.cpp">
-      <Filter>Game State Management</Filter>
+    <ClCompile Include="Source\SpriteAnimation.cpp">
+      <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneInstruction.cpp">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="Source\shader.cpp">
+      <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneLevelSelection.cpp">
-      <Filter>Scenes</Filter>
+    <ClCompile Include="Source\Utility.cpp">
+      <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\LevelSelectionState.cpp">
-      <Filter>Game State Management</Filter>
+    <ClCompile Include="Source\TreasureChest.cpp">
+      <Filter>2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\OptionsState.cpp">
-      <Filter>Game State Management</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneOptions.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneRankings.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\RankingsState.cpp">
-      <Filter>Game State Management</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Highscore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Record.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\SceneGraph\Transform.cpp">
+      <Filter>Scene Graph</Filter>
     </ClCompile>
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="Source\Waypoints.cpp">
-      <Filter>Waypoints</Filter>
+      <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp">
-      <Filter>Jellybean</Filter>
+    <ClCompile Include="Source\Strategy.cpp">
+      <Filter>2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp">
-      <Filter>Difficulty</Filter>
+    <ClCompile Include="Source\Strategy_Kill.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Highscore.cpp">
+      <Filter>Highscore</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Record.cpp">
+      <Filter>Highscore</Filter>
     </ClCompile>
     <ClCompile Include="Source\UsingLua.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-
-    <ClCompile Include="Source\Objects\Objects.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Lua</Filter>
     </ClCompile>
     <ClCompile Include="Source\Objects\BondingBox.cpp">
-      <Filter>Objects</Filter>
-
-    <ClCompile Include="Source\Scenes\SceneHub.cpp">
-      <Filter>Scenes</Filter>
+      <Filter>Game Mechanics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\HubState.cpp">
-      <Filter>Game State Management</Filter>
-
+    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Objects\Objects.cpp">
+      <Filter>Game Mechanics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Geometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\shader.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Application Items</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MeshBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LoadTGA.h">
-      <Filter>Header Files</Filter>
+      <Filter>Application Items</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LoadOBJ.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Strategy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Strategy_Kill.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Goodies.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GoodiesFactory.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\TreasureChest.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Minimap.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerInfo.h">
-      <Filter>2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayInfo3PV.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneGraph\Model.h">
-      <Filter>Scene Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneGraph\Node.h">
-      <Filter>Scene Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneGraph\SceneNode.h">
-      <Filter>Scene Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneGraph\Transform.h">
-      <Filter>Scene Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SpatialPartition\Grid.h">
-      <Filter>Spatial Partition</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SpatialPartition\SpatialPartition.h">
-      <Filter>Spatial Partition</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SpriteAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Occlusion\Occlusion.h">
-      <Filter>Occlusion</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile\Projectile.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile\ProjectileManager.h">
-      <Filter>Projectile</Filter>
+      <Filter>Application Items</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameState.h">
       <Filter>Game State Management</Filter>
@@ -340,16 +198,94 @@
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Goodies.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GoodiesFactory.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\HubState.h">
+      <Filter>Game State Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\InstructionState.h">
+      <Filter>Game State Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\LevelSelectionState.h">
+      <Filter>Game State Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadOBJ.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadTGA.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Map.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshBuilder.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Minimap.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\MenuState.h">
+      <Filter>Game State Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGraph\Model.h">
+      <Filter>Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGraph\Node.h">
+      <Filter>Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Occlusion\Occlusion.h">
+      <Filter>Occlusion</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\OptionsState.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\PauseState.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PlayerInfo.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayInfo3PV.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile\ProjectileManager.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile\Projectile.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\PlayState.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\Scene.h">
+    <ClInclude Include="Source\GameStateManagement\RankingsState.h">
+      <Filter>Game State Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneHub.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneInstruction.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneLevelSelection.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneManager.h">
@@ -361,76 +297,124 @@
     <ClInclude Include="Source\Scenes\SceneMenu.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneOptions.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Scenes\ScenePause.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\ScenePlay2D.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneRankings.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Scenes\SceneSplash.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGraph\SceneNode.h">
+      <Filter>Scene Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Scene.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpatialPartition\SpatialPartition.h">
+      <Filter>Spatial Partition</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpatialPartition\Grid.h">
+      <Filter>Spatial Partition</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\SplashState.h">
       <Filter>Game State Management</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\InstructionState.h">
-      <Filter>Game State Management</Filter>
+    <ClInclude Include="Source\SpriteAnimation.h">
+      <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneInstruction.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="Source\shader.hpp">
+      <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneLevelSelection.h">
-      <Filter>Scenes</Filter>
+    <ClInclude Include="Source\Utility.h">
+      <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\LevelSelectionState.h">
-      <Filter>Game State Management</Filter>
+    <ClInclude Include="Source\Vertex.h">
+      <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\OptionsState.h">
-      <Filter>Game State Management</Filter>
+    <ClInclude Include="Source\TreasureChest.h">
+      <Filter>2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneOptions.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneRankings.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\RankingsState.h">
-      <Filter>Game State Management</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Highscore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Record.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\SceneGraph\Transform.h">
+      <Filter>Scene Graph</Filter>
     </ClInclude>
     <ClInclude Include="Source\Sound.h">
       <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="Source\Waypoints.h">
-      <Filter>Waypoints</Filter>
+      <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Jellybean\JellybeanSystem.h">
-      <Filter>Jellybean</Filter>
+    <ClInclude Include="Source\Strategy.h">
+      <Filter>2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Difficulty\DifficultySystem.h">
-      <Filter>Difficulty</Filter>
+    <ClInclude Include="Source\Strategy_Kill.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Highscore.h">
+      <Filter>Highscore</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Record.h">
+      <Filter>Highscore</Filter>
     </ClInclude>
     <ClInclude Include="Source\UsingLua.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-
-    <ClInclude Include="Source\Objects\Objects.h">
-      <Filter>Objects</Filter>
+      <Filter>Lua</Filter>
     </ClInclude>
     <ClInclude Include="Source\Objects\BondingBox.h">
-      <Filter>Objects</Filter>
-
-    <ClInclude Include="Source\Scenes\SceneHub.h">
-      <Filter>Scenes</Filter>
+      <Filter>Game Mechanics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\HubState.h">
-      <Filter>Game State Management</Filter>
-
+    <ClInclude Include="Source\Difficulty\DifficultySystem.h">
+      <Filter>Game Mechanics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Jellybean\JellybeanSystem.h">
+      <Filter>Game Mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Objects\Objects.h">
+      <Filter>Game Mechanics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application Items">
+      <UniqueIdentifier>{6475447b-0b7f-40bb-a835-768d0f4c3451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game State Management">
+      <UniqueIdentifier>{6dcd4fbc-e245-45bd-b7e1-882f31973af2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D">
+      <UniqueIdentifier>{8683ddc7-51d0-457c-bc59-dc8f3af993bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Graph">
+      <UniqueIdentifier>{f4868c59-b9bb-45c9-a3ba-49749698be78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Spatial Partition">
+      <UniqueIdentifier>{92989d97-31b3-4853-a376-0be026d9014b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Occlusion">
+      <UniqueIdentifier>{1e01649e-eb68-450e-9cf5-65b5f39d8eac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{b273fccd-a9c7-4689-93aa-94e627e4754f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{87dc1471-167d-4f34-ae57-b9b302269b9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{aa91abb4-47e1-4d7b-9245-819328c223ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Highscore">
+      <UniqueIdentifier>{dc16d147-fb2d-46a5-ab2e-6c7d428e3729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{53964587-2f03-49b1-b5cf-4979529bb738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Mechanics">
+      <UniqueIdentifier>{2dc4b81b-0801-4287-884e-7cc91aef4d70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

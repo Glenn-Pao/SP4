@@ -11,6 +11,11 @@ CObjects::CObjects()
 }
 CObjects::~CObjects()
 {
+	if (m_cModelMesh)
+	{
+		delete m_cModelMesh;
+		m_cModelMesh = NULL;
+	}
 }
 //initialise the entity's items
 void CObjects::Init(Vector3 position, bool interactable, float velocity, std::string dialogue, Mesh* m_cModelMesh)

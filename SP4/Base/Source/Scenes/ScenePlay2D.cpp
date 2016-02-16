@@ -16,17 +16,16 @@ extern "C" {
 }
 
 CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
-: m_cMinimap(NULL)
-, m_cMap(NULL)
+: m_cMap(NULL)
 , tileOffset_x(0)
 , tileOffset_y(0)
-, m_cRearMap(NULL)
-, rearWallOffset_x(0)
-, rearWallOffset_y(0)
-, rearWallTileOffset_x(0)
-, rearWallTileOffset_y(0)
-, rearWallFineOffset_x(0)
-, rearWallFineOffset_y(0)
+//, m_cRearMap(NULL)
+//, rearWallOffset_x(0)
+//, rearWallOffset_y(0)
+//, rearWallTileOffset_x(0)
+//, rearWallTileOffset_y(0)
+//, rearWallFineOffset_x(0)
+//, rearWallFineOffset_y(0)
 , JellybeanSystem(NULL)
 , theHero(NULL)
 , waypoints(NULL)
@@ -38,11 +37,6 @@ CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
 
 CScenePlay2D::~CScenePlay2D()
 {
-	//for (int i = 0; i<10; i++)
-	//{
-	//	//delete theArrayOfGoodies[i];
-	//}
-	//delete theArrayOfGoodies;
 	for (int i = 0; i < theEnemies.size(); i++)
 	{
 		if (theEnemies[i])
@@ -51,18 +45,12 @@ CScenePlay2D::~CScenePlay2D()
 			theEnemies[i] = NULL;
 		}
 	}
-
 	if (m_cMap)
 	{
 		delete m_cMap;
 		m_cMap = NULL;
 	}
 
-	if (m_cMinimap)
-	{
-		delete m_cMinimap;
-		m_cMinimap = NULL;
-	}
 	if (waypoints)
 	{
 		delete waypoints;
@@ -72,6 +60,16 @@ CScenePlay2D::~CScenePlay2D()
 	{
 		delete object;
 		object = NULL;
+	}
+	if (theHero)
+	{
+		delete theHero;
+		theHero = NULL;
+	}
+	if (JellybeanSystem)
+	{
+		delete JellybeanSystem;
+		JellybeanSystem = NULL;
 	}
 }
 
@@ -118,13 +116,6 @@ void CScenePlay2D::Init(int level)
 	/*m_cRearMap = new CMap();
 	m_cRearMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, sceneManager2D.m_window_height / tileSize, sceneManager2D.m_window_width / tileSize, 24 * tileSize, 64 * tileSize, tileSize);
 	m_cRearMap->LoadMap("Image//MapDesign_Rear.csv");*/
-
-	// Load the texture for minimap
-	m_cMinimap = new CMinimap();
-	m_cMinimap->SetBackground(MeshBuilder::GenerateMinimap("MINIMAP", Color(1, 1, 1), 1.f));
-	m_cMinimap->GetBackground()->textureID = LoadTGA("Image//grass_darkgreen.tga");
-	m_cMinimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MINIMAPBORDER", Color(1, 1, 0), 1.f));
-	m_cMinimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MINIMAPAVATAR", Color(1, 1, 0), 1.f));
 
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
@@ -207,7 +198,7 @@ void CScenePlay2D::Init(int level)
 		}
 	}
 	// Jellybeans
-	JellybeanSystem = new CJellybeanSystem;
+	JellybeanSystem = new CJellybeanSystem();
 
 	// Initialise the Meshes
 	InitMeshes();
@@ -389,7 +380,7 @@ void CScenePlay2D::Render()
 	sceneManager2D.RenderBackground();
 
 	// Render the rear tile map
-	RenderRearTileMap();
+	//RenderRearTileMap();
 	// Render the tile map
 	RenderTileMap();
 	// Render Hero
@@ -426,16 +417,16 @@ Exit this scene
 void CScenePlay2D::Exit()
 {
 	// Cleanup VBO
-	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		if (meshList[i])
 			delete meshList[i];
 	}
 	sceneManager2D.Exit();
 
-	// Delete JellybeanSystem
-	if (JellybeanSystem)
-		delete JellybeanSystem;
+	//// Delete JellybeanSystem
+	//if (JellybeanSystem)
+	//	delete JellybeanSystem;
 }
 
 /********************************************************************************
@@ -528,47 +519,35 @@ void CScenePlay2D::RenderAIs()
 /********************************************************************************
 Render the rear tile map. This is a private function for use in this class only
 ********************************************************************************/
-void CScenePlay2D::RenderRearTileMap()
-{
-	if (m_cRearMap)
-	{
-		rearWallOffset_x = (int)(theHero->GetMapOffset_x() / 2);
-		rearWallOffset_y = 0;
-		rearWallTileOffset_y = 0;
-		rearWallTileOffset_x = (int)(rearWallOffset_x / m_cRearMap->GetTileSize());
-		if (rearWallTileOffset_x + m_cRearMap->GetNumOfTiles_Width() > m_cRearMap->getNumOfTiles_MapWidth())
-			rearWallTileOffset_x = m_cRearMap->getNumOfTiles_MapWidth() - m_cRearMap->GetNumOfTiles_Width();
-		rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
-
-		int m = 0;
-		for (int i = 0; i < m_cRearMap->GetNumOfTiles_Height(); i++)
-		{
-			for (int k = 0; k < m_cRearMap->GetNumOfTiles_Width() + 1; k++)
-			{
-				m = rearWallTileOffset_x + k;
-				// If we have reached the right side of the Map, then do not display the extra column of tiles.
-				if ((rearWallTileOffset_x + k) >= m_cRearMap->getNumOfTiles_MapWidth())
-					break;
-				if (m_cRearMap->theScreenMap[i][m] == 3)
-				{
-					sceneManager2D.Render2DMesh(meshList[GEO_TILESTRUCTURE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cRearMap->GetTileSize() - rearWallFineOffset_x, sceneManager2D.m_window_height - (i + 1)*m_cRearMap->GetTileSize());
-				}
-			}
-		}
-	}
-}
-
-/********************************************************************************
-Render the goodies. This is a private function for use in this class only
-********************************************************************************/
-void CScenePlay2D::RenderGoodies()
-{
-	// Render the goodies
-	for (int i = 0; i<10; i++)
-	{
-		sceneManager2D.Render2DMesh(theArrayOfGoodies[i]->GetMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theArrayOfGoodies[i]->GetPos_x(), theArrayOfGoodies[i]->GetPos_y());
-	}
-}
+//void CScenePlay2D::RenderRearTileMap()
+//{
+//	if (m_cRearMap)
+//	{
+//		rearWallOffset_x = (int)(theHero->GetMapOffset_x() / 2);
+//		rearWallOffset_y = 0;
+//		rearWallTileOffset_y = 0;
+//		rearWallTileOffset_x = (int)(rearWallOffset_x / m_cRearMap->GetTileSize());
+//		if (rearWallTileOffset_x + m_cRearMap->GetNumOfTiles_Width() > m_cRearMap->getNumOfTiles_MapWidth())
+//			rearWallTileOffset_x = m_cRearMap->getNumOfTiles_MapWidth() - m_cRearMap->GetNumOfTiles_Width();
+//		rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
+//
+//		int m = 0;
+//		for (int i = 0; i < m_cRearMap->GetNumOfTiles_Height(); i++)
+//		{
+//			for (int k = 0; k < m_cRearMap->GetNumOfTiles_Width() + 1; k++)
+//			{
+//				m = rearWallTileOffset_x + k;
+//				// If we have reached the right side of the Map, then do not display the extra column of tiles.
+//				if ((rearWallTileOffset_x + k) >= m_cRearMap->getNumOfTiles_MapWidth())
+//					break;
+//				if (m_cRearMap->theScreenMap[i][m] == 3)
+//				{
+//					sceneManager2D.Render2DMesh(meshList[GEO_TILESTRUCTURE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cRearMap->GetTileSize() - rearWallFineOffset_x, sceneManager2D.m_window_height - (i + 1)*m_cRearMap->GetTileSize());
+//				}
+//			}
+//		}
+//	}
+//}
 
 void CScenePlay2D::RenderWaypoints()
 {

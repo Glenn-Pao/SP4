@@ -12,14 +12,14 @@ CSound::CSound()
 
 CSound::~CSound()
 {
-	//drop the sound system when resetting/exiting
-	TheSound->drop();
-
 	if (MainMenu)
 	{
 		delete MainMenu;
 		MainMenu = NULL;
 	}
+
+	//drop the sound system when resetting/exiting
+	TheSound->drop();
 }
 
 void CSound::Init()
