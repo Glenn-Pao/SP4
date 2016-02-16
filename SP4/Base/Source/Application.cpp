@@ -355,18 +355,7 @@ void Application::Init()
 	// Initialise the GSM
 	theGSM = new CGameStateManager();
 	theGSM->Init("Game State Management", 800, 600);
-	//theGSM->ChangeState(CSplashState::Instance());
-<<<<<<< HEAD
-	theGSM->ChangeState(CHubState::Instance());
-
-	if (sound == NULL)
-	{
-		sound = new CSound();
-		sound->Init();
-	}
-=======
-	theGSM->ChangeState(CMenuState::Instance());
->>>>>>> Added sound into game state manager. Fixed memory leak spotted by Gregory.
+	theGSM->ChangeState(CSplashState::Instance());
 }
 
 /********************************************************************************
