@@ -16,3 +16,12 @@ CDifficultySystem::CDifficultySystem(void)
 CDifficultySystem::~CDifficultySystem(void)
 {
 }
+
+/********************************************************************************
+Unlocked difficulty
+********************************************************************************/
+void CDifficultySystem::UnlockedDifficulty()
+{
+	if (currentDifficultyUnlocked != NUM_OF_DIFFICULTIES)
+		currentDifficultyUnlocked++;
+}

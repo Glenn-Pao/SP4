@@ -13,6 +13,14 @@ public:
 		NUM_OF_DIFFICULTIES
 	};
 
+	// Get current difficulty that is unlocked
+	int getCurrentDifficultyUnlocked()
+	{
+		return currentDifficultyUnlocked;
+	}
+	// Unlocked a new difficulty
+	void UnlockedDifficulty();
+
 private:
-	DIFFICULTY currentDifficultyUnlocked;
+	int currentDifficultyUnlocked;
 };

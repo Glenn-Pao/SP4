@@ -19,7 +19,9 @@ CJellybeanSystem::~CJellybeanSystem(void)
 	writeToFile();
 }
 
-
+/********************************************************************************
+Read the file and store variables
+********************************************************************************/
 void CJellybeanSystem::readFile()
 {
 	lua_State *L = lua_open();
@@ -63,6 +65,9 @@ void CJellybeanSystem::readFile()
 	lua_close(L);
 }
 
+/********************************************************************************
+Write the file and store variables
+********************************************************************************/
 void CJellybeanSystem::writeToFile()
 {
 	ofstream myfile("Lua//jellybeanInfo.lua");
@@ -79,6 +84,9 @@ void CJellybeanSystem::writeToFile()
 	}
 }
 
+/********************************************************************************
+Deposit jellybeans to play minigame
+********************************************************************************/
 bool CJellybeanSystem::DepositJellybeans(int depositAmount, DIFFICULTY difficulty)
 {
 	// Check min bet
@@ -115,6 +123,9 @@ bool CJellybeanSystem::DepositJellybeans(int depositAmount, DIFFICULTY difficult
 }
 
 
+/********************************************************************************
+Withdraw jellybeans from minigame
+********************************************************************************/
 void CJellybeanSystem::WithdrawJellybeans(bool won)
 {
 	if (won)
