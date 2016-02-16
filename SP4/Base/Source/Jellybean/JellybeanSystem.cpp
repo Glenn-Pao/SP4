@@ -2,7 +2,6 @@
 #include <fstream>
 using namespace std;
 #include "JellybeanSystem.h"
-#include "..\MeshBuilder.h"
 
 extern "C" {
 #include "..\Lua\lua.h"

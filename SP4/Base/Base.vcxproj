@@ -14,6 +14,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
+    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\InstructionState.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
+    <ClInclude Include="Source\Difficulty\DifficultySystem.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\GameStateManagement\GameState.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />

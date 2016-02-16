@@ -43,6 +43,9 @@
     <Filter Include="Jellybean">
       <UniqueIdentifier>{c7641d12-2cdc-420a-8a96-72ad60b17626}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Difficulty">
+      <UniqueIdentifier>{e26a9a22-a381-424a-84b7-a93d17a0653f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp">
       <Filter>Jellybean</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp">
+      <Filter>Difficulty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="Source\Jellybean\JellybeanSystem.h">
       <Filter>Jellybean</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Difficulty\DifficultySystem.h">
+      <Filter>Difficulty</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
