@@ -35,4 +35,6 @@ private:
 	int noOfJellybeansDeposited;
 	// Minimun number of jellybeans player can deposited
 	int minNoOfJellybeansDeposited[NUM_OF_DIFFICULTIES];
+	// Maximum number of jellybeans player can deposited
+	int maxNoOfJellybeansDeposited[NUM_OF_DIFFICULTIES];
 };

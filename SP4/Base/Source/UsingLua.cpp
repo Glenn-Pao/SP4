@@ -60,3 +60,17 @@ bool UseLuaFiles::DoLuaBool(std::string temp_StringToProcess)
 
 	return ReturnThisBool;
 }
+
+float UseLuaFiles::DoLuaFloat(std::string temp_StringToProcess)
+{
+	const char* temp = temp_StringToProcess.c_str();
+	lua_getglobal(L, temp);
+	if (!lua_isnumber(L, -1))
+	{
+		printf("Invalid Number");
+	}
+
+	float ReturnThisFloat = (float)lua_tonumber(L, -1);
+
+	return ReturnThisFloat;
+}

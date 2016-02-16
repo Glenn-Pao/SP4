@@ -1,11 +1,7 @@
 #include "PlayerInfo.h"
 #include <iostream>
 
-extern "C" {
-#include "Lua\lua.h"
-#include "Lua\lualib.h"
-#include "Lua\lauxlib.h"
-}
+#include "UsingLua.h"
 
 CPlayerInfo::CPlayerInfo(void)
 	: hero_inMidAir_Up(false)
@@ -16,52 +12,25 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
 {
-	lua_State *L = lua_open();
+	UseLuaFiles L;
 
 	//Read a value from the lua text file
-	luaL_openlibs(L);
-
-	if (luaL_loadfile(L, "Lua//playerInfo.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
+	L.ReadFiles("Lua//playerInfo.lua");
 
 	// movement speed
-	lua_getglobal(L, "movementSpeed");
-	if (!lua_isnumber(L, -1)) {
-		printf("`movementSpeed' should be a number\n");
-	}
-	movementSpeed = (float)lua_tonumber(L, -1);
+	movementSpeed = L.DoLuaFloat("movementSpeed");
 
 	// animation counter
-	lua_getglobal(L, "animationCounter");
-	if (!lua_isnumber(L, -1)) {
-		printf("`animationCounter' should be a number\n");
-	}
-	heroAnimationCounter = (float)lua_tonumber(L, -1);
+	heroAnimationCounter = L.DoLuaFloat("animationCounter");
 
 	// animation direction
-	lua_getglobal(L, "animationDirection");
-	if (!lua_isnumber(L, -1)) {
-		printf("`animationDirection' should be a number\n");
-	}
-	heroAnimationDirection = (int)lua_tointeger(L, -1);
+	heroAnimationDirection = L.DoLuaInt("animationDirection");
 
 	// animation speed
-	lua_getglobal(L, "animationSpeed");
-	if (!lua_isnumber(L, -1)) {
-		printf("`animationSpeed' should be a number\n");
-	}
-	animationSpeed = (float)lua_tonumber(L, -1);
+	animationSpeed = L.DoLuaFloat("animationSpeed");
 
 	// no. of animation counter moving
-	lua_getglobal(L, "animationMaxCounter");
-	if (!lua_isnumber(L, -1)) {
-		printf("`animationMaxCounter' should be a number\n");
-	}
-	heroAnimationMaxCounter = (int)lua_tointeger(L, -1);
-
-	lua_close(L);
+	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
 }
 
 CPlayerInfo::~CPlayerInfo(void)

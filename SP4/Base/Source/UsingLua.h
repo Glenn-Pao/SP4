@@ -19,7 +19,7 @@ public:
 	std::string DoLuaString(std::string);
 	int DoLuaInt(std::string);
 	bool DoLuaBool(std::string);
-
+	float DoLuaFloat(std::string);
 private:
 	lua_State *L = lua_open();
 };

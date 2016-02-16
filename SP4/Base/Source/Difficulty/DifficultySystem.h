@@ -21,6 +21,10 @@ public:
 	// Unlocked a new difficulty
 	void UnlockedDifficulty();
 
+	// Read the file and store variables
+	void readFile();
+	// Write the file and store variables
+	void writeToFile();
 private:
 	int currentDifficultyUnlocked;
 };

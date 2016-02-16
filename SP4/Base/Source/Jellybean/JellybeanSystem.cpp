@@ -3,11 +3,7 @@
 using namespace std;
 #include "JellybeanSystem.h"
 
-extern "C" {
-#include "..\Lua\lua.h"
-#include "..\Lua\lualib.h"
-#include "..\Lua\lauxlib.h"
-}
+#include "..\UsingLua.h"
 
 CJellybeanSystem::CJellybeanSystem(void)
 {
@@ -24,45 +20,17 @@ Read the file and store variables
 ********************************************************************************/
 void CJellybeanSystem::readFile()
 {
-	lua_State *L = lua_open();
+	UseLuaFiles L;
 
-	//Read a value from the lua text file
-	luaL_openlibs(L);
+	L.ReadFiles("Lua//jellybeanInfo.lua");
 
-	if (luaL_loadfile(L, "Lua//jellybeanInfo.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
-
-	// Number of jelly beans player have
-	lua_getglobal(L, "noOfJellybeans");
-	if (!lua_isnumber(L, -1)) {
-		printf("`noOfJellybeans' should be a number\n");
-	}
-	noOfJellybeans = (int)lua_tointeger(L, -1);
-
-	// Min number of jelly beans player can deposit in easy
-	lua_getglobal(L, "easyMinDeposit");
-	if (!lua_isnumber(L, -1)) {
-		printf("`easyMinDeposit' should be a number\n");
-	}
-	minNoOfJellybeansDeposited[EASY] = (int)lua_tointeger(L, -1);
-
-	// Min number of jelly beans player can deposit in medium
-	lua_getglobal(L, "mediumMinDeposit");
-	if (!lua_isnumber(L, -1)) {
-		printf("`mediumMinDeposit' should be a number\n");
-	}
-	minNoOfJellybeansDeposited[MEDIUM] = (int)lua_tointeger(L, -1);
-
-	// Min number of jelly beans player can deposit in hard
-	lua_getglobal(L, "hardMinDeposit");
-	if (!lua_isnumber(L, -1)) {
-		printf("`hardMinDeposit' should be a number\n");
-	}
-	minNoOfJellybeansDeposited[HARD] = (int)lua_tointeger(L, -1);
-
-	lua_close(L);
+	noOfJellybeans = L.DoLuaInt("noOfJellybeans");
+	minNoOfJellybeansDeposited[EASY] = L.DoLuaInt("easyMinDeposit");
+	minNoOfJellybeansDeposited[MEDIUM] = L.DoLuaInt("mediumMinDeposit");
+	minNoOfJellybeansDeposited[HARD] = L.DoLuaInt("hardMinDeposit");
+	maxNoOfJellybeansDeposited[EASY] = L.DoLuaInt("easyMaxDeposit");
+	maxNoOfJellybeansDeposited[MEDIUM] = L.DoLuaInt("mediumMaxDeposit");
+	maxNoOfJellybeansDeposited[HARD] = L.DoLuaInt("hardMaxDeposit");
 }
 
 /********************************************************************************
@@ -81,6 +49,9 @@ void CJellybeanSystem::writeToFile()
 		myfile << "easyMinDeposit = " << minNoOfJellybeansDeposited[EASY] << endl;
 		myfile << "mediumMinDeposit = " << minNoOfJellybeansDeposited[MEDIUM] << endl;
 		myfile << "hardMinDeposit = " << minNoOfJellybeansDeposited[HARD] << endl;
+		myfile << "easyMaxDeposit = " << maxNoOfJellybeansDeposited[EASY] << endl;
+		myfile << "mediumMaxDeposit = " << maxNoOfJellybeansDeposited[MEDIUM] << endl;
+		myfile << "hardMaxDeposit = " << maxNoOfJellybeansDeposited[HARD] << endl;
 	}
 }
 
