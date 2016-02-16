@@ -72,7 +72,7 @@ void CScenePlay2D::Init(int level)
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//scenePlay2D.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//scenePlay2D.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 	}

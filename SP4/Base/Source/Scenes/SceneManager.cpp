@@ -37,7 +37,7 @@ CSceneManager::CSceneManager(void)
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//Options.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 	}
@@ -87,7 +87,7 @@ CSceneManager::CSceneManager(const int m_window_width, const int m_window_height
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//Options.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 	}
@@ -372,7 +372,7 @@ void CSceneManager::InitAvatar()
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//avatarInfo.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//avatarInfo.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 		return;
@@ -588,7 +588,7 @@ void CSceneManager::InitSpatialPartition()
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//spatialPartitionInfo.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//spatialPartitionInfo.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 		return;
@@ -1786,7 +1786,7 @@ void CSceneManager::Exit()
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 
 
-	std::ofstream myfile("Lua//Options.lua.txt");
+	std::ofstream myfile("Lua//Options.lua");
 	int i = 0;
 	if (myfile.is_open())
 	{

@@ -58,7 +58,7 @@ void  CSceneOptions::Init(int level)
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//Options.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 	}
@@ -148,7 +148,7 @@ void   CSceneOptions::Exit()
 	}
 	sceneManager2D.Exit();
 
-	std::ofstream myfile("Lua//Options.lua.txt");
+	std::ofstream myfile("Lua//Options.lua");
 	int i = 0;
 	if (myfile.is_open())
 	{

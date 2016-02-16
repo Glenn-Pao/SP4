@@ -2,7 +2,6 @@
 *.sdf
 *.idb
 *.opensdf
-<<<<<<< HEAD
 *.suo
 SP4/Base/Debug/
 SP4/Common/Debug/
@@ -14,5 +13,3 @@ SP4/Debug/Common.lib
 SP4/Release/Base.exe
 SP4/Release/Base.pdb
 SP4/Release/Common.lib
-=======
->>>>>>> Added irrKlang library and sound class. Will continue to work on it once we have established the game proper.

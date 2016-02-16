@@ -21,7 +21,7 @@ CPlayerInfo::CPlayerInfo(void)
 	//Read a value from the lua text file
 	luaL_openlibs(L);
 
-	if (luaL_loadfile(L, "Lua//playerInfo.lua.txt") || lua_pcall(L, 0, 0, 0))
+	if (luaL_loadfile(L, "Lua//playerInfo.lua") || lua_pcall(L, 0, 0, 0))
 	{
 		printf("error: %s", lua_tostring(L, -1));
 	}
