@@ -64,6 +64,7 @@
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\Strategy_Kill.cpp" />
     <ClCompile Include="Source\TreasureChest.cpp" />
+    <ClCompile Include="Source\UsingLua.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\Waypoints.cpp" />
   </ItemGroup>
@@ -125,6 +126,7 @@
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\Strategy_Kill.h" />
     <ClInclude Include="Source\TreasureChest.h" />
+    <ClInclude Include="Source\UsingLua.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\Waypoints.h" />

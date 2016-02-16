@@ -213,6 +213,9 @@
     <ClCompile Include="Source\Difficulty\DifficultySystem.cpp">
       <Filter>Difficulty</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UsingLua.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="Source\Difficulty\DifficultySystem.h">
       <Filter>Difficulty</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UsingLua.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
