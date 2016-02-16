@@ -27,6 +27,7 @@ CScenePlay2D::CScenePlay2D(const int m_window_width, const int m_window_height)
 , rearWallTileOffset_y(0)
 , rearWallFineOffset_x(0)
 , rearWallFineOffset_y(0)
+, JellybeanSystem(NULL)
 , theHero(NULL)
 {
 	sceneManager2D.m_window_width = m_window_width;
@@ -183,6 +184,8 @@ void CScenePlay2D::Init(int level)
 			}
 		}
 	}
+	// Jellybeans
+	JellybeanSystem = new CJellybeanSystem;
 
 	// Initialise the Meshes
 	InitMeshes();
@@ -248,6 +251,10 @@ void CScenePlay2D::InitMeshes()
 	meshList[GEO_TILE_SAFEZONE]->textureID = LoadTGA("Image//tile11_safezone.tga");
 	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
+
+	// Jellybeans
+	JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
+	JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
 
 }
 
@@ -376,10 +383,16 @@ void CScenePlay2D::Render()
 	//ss << "theEnemy: " << theEnemy->GetPos_x() << ", " << theEnemy->GetPos_y();
 	ss << "theEnemiesLeft: " << theEnemies.size();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
-	std::ostringstream sss;
-	sss.precision(5);
-	sss << "mapOffset_x: " << theHero->GetMapOffset_x();
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], sss.str(), Color(0, 1, 0), 30, 0, 30);
+	ss.str(std::string());
+	ss.precision(5);
+	ss << "mapOffset_x: " << theHero->GetMapOffset_x();
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 30);
+	// Jellybean
+	sceneManager2D.Render2DMesh(JellybeanSystem->mesh, false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	ss.str(std::string());
+	ss.precision(3);
+	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 }
 
 /********************************************************************************
@@ -394,6 +407,10 @@ void CScenePlay2D::Exit()
 			delete meshList[i];
 	}
 	sceneManager2D.Exit();
+
+	// Delete JellybeanSystem
+	if (JellybeanSystem)
+		delete JellybeanSystem;
 }
 
 /********************************************************************************

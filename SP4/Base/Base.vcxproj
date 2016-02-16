@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Goodies.cpp" />
     <ClCompile Include="Source\GoodiesFactory.cpp" />
     <ClCompile Include="Source\Highscore.cpp" />
+    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="Source\Goodies.h" />
     <ClInclude Include="Source\GoodiesFactory.h" />
     <ClInclude Include="Source\Highscore.h" />
+    <ClInclude Include="Source\Jellybean\JellybeanSystem.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />

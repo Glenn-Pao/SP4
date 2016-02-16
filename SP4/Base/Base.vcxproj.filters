@@ -40,6 +40,9 @@
     <Filter Include="Waypoints">
       <UniqueIdentifier>{a6cec702-7c58-45b9-bdf3-89af5ae0e835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Jellybean">
+      <UniqueIdentifier>{c7641d12-2cdc-420a-8a96-72ad60b17626}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -200,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="Source\Waypoints.cpp">
       <Filter>Waypoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp">
+      <Filter>Jellybean</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="Source\Waypoints.h">
       <Filter>Waypoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Jellybean\JellybeanSystem.h">
+      <Filter>Jellybean</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

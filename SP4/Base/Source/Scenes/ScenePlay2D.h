@@ -8,6 +8,7 @@
 #include "Vector2.h"
 #include "..\PlayerInfo.h"
 #include "..\Enemy.h"
+#include "..\Jellybean\JellybeanSystem.h"
 
 // Goodies and Goodies Factory
 #include "..\GoodiesFactory.h"
@@ -87,6 +88,9 @@ private:
 	CGoodiesFactory theGoodiesFactory;
 	CGoodies** theArrayOfGoodies;
 	void RenderGoodies(void);
+
+	// Jellybeans System
+	CJellybeanSystem* JellybeanSystem;
 
 	CSceneManager2D sceneManager2D;
 };
