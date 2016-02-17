@@ -12,6 +12,7 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
 {
+	readFile();
 	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;

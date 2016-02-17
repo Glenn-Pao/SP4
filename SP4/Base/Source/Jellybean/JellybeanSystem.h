@@ -19,6 +19,8 @@ public:
 	};
 	// Read the file and store variables
 	void readFile();
+	// Write the file and store variables
+	void writeToFile();
 	// Deposit jellybeans to play minigame
 	bool DepositJellybeans(int depositAmount, DIFFICULTY difficulty);
 	// Withdraw jellybeans from minigame
