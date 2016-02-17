@@ -23,6 +23,11 @@ void CGameStateManager::Init(const char* title, int width, int height,
 		sound = new CSound();
 		sound->Init();
 	}
+
+	saveAndLoadsys = NULL;
+	saveAndLoadsys = new CSavingAndLoadingSystem();
+	saveAndLoadsys->AddData("Lua//Data1.lua");
+
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::Init\n" << endl;
 #endif
@@ -46,7 +51,11 @@ void CGameStateManager::Cleanup()
 			sound = NULL;
 		}
 	}
-
+	if (saveAndLoadsys)
+	{
+		delete saveAndLoadsys;
+		saveAndLoadsys = NULL;
+	}
 	// switch back to windowed mode so other 
 	// programs won't get accidentally resized
 	if ( m_bFullscreen ) {
@@ -67,7 +76,7 @@ void CGameStateManager::ChangeState(CGameState* state, int level)
 
 	// store and init the new state
 	StackOfStates.push_back(state);
-	StackOfStates.back()->Init(m_window_width, m_window_height, level);
+	StackOfStates.back()->Init(this, m_window_width, m_window_height, level);
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::ChangeState\n" << endl;
 #endif
@@ -82,7 +91,7 @@ void CGameStateManager::PushState(CGameState* state)
 
 	// store and init the new state
 	StackOfStates.push_back(state);
-	StackOfStates.back()->Init(m_window_width, m_window_height);
+	StackOfStates.back()->Init(this, m_window_width, m_window_height);
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::PushState\n" << endl;
 #endif

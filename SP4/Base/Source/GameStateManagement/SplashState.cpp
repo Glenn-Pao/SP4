@@ -7,7 +7,7 @@ using namespace std;
 
 CSplashState CSplashState::theSplashState;
 
-void CSplashState::Init()
+void CSplashState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -17,7 +17,7 @@ void CSplashState::Init()
 	
 }
 
-void CSplashState::Init(const int width, const int height, int level)
+void CSplashState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

@@ -11,7 +11,7 @@ using namespace std;
 
 CMenuState CMenuState::theMenuState;
 
-void CMenuState::Init()
+void CMenuState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CMenuState::Init\n" << endl;
@@ -20,7 +20,7 @@ void CMenuState::Init()
 	scene->Init(0);
 }
 
-void CMenuState::Init(const int width, const int height, int level)
+void CMenuState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CMenuState::Init\n" << endl;
@@ -152,9 +152,9 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		scene->choice = CSceneMenu::TIME_LIMIT;
 		if (button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
-			theGSM->ChangeState(CPlayState::Instance(), 0);
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
+			//theGSM->ChangeState(CPlayState::Instance(), 0);
 		}
 	}
 	// Instruction

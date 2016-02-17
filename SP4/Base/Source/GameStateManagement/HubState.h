@@ -16,8 +16,8 @@
 class CHubState : public CGameState
 {
 public:
-	void Init();
-	void Init(const int width, const int height, int level = 0);
+	void Init(CGameStateManager* theGSM);
+	void Init(CGameStateManager* theGSM, const int width, const int height, int level = 0);
 	void Cleanup();
 
 	void Pause();

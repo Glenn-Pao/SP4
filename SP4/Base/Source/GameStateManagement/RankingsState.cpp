@@ -6,7 +6,7 @@ using namespace std;
 
 CRankingsState CRankingsState::theRankingState;
 
-void CRankingsState::Init()
+void CRankingsState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -15,7 +15,7 @@ void CRankingsState::Init()
 	scene->Init(0);
 }
 
-void CRankingsState::Init(const int width, const int height, int level)
+void CRankingsState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

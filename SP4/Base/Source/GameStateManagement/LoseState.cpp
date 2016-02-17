@@ -6,7 +6,7 @@ using namespace std;
 
 CLoseState CLoseState::theLoseState;
 
-void CLoseState::Init()
+void CLoseState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -15,7 +15,7 @@ void CLoseState::Init()
 	scene->Init(0);
 }
 
-void CLoseState::Init(const int width, const int height, int level)
+void CLoseState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

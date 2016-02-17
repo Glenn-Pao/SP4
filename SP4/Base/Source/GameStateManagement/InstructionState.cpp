@@ -9,7 +9,7 @@ using namespace std;
 
 CInstructionState CInstructionState::theInstructionState;
 
-void CInstructionState::Init()
+void CInstructionState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -18,7 +18,7 @@ void CInstructionState::Init()
 	scene->Init(0);
 }
 
-void CInstructionState::Init(const int width, const int height, int level)
+void CInstructionState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

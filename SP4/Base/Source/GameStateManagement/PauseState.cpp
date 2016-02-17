@@ -8,7 +8,7 @@ using namespace std;
 
 CPauseState CPauseState::thePauseState;
 
-void CPauseState::Init()
+void CPauseState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -17,7 +17,7 @@ void CPauseState::Init()
 	scene->Init(0);
 }
 
-void CPauseState::Init(const int width, const int height, int level)
+void CPauseState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -101,6 +101,10 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const unsigned char ke
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
+	if (key == ' ')
+	{
+		theGSM->saveAndLoadsys->SaveToFile();
+	}
 }
 
 void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,

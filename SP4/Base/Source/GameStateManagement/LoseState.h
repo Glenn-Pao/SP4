@@ -6,8 +6,8 @@
 class CLoseState : public CGameState
 {
 public:
-	void Init();
-	void Init(const int width, const int height, int level);
+	void Init(CGameStateManager* theGSM);
+	void Init(CGameStateManager* theGSM, const int width, const int height, int level);
 	void Cleanup();
 
 	void Pause();

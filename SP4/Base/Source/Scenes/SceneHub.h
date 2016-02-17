@@ -16,6 +16,8 @@
 #include "..\Goodies.h"
 #include "..\TreasureChest.h"
 
+#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
+
 class CSceneHub : public Scene
 {
 	enum GEOMETRY_TYPE
@@ -47,6 +49,13 @@ public:
 	virtual void UpdateWeaponStatus(const unsigned char key);
 	virtual void Render();
 	virtual void Exit();
+
+	// Read and store data
+	virtual void ReadData(CGameInfo* Data);
+	virtual void StoreData(CGameInfo* Data);
+
+	// Find and Set the actual offset of hero
+	void SetHeroOffset();
 
 	enum WEAPON_ACTION
 	{

@@ -9,7 +9,7 @@ using namespace std;
 
 CLoadGameSelect CLoadGameSelect::theLoadGameSelectState;
 
-void CLoadGameSelect::Init()
+void CLoadGameSelect::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -18,7 +18,7 @@ void CLoadGameSelect::Init()
 	scene->Init(0);
 }
 
-void CLoadGameSelect::Init(const int width, const int height, int level)
+void CLoadGameSelect::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -147,6 +147,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
 			theGSM->ChangeState(CPlayState::Instance(), 1);
+			theGSM->saveAndLoadsys->LoadFile(0);
 		}
 	}
 	// Level 2
@@ -156,8 +157,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		scene->choice = CSceneLoadGame::LEVEL_TWO;
 		if (button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 2);
 		}
 	}
@@ -168,8 +169,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		scene->choice = CSceneLoadGame::LEVEL_THREE;
 		if (button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 3);
 		}
 	}
@@ -180,8 +181,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		scene->choice = CSceneLoadGame::LEVEL_FOUR;
 		if (button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 4);
 		}
 	}
@@ -192,8 +193,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		scene->choice = CSceneLoadGame::LEVEL_FIVE;
 		if (button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 5);
 		}
 	}

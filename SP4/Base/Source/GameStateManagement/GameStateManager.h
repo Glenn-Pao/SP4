@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include "../Sound.h"
+#include "../GameMechanics/SavingAndLoading/SavingAndLoadingSystem.h"
 using namespace std;
 
 class CGameState;
@@ -37,6 +38,7 @@ public:
 	bool m_bUnhideMouse;
 	bool m_bWarpMouse;
 
+	CSavingAndLoadingSystem* saveAndLoadsys;
 private:
 	// the stack of states
 	vector<CGameState*> StackOfStates;

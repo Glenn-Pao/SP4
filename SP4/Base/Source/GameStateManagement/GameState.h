@@ -7,8 +7,8 @@
 class CGameState
 {
 public:
-	virtual void Init() = 0;
-	virtual void Init(const int width, const int height, int level = 0) = 0;
+	virtual void Init(CGameStateManager* theGSM) = 0;
+	virtual void Init(CGameStateManager* theGSM, const int width, const int height, int level = 0) = 0;
 	virtual void Cleanup() = 0;
 
 	virtual void Pause() = 0;

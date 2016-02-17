@@ -8,7 +8,7 @@ using namespace std;
 
 CPlayState CPlayState::thePlayState;
 
-void CPlayState::Init()
+void CPlayState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -18,7 +18,7 @@ void CPlayState::Init()
 
 }
 
-void CPlayState::Init(const int width, const int height, int level)
+void CPlayState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

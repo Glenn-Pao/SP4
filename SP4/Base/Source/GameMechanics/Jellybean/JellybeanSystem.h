@@ -25,6 +25,8 @@ public:
 	bool DepositJellybeans(int depositAmount, DIFFICULTY difficulty);
 	// Withdraw jellybeans from minigame
 	void WithdrawJellybeans(bool won);
+	// Set number of jellybeans player have
+	void SetNumOfJellybeans(int noOfJellybeans){ this->noOfJellybeans = noOfJellybeans; };
 	// Get number of jellybeans player have
 	int GetNumOfJellybeans(){ return noOfJellybeans; };
 

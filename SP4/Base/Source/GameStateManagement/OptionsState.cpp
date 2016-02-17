@@ -6,7 +6,7 @@ using namespace std;
 
 COptionsState COptionsState::theOptionsState;
 
-void COptionsState::Init()
+void COptionsState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -15,7 +15,7 @@ void COptionsState::Init()
 	scene->Init(0);
 }
 
-void COptionsState::Init(const int width, const int height, int level)
+void COptionsState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

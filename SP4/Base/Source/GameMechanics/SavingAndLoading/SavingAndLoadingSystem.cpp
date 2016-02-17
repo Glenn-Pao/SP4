@@ -1,9 +1,4 @@
 #include "SavingAndLoadingSystem.h"
-#include <iostream>
-#include <fstream>
-using namespace std;
-
-#include "..\..\UsingLua.h"
 
 CSavingAndLoadingSystem::CSavingAndLoadingSystem(void)
 {
@@ -11,31 +6,62 @@ CSavingAndLoadingSystem::CSavingAndLoadingSystem(void)
 
 CSavingAndLoadingSystem::~CSavingAndLoadingSystem(void)
 {
+	for (int i = 0; i < Data.size(); i++)
+	{
+		if (Data[i])
+		{
+			delete Data[i];
+			Data[i] = NULL;
+		}
+	}
+}
+
+/********************************************************************************
+Add new data
+********************************************************************************/
+void CSavingAndLoadingSystem::AddData(const char* fileName)
+{
+	Data.push_back(new CGameInfo(fileName));
 }
 
 /********************************************************************************
 Read the file and store variables
 ********************************************************************************/
-void CSavingAndLoadingSystem::readFile()
+bool CSavingAndLoadingSystem::LoadFile(int index)
 {
-	UseLuaFiles L;
-/*
-	L.ReadFiles("Lua//difficultyInfo.lua");
-	currentDifficultyUnlocked = L.DoLuaInt("currentDifficultyUnlocked");*/
+	// check if index is higher than 0 and lower than number of Datas
+	if (index >= 0 && index < Data.size())
+	{
+		Data[index]->LoadFile();
+		currentIndex = index;
+
+		return true;
+	}
+	return false;
 }
 
 /********************************************************************************
 Write the file and store variables
 ********************************************************************************/
-void CSavingAndLoadingSystem::writeToFile()
+void CSavingAndLoadingSystem::SaveToFile()
 {
-	/*ofstream myfile("Lua//difficultyInfo.lua");
-	if (myfile.is_open())
-	{
-		myfile << "--[[" << endl;
-		myfile << "Use these values to initialise the difficulty variables" << endl;
-		myfile << "]]--" << endl;
-		myfile << endl;
-		myfile << "currentDifficultyUnlocked = " << currentDifficultyUnlocked << endl;
-	}*/
+	Data[currentIndex]->SaveToFile();
+}
+
+
+/********************************************************************************
+Clear information of the file
+********************************************************************************/
+void CSavingAndLoadingSystem::ClearFile()
+{
+	Data[currentIndex]->ClearFile();
+}
+
+
+/********************************************************************************
+Get GameInfo
+********************************************************************************/
+CGameInfo* CSavingAndLoadingSystem::GetGameInfo()
+{
+	return Data[currentIndex];
 }

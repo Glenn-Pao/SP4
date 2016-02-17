@@ -21,6 +21,8 @@
     <ClCompile Include="Source\GameMechanics\Jellybean\JellybeanSystem.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\BondingBox.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp" />
+    <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp" />
+    <ClCompile Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\HubState.cpp" />
     <ClCompile Include="Source\GameStateManagement\InstructionState.cpp" />
@@ -89,6 +91,8 @@
     <ClInclude Include="Source\GameMechanics\Jellybean\JellybeanSystem.h" />
     <ClInclude Include="Source\GameMechanics\Objects\BondingBox.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h" />
+    <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h" />
+    <ClInclude Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.h" />
     <ClInclude Include="Source\GameStateManagement\GameState.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\HubState.h" />

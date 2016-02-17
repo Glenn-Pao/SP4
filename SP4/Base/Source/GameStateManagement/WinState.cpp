@@ -6,7 +6,7 @@ using namespace std;
 
 CWinState CWinState::theWinState;
 
-void CWinState::Init()
+void CWinState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
@@ -15,7 +15,7 @@ void CWinState::Init()
 	scene->Init(0);
 }
 
-void CWinState::Init(const int width, const int height, int level)
+void CWinState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;

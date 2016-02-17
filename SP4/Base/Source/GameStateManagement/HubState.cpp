@@ -10,7 +10,7 @@ using namespace std;
 
 CHubState CHubState::theHubState;
 
-void CHubState::Init()
+void CHubState::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CHubState::Init\n" << endl;
@@ -24,9 +24,11 @@ void CHubState::Init()
 	scene = new CSceneHub(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->SetHeroOffset();
 }
 
-void CHubState::Init(const int width, const int height, int level)
+void CHubState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CHubState::Init\n" << endl;
@@ -40,6 +42,8 @@ void CHubState::Init(const int width, const int height, int level)
 	scene = new CSceneHub(width, height);
 #endif
 	scene->Init(level);
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->SetHeroOffset();
 }
 
 void CHubState::Cleanup()
@@ -139,6 +143,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->m_bWarpMouse = false;
 
 		theGSM->PushState(CPauseState::Instance());
+		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
 #endif
 }
