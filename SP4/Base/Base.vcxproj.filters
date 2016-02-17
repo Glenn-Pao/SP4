@@ -229,6 +229,12 @@
     <ClCompile Include="Source\Scenes\SceneTutorialGame4.cpp">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneGame2.cpp">
+      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game2State.cpp">
+      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -473,6 +479,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneTutorialGame4.h">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneGame2.h">
+      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game2State.h">
+      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

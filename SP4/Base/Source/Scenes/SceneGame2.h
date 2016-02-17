@@ -8,13 +8,16 @@
 #include "Vector2.h"
 #include "..\PlayerInfo.h"
 #include "..\Enemy.h"
-#include "..\Jellybean\JellybeanSystem.h"
+#include "..\GameMechanics\Jellybean\JellybeanSystem.h"
+//#include "..\Jellybean\JellybeanSystem.h"
 #include "..\AI\Waypoints.h"
 
 // Goodies and Goodies Factory
 #include "..\GoodiesFactory.h"
 #include "..\Goodies.h"
 #include "..\TreasureChest.h"
+
+#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
 
 class CSceneGame2 : public Scene
 {
@@ -56,6 +59,13 @@ public:
 	virtual void UpdateWeaponStatus(const unsigned char key);
 	virtual void Render();
 	virtual void Exit();
+
+	// Read and store data
+	virtual void ReadData(CGameInfo* Data);
+	virtual void StoreData(CGameInfo* Data);
+
+	// Find and Set the actual offset of hero
+	void SetHeroOffset();
 
 	enum WEAPON_ACTION
 	{

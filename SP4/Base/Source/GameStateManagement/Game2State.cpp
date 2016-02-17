@@ -4,13 +4,13 @@ using namespace std;
 #include "gamestate.h"
 #include "GameStateManager.h"
 #include "Game2State.h"
-#include "LevelSelectionState.h"
+//#include "LevelSelectionState.h"
 #include "menustate.h"
 #include "PauseState.h"
 
 CGame2State CGame2State::theGame2State;
 
-void CGame2State::Init()
+void CGame2State::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CGame2State::Init\n" << endl;
@@ -24,9 +24,11 @@ void CGame2State::Init()
 	scene = new CSceneGame2(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->SetHeroOffset();
 }
 
-void CGame2State::Init(const int width, const int height, int level)
+void CGame2State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CGame2State::Init\n" << endl;
@@ -40,6 +42,8 @@ void CGame2State::Init(const int width, const int height, int level)
 	scene = new CSceneGame2(width, height);
 #endif
 	scene->Init(level);
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->SetHeroOffset();
 }
 
 void CGame2State::Cleanup()
