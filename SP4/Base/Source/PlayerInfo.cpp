@@ -12,26 +12,6 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
 {
-	UseLuaFiles L;
-
-	//Read a value from the lua text file
-	L.ReadFiles("Lua//playerInfo.lua");
-
-	// movement speed
-	movementSpeed = L.DoLuaFloat("movementSpeed");
-
-	// animation counter
-	heroAnimationCounter = L.DoLuaFloat("animationCounter");
-
-	// animation direction
-	heroAnimationDirection = L.DoLuaInt("animationDirection");
-
-	// animation speed
-	animationSpeed = L.DoLuaFloat("animationSpeed");
-
-	// no. of animation counter moving
-	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
-	
 	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
@@ -425,4 +405,31 @@ int CPlayerInfo::CheckCollision(CMap* m_cMap)
 	}
 
 	return 0;
+}
+
+/********************************************************************************
+Read the file and store variables
+********************************************************************************/
+void CPlayerInfo::readFile()
+{
+	UseLuaFiles L;
+
+	//Read a value from the lua text file
+	L.ReadFiles("Lua//playerInfo.lua");
+
+	// movement speed
+	movementSpeed = L.DoLuaFloat("movementSpeed");
+
+	// animation counter
+	heroAnimationCounter = L.DoLuaFloat("animationCounter");
+
+	// animation direction
+	heroAnimationDirection = L.DoLuaInt("animationDirection");
+
+	// animation speed
+	animationSpeed = L.DoLuaFloat("animationSpeed");
+
+	// no. of animation counter moving
+	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
+
 }

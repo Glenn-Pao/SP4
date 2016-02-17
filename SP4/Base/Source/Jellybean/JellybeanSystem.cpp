@@ -6,9 +6,16 @@ using namespace std;
 #include "..\UsingLua.h"
 
 CJellybeanSystem::CJellybeanSystem(void)
+	: noOfJellybeans(10)
 {
 	mesh = NULL;
 	readFile();
+	minNoOfJellybeansDeposited[EASY] = 1;
+	minNoOfJellybeansDeposited[MEDIUM] = 6;
+	minNoOfJellybeansDeposited[HARD] = 11;
+	maxNoOfJellybeansDeposited[EASY] = 5;
+	maxNoOfJellybeansDeposited[MEDIUM] = 10;
+	maxNoOfJellybeansDeposited[HARD] = 15;
 }
 
 CJellybeanSystem::~CJellybeanSystem(void)
@@ -111,4 +118,13 @@ void CJellybeanSystem::WithdrawJellybeans(bool won)
 		noOfJellybeansDeposited = 0;
 	}
 	writeToFile();
+}
+
+
+/********************************************************************************
+Reset jellybeans
+********************************************************************************/
+void CJellybeanSystem::Reset()
+{
+	noOfJellybeans = 10;
 }

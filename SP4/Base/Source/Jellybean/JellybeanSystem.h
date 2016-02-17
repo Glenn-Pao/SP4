@@ -19,14 +19,15 @@ public:
 	};
 	// Read the file and store variables
 	void readFile();
-	// Write the file and store variables
-	void writeToFile();
 	// Deposit jellybeans to play minigame
 	bool DepositJellybeans(int depositAmount, DIFFICULTY difficulty);
 	// Withdraw jellybeans from minigame
 	void WithdrawJellybeans(bool won);
 	// Get number of jellybeans player have
 	int GetNumOfJellybeans(){ return noOfJellybeans; };
+
+	// Reset jellybeans
+	void Reset();
 
 private:
 	// Number of jellybeans player have

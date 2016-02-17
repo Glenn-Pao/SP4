@@ -131,6 +131,11 @@ public:
 		RIGHT,
 		NUM_OF_ANIMATION_DIRECTIONS
 	};
+
+	// Read the file and store variables
+	void readFile();
+	// Write the file and store variables
+	void writeToFile();
 private:
 	// Hero's information
 	Vector2 theHeroPosition;

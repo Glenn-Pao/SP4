@@ -6,6 +6,7 @@ using namespace std;
 #include "..\UsingLua.h"
 
 CDifficultySystem::CDifficultySystem(void)
+	: currentDifficultyUnlocked(EASY)
 {
 }
 
