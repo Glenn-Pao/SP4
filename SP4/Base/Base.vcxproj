@@ -16,8 +16,11 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
-    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
+    <ClCompile Include="Source\GameMechanics\Difficulty\DifficultySystem.cpp" />
+    <ClCompile Include="Source\GameMechanics\Jellybean\JellybeanSystem.cpp" />
+    <ClCompile Include="Source\GameMechanics\Objects\BondingBox.cpp" />
+    <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\HubState.cpp" />
     <ClCompile Include="Source\GameStateManagement\InstructionState.cpp" />
@@ -33,7 +36,6 @@
     <ClCompile Include="Source\Goodies.cpp" />
     <ClCompile Include="Source\GoodiesFactory.cpp" />
     <ClCompile Include="Source\Highscore.cpp" />
-    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -41,8 +43,6 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Minimap.cpp" />
-    <ClCompile Include="Source\Objects\BondingBox.cpp" />
-    <ClCompile Include="Source\Objects\Objects.cpp" />
     <ClCompile Include="Source\Occlusion\Occlusion.cpp" />
     <ClCompile Include="Source\PlayerInfo.cpp" />
     <ClCompile Include="Source\PlayInfo3PV.cpp" />
@@ -84,8 +84,11 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
-    <ClInclude Include="Source\Difficulty\DifficultySystem.h" />
     <ClInclude Include="Source\Enemy.h" />
+    <ClInclude Include="Source\GameMechanics\Difficulty\DifficultySystem.h" />
+    <ClInclude Include="Source\GameMechanics\Jellybean\JellybeanSystem.h" />
+    <ClInclude Include="Source\GameMechanics\Objects\BondingBox.h" />
+    <ClInclude Include="Source\GameMechanics\Objects\Objects.h" />
     <ClInclude Include="Source\GameStateManagement\GameState.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\HubState.h" />
@@ -103,7 +106,6 @@
     <ClInclude Include="Source\Goodies.h" />
     <ClInclude Include="Source\GoodiesFactory.h" />
     <ClInclude Include="Source\Highscore.h" />
-    <ClInclude Include="Source\Jellybean\JellybeanSystem.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -112,8 +114,6 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Minimap.h" />
-    <ClInclude Include="Source\Objects\BondingBox.h" />
-    <ClInclude Include="Source\Objects\Objects.h" />
     <ClInclude Include="Source\Occlusion\Occlusion.h" />
     <ClInclude Include="Source\PlayerInfo.h" />
     <ClInclude Include="Source\PlayInfo3PV.h" />

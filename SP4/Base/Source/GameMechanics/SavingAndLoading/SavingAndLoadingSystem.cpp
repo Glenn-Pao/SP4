@@ -1,45 +1,35 @@
-#include "DifficultySystem.h"
+#include "SavingAndLoadingSystem.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-#include "..\UsingLua.h"
+#include "..\..\UsingLua.h"
 
-CDifficultySystem::CDifficultySystem(void)
-	: currentDifficultyUnlocked(EASY)
+CSavingAndLoadingSystem::CSavingAndLoadingSystem(void)
 {
 }
 
-CDifficultySystem::~CDifficultySystem(void)
+CSavingAndLoadingSystem::~CSavingAndLoadingSystem(void)
 {
-}
-
-/********************************************************************************
-Unlocked difficulty
-********************************************************************************/
-void CDifficultySystem::UnlockedDifficulty()
-{
-	if (currentDifficultyUnlocked != NUM_OF_DIFFICULTIES)
-		currentDifficultyUnlocked++;
 }
 
 /********************************************************************************
 Read the file and store variables
 ********************************************************************************/
-void CDifficultySystem::readFile()
+void CSavingAndLoadingSystem::readFile()
 {
 	UseLuaFiles L;
-
+/*
 	L.ReadFiles("Lua//difficultyInfo.lua");
-	currentDifficultyUnlocked = L.DoLuaInt("currentDifficultyUnlocked");
+	currentDifficultyUnlocked = L.DoLuaInt("currentDifficultyUnlocked");*/
 }
 
 /********************************************************************************
 Write the file and store variables
 ********************************************************************************/
-void CDifficultySystem::writeToFile()
+void CSavingAndLoadingSystem::writeToFile()
 {
-	ofstream myfile("Lua//difficultyInfo.lua");
+	/*ofstream myfile("Lua//difficultyInfo.lua");
 	if (myfile.is_open())
 	{
 		myfile << "--[[" << endl;
@@ -47,5 +37,5 @@ void CDifficultySystem::writeToFile()
 		myfile << "]]--" << endl;
 		myfile << endl;
 		myfile << "currentDifficultyUnlocked = " << currentDifficultyUnlocked << endl;
-	}
+	}*/
 }

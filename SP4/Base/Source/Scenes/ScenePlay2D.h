@@ -7,9 +7,9 @@
 #include "Vector2.h"
 #include "..\PlayerInfo.h"
 #include "..\Enemy.h"
-#include "..\Jellybean\JellybeanSystem.h"
+#include "..\GameMechanics\Jellybean\JellybeanSystem.h"
 #include "..\AI\Waypoints.h"
-#include "..\Objects\Objects.h"
+#include "..\GameMechanics\Objects\Objects.h"
 
 class CScenePlay2D : public Scene
 {

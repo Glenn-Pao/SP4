@@ -16,18 +16,6 @@
     <ClCompile Include="Source\AI\ProbabilitySystem.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Objects\BondingBox.cpp">
-      <Filter>Game Mechanics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Difficulty\DifficultySystem.cpp">
-      <Filter>Game Mechanics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Jellybean\JellybeanSystem.cpp">
-      <Filter>Game Mechanics</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Objects\Objects.cpp">
-      <Filter>Game Mechanics</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Highscore.cpp">
       <Filter>Highscore</Filter>
     </ClCompile>
@@ -199,6 +187,18 @@
     <ClCompile Include="Source\GameStateManagement\LoadGameSelect.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Jellybean\JellybeanSystem.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Difficulty\DifficultySystem.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\BondingBox.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp">
+      <Filter>Game Mechanics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -215,18 +215,6 @@
     </ClInclude>
     <ClInclude Include="Source\AI\ProbabilitySystem.h">
       <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Objects\BondingBox.h">
-      <Filter>Game Mechanics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Difficulty\DifficultySystem.h">
-      <Filter>Game Mechanics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jellybean\JellybeanSystem.h">
-      <Filter>Game Mechanics</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Objects\Objects.h">
-      <Filter>Game Mechanics</Filter>
     </ClInclude>
     <ClInclude Include="Source\Highscore.h">
       <Filter>Highscore</Filter>
@@ -413,6 +401,18 @@
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\LoadGameSelect.h">
       <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Jellybean\JellybeanSystem.h">
+      <Filter>Game Mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Difficulty\DifficultySystem.h">
+      <Filter>Game Mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\BondingBox.h">
+      <Filter>Game Mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Objects.h">
+      <Filter>Game Mechanics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

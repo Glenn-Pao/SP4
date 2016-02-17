@@ -3,7 +3,7 @@
 using namespace std;
 #include "JellybeanSystem.h"
 
-#include "..\UsingLua.h"
+#include "..\..\UsingLua.h"
 
 CJellybeanSystem::CJellybeanSystem(void)
 	: noOfJellybeans(10)
