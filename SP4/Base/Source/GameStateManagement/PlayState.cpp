@@ -2,7 +2,8 @@
 using namespace std;
 
 #include "GameStateManager.h"
-#include "HubState.h"
+//#include "HubState.h"
+#include "TutorialGame1.h"
 #include "MenuState.h"
 #include "PlayState.h"
 
@@ -108,7 +109,7 @@ void CPlayState::HandleEvents(CGameStateManager* theGSM, const unsigned char key
 	{
 		if (key == 32)
 		{
-			theGSM->ChangeState(CHubState::Instance());
+			theGSM->ChangeState(CTutorialGame1::Instance());
 		}
 	}
 }
@@ -148,7 +149,7 @@ void CPlayState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		}
 		break;
 	case CScenePlay::EXIT:
-		theGSM->ChangeState(CHubState::Instance());
+		theGSM->ChangeState(CTutorialGame1::Instance());
 		break;
 	}
 }
