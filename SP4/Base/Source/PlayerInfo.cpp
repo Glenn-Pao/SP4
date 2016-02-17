@@ -12,7 +12,26 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
 {
-	readFile();
+	UseLuaFiles L;
+
+	//Read a value from the lua text file
+	L.ReadFiles("Lua//playerInfo.lua");
+
+	// movement speed
+	movementSpeed = L.DoLuaFloat("movementSpeed");
+
+	// animation counter
+	heroAnimationCounter = L.DoLuaFloat("animationCounter");
+
+	// animation direction
+	heroAnimationDirection = L.DoLuaInt("animationDirection");
+
+	// animation speed
+	animationSpeed = L.DoLuaFloat("animationSpeed");
+
+	// no. of animation counter moving
+	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
+	
 	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
@@ -403,6 +422,38 @@ int CPlayerInfo::CheckCollision(CMap* m_cMap)
 		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 11))
 	{
 		return 11;
+	}
+
+	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 33) ||
+		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 33) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 33) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 33))
+	{
+		return 33;
+	}
+
+	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 34) ||
+		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 34) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 34) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 34))
+	{
+		return 34;
+	}
+
+	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 37) ||
+		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 37) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 37) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 37))
+	{
+		return 37;
+	}
+
+	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 38) ||
+		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 38) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 38) ||
+		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 38))
+	{
+		return 38;
 	}
 
 	return 0;
