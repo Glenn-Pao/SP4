@@ -2,7 +2,7 @@
 
 #include "GameState.h"
 #include "..\Scenes\SceneManager.h"
-#include "..\Scenes\ScenePlay2D.h"
+#include "..\Scenes\ScenePlay.h"
 #include "timer.h"
 
 //Include GLEW
@@ -44,7 +44,7 @@ private:
 	static CPlayState thePlayState;
 	int counter;
 
-	short stateID = 2;
+	short stateID = 2;				//ID state to play the appropriate sound
 
 	//Declare variables to store the last and current mouse position
 	double mouse_last_x, mouse_last_y, mouse_diff_x, mouse_diff_y;
@@ -56,6 +56,6 @@ private:
 	#if TYPE_OF_VIEW == 3
 		CSceneManager *scene;	// Use this for 3D gameplay
 	#else
-		CScenePlay2D *scene;	// Use this for 2D gameplay
+		CScenePlay *scene;	// Use this for 2D gameplay
 	#endif
 };

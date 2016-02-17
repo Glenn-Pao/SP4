@@ -3,7 +3,7 @@
 //Include GLFW
 #include <GLFW/glfw3.h>
 #include <vector>
-#include "..\Sound.h"
+#include "../Sound.h"
 using namespace std;
 
 class CGameState;
