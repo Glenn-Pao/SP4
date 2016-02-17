@@ -142,12 +142,12 @@ void CGameStateManager::UpdateSound(const double m_dElapsedTime)
 		//if it is not play state
 		if (i != 2)
 		{
-			sound->PlayMainMenu();
+			//sound->PlayMainMenu();
 		}
 		else
 		{
 			//stop main menu music
-			sound->StopMainMenu();
+			//sound->StopMainMenu();
 		}
 	}
 }
