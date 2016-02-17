@@ -35,10 +35,16 @@ void CGameStateManager::Cleanup()
 		StackOfStates.back()->Cleanup();
 		StackOfStates.pop_back();
 	}
-	if (sound)
+
+	//check that the stack is empty then drop the sound engine
+	if (StackOfStates.empty())
 	{
-		delete sound;
-		sound = NULL;
+		if (sound)
+		{
+			sound->Exit();
+			delete sound;
+			sound = NULL;
+		}
 	}
 
 	// switch back to windowed mode so other 

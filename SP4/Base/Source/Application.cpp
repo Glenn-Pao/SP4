@@ -292,8 +292,7 @@ bool Application::GetKeyboardUpdate()
  Constructor
  ********************************************************************************/
 Application::Application()
-	: scene(NULL)
-	, theGSM(NULL)
+	: theGSM(NULL)
 {
 }
 

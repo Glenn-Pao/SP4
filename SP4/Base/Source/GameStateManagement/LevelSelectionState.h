@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CLevelSelectionState theLevelSelectionState;
-	short stateID = 5;
+	short stateID = 4;
 	CSceneLevelSelection *scene;
 };

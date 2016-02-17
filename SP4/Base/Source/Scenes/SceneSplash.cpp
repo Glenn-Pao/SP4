@@ -42,7 +42,7 @@ void CSceneSplash::Init(int level)
 	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND]->textureID = LoadTGA("Image//Scenes/Splash.tga");
 
 	// Create the meshes
-	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
 	}
@@ -151,7 +151,7 @@ Exit this scene
 void CSceneSplash::Exit()
 {
 	// Cleanup VBO
-	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		if (meshList[i])
 			delete meshList[i];

@@ -148,7 +148,8 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		scene->choice = CScenePause::QUIT;
 		if (button_Left == true)
 		{
-			theGSM->Cleanup();
+			//theGSM->Cleanup();
+			theGSM->PopState();
 			theGSM->ChangeState(CMenuState::Instance());
 		}
 	}

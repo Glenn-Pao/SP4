@@ -27,7 +27,7 @@ void CSceneManager2D::Init(int level)
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	// Create the meshes
-	for(int i = 0; i < NUM_GEOMETRY; ++i)
+	for(int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
 	}

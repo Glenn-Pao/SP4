@@ -17,7 +17,7 @@
 class Application
 {
 public:
-	static Application& GetInstance()
+	static Application &GetInstance()
 	{
 		static Application app;
 		return app;
@@ -48,9 +48,9 @@ private:
 
 	// The handler for the scene
 	#if TYPE_OF_VIEW == 3
-		CSceneManager *scene;	// Use this for 3D gameplay
+		//CSceneManager *scene;	// Use this for 3D gameplay
 	#else
-		CSceneManager2D *scene;	// Use this for 2D gameplay
+		//CSceneManager2D *scene;	// Use this for 2D gameplay
 	#endif
 
 	// Game State Management

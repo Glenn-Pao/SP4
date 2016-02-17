@@ -224,7 +224,7 @@ Initialise the meshes. This is a private function for use in this class only
 void CScenePlay2D::InitMeshes()
 {
 	// Create the meshes
-	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
 	}
