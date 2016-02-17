@@ -3,7 +3,7 @@
 #include "gamestate.h"
 #include "..\Scenes\SceneLoadGame.h"
 
-class CLoadGameState : public CGameState
+class CLoadGameSelect : public CGameState
 {
 public:
 	void Init();
@@ -22,15 +22,15 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 	short GetStateID() { return stateID; };
-	static CLoadGameState* Instance() {
-		return &theLoadGameState;
+	static CLoadGameSelect* Instance() {
+		return &theLoadGameSelectState;
 	}
 
 protected:
-	CLoadGameState() { }
+	CLoadGameSelect() { }
 
 private:
-	static CLoadGameState theLoadGameState;
-	short stateID = 5;
+	static CLoadGameSelect theLoadGameSelectState;
+	short stateID = 4;
 	CSceneLoadGame *scene;
 };

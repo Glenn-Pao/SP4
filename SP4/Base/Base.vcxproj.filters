@@ -130,12 +130,6 @@
     <ClCompile Include="Source\GameStateManagement\InstructionState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\LevelSelectionState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\LoadGameState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\LoseState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
@@ -172,9 +166,6 @@
     <ClCompile Include="Source\Scenes\SceneInstruction.cpp">
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneLevelSelection.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneLoadGame.cpp">
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
@@ -204,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneWin.cpp">
       <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\LoadGameSelect.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -351,12 +345,6 @@
     <ClInclude Include="Source\GameStateManagement\InstructionState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\LevelSelectionState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\LoadGameState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\LoseState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
@@ -393,9 +381,6 @@
     <ClInclude Include="Source\Scenes\SceneInstruction.h">
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneLevelSelection.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\SceneLoadGame.h">
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
@@ -425,6 +410,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneWin.h">
       <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\LoadGameSelect.h">
+      <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

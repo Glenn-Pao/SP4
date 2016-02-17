@@ -1,5 +1,5 @@
-#ifndef SCENE_LOADGAME_H
-#define SCENE_LOADGAME_H
+#ifndef SCENE_LOAD_GAME_H
+#define SCENE_LOAD_GAME_H
 
 #include "SceneManager2D.h"
 
@@ -9,7 +9,6 @@ class CSceneLoadGame : public Scene
 	{
 		GRAY_QUAD,
 		BLACK_QUAD,
-		BLACK_SQUARE,
 		NUM_GEOMETRY,
 	};
 
@@ -23,18 +22,19 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	//enum CHOICE
-	//{
-	//	NONE,
-	//	BACK,
-	//	NUM_CHOICES,
-	//};
+	enum CHOICE
+	{
+		NONE,
+		BACK,
+		LEVEL_ONE,
+		LEVEL_TWO,
+		LEVEL_THREE,
+		LEVEL_FOUR,
+		LEVEL_FIVE,
+		NUM_CHOICES,
+	};
 
-	/*int choice;
-
-	bool fpsSelected;
-	bool fullscreenSelected;
-	bool coloredSelected;*/
+	int choice;
 
 private:
 	unsigned m_vertexArrayID;

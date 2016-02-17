@@ -4,30 +4,30 @@ using namespace std;
 #include "GameStateManager.h"
 #include "gamestate.h"
 #include "menustate.h"
-#include "LevelSelectionState.h"
+#include "LoadGameSelect.h"
 #include "playstate.h"
 
-CLevelSelectionState CLevelSelectionState::theLevelSelectionState;
+CLoadGameSelect CLoadGameSelect::theLoadGameSelectState;
 
-void CLevelSelectionState::Init()
+void CLoadGameSelect::Init()
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
 #endif
-	scene = new CSceneLevelSelection(800, 600);
+	scene = new CSceneLoadGame(800, 600);
 	scene->Init(0);
 }
 
-void CLevelSelectionState::Init(const int width, const int height, int level)
+void CLoadGameSelect::Init(const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Init\n" << endl;
 #endif
-	scene = new CSceneLevelSelection(800, 600);
+	scene = new CSceneLoadGame(800, 600);
 	scene->Init(level);
 }
 
-void CLevelSelectionState::Cleanup()
+void CLoadGameSelect::Cleanup()
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Cleanup\n" << endl;
@@ -38,21 +38,21 @@ void CLevelSelectionState::Cleanup()
 	scene = NULL;
 }
 
-void CLevelSelectionState::Pause()
+void CLoadGameSelect::Pause()
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Pause\n" << endl;
 #endif
 }
 
-void CLevelSelectionState::Resume()
+void CLoadGameSelect::Resume()
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Resume\n" << endl;
 #endif
 }
 
-void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM)
+void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	/*int m_iUserChoice = -1;
@@ -78,7 +78,7 @@ void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM)
 #endif
 }
 
-void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
+void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
 {
 #if GSM_DEBUG_MODE
 	/*int m_iUserChoice = -1;
@@ -111,7 +111,7 @@ void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const unsigne
 	}
 }
 
-void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
+void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
 							const int button_Left, const int button_Middle, const int button_Right,
 							const int width, const int height)
 {
@@ -141,7 +141,7 @@ void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const double 
 	if (width * 0.05 <= mouse_x && mouse_x <= width * 0.305 &&
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
-		scene->choice = CSceneLevelSelection::LEVEL_ONE;
+		scene->choice = CSceneLoadGame::LEVEL_ONE;
 		if (button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
@@ -153,55 +153,55 @@ void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const double 
 	else if (width * 0.375 <= mouse_x && mouse_x <= width * 0.63 &&
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
-		scene->choice = CSceneLevelSelection::LEVEL_TWO;
+		scene->choice = CSceneLoadGame::LEVEL_TWO;
 		if (button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
-			theGSM->ChangeState(CPlayState::Instance(), 2);
+			//theGSM->ChangeState(CPlayState::Instance(), 2);
 		}
 	}
 	// Level 3
 	else if (width * 0.7 <= mouse_x && mouse_x <= width * 0.955 &&
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
-		scene->choice = CSceneLevelSelection::LEVEL_THREE;
+		scene->choice = CSceneLoadGame::LEVEL_THREE;
 		if (button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
-			theGSM->ChangeState(CPlayState::Instance(), 3);
+			//theGSM->ChangeState(CPlayState::Instance(), 3);
 		}
 	}
 	// Level 4
 	else if (width * 0.2075 <= mouse_x && mouse_x <= width * 0.4675 &&
 		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
 	{
-		scene->choice = CSceneLevelSelection::LEVEL_FOUR;
+		scene->choice = CSceneLoadGame::LEVEL_FOUR;
 		if (button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
-			theGSM->ChangeState(CPlayState::Instance(), 4);
+			//theGSM->ChangeState(CPlayState::Instance(), 4);
 		}
 	}
 	// Level 5
 	else if (width * 0.5375 <= mouse_x && mouse_x <= width * 0.7925 &&
 		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
 	{
-		scene->choice = CSceneLevelSelection::LEVEL_FIVE;
+		scene->choice = CSceneLoadGame::LEVEL_FIVE;
 		if (button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
-			theGSM->ChangeState(CPlayState::Instance(), 5);
+			//theGSM->ChangeState(CPlayState::Instance(), 5);
 		}
 	}
 	// Back
 	else if (0 <= mouse_x && mouse_x <= width * 0.2 &&
 		height * 0.9 <= mouse_y && mouse_y <= height)
 	{
-		scene->choice = CSceneLevelSelection::BACK;
+		scene->choice = CSceneLoadGame::BACK;
 		if (button_Left == true)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
@@ -213,7 +213,7 @@ void CLevelSelectionState::HandleEvents(CGameStateManager* theGSM, const double 
 	}
 }
 
-void CLevelSelectionState::Update(CGameStateManager* theGSM)
+void CLoadGameSelect::Update(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Update\n" << endl;
@@ -222,13 +222,13 @@ void CLevelSelectionState::Update(CGameStateManager* theGSM)
 	scene->Update(0.16667);
 }
 
-void CLevelSelectionState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
+void CLoadGameSelect::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
 	// Update the scene
 	scene->Update(m_dElapsedTime);
 }
 
-void CLevelSelectionState::Draw(CGameStateManager* theGSM)
+void CLoadGameSelect::Draw(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	cout << "CInstructionState::Draw\n" << endl;

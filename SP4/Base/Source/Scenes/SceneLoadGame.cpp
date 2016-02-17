@@ -9,12 +9,6 @@
 #include <sstream>
 #include "..\Strategy_Kill.h"
 
-extern "C" {
-#include "..\Lua\lua.h"
-#include "..\Lua\lualib.h"
-#include "..\Lua\lauxlib.h"
-}
-
 CSceneLoadGame::CSceneLoadGame()
 {
 }
@@ -37,7 +31,7 @@ void  CSceneLoadGame::Init(int level)
 	delete sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND];
 
 	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND] = MeshBuilder::Generate2DMesh("GEO_BACKGROUND", Color(1, 1, 1), 0, 0, 800, 600);
-	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND]->textureID = LoadTGA("Image//Scenes/Options.tga");
+	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND]->textureID = LoadTGA("Image//Scenes/Level_selection.tga");
 
 
 	// Create the meshes
@@ -49,54 +43,21 @@ void  CSceneLoadGame::Init(int level)
 	// Load the ground mesh and texture
 	meshList[GRAY_QUAD] = MeshBuilder::Generate2DMesh("GRAY_QUAD", Color(0.5, 0.5, 0.5), 0, 0, 800, 600);
 	meshList[BLACK_QUAD] = MeshBuilder::Generate2DMesh("BLACK_QUAD", Color(0, 0, 0), 0, 0, 205, 155);
-	meshList[BLACK_SQUARE] = MeshBuilder::Generate2DMesh("BLACK_SQUARE", Color(0, 0, 0), 0, 0, 35, 30);
 
-	//choice = NONE;
-
-	//lua_State *L = lua_open();
-
-	////Read a value from the lua text file
-	//luaL_openlibs(L);
-
-	//if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
-	//{
-	//	printf("error: %s", lua_tostring(L, -1));
-	//}
-
-	//// FPS
-	//lua_getglobal(L, "showFPS");
-	//if (!lua_isnumber(L, -1)) {
-	//	printf("`showFPS' should be a number\n");
-	//}
-	//fpsSelected = (int)lua_tointeger(L, -1);
-
-	//// Fullscreen
-	//lua_getglobal(L, "fullscreen");
-	//if (!lua_isnumber(L, -1)) {
-	//	printf("`fullscreen' should be a number\n");
-	//}
-	//fullscreenSelected = (int)lua_tointeger(L, -1);
-
-	//lua_getglobal(L, "colored");
-	//if (!lua_isnumber(L, -1)) {
-	//	printf("`colored' should be a number\n");
-	//}
-	//coloredSelected = (int)lua_tointeger(L, -1);
-
-	//lua_close(L);
+	choice = NONE;
 }
 
 void   CSceneLoadGame::Update(double dt)
 {
 	/*
 	if (Application::IsKeyPressed('1'))
-		glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2'))
-		glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	if (Application::IsKeyPressed('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	*/
 
 	sceneManager2D.Update(dt);
@@ -109,30 +70,40 @@ void   CSceneLoadGame::Render()
 {
 	sceneManager2D.Render();
 
-	//// Gray Quad
-	//sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
+	// Gray Quad
+	sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
 
-	//// Black Quad
-	//switch (choice)
-	//{
-	//case BACK:
-	//	// BACK
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, -50);
-	//	break;
-	//}
+	// Black Quad
+	switch (choice)
+	{
+	case BACK:
+		// BACK
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, -50);
+		break;
+	case LEVEL_ONE:
+		// 1
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 40, 300);
+		break;
+	case LEVEL_TWO:
+		// 2
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 300, 300);
+		break;
+	case LEVEL_THREE:
+		// 3
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 560, 300);
+		break;
+	case LEVEL_FOUR:
+		// 4
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 170, 120);
+		break;
+	case LEVEL_FIVE:
+		// 5
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 430, 120);
+		break;
+	}
 
 	// Render the background image
 	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
-
-	//// Fps
-	//if (fpsSelected)
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_SQUARE], false, 1, 1, 429, 428);
-	//// Fullscreen
-	//if (fullscreenSelected)
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_SQUARE], false, 1, 1, 429, 333);
-	//// Colored
-	//if (coloredSelected)
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_SQUARE], false, 1, 1, 429, 238);
 }
 
 /********************************************************************************
@@ -147,13 +118,4 @@ void   CSceneLoadGame::Exit()
 			delete meshList[i];
 	}
 	sceneManager2D.Exit();
-
-	//std::ofstream myfile("Lua//Options.lua");
-	//int i = 0;
-	//if (myfile.is_open())
-	//{
-	//	myfile << "showFPS = " << fpsSelected << endl;
-	//	myfile << "fullscreen = " << fullscreenSelected << endl;
-	//	myfile << "colored = " << coloredSelected << endl;
-	//}
 }

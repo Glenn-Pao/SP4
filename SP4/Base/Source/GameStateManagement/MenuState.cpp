@@ -3,7 +3,7 @@ using namespace std;
 
 #include "GameStateManager.h"
 #include "menustate.h"
-#include "LevelSelectionstate.h"
+#include "LoadGameSelect.h"
 #include "playstate.h"
 #include "InstructionState.h"
 #include "RankingsState.h"
@@ -142,7 +142,7 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		scene->choice = CSceneMenu::PLAY;
 		if (button_Left == true)
 		{
-			theGSM->ChangeState(CLevelSelectionState::Instance());
+			theGSM->ChangeState(CLoadGameSelect::Instance());
 		}
 	}
 	// Time-Limit
