@@ -96,7 +96,7 @@ void CSceneHub::Init(int level)
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
-	m_cMap->LoadMap("Image//Hub Map.csv");
+	m_cMap->LoadMap("Image//Maps/Hub Map.csv");
 
 	//initialise the waypoints
 	waypoints = new CWaypoints();

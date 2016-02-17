@@ -100,7 +100,7 @@ void CScenePlay2D::Init(int level)
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, sceneManager2D.m_window_height / tileSize, sceneManager2D.m_window_width / tileSize, 29 * tileSize, 64 * tileSize, tileSize);
-	m_cMap->LoadMap("Image//MapDesign.csv");
+	m_cMap->LoadMap("Image//Maps/MapDesign.csv");
 
 	//initialise the waypoints
 	waypoints = new CWaypoints();
