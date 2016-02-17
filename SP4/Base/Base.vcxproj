@@ -34,6 +34,10 @@
     <ClCompile Include="Source\GameStateManagement\PlayState.cpp" />
     <ClCompile Include="Source\GameStateManagement\RankingsState.cpp" />
     <ClCompile Include="Source\GameStateManagement\SplashState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\TutorialGame1.cpp" />
+    <ClCompile Include="Source\GameStateManagement\TutorialGame2.cpp" />
+    <ClCompile Include="Source\GameStateManagement\TutorialGame3.cpp" />
+    <ClCompile Include="Source\GameStateManagement\TutorialGame4.cpp" />
     <ClCompile Include="Source\GameStateManagement\WinState.cpp" />
     <ClCompile Include="Source\Goodies.cpp" />
     <ClCompile Include="Source\GoodiesFactory.cpp" />
@@ -68,6 +72,10 @@
     <ClCompile Include="Source\Scenes\ScenePlay2D.cpp" />
     <ClCompile Include="Source\Scenes\SceneRankings.cpp" />
     <ClCompile Include="Source\Scenes\SceneSplash.cpp" />
+    <ClCompile Include="Source\Scenes\SceneTutorialGame1.cpp" />
+    <ClCompile Include="Source\Scenes\SceneTutorialGame2.cpp" />
+    <ClCompile Include="Source\Scenes\SceneTutorialGame3.cpp" />
+    <ClCompile Include="Source\Scenes\SceneTutorialGame4.cpp" />
     <ClCompile Include="Source\Scenes\SceneWin.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
@@ -105,6 +113,10 @@
     <ClInclude Include="Source\GameStateManagement\PlayState.h" />
     <ClInclude Include="Source\GameStateManagement\RankingsState.h" />
     <ClInclude Include="Source\GameStateManagement\SplashState.h" />
+    <ClInclude Include="Source\GameStateManagement\TutorialGame1.h" />
+    <ClInclude Include="Source\GameStateManagement\TutorialGame2.h" />
+    <ClInclude Include="Source\GameStateManagement\TutorialGame3.h" />
+    <ClInclude Include="Source\GameStateManagement\TutorialGame4.h" />
     <ClInclude Include="Source\GameStateManagement\WinState.h" />
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Goodies.h" />
@@ -142,6 +154,10 @@
     <ClInclude Include="Source\Scenes\ScenePlay2D.h" />
     <ClInclude Include="Source\Scenes\SceneRankings.h" />
     <ClInclude Include="Source\Scenes\SceneSplash.h" />
+    <ClInclude Include="Source\Scenes\SceneTutorialGame1.h" />
+    <ClInclude Include="Source\Scenes\SceneTutorialGame2.h" />
+    <ClInclude Include="Source\Scenes\SceneTutorialGame3.h" />
+    <ClInclude Include="Source\Scenes\SceneTutorialGame4.h" />
     <ClInclude Include="Source\Scenes\SceneWin.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\Sound.h" />

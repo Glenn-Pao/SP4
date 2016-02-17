@@ -187,28 +187,6 @@ void CSound::StopStress()
 		Stress->setIsPaused(true);
 	}
 }
-//play the Stress bgm
-void CSound::PlayStress()
-{
-	//this only works if there was a fade out previously.
-	FadeIn();
-
-	//after initialising, play the song
-	if (Stress->getIsPaused())
-	{
-		Stress->setIsPaused(false);
-	}
-}
-//temporarily stop playing the Stress music. the soundtrack will be paused instead of dropped altogether
-void CSound::StopStress()
-{
-	FadeOut();
-	if (volume < 0.f)
-	{
-		volume = 0.f;
-		Stress->setIsPaused(true);
-	}
-}
 //play the Lobby bgm
 void CSound::PlayLobby()
 {
