@@ -9,7 +9,7 @@
 #include "..\PlayerInfo.h"
 #include "..\Enemy.h"
 #include "..\Jellybean\JellybeanSystem.h"
-#include "..\Waypoints.h"
+#include "..\AI\Waypoints.h"
 
 // Goodies and Goodies Factory
 #include "..\GoodiesFactory.h"

@@ -151,9 +151,6 @@
     <ClCompile Include="Source\Sound.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Waypoints.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Strategy.cpp">
       <Filter>2D</Filter>
     </ClCompile>
@@ -180,6 +177,12 @@
     </ClCompile>
     <ClCompile Include="Source\Objects\Objects.cpp">
       <Filter>Game Mechanics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\Waypoints.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AI\ProbabilitySystem.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,9 +351,6 @@
     <ClInclude Include="Source\Sound.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Waypoints.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Strategy.h">
       <Filter>2D</Filter>
     </ClInclude>
@@ -377,6 +377,12 @@
     </ClInclude>
     <ClInclude Include="Source\Objects\Objects.h">
       <Filter>Game Mechanics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\Waypoints.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\ProbabilitySystem.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

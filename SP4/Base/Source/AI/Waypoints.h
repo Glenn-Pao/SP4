@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Vector3.h"
-#include "Map.h"
+#include "..\Map.h"
 
 /* 
 A class to contain the waypoints to be used on the various maps later on.
