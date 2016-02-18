@@ -23,8 +23,8 @@ void CHubState::Init(CGameStateManager* theGSM)
 	scene = new CSceneHub(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
 void CHubState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -41,8 +41,8 @@ void CHubState::Init(CGameStateManager* theGSM, const int width, const int heigh
 	scene = new CSceneHub(width, height);
 #endif
 	scene->Init(level);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
 void CHubState::Cleanup()
@@ -143,6 +143,41 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 
 		theGSM->PushState(CPauseState::Instance());
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+	}
+	if (key == 'f')
+	{
+		if (scene->loadGame1)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CMenuState::Instance());
+		}
+		if (scene->loadGame2)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CMenuState::Instance());
+		}
+		if (scene->loadGame3)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CMenuState::Instance());
+		}
+		if (scene->loadGame4)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CMenuState::Instance());
+		}
 	}
 #endif
 }

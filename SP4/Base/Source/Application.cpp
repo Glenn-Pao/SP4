@@ -276,6 +276,10 @@ bool Application::GetKeyboardUpdate()
 	{
 		theGSM->HandleEvents('p');
 	}
+	if (IsKeyPressed('F'))
+	{
+		theGSM->HandleEvents('f');
+	}
     return true;
 }
 

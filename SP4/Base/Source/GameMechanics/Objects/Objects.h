@@ -13,6 +13,7 @@ class CObjects
 {
 private:
 	Vector3 position;		//the position of the entity
+	Vector3 scale;
 	bool interactable;		//whether this entity can be interacted with
 	float velocity;			//the velocity at which this entity is moving
 	Mesh* m_cModelMesh;	//the sprite of the entity
@@ -52,5 +53,8 @@ public:
 	//set and get the dialogue of entity
 	void setDialogue(std::string);
 	std::string getDialogue(void);
+
+	void setScale(Vector3);
+	Vector3 getScale();
 };
 

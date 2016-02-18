@@ -11,11 +11,11 @@ CObjects::CObjects()
 }
 CObjects::~CObjects()
 {
-	if (m_cModelMesh)
+	/*if (m_cModelMesh)
 	{
 		delete m_cModelMesh;
 		m_cModelMesh = NULL;
-	}
+	}*/
 }
 //initialise the entity's items
 void CObjects::Init(Vector3 position, bool interactable, float velocity, std::string dialogue, Mesh* m_cModelMesh)
@@ -89,4 +89,13 @@ void CObjects::setDialogue(std::string dialogue)
 std::string CObjects::getDialogue(void)
 {
 	return dialogue;
+}
+void CObjects::setScale(Vector3 scale)
+{
+	this->scale = scale;
+}
+
+Vector3 CObjects::getScale()
+{
+	return scale;
 }

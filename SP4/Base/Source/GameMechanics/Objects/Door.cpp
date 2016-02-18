@@ -4,16 +4,21 @@
 CDoor::CDoor()
 {
 	this->id = -1;
-	TposX = -1;
-	TposY = -1;
-	isReached = false;
 }
 
-CDoor::CDoor(int id)
+
+CDoor::CDoor(int id, Vector3 pos, Vector3 scale, Mesh* mesh)
 {
 	this->id = id;
-	
-	isReached = false;
+
+	this->setPosition(pos);
+	this->setScale(scale);
+	this->setMesh(mesh);
+
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	this->CollideBox = new CBoundingBox(topleft, bottomright);
+
 }
 
 CDoor::~CDoor()
@@ -31,22 +36,7 @@ int CDoor::getId()
 	return id;
 }
 
-void CDoor::setReached(bool isReached)
+CBoundingBox* CDoor::getCollideBox()
 {
-	this->isReached = isReached;
-}
-
-bool CDoor::getIfReached()
-{
-	return isReached;
-}
-
-int CDoor::getTilemapPosX()
-{
-	return TposX;
-}
-
-int CDoor::getTilemapPosY()
-{
-	return TposY;
+	return CollideBox;
 }

@@ -6,7 +6,7 @@ using namespace std;
 #include "..\..\Menu Flow\MenuState.h"
 #include "LoadGameSelect.h"
 #include "..\..\Menu Flow\playstate.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame1.h"
+#include "..\..\Game Flow\Lobby\HubState.h"
 
 CLoadGameSelect CLoadGameSelect::theLoadGameSelectState;
 
@@ -148,7 +148,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
 			theGSM->saveAndLoadsys->LoadFile(0);
-			theGSM->ChangeState(CTutorialGame1::Instance(), 1);
+			theGSM->ChangeState(CHubState::Instance(), 1);
 		}
 	}
 	// Level 2

@@ -232,6 +232,9 @@
     <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.cpp">
       <Filter>Scenes\Game Flow\Game Lobby</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Door.cpp">
+      <Filter>Game Mechanics\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -476,6 +479,9 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.h">
       <Filter>Scenes\Game Flow\Game Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Door.h">
+      <Filter>Game Mechanics\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

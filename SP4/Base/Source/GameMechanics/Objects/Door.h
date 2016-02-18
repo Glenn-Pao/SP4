@@ -1,17 +1,16 @@
 #pragma once
 #include "Objects.h"
+#include "BoundingBox.h"
 
 class CDoor : public CObjects
 {
 private:
+	CBoundingBox* CollideBox;
 	int id;
-	//Bool that triggers if player has reached the door
-	bool isReached;
 
-	int TposX, TposY;
 public:
 	CDoor();
-	CDoor(int);
+	CDoor(int id, Vector3 pos, Vector3 scale, Mesh* mesh);
 	~CDoor();
 
 	void setId(int);
@@ -20,6 +19,5 @@ public:
 	void setReached(bool);
 	bool getIfReached();
 
-	int getTilemapPosX();
-	int getTilemapPosY();
+	CBoundingBox* getCollideBox();
 };

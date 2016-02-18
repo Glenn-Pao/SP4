@@ -10,63 +10,24 @@
 #include "..\..\Base\Source\Strategy_Kill.h"
 
 extern "C" {
-
 #include "..\..\..\Lua\lua.h"
 #include "..\..\..\Lua\lualib.h"
 #include "..\..\..\Lua\lauxlib.h"
 }
 
 CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
-	: m_cMinimap(NULL)
-	, m_cMap(NULL)
-	, tileOffset_x(0)
-	, tileOffset_y(0)
-	, m_cRearMap(NULL)
-	, rearWallOffset_x(0)
-	, rearWallOffset_y(0)
-	, rearWallTileOffset_x(0)
-	, rearWallTileOffset_y(0)
-	, rearWallFineOffset_x(0)
-	, rearWallFineOffset_y(0)
-	, JellybeanSystem(NULL)
-	, theHero(NULL)
-	, waypoints(NULL)
 {
-	sceneManager2D.m_window_width = m_window_width;
-	sceneManager2D.m_window_height = m_window_height;
 }
 
 CSceneHub::~CSceneHub()
 {
-	//for (int i = 0; i<10; i++)
-	//{
-	//	//delete theArrayOfGoodies[i];
-	//}
-	//delete theArrayOfGoodies;
-	for (int i = 0; i < theEnemies.size(); i++)
+	for (int i = 0; i < theDoor.size(); i++)
 	{
-		if (theEnemies[i])
+		if (theDoor[i])
 		{
-			delete theEnemies[i];
-			theEnemies[i] = NULL;
+			delete theDoor[i];
+			theDoor[i] = NULL;
 		}
-	}
-
-	if (m_cMap)
-	{
-		delete m_cMap;
-		m_cMap = NULL;
-	}
-
-	if (m_cMinimap)
-	{
-		delete m_cMinimap;
-		m_cMinimap = NULL;
-	}
-	if (waypoints)
-	{
-		delete waypoints;
-		waypoints = NULL;
 	}
 }
 
@@ -103,6 +64,9 @@ void CSceneHub::Init(int level)
 	waypoints = new CWaypoints();
 	waypoints->LoadWaypoints(m_cMap);
 	temp = waypoints->getWaypointsVector();
+
+	
+	loadGame1 = loadGame2 = loadGame3 = loadGame4 = false;
 
 	// Initialise and load the REAR tile map
 	/*m_cRearMap = new CMap();
@@ -153,6 +117,13 @@ void CSceneHub::Init(int level)
 	theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1, 1, 1), 0, 0, 1, 1));
 	theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//tile4_treasurechest.tga"));
 	}*/
+
+
+	theDoor.push_back(new CDoor(1, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(2, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(3, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(4, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	
 }
 
 void CSceneHub::PreInit()
@@ -291,6 +262,35 @@ void CSceneHub::Update(double dt)
 		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
 		theEnemies[i]->Update(m_cMap);
 	}
+
+	if (theDoor[0]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	{
+		if (theDoor[0]->getId() == 1)
+		{
+			loadGame1 = true;
+		}
+	}
+	else if (theDoor[1]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	{
+		if (theDoor[1]->getId() == 2)
+		{
+			loadGame2 = true;
+		}
+	}
+	else if (theDoor[2]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	{
+		if (theDoor[2]->getId() == 3)
+		{
+			loadGame3 = true;
+		}
+	}
+	else if (theDoor[3]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	{
+		if (theDoor[3]->getId() == 4)
+		{
+			loadGame4 = true;
+		}
+	}
 }
 
 /********************************************************************************
@@ -336,6 +336,12 @@ void CSceneHub::Render()
 	//RenderWaypoints();
 	// Render the goodies
 	//RenderGoodies();
+
+	for (int i = 0; i < theDoor.size(); i++)
+	{
+		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
+	}
+	
 
 	//On screen text
 	std::ostringstream ss;
@@ -514,88 +520,5 @@ void CSceneHub::RenderWaypoints()
 	for (int i = 0; i < temp.size(); i++)
 	{
 		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
-	}
-}
-
-
-// Read and store data
-void CSceneHub::ReadData(CGameInfo* Data)
-{
-	if (Data->ifNew == false)
-	{
-		theHero->SetPos_x(Data->heroPosition.x);
-		theHero->SetPos_y(Data->heroPosition.y);
-		theHero->SetAnimationDirection(Data->heroAnimationDir);
-
-		JellybeanSystem->SetNumOfJellybeans(Data->noOfJellybeans);
-	}
-}
-void CSceneHub::StoreData(CGameInfo* Data)
-{
-	Data->heroPosition.x = theHero->GetPos_x();
-	Data->heroPosition.y = theHero->GetPos_y();
-	Data->heroAnimationDir = theHero->GetAnimationDirection();
-
-	Data->noOfJellybeans = JellybeanSystem->GetNumOfJellybeans();
-}
-// Find and Set the actual offset of hero
-void CSceneHub::SetHeroOffset()
-{
-	// X
-	int centerBorderX = (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize();
-	if (theHero->GetPos_x() < centerBorderX)
-	{
-		theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
-		if (theHero->GetMapOffset_x() < 0)
-		{
-			theHero->SetMapOffset_x(0);
-		}
-		else
-		{
-			theHero->SetPos_x(centerBorderX);
-		}
-	}
-	else if (theHero->GetPos_x() > centerBorderX)
-	{
-		theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
-		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
-		if (theHero->GetMapOffset_x() > maxMapOffset_x)
-		{
-			theHero->SetPos_x(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
-			theHero->SetMapOffset_x(maxMapOffset_x);
-		}
-		else
-		{
-			theHero->SetPos_x(centerBorderX);
-		}
-	}
-	// Y
-	int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize() - m_cMap->GetTileSize();
-	if (theHero->GetPos_y() < centerBorderY)
-	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
-		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
-		if (theHero->GetMapOffset_y() > maxMapOffset_y)
-		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y + m_cMap->GetTileSize()));
-			theHero->SetMapOffset_y(maxMapOffset_y);
-		}
-		else
-		{
-			theHero->SetPos_y(centerBorderY);
-		}
-	}
-	else if (theHero->GetPos_y() > centerBorderY)
-	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
-		if (theHero->GetMapOffset_y() < m_cMap->GetTileSize())
-		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() ));
-			theHero->SetMapOffset_y(m_cMap->GetTileSize());
-		}
-		else
-		{
-			theHero->SetPos_y(centerBorderY);
-		}
 	}
 }
