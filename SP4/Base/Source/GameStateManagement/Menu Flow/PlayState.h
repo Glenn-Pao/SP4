@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Master/GameState.h"
-#include "..\..\Scenes\SceneManager.h"
-#include "..\..\Scenes\ScenePlay.h"
+#include "..\..\Scenes\Master\SceneManager.h"
+#include "..\..\Scenes\Menu Flow\ScenePlay.h"
 //#include "..\Scenes\ScenePlay2D.h"
 #include "timer.h"
 

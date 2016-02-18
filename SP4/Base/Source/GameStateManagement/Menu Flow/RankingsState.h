@@ -2,7 +2,8 @@
 
 //#include "gamestate.h"
 #include "../Master/GameState.h"
-#include "..\..\Scenes\SceneRankings.h"
+#include "..\..\Scenes\Menu Flow\SceneRankings.h"
+//#include "..\..\Scenes\SceneRankings.h"
 
 class CRankingsState : public CGameState
 {

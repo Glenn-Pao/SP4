@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\Master\GameState.h"
-#include "..\..\..\Scenes\SceneLoadGame.h"
+#include "..\..\..\Scenes\Game Flow\Lobby\SceneLoadGame.h"
 
 class CLoadGameSelect : public CGameState
 {

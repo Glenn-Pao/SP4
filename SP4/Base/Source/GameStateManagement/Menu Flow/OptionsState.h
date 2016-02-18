@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Master/GameState.h"
-#include "..\..\Scenes\SceneOptions.h"
+#include "..\..\Scenes\Menu Flow\SceneOptions.h"
 
 class COptionsState : public CGameState
 {

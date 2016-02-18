@@ -2,8 +2,9 @@
 #define APPLICATION_H
 
 #include "timer.h"
-#include "Scenes\SceneManager.h"
-#include "Scenes\SceneManager2D.h"
+#include "Scenes\Master\SceneManager.h"
+#include "Scenes\Master\SceneManager2D.h"
+//#include "Scenes\SceneManager2D.h"
 #include "GameStateManagement\Master\GameStateManager.h"
 #include "GameStateManagement\Menu Flow\InstructionState.h"
 #include "GameStateManagement\Menu Flow\MenuState.h"

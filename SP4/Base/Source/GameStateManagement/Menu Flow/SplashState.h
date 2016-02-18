@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Master/GameState.h"
-#include "..\..\Scenes\SceneSplash.h"
+#include "..\..\Scenes\Menu Flow\SceneSplash.h"
 
 class CSplashState : public CGameState
 {

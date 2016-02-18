@@ -1,18 +1,29 @@
-#ifndef SCENE_PLAY_2D_H
-#define SCENE_PLAY_2D_H
+#ifndef SCENE_HUB_H
+#define SCENE_HUB_H
 
-#include "Master\SceneManager2D.h"
-//#include "..\Master\SceneManager2D.h"
-#include "..\Light.h"
-#include "..\Map.h"
+#include "..\..\Master\SceneManager2D.h"
+#include "..\..\..\Light.h"
+#include "..\..\..\Light.h"
+#include "..\..\..\Minimap.h"
+#include "..\..\..\Map.h"
 #include "Vector2.h"
-#include "..\PlayerInfo.h"
-#include "..\Enemy.h"
-#include "..\GameMechanics\Jellybean\JellybeanSystem.h"
-#include "..\AI\Waypoints.h"
-#include "..\GameMechanics\Objects\Objects.h"
+#include "..\..\..\PlayerInfo.h"
+#include "..\..\..\Enemy.h"
+#include "..\..\..\GameMechanics\Jellybean\JellybeanSystem.h"
+//#include "....\..\AI\Waypoints.h"
+#include "..\..\Base\Source\AI\Waypoints.h"
 
-class CScenePlay2D : public Scene
+// Goodies and Goodies Factory
+#include "..\..\Base\Source\GoodiesFactory.h"
+//#include "..\GoodiesFactory.h"
+#include "..\..\Base\Source\Goodies.h"
+#include "..\..\Base\Source\TreasureChest.h""
+#include "..\..\ScenePlay2D.h"
+
+#include "..\..\Base\Source\GameMechanics\SavingAndLoading\GameInfo.h"
+//#include "..\..\GameMechanics\SavingAndLoading\GameInfo.h"
+
+class CSceneHub : public Scene
 {
 	enum GEOMETRY_TYPE
 	{
@@ -25,13 +36,14 @@ class CScenePlay2D : public Scene
 		GEO_TILE_SAFEZONE,
 		GEO_TILEENEMY_FRAME0,
 		GEO_TILE_TREASURECHEST,
+		GEO_TILE_DOOR,
 		GEO_OBJECT,
 		NUM_GEOMETRY,
 	};
 
 public:
-	CScenePlay2D(const int m_window_width, const int m_window_height);
-	~CScenePlay2D();
+	CSceneHub(const int m_window_width, const int m_window_height);
+	~CSceneHub();
 
 	virtual void Init(int level);
 	virtual void PreInit();
@@ -43,6 +55,13 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	// Read and store data
+	virtual void ReadData(CGameInfo* Data);
+	virtual void StoreData(CGameInfo* Data);
+
+	// Find and Set the actual offset of hero
+	void SetHeroOffset();
+
 	enum WEAPON_ACTION
 	{
 		WA_NIL = 0,
@@ -52,11 +71,13 @@ public:
 		WA_TOTAL,
 	};
 	void RenderWaypoints();
-	void RenderObjects();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 	void InitMeshes();
+
+	// Handle to the minimap
+	CMinimap* m_cMinimap;
 
 	// Handle to the tilemaps
 	CMap* m_cMap;
@@ -69,27 +90,28 @@ private:
 	int tileOffset_x, tileOffset_y;
 
 	// Codes for Parallax Scrolling
-	//CMap* m_cRearMap;
-	//void RenderRearTileMap();
-	/*int rearWallOffset_x, rearWallOffset_y;
+	CMap* m_cRearMap;
+	void RenderRearTileMap();
+	int rearWallOffset_x, rearWallOffset_y;
 	int rearWallTileOffset_x, rearWallTileOffset_y;
 	int rearWallFineOffset_x, rearWallFineOffset_y;
-*/
+
 	// Enemies
 	vector<CEnemy*> theEnemies;
 	void RenderAIs();
+
+	// Goodies and Goodies Factory
+	CGoodiesFactory theGoodiesFactory;
+	CGoodies** theArrayOfGoodies;
+	void RenderGoodies(void);
 
 	// Jellybeans System
 	CJellybeanSystem* JellybeanSystem;
 
 	CSceneManager2D sceneManager2D;
 
-	//Waypoints
 	CWaypoints *waypoints;
 	std::vector<Vector3> temp;
-
-	//Objects
-	CObjects *object;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Master/GameState.h"
-#include "..\..\Scenes\SceneLose.h"
+#include "..\..\Scenes\Menu Flow\SceneLose.h"
 
 class CLoseState : public CGameState
 {

@@ -1,5 +1,6 @@
 #include "SceneNode.h"
-#include "..\Scenes\SceneManager.h"
+//#include "..\Scenes\SceneManager.h"
+#include "..\Scenes\Master\SceneManager.h"
 #include "Vector3.h"
 
 #include <cstdlib>

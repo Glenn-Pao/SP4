@@ -106,45 +106,6 @@
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneManager2D.cpp">
-      <Filter>Scenes\Master</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneManager.cpp">
-      <Filter>Scenes\Master</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneInstruction.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneLoadGame.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneLose.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneMenu.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneOptions.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\ScenePause.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\ScenePlay.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\ScenePlay2D.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneRankings.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneSplash.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneWin.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp">
       <Filter>Game Mechanics\Objects</Filter>
     </ClCompile>
@@ -159,15 +120,6 @@
     </ClCompile>
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneHub.cpp">
-      <Filter>Scenes\Game Flow\Game Lobby</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneTutorialGame1.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneGame2.cpp">
-      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClCompile>
     <ClCompile Include="Source\Bar.cpp">
       <Filter>UI</Filter>
@@ -229,11 +181,56 @@
     <ClCompile Include="Source\Sound\Sound.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneGameBase.cpp">
-      <Filter>Scenes\Master</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.cpp">
+      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.cpp">
+      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneInstruction.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneLose.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneMenu.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneOptions.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\ScenePause.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\ScenePlay.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneRankings.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneSplash.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneWin.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Master\SceneGameBase.cpp">
+      <Filter>Scenes\Master</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Master\SceneManager.cpp">
+      <Filter>Scenes\Master</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Master\SceneManager2D.cpp">
+      <Filter>Scenes\Master</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneHub.cpp">
+      <Filter>Scenes\Game Flow\Game Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.cpp">
+      <Filter>Scenes\Game Flow\Game Lobby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -339,9 +336,6 @@
     <ClInclude Include="Source\Projectile\ProjectileManager.h">
       <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\Scene.h">
-      <Filter>Application Items</Filter>
-    </ClInclude>
     <ClInclude Include="Source\shader.hpp">
       <Filter>Application Items</Filter>
     </ClInclude>
@@ -353,45 +347,6 @@
     </ClInclude>
     <ClInclude Include="Source\Vertex.h">
       <Filter>Application Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneManager2D.h">
-      <Filter>Scenes\Master</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneManager.h">
-      <Filter>Scenes\Master</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneInstruction.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneLoadGame.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneLose.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneMenu.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneOptions.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\ScenePause.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\ScenePlay.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\ScenePlay2D.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneRankings.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneSplash.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneWin.h">
-      <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h">
       <Filter>Game Mechanics\Objects</Filter>
@@ -407,15 +362,6 @@
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneHub.h">
-      <Filter>Scenes\Game Flow\Game Lobby</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneTutorialGame1.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneGame2.h">
-      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClInclude>
     <ClInclude Include="Source\Bar.h">
       <Filter>UI</Filter>
@@ -480,11 +426,56 @@
     <ClInclude Include="Source\Sound\Sound.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneGameBase.h">
-      <Filter>Scenes\Master</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.h">
+      <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.h">
+      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneInstruction.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneLose.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneMenu.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneOptions.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\ScenePause.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\ScenePlay.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneRankings.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneSplash.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneWin.h">
+      <Filter>Scenes\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Master\SceneGameBase.h">
+      <Filter>Scenes\Master</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Master\SceneManager.h">
+      <Filter>Scenes\Master</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Master\SceneManager2D.h">
+      <Filter>Scenes\Master</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneHub.h">
+      <Filter>Scenes\Game Flow\Game Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.h">
+      <Filter>Scenes\Game Flow\Game Lobby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
