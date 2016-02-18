@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Master/GameState.h"
-#include "..\..\..\Scenes\SceneManager.h"
-#include "..\..\..\Scenes\SceneTutorialGame3.h"
+#include "..\..\Master\GameState.h"
+#include "..\..\Base\Source\Scenes\Master\SceneManager.h"
+#include "..\..\Base\Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.h"
 #include "timer.h"
 
 //Include GLEW

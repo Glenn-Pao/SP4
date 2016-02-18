@@ -3,7 +3,7 @@ using namespace std;
 
 #include "..\..\Master\GameState.h"
 #include "..\..\Master\GameStateManager.h"
-#include "TutorialGame2.h"
+#include "..\..\Game Flow\Tutorial Games\TutorialGame2.h"
 //#include "LoadGameSelect.h"
 #include "..\..\Menu Flow\MenuState.h"
 #include "..\..\Menu Flow\PauseState.h"
