@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CLoadGameSelect theLoadGameSelectState;
-	short stateID = 4;
+	short stateID = 11;
 	CSceneLoadGame *scene;
 };
