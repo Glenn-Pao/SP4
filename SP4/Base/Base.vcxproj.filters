@@ -145,9 +145,6 @@
     <ClCompile Include="Source\Scenes\SceneWin.cpp">
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\BondingBox.cpp">
-      <Filter>Game Mechanics\Objects\BondingBox</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp">
       <Filter>Game Mechanics\Objects</Filter>
     </ClCompile>
@@ -234,6 +231,9 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneGameBase.cpp">
       <Filter>Scenes\Master</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,9 +393,6 @@
     <ClInclude Include="Source\Scenes\SceneWin.h">
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\BondingBox.h">
-      <Filter>Game Mechanics\Objects\BondingBox</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h">
       <Filter>Game Mechanics\Objects</Filter>
     </ClInclude>
@@ -486,6 +483,9 @@
     <ClInclude Include="Source\Scenes\SceneGameBase.h">
       <Filter>Scenes\Master</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application Items">
@@ -545,9 +545,6 @@
     <Filter Include="Game Mechanics\Objects">
       <UniqueIdentifier>{e1007b29-77c1-4f24-b700-5f78b856a0f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Mechanics\Objects\BondingBox">
-      <UniqueIdentifier>{7ddcd022-7430-4f23-91b5-e6f77e187400}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game Mechanics\Difficulty">
       <UniqueIdentifier>{719be609-c8e0-4821-8ddd-23cb17d4680c}</UniqueIdentifier>
     </Filter>
@@ -595,6 +592,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{180c5301-eeff-46d7-9f90-87cbc6a47724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Mechanics\Objects\BoundingBox">
+      <UniqueIdentifier>{7ddcd022-7430-4f23-91b5-e6f77e187400}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

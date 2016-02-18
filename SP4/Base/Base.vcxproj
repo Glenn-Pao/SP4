@@ -21,7 +21,7 @@
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\GameMechanics\Difficulty\DifficultySystem.cpp" />
     <ClCompile Include="Source\GameMechanics\Jellybean\JellybeanSystem.cpp" />
-    <ClCompile Include="Source\GameMechanics\Objects\BondingBox.cpp" />
+    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp" />
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp" />
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.cpp" />
@@ -101,7 +101,7 @@
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\GameMechanics\Difficulty\DifficultySystem.h" />
     <ClInclude Include="Source\GameMechanics\Jellybean\JellybeanSystem.h" />
-    <ClInclude Include="Source\GameMechanics\Objects\BondingBox.h" />
+    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h" />
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h" />
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.h" />
