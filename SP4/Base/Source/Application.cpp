@@ -344,7 +344,7 @@ void Application::Init()
 	// Initialise the GSM
 	theGSM = new CGameStateManager();
 	theGSM->Init("Game State Management", 800, 600);
-	theGSM->ChangeState(CSplashState::Instance());
+	theGSM->ChangeState(CMenuState::Instance());
 }
 
 /********************************************************************************

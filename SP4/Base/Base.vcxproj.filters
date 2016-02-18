@@ -22,9 +22,6 @@
     <ClCompile Include="Source\Record.cpp">
       <Filter>Highscore</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Sound.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SpatialPartition\SpatialPartition.cpp">
       <Filter>Spatial Partition</Filter>
     </ClCompile>
@@ -109,36 +106,6 @@
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
-      <Filter>Game State Management\Master</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\InstructionState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\LoseState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\MenuState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\OptionsState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\PauseState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\PlayState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\RankingsState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\SplashState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\WinState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneManager2D.cpp">
       <Filter>Scenes\Master</Filter>
     </ClCompile>
@@ -196,41 +163,14 @@
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\TutorialGame1.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\TutorialGame2.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\TutorialGame3.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\TutorialGame4.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\HubState.cpp">
-      <Filter>Game State Management\Game Flow\Game Lobby</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneHub.cpp">
       <Filter>Scenes\Game Flow\Game Lobby</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\SceneTutorialGame1.cpp">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneTutorialGame2.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneTutorialGame3.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\SceneTutorialGame4.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\SceneGame2.cpp">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Game2State.cpp">
-      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClCompile>
     <ClCompile Include="Source\Bar.cpp">
       <Filter>UI</Filter>
@@ -247,8 +187,53 @@
     <ClCompile Include="Source\UISystem.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\LoadGameSelect.cpp">
+    <ClCompile Include="Source\GameStateManagement\Master\GameStateManager.cpp">
+      <Filter>Game State Management\Master</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\InstructionState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\LoseState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\MenuState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\OptionsState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\PauseState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\PlayState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\RankingsState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\SplashState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\WinState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.cpp">
+      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\HubState.cpp">
       <Filter>Game State Management\Game Flow\Game Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.cpp">
+      <Filter>Game State Management\Game Flow\Game Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.cpp">
+      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Sound\Sound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\SceneGameBase.cpp">
+      <Filter>Scenes\Master</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +257,6 @@
     </ClInclude>
     <ClInclude Include="Source\Record.h">
       <Filter>Highscore</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Sound.h">
-      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="Source\SpatialPartition\SpatialPartition.h">
       <Filter>Spatial Partition</Filter>
@@ -372,39 +354,6 @@
     <ClInclude Include="Source\Vertex.h">
       <Filter>Application Items</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\GameState.h">
-      <Filter>Game State Management\Master</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\GameStateManager.h">
-      <Filter>Game State Management\Master</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\InstructionState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\LoseState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\MenuState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\OptionsState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\PauseState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\PlayState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\RankingsState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\SplashState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\WinState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\SceneManager2D.h">
       <Filter>Scenes\Master</Filter>
     </ClInclude>
@@ -462,41 +411,14 @@
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\TutorialGame1.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\TutorialGame2.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\TutorialGame3.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\TutorialGame4.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\HubState.h">
-      <Filter>Game State Management\Game Flow\Game Lobby</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\SceneHub.h">
       <Filter>Scenes\Game Flow\Game Lobby</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\SceneTutorialGame1.h">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneTutorialGame2.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneTutorialGame3.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\SceneTutorialGame4.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\SceneGame2.h">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Game2State.h">
-      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClInclude>
     <ClInclude Include="Source\Bar.h">
       <Filter>UI</Filter>
@@ -513,8 +435,56 @@
     <ClInclude Include="Source\UISystem.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\LoadGameSelect.h">
+    <ClInclude Include="Source\GameStateManagement\Master\GameState.h">
+      <Filter>Game State Management\Master</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Master\GameStateManager.h">
+      <Filter>Game State Management\Master</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\InstructionState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\LoseState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\MenuState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\OptionsState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\PauseState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\PlayState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\RankingsState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\SplashState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\WinState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.h">
+      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\HubState.h">
       <Filter>Game State Management\Game Flow\Game Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.h">
+      <Filter>Game State Management\Game Flow\Game Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.h">
+      <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Sound\Sound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\SceneGameBase.h">
+      <Filter>Scenes\Master</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

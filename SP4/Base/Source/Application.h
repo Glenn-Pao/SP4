@@ -4,14 +4,14 @@
 #include "timer.h"
 #include "Scenes\SceneManager.h"
 #include "Scenes\SceneManager2D.h"
-#include "GameStateManagement\GameStateManager.h"
-#include "GameStateManagement\InstructionState.h"
-#include "GameStateManagement\MenuState.h"
-#include "GameStateManagement\PlayState.h"
-#include "GameStateManagement\PauseState.h"
-#include "GameStateManagement\SplashState.h"
-#include "GameStateManagement\HubState.h"
-#include "Sound.h"
+#include "GameStateManagement\Master\GameStateManager.h"
+#include "GameStateManagement\Menu Flow\InstructionState.h"
+#include "GameStateManagement\Menu Flow\MenuState.h"
+#include "GameStateManagement\Menu Flow\PlayState.h"
+#include "GameStateManagement\Menu Flow\PauseState.h"
+#include "GameStateManagement\Menu Flow\SplashState.h"
+#include "GameStateManagement\Game Flow\Lobby\HubState.h"
+#include "Sound\Sound.h"
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
 #define _CRTDBG_MAP_ALLOC
