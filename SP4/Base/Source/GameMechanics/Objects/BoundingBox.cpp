@@ -1,51 +1,49 @@
-#include "BondingBox.h"
+#include "BoundingBox.h"
 
 
-CBondingBox::CBondingBox()
-	: TopLeftCorner(0, 0, 0)
-	, BottomRightCorner(0, 0, 0)
+CBoundingBox::CBoundingBox()
 {
 }
 
-CBondingBox::~CBondingBox()
-{
-}
 
-// Initialise the Both Top Left Corner and Bottom Right Corner
-void CBondingBox::Init(Vector3 TopLeftCorner, Vector3 BottomRightCorner)
+CBoundingBox::CBoundingBox(Vector3 TopLeftCorner, Vector3 BottomRightCorner)
 {
 	this->TopLeftCorner = TopLeftCorner;
 	this->BottomRightCorner = BottomRightCorner;
 }
 
+CBoundingBox::~CBoundingBox()
+{
+}
+
 // Set and get the Top Left Corner
-void CBondingBox::setTopLeftCorner(Vector3 TopLeftCorner)
+void CBoundingBox::setTopLeftCorner(Vector3 TopLeftCorner)
 {
 	this->TopLeftCorner = TopLeftCorner;
 }
-Vector3 CBondingBox::getTopLeftCorner(void)
+Vector3 CBoundingBox::getTopLeftCorner(void)
 {
 	return TopLeftCorner;
 }
 
 //set and get the position X of the entity
-void CBondingBox::setBottomRightCorner(Vector3 BottomRightCorner)
+void CBoundingBox::setBottomRightCorner(Vector3 BottomRightCorner)
 {
 	this->BottomRightCorner = BottomRightCorner;
 }
-Vector3 CBondingBox::getBottomRightCorner(void)
+Vector3 CBoundingBox::getBottomRightCorner(void)
 {
 	return BottomRightCorner;
 }
 
 // Check if position is collided with bonding box, return true if collided
-bool CBondingBox::CheckCollision(Vector3 position)
+bool CBoundingBox::CheckCollision(Vector3 position)
 {
 	// Check X
-	if (TopLeftCorner.x < position.x && position.x > BottomRightCorner.x)
+	if (TopLeftCorner.x < position.x && position.x < BottomRightCorner.x)
 	{
 		// Check Y
-		if (TopLeftCorner.y > position.y && position.y < BottomRightCorner.y)
+		if (TopLeftCorner.y > position.y && position.y > BottomRightCorner.y)
 		{
 			return true;
 		}
@@ -54,9 +52,14 @@ bool CBondingBox::CheckCollision(Vector3 position)
 	return false;
 }
 
+//void CBoundingBox::TranslateCollisionBox(Vector3 translate)
+//{
+//	this->setTopLeftCorner += translate;
+//	this->setBottomRightCorner += translate;
+//}
 
 // Check if bonding box is collided with bonding box, return true if collided
-bool CBondingBox::CheckCollision(CBondingBox& bondingBox)
+bool CBoundingBox::CheckCollision(CBoundingBox& bondingBox)
 {
 	// Check if any of the four corner of the bonding box within this bondingBox
 	// Top Left Corner

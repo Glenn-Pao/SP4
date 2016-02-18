@@ -7,17 +7,18 @@
 
 #include "Vector3.h"
 
-class CBondingBox
+class CBoundingBox
 {
 private:
 	Vector3 TopLeftCorner;
 	Vector3 BottomRightCorner;
 public:
-	CBondingBox();
-	~CBondingBox();
+	CBoundingBox();
+	CBoundingBox(Vector3 TopLeftCorner, Vector3 BottomRightCorner);
+	~CBoundingBox();
 
-	// Initialise the Both Top Left Corner and Bottom Right Corner
-	void Init(Vector3 TopLeftCorner, Vector3 BottomRightCorner);
+
+	void TranslateCollisionBox(Vector3 translate);
 
 	// Set and get the Top Left Corner
 	void setTopLeftCorner(Vector3);
@@ -30,5 +31,5 @@ public:
 	// Check if position is collided with bonding box, return true if collided
 	bool CheckCollision(Vector3 position);
 	// Check if bonding box is collided with bonding box, return true if collided
-	bool CheckCollision(CBondingBox& bondingBox);
+	bool CheckCollision(CBoundingBox& bondingBox);
 };

@@ -2,6 +2,7 @@
 #define SCENE_MENU_H
 
 #include "SceneManager2D.h"
+#include "../Button.h"
 
 class CSceneMenu : public Scene
 {
@@ -9,6 +10,8 @@ class CSceneMenu : public Scene
 	{
 		GRAY_QUAD,
 		BLACK_QUAD,
+		PLAYBUTTON_UP,
+		PLAYBUTTON_DOWN,
 		NUM_GEOMETRY,
 	};
 
@@ -35,7 +38,7 @@ public:
 	};
 
 	int choice;
-
+	Button* PlayButton;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
