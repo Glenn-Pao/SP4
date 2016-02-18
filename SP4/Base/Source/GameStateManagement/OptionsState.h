@@ -31,6 +31,6 @@ protected:
 
 private:
 	static COptionsState theOptionsState;
-	short stateID = 5;
+	short stateID = 4;
 	CSceneOptions *scene;
 };

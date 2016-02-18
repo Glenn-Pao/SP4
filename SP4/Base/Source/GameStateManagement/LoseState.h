@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CLoseState theLoseState;
-	short stateID = 8;
+	short stateID = 7;
 	CSceneLose *scene;
 };
