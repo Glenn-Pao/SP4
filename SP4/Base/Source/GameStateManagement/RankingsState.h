@@ -31,7 +31,7 @@ protected:
 
 private:
 	static CRankingsState theRankingState;
-	short stateID = 5;
+	short stateID = 6;
 
 	CSceneRankings *scene;
 };

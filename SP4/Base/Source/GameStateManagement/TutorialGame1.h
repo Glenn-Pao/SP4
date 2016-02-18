@@ -13,7 +13,7 @@
 
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
-//the tutorial level of game 1, maze escaper solo game
+//the tutorial level of game 1, maze escaper
 class CTutorialGame1: public CGameState
 {
 public:

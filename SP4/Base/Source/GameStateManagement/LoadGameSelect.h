@@ -1,9 +1,9 @@
 #pragma once
 
 #include "gamestate.h"
-#include "..\Scenes\SceneLose.h"
+#include "..\Scenes\SceneLoadGame.h"
 
-class CLoseState : public CGameState
+class CLoadGameSelect : public CGameState
 {
 public:
 	void Init(CGameStateManager* theGSM);
@@ -22,15 +22,15 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 	short GetStateID() { return stateID; };
-	static CLoseState* Instance() {
-		return &theLoseState;
+	static CLoadGameSelect* Instance() {
+		return &theLoadGameSelectState;
 	}
 
 protected:
-	CLoseState() { }
+	CLoadGameSelect() { }
 
 private:
-	static CLoseState theLoseState;
-	short stateID = 8;
-	CSceneLose *scene;
+	static CLoadGameSelect theLoadGameSelectState;
+	short stateID = 4;
+	CSceneLoadGame *scene;
 };

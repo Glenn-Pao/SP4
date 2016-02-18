@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CPauseState thePauseState;
-	short stateID = 8;
+	short stateID = 7;
 	CScenePause *scene;
 };

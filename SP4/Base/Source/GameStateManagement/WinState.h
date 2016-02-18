@@ -31,6 +31,6 @@ protected:
 
 private:
 	static CWinState theWinState;
-	short stateID = 6;					//id number to load appropriate sound
+	short stateID = 7;					//id number to load appropriate sound
 	CSceneWin *scene;
 };

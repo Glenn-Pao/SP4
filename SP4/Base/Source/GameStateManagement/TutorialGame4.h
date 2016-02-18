@@ -13,7 +13,7 @@
 
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
-//the tutorial level of game 4, stress solo game
+//the tutorial level of game 4, stress
 class CTutorialGame4: public CGameState
 {
 public:
@@ -43,7 +43,7 @@ protected:
 private:
 	static CTutorialGame4 theTutorialGame4State;
 	int counter;
-	short stateID = 16;				//ID of state
+	short stateID = 12;				//ID of state
 
 	//Declare variables to store the last and current mouse position
 	double mouse_last_x, mouse_last_y, mouse_diff_x, mouse_diff_y;
