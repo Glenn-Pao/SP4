@@ -85,6 +85,8 @@ void CSceneGameBase::ReadData(CGameInfo* Data)
 		theHero->SetPos_x(Data->heroPosition.x);
 		theHero->SetPos_y(Data->heroPosition.y);
 		theHero->SetAnimationDirection(Data->heroAnimationDir);
+		theHero->SetMapOffset_x(Data->heroMapOffset.x);
+		theHero->SetMapOffset_y(Data->heroMapOffset.y);
 
 		JellybeanSystem->SetNumOfJellybeans(Data->noOfJellybeans);
 	}
@@ -94,6 +96,8 @@ void CSceneGameBase::StoreData(CGameInfo* Data)
 	Data->heroPosition.x = theHero->GetPos_x();
 	Data->heroPosition.y = theHero->GetPos_y();
 	Data->heroAnimationDir = theHero->GetAnimationDirection();
+	Data->heroMapOffset.x = theHero->GetMapOffset_x();
+	Data->heroMapOffset.y = theHero->GetMapOffset_y();
 
 	Data->noOfJellybeans = JellybeanSystem->GetNumOfJellybeans();
 }
@@ -114,7 +118,7 @@ void CSceneGameBase::SetHeroOffset()
 			theHero->SetPos_x(centerBorderX);
 		}
 	}
-	else if (theHero->GetPos_x() > centerBorderX)
+	else
 	{
 		theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
 		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
@@ -129,14 +133,14 @@ void CSceneGameBase::SetHeroOffset()
 		}
 	}
 	// Y
-	int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize() - m_cMap->GetTileSize();
+	int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize();
 	if (theHero->GetPos_y() < centerBorderY)
 	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
+		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y() + m_cMap->GetTileSize());
 		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
 		if (theHero->GetMapOffset_y() > maxMapOffset_y)
 		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y + m_cMap->GetTileSize()));
+			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y));
 			theHero->SetMapOffset_y(maxMapOffset_y);
 		}
 		else
@@ -144,12 +148,12 @@ void CSceneGameBase::SetHeroOffset()
 			theHero->SetPos_y(centerBorderY);
 		}
 	}
-	else if (theHero->GetPos_y() > centerBorderY)
+	else
 	{
 		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
 		if (theHero->GetMapOffset_y() < m_cMap->GetTileSize())
 		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() ));
+			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y()));
 			theHero->SetMapOffset_y(m_cMap->GetTileSize());
 		}
 		else

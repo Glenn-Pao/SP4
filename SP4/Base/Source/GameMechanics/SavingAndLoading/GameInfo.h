@@ -30,4 +30,5 @@ public:
 	Vector2 heroPosition;// Hero position
 	int heroAnimationDir;// Hero animation direction
 	int noOfJellybeans;// numer of jellybeans player have
+	Vector2 heroMapOffset;// Hero map offset
 };

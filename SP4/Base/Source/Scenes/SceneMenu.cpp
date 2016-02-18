@@ -84,45 +84,45 @@ void CSceneMenu::Render()
 {
 	sceneManager2D.Render();
 
-	//// Gray Quad
-	//sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
+	// Gray Quad
+	sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
 
-	//// Black Quad
-	//switch (choice)
-	//{
-	//case PLAY:
-	//	// Play
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 397);
-	//	break;
-	//case TIME_LIMIT:
-	//	// Time-Limit
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 330);
-	//	break;
-	//case INSTRUCTION:
-	//	// Instruction
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 270);
-	//	break;
-	//case RANKINGS:
-	//	// Rankings
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 195);
-	//	break;
-	//case OPTIONS:
-	//	// Options
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 129);
-	//	break;
-	//case EXIT:
-	//	// Exit
-	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 70);
-	//	break;
-	//}
+	// Black Quad
+	switch (choice)
+	{
+	case PLAY:
+		// Play
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 397);
+		break;
+	case TIME_LIMIT:
+		// Time-Limit
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 330);
+		break;
+	case INSTRUCTION:
+		// Instruction
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 270);
+		break;
+	case RANKINGS:
+		// Rankings
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 195);
+		break;
+	case OPTIONS:
+		// Options
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 129);
+		break;
+	case EXIT:
+		// Exit
+		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 70);
+		break;
+	}
 
-	//// Render the background image
-	//sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
+	// Render the background image
+	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
 	
-	if (PlayButton->getisHovered() == false)
+	/*if (PlayButton->getisHovered() == false)
 	{
 		sceneManager2D.Render2DMesh(PlayButton->getButtonMeshUP(), false, PlayButton->getScale().x, PlayButton->getScale().y, PlayButton->getCurrentPos().x, PlayButton->getCurrentPos().y, 0);
-	}
+	}*/
 	
 }
 

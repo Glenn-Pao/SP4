@@ -24,9 +24,9 @@ void CGameInfo::ResetData()
 	ifNew = false;
 
 	// Player's Infomation
-	heroPosition.x = 0;
-	heroPosition.y = 0;
+	heroPosition.Set(0, 0);
 	noOfJellybeans = 10;
+	heroMapOffset.Set(0, 0);
 }
 
 /********************************************************************************
@@ -46,6 +46,8 @@ void CGameInfo::LoadFile()
 	heroPosition.y = L.DoLuaFloat("heroPositionY");
 	heroAnimationDir = L.DoLuaInt("heroAnimationDir");
 	noOfJellybeans = L.DoLuaInt("noOfJellybeans");
+	heroMapOffset.x = L.DoLuaFloat("heroMapOffsetX");
+	heroMapOffset.y = L.DoLuaFloat("heroMapOffsetY");
 }
 
 /********************************************************************************
@@ -65,6 +67,8 @@ void CGameInfo::SaveToFile()
 		myfile << "heroPositionY = " << heroPosition.y << endl;
 		myfile << "heroAnimationDir = " << heroAnimationDir << endl;
 		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
+		myfile << "heroMapOffsetX = " << heroMapOffset.x << endl;
+		myfile << "heroMapOffsetY = " << heroMapOffset.y << endl;
 	}
 }
 
@@ -87,5 +91,7 @@ void CGameInfo::ClearFile()
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
 		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
+		myfile << "heroMapOffsetX = " << heroPosition.x << endl;
+		myfile << "heroMapOffsetY = " << heroPosition.y << endl;
 	}
 }

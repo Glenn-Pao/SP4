@@ -12,26 +12,19 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
 {
+	tileCollided[0] = 1; // Wall
+	tileCollided[1] = 10; // Killzone
+	tileCollided[2] = 11; // Safezone
+	tileCollided[3] = 33;
+	tileCollided[4] = 34;
+	tileCollided[5] = 37;
+	tileCollided[6] = 38;
+	// Increase the TileTypes if more tile types added at the .h
+
 	UseLuaFiles L;
 
-	//Read a value from the lua text file
-	L.ReadFiles("Lua//playerInfo.lua");
+	readFile();
 
-	// movement speed
-	movementSpeed = L.DoLuaFloat("movementSpeed");
-
-	// animation counter
-	heroAnimationCounter = L.DoLuaFloat("animationCounter");
-
-	// animation direction
-	heroAnimationDirection = L.DoLuaInt("animationDirection");
-
-	// animation speed
-	animationSpeed = L.DoLuaFloat("animationSpeed");
-
-	// no. of animation counter moving
-	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
-	
 	for (int i = 0; i < NUM_GEOMETRY; i++)
 	{
 		meshList[i] = NULL;
@@ -54,8 +47,8 @@ CPlayerInfo::~CPlayerInfo(void)
 // Initialise this class instance
 void CPlayerInfo::Init(void)
 {
-	theHeroPosition.x=0;
-	theHeroPosition.y=0;
+	theHeroPosition.x = 0;
+	theHeroPosition.y = 0;
 }
 
 // Returns true if the player is on ground
@@ -134,8 +127,8 @@ void CPlayerInfo::SetToStop(void)
 }
 
 /********************************************************************************
- Hero Move Up Down
- ********************************************************************************/
+Hero Move Up Down
+********************************************************************************/
 void CPlayerInfo::MoveUpDown(const bool mode, const float timeDiff, CMap* m_cMap)
 {
 	if (mode)
@@ -167,8 +160,8 @@ void CPlayerInfo::MoveUpDown(const bool mode, const float timeDiff, CMap* m_cMap
 }
 
 /********************************************************************************
- Hero Move Left Right
- ********************************************************************************/
+Hero Move Left Right
+********************************************************************************/
 void CPlayerInfo::MoveLeftRight(const bool mode, const float timeDiff, CMap* m_cMap)
 {
 	if (mode)
@@ -260,9 +253,9 @@ void CPlayerInfo::UpdateFreeFall()
 }
 
 // Constrain the position of the Hero to within the border
-void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder, 
-								  const int topBorder, const int bottomBorder, 
-								  float timeDiff, CMap* m_cMap)
+void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
+	const int topBorder, const int bottomBorder,
+	float timeDiff, CMap* m_cMap)
 {
 	if (theHeroPosition.x < leftBorder)
 	{
@@ -319,65 +312,65 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 
 
 /********************************************************************************
- Hero Update
- ********************************************************************************/
+Hero Update
+********************************************************************************/
 void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 {
 	// Update Hero's info
 	// Jump
-  	/*if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
+	/*if (hero_inMidAir_Up == false && hero_inMidAir_Down == false)
 	{
-		// Don't jump
+	// Don't jump
 	}
 	else if (hero_inMidAir_Up == true && hero_inMidAir_Down == false)
 	{
-		// Check if the hero can move up into mid air...
-		int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
-		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y + m_cMap->GetTileSize() + jumpspeed) / m_cMap->GetTileSize());
-		if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1) ||
-		     (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == 1) )
-		{
-			// Since the new position does not allow the hero to move into, then go back to the old position
-			theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
-			hero_inMidAir_Up = false;
-			jumpspeed = 0;
-		}
-		else
-		{
-			theHeroPosition.y += jumpspeed;
-			jumpspeed -= 1;
-			if (jumpspeed == 0)
-			{
-				hero_inMidAir_Up = false;
-				hero_inMidAir_Down = true;
-			}
-		}
+	// Check if the hero can move up into mid air...
+	int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
+	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y + m_cMap->GetTileSize() + jumpspeed) / m_cMap->GetTileSize());
+	if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1) ||
+	(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == 1) )
+	{
+	// Since the new position does not allow the hero to move into, then go back to the old position
+	theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
+	hero_inMidAir_Up = false;
+	jumpspeed = 0;
+	}
+	else
+	{
+	theHeroPosition.y += jumpspeed;
+	jumpspeed -= 1;
+	if (jumpspeed == 0)
+	{
+	hero_inMidAir_Up = false;
+	hero_inMidAir_Down = true;
+	}
+	}
 	}
 	else if (hero_inMidAir_Up == false && hero_inMidAir_Down == true)
 	{
-		// Check if the hero is still in mid air...
-		int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
-		if (checkPosition_X < 0)
-			checkPosition_X = 0;
-		if (checkPosition_X > m_cMap->getNumOfTiles_MapWidth())
-			checkPosition_X = m_cMap->getNumOfTiles_MapWidth();
-		int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y - jumpspeed) / m_cMap->GetTileSize());
-		if (checkPosition_Y < 0)
-			checkPosition_Y = 0;
-		if (checkPosition_Y > m_cMap->GetNumOfTiles_Height())
-			checkPosition_Y = m_cMap->GetNumOfTiles_Height();
-		if (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1)
-		{
-			// Since the new position does not allow the hero to move into, then go back to the old position
-			theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
-			hero_inMidAir_Down = false;
-			jumpspeed = 0;
-		}
-		else
-		{
-			theHeroPosition.y -= jumpspeed;
-			jumpspeed += 1;
-		}
+	// Check if the hero is still in mid air...
+	int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
+	if (checkPosition_X < 0)
+	checkPosition_X = 0;
+	if (checkPosition_X > m_cMap->getNumOfTiles_MapWidth())
+	checkPosition_X = m_cMap->getNumOfTiles_MapWidth();
+	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y - jumpspeed) / m_cMap->GetTileSize());
+	if (checkPosition_Y < 0)
+	checkPosition_Y = 0;
+	if (checkPosition_Y > m_cMap->GetNumOfTiles_Height())
+	checkPosition_Y = m_cMap->GetNumOfTiles_Height();
+	if (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1)
+	{
+	// Since the new position does not allow the hero to move into, then go back to the old position
+	theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
+	hero_inMidAir_Down = false;
+	jumpspeed = 0;
+	}
+	else
+	{
+	theHeroPosition.y -= jumpspeed;
+	jumpspeed += 1;
+	}
 	}*/
 
 	ConstrainHero((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(),
@@ -399,63 +392,17 @@ int CPlayerInfo::CheckCollision(CMap* m_cMap)
 	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.1f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.9f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 
-	// Wall
-	if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 1) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 1) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 1) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 1))
+	for (int i = 0; i < TileTypes; i++)
 	{
-		return 1;
+		if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == tileCollided[i]) ||
+			(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == tileCollided[i]) ||
+			(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == tileCollided[i]) ||
+			(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == tileCollided[i]))
+		{
+			return tileCollided[i];
+		}
 	}
-	// Killzone
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 10) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 10) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 10) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 10))
-	{
-		return 10;
-	}
-	// Safezone
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 11) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 11) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 11) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 11))
-	{
-		return 11;
-	}
-
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 33) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 33) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 33) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 33))
-	{
-		return 33;
-	}
-
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 34) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 34) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 34) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 34))
-	{
-		return 34;
-	}
-
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 37) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 37) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 37) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 37))
-	{
-		return 37;
-	}
-
-	else if ((m_cMap->theScreenMap[checkBottomPosition_Y][checkLeftPosition_X] == 38) ||
-		(m_cMap->theScreenMap[checkBottomPosition_Y][checkRightPosition_X] == 38) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == 38) ||
-		(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == 38))
-	{
-		return 38;
-	}
-
+	// Return if no type collided
 	return 0;
 }
 

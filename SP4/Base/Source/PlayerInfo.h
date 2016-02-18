@@ -3,6 +3,9 @@
 #include "Map.h"
 #include "Mesh.h"
 
+
+const int TileTypes = 7; // Increase it if more tile types added
+
 class CPlayerInfo
 {
 public:
@@ -116,9 +119,9 @@ public:
 	int GetAnimationMaxCounter(void) { return heroAnimationMaxCounter; };
 
 	// Constrain the position of the Hero to within the border
-	void ConstrainHero(const int leftBorder, const int rightBorder, 
-					   const int topBorder, const int bottomBorder, 
-					   float timeDiff, CMap* m_cMap);
+	void ConstrainHero(const int leftBorder, const int rightBorder,
+		const int topBorder, const int bottomBorder,
+		float timeDiff, CMap* m_cMap);
 
 	// Check what the player if collided with
 	int CheckCollision(CMap* m_cMap);
@@ -151,4 +154,9 @@ private:
 	// For scrolling.
 	int mapOffset_x, mapOffset_y;
 	int mapFineOffset_x, mapFineOffset_y;
+
+
+	// For tile checking
+
+	int tileCollided[TileTypes];
 };

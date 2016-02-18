@@ -24,8 +24,8 @@ void CTutorialGame1::Init(CGameStateManager* theGSM)
 	scene = new CSceneTutorialGame1(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
 void CTutorialGame1::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -42,8 +42,8 @@ void CTutorialGame1::Init(CGameStateManager* theGSM, const int width, const int 
 	scene = new CSceneTutorialGame1(width, height);
 #endif
 	scene->Init(level);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
 void CTutorialGame1::Cleanup()
