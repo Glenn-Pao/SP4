@@ -85,10 +85,12 @@ void Button::Update(float MouseX, float MouseY, float dt)
 	if (CollisionBox->CheckCollision(Vector3(MouseX, MouseY, 0)) == true)
 	{
 		this->CurrentMesh = this->ButtonMeshUP;
+		isHovered = true;
 	}
 	else
 	{
 		this->CurrentMesh = this->ButtonMeshDOWN;
+		isHovered = false;
 	}
 /*
 	this->getCollisionBox()->setTopLeftCorner(this->getCurrentPos() + this->getScale());

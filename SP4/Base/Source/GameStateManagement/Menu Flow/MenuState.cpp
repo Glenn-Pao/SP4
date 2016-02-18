@@ -145,58 +145,59 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		}
 	}
 
-	// Time-Limit
-	else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
-		height * 0.355 <= mouse_y && mouse_y <= height * 0.45)
-	{
-		scene->choice = CSceneMenu::TIME_LIMIT;
-		if (button_Left == true)
-		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			//theGSM->ChangeState(CPlayState::Instance(), 0);
-		}
-	}
-	// Instruction
-	else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
-		height * 0.465 <= mouse_y && mouse_y <= height * 0.55)
-	{
-		scene->choice = CSceneMenu::INSTRUCTION;
-		if (button_Left == true)
-		{
-			theGSM->ChangeState(CInstructionState::Instance());
-		}
-	}
-	// Rankings
-	else if (width * 0.34 <= mouse_x && mouse_x <= width * 0.66 &&
-		height * 0.585 <= mouse_y && mouse_y <= height * 0.675)
-	{
-		scene->choice = CSceneMenu::RANKINGS;
-		if (button_Left == true)
-		{
-			theGSM->ChangeState(CRankingsState::Instance());
-		}
-	}
-	// Options
-	else if (width * 0.355 <= mouse_x && mouse_x <= width * 0.645 &&
-		height * 0.69 <= mouse_y && mouse_y <= height * 0.785)
-	{
-		scene->choice = CSceneMenu::OPTIONS;
-		if (button_Left == true)
-		{
-			theGSM->ChangeState(COptionsState::Instance());
-		}
-	}
-	// Exit
-	else if(width * 0.42 <= mouse_x && mouse_x <= width * 0.58 &&
-		height * 0.805 <= mouse_y && mouse_y <= height * 0.885)
-	{
-		scene->choice = CSceneMenu::EXIT;
-		if (button_Left == true)
-		{
-			theGSM->Quit();
-		}
-	}
+
+	//// Time-Limit
+	//else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
+	//	height * 0.355 <= mouse_y && mouse_y <= height * 0.45)
+	//{
+	//	scene->choice = CSceneMenu::TIME_LIMIT;
+	//	if (button_Left == true)
+	//	{
+	//		//theGSM->m_bHideMouse = true;
+	//		//theGSM->m_bWarpMouse = true;
+	//		//theGSM->ChangeState(CPlayState::Instance(), 0);
+	//	}
+	//}
+	//// Instruction
+	//else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
+	//	height * 0.465 <= mouse_y && mouse_y <= height * 0.55)
+	//{
+	//	scene->choice = CSceneMenu::INSTRUCTION;
+	//	if (button_Left == true)
+	//	{
+	//		theGSM->ChangeState(CInstructionState::Instance());
+	//	}
+	//}
+	//// Rankings
+	//else if (width * 0.34 <= mouse_x && mouse_x <= width * 0.66 &&
+	//	height * 0.585 <= mouse_y && mouse_y <= height * 0.675)
+	//{
+	//	scene->choice = CSceneMenu::RANKINGS;
+	//	if (button_Left == true)
+	//	{
+	//		theGSM->ChangeState(CRankingsState::Instance());
+	//	}
+	//}
+	//// Options
+	//else if (width * 0.355 <= mouse_x && mouse_x <= width * 0.645 &&
+	//	height * 0.69 <= mouse_y && mouse_y <= height * 0.785)
+	//{
+	//	scene->choice = CSceneMenu::OPTIONS;
+	//	if (button_Left == true)
+	//	{
+	//		theGSM->ChangeState(COptionsState::Instance());
+	//	}
+	//}
+	//// Exit
+	//else if(width * 0.42 <= mouse_x && mouse_x <= width * 0.58 &&
+	//	height * 0.805 <= mouse_y && mouse_y <= height * 0.885)
+	//{
+	//	scene->choice = CSceneMenu::EXIT;
+	//	if (button_Left == true)
+	//	{
+	//		theGSM->Quit();
+	//	}
+	//}
 	else
 	{
 		scene->choice = CSceneMenu::NONE;
