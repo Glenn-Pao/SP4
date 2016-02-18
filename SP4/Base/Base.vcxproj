@@ -14,6 +14,8 @@
     <ClCompile Include="Source\AI\ProbabilitySystem.cpp" />
     <ClCompile Include="Source\AI\Waypoints.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Bar.cpp" />
+    <ClCompile Include="Source\Button.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
@@ -87,6 +89,9 @@
     <ClCompile Include="Source\Strategy.cpp" />
     <ClCompile Include="Source\Strategy_Kill.cpp" />
     <ClCompile Include="Source\TreasureChest.cpp" />
+    <ClCompile Include="Source\UIAnimation.cpp" />
+    <ClCompile Include="Source\UIFeature.cpp" />
+    <ClCompile Include="Source\UISystem.cpp" />
     <ClCompile Include="Source\UsingLua.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
@@ -94,6 +99,8 @@
     <ClInclude Include="Source\AI\ProbabilitySystem.h" />
     <ClInclude Include="Source\AI\Waypoints.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Bar.h" />
+    <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Enemy.h" />
@@ -171,6 +178,9 @@
     <ClInclude Include="Source\Strategy.h" />
     <ClInclude Include="Source\Strategy_Kill.h" />
     <ClInclude Include="Source\TreasureChest.h" />
+    <ClInclude Include="Source\UIAnimation.h" />
+    <ClInclude Include="Source\UIFeature.h" />
+    <ClInclude Include="Source\UISystem.h" />
     <ClInclude Include="Source\UsingLua.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />

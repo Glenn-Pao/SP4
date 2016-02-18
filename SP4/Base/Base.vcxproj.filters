@@ -235,6 +235,21 @@
     <ClCompile Include="Source\GameStateManagement\Game2State.cpp">
       <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Bar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Button.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIAnimation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIFeature.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UISystem.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -486,6 +501,21 @@
     <ClInclude Include="Source\GameStateManagement\Game2State.h">
       <Filter>Game State Management\Game Flow\Game 2%28Puzzle Quest%29</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Bar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Button.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIAnimation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIFeature.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UISystem.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application Items">
@@ -592,6 +622,9 @@
     </Filter>
     <Filter Include="Scenes\Game Flow\Tutorial Games">
       <UniqueIdentifier>{f9a76df5-7081-44df-805e-f6de3491447b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{180c5301-eeff-46d7-9f90-87cbc6a47724}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
