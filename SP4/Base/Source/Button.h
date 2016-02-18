@@ -8,6 +8,7 @@
 class Button : public UIFeature
 {
 private:
+	Mesh* CurrentMesh;
 	Mesh* ButtonMeshUP;
 	Mesh*ButtonMeshDOWN;
 
@@ -18,13 +19,10 @@ private:
 	UIAnimation* Animator;
 public:
 
-	void setButtonMeshUP(Mesh* ButtonMeshUP);
-	void setButtonMeshDOWN(Mesh*ButtonMeshDOWN);
 	void setisClicked(bool isClicked);
 	void setisHovered(bool isHovered);
 
-	Mesh* getButtonMeshUP();
-	Mesh* getButtonMeshDOWN();
+	Mesh* getCurrentMesh();
 	bool getisClicked();
 	bool getisHovered();
 
@@ -34,8 +32,8 @@ public:
 
 	void Update(float MouseX, float MouseY, float dt);
 	Button();
-	Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos,Vector3 Scale);
-	Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, bool isClicked, bool isHovered);
+	Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale);
+	Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale, bool isClicked, bool isHovered);
 
 	~Button();
 };

@@ -136,8 +136,7 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	} while (m_iUserChoice == -1);*/
 #endif
 	// Play
-	if (width * 0.425 <= mouse_x && mouse_x <= width * 0.575 &&
-		height * 0.25 <= mouse_y && mouse_y <= height * 0.34)
+	if (scene->UIManager->FindButton("PlayButton")->getisHovered() == true)
 	{
 		scene->choice = CSceneMenu::PLAY;
 		if (button_Left == true)
@@ -145,6 +144,7 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 			theGSM->ChangeState(CLoadGameSelect::Instance());
 		}
 	}
+
 	// Time-Limit
 	else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
 		height * 0.355 <= mouse_y && mouse_y <= height * 0.45)

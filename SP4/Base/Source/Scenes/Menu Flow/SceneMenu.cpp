@@ -52,12 +52,17 @@ void CSceneMenu::Init(int level)
 	
 	choice = NONE;
 
-	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), Vector3(100, 100, 1));
+	UIManager = new UISystem();
+
+	Button* PlayButton;
+	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), Vector3(100, 50, 1));
+
+	UIManager->addFeature(PlayButton);
 }
 
 void CSceneMenu::Update(double dt)
 {
-	PlayButton->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+	UIManager->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
 	/*
 	if (Application::IsKeyPressed('1'))
 	glEnable(GL_CULL_FACE);
@@ -84,46 +89,52 @@ void CSceneMenu::Render()
 {
 	sceneManager2D.Render();
 
-	// Gray Quad
-	sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
+	//// Gray Quad
+	//sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
 
-	// Black Quad
-	switch (choice)
+	//// Black Quad
+	//switch (choice)
+	//{
+	//case PLAY:
+	//	// Play
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 397);
+	//	break;
+	//case TIME_LIMIT:
+	//	// Time-Limit
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 330);
+	//	break;
+	//case INSTRUCTION:
+	//	// Instruction
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 270);
+	//	break;
+	//case RANKINGS:
+	//	// Rankings
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 195);
+	//	break;
+	//case OPTIONS:
+	//	// Options
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 129);
+	//	break;
+	//case EXIT:
+	//	// Exit
+	//	sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 70);
+	//	break;
+	//}
+
+	//// Render the background image
+	//sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
+
+	for (int i = 0; i < UIManager->getUI_List().size(); ++ i)
 	{
-	case PLAY:
-		// Play
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 397);
-		break;
-	case TIME_LIMIT:
-		// Time-Limit
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 330);
-		break;
-	case INSTRUCTION:
-		// Instruction
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 270);
-		break;
-	case RANKINGS:
-		// Rankings
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 195);
-		break;
-	case OPTIONS:
-		// Options
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 129);
-		break;
-	case EXIT:
-		// Exit
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 70);
-		break;
+		switch (UIManager->getUI_List()[i]->getUI_Type())
+		{
+		case UIFeature::UT_BUTTON:
+		{
+			sceneManager2D.Render2DMesh(static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentMesh(), false, static_cast<Button*>(UIManager->getUI_List()[i])->getScale().x, static_cast<Button*>(UIManager->getUI_List()[i])->getScale().y, static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentPos().x, static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentPos().y);
+			break;
+		}
+		}
 	}
-
-	// Render the background image
-	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
-	
-	/*if (PlayButton->getisHovered() == false)
-	{
-		sceneManager2D.Render2DMesh(PlayButton->getButtonMeshUP(), false, PlayButton->getScale().x, PlayButton->getScale().y, PlayButton->getCurrentPos().x, PlayButton->getCurrentPos().y, 0);
-	}*/
-	
 }
 
 /********************************************************************************

@@ -11,13 +11,14 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	this->setCurrentPos(CurrentPos);
 	this->setDefaultPos(CurrentPos);
 	this->setScale(Scale);
+	this->setUI_Type(UIFeature::UT_BUTTON);
 
 	//Child class variables
 	this->ButtonMeshUP = ButtonMeshUP;
 	this->ButtonMeshDOWN = ButtonMeshDOWN;
+	this->CurrentMesh = ButtonMeshUP;
 	this->isClicked = false;
 	this->isHovered = false;
-	
 	//External Class variables
 
 
@@ -28,24 +29,25 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	this->CollisionBox = new CBoundingBox(TopLeft, BottomRight);
 }
 
-Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, bool isClicked, bool isHovered)
+Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale, bool isClicked, bool isHovered)
 {
 	this->setID(ID);
+	this->setCurrentPos(CurrentPos);
+	this->setDefaultPos(CurrentPos);
+	this->setScale(Scale);
+	this->setUI_Type(UIFeature::UT_BUTTON);
+
 	this->ButtonMeshUP = ButtonMeshUP;
 	this->ButtonMeshDOWN = ButtonMeshDOWN;
-	this->setCurrentPos(CurrentPos);
+	this->CurrentMesh = ButtonMeshUP;
 	this->isClicked = isClicked;
 	this->isHovered = isHovered;
-}
 
-void Button::setButtonMeshUP(Mesh* ButtonMeshUP)
-{
-	this->ButtonMeshUP = ButtonMeshUP;
-}
+	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
+	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5), CurrentPos.y - (Scale.y * 0.5), 0);
 
-void Button::setButtonMeshDOWN(Mesh*ButtonMeshDOWN)
-{
-	this->ButtonMeshDOWN = ButtonMeshDOWN;
+
+	this->CollisionBox = new CBoundingBox(TopLeft, BottomRight);
 }
 
 void Button::setisClicked(bool isClicked)
@@ -56,16 +58,6 @@ void Button::setisClicked(bool isClicked)
 void Button::setisHovered(bool isHovered)
 {
 	this->isHovered = isHovered;
-}
-
-Mesh* Button::getButtonMeshUP()
-{
-	return ButtonMeshUP;
-}
-
-Mesh* Button::getButtonMeshDOWN()
-{
-	return ButtonMeshDOWN;
 }
 
 bool Button::getisClicked()
@@ -92,17 +84,21 @@ void Button::Update(float MouseX, float MouseY, float dt)
 {
 	if (CollisionBox->CheckCollision(Vector3(MouseX, MouseY, 0)) == true)
 	{
-		this->setisHovered(true);
+		this->CurrentMesh = this->ButtonMeshUP;
 	}
 	else
 	{
-		this->setisHovered(false);
+		this->CurrentMesh = this->ButtonMeshDOWN;
 	}
 /*
 	this->getCollisionBox()->setTopLeftCorner(this->getCurrentPos() + this->getScale());
 	this->getCollisionBox()->setBottomRightCorner(this->getCurrentPos() - this->getScale());*/
 }
 
+Mesh* Button::getCurrentMesh()
+{
+	return CurrentMesh;
+}
 
 Button::~Button()
 {

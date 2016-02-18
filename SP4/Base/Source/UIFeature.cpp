@@ -30,7 +30,7 @@ void UIFeature::setScale(Vector3 Scale)
 	this->Scale = Scale;
 }
 
-void UIFeature::setUI_Type(UI_TYPE Scale)
+void UIFeature::setUI_Type(UI_TYPE type)
 {
 	this->type = type;
 }

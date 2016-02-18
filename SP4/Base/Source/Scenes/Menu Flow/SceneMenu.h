@@ -3,6 +3,7 @@
 
 #include "..\Master\SceneManager2D.h"
 #include "..\..\Button.h"
+#include "../UISystem.h"
 
 class CSceneMenu : public Scene
 {
@@ -38,7 +39,7 @@ public:
 	};
 
 	int choice;
-	Button* PlayButton;
+	UISystem* UIManager;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

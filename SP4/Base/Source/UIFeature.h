@@ -40,6 +40,6 @@ private:
 
 	Vector3 Scale;
 
-	UI_TYPE type;
+	int type;
 };
 
