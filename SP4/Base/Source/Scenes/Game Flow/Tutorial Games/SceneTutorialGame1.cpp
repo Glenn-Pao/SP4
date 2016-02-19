@@ -242,7 +242,7 @@ void CSceneTutorialGame1::Update(double dt)
 		}
 
 		// Check Door
-		if (theDoor->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x() + theHero->GetMapOffset_x(), theHero->GetPos_y() - theHero->GetMapOffset_y() + m_cMap->GetTileSize() * 0.5f, 0)))
+		if (theDoor->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x() + theHero->GetMapOffset_x(), theHero->GetPos_y() - theHero->GetMapOffset_y() + m_cMap->GetTileSize() * 0.5f, 0)))
 		{
 			currentState = EXITING;
 			// Animation
