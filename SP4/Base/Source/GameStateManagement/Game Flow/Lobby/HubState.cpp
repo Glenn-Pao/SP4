@@ -154,7 +154,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 			theGSM->ChangeState(CMenuState::Instance());
 		}
-		if (scene->loadGame2)
+		else if (scene->loadGame2)
 		{
 			theGSM->m_bUnhideMouse = true;
 			theGSM->m_bWarpMouse = false;
@@ -162,7 +162,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 			theGSM->ChangeState(CMenuState::Instance());
 		}
-		if (scene->loadGame3)
+		else if (scene->loadGame3)
 		{
 			theGSM->m_bUnhideMouse = true;
 			theGSM->m_bWarpMouse = false;
@@ -170,7 +170,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 			theGSM->ChangeState(CMenuState::Instance());
 		}
-		if (scene->loadGame4)
+		else if (scene->loadGame4)
 		{
 			theGSM->m_bUnhideMouse = true;
 			theGSM->m_bWarpMouse = false;

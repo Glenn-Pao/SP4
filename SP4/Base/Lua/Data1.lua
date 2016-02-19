@@ -2,7 +2,7 @@
 Use these values to initialise the Data's Infomations
 ]]--
 
-ifNew = 0
+ifNew = 1
 heroPositionX = 400
 heroPositionY = 300
 heroAnimationDir = 1
