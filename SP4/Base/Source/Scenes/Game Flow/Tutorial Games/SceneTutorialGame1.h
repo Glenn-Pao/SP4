@@ -1,9 +1,8 @@
 #ifndef SCENE_TUTORIAL_GAME_1_H
 #define SCENE_TUTORIAL_GAME_1_H
 
-#include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
-//#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
+#include "..\..\..\GameMechanics\Objects\Door.h"
 
 class CSceneTutorialGame1 : public CSceneGameBase
 {
@@ -30,31 +29,35 @@ public:
 		WA_TOTAL,
 	};
 	void RenderWaypoints();
+
+	enum STATE
+	{
+		PLAYING,
+		EXITING,
+		COMPLETED,
+		TIME_UP,
+		NUM_OF_STATE
+	};
+	int currentState;
+
 private:
 	void InitMeshes();
+	// Handle to the GUI
+	void RenderGUI();
 	// Handle to the tilemaps
 	void RenderTileMap();
 	// Hero's information
 	void RenderHero();
 
-	// Codes for Scrolling
-	//int tileOffset_x, tileOffset_y;
-
-	void RenderRearTileMap();
-	//int rearWallOffset_x, rearWallOffset_y;
-	//int rearWallTileOffset_x, rearWallTileOffset_y;
-	//int rearWallFineOffset_x, rearWallFineOffset_y;
+	void RenderRearTileMap(){}
 
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
 
-	// Goodies and Goodies Factory
-	//CGoodiesFactory theGoodiesFactory;
-	//CGoodies** theArrayOfGoodies;
-	void RenderGoodies(void);
+	CDoor* theDoor;
 
-	CSceneManager2D sceneManager2D;
+	float timer;
 };
 
 #endif

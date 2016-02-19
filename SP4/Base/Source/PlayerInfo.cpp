@@ -389,8 +389,8 @@ int CPlayerInfo::CheckCollision(CMap* m_cMap)
 {
 	int checkLeftPosition_X = (int)((mapOffset_x + theHeroPosition.x + 0.1f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 	int checkRightPosition_X = (int)((mapOffset_x + theHeroPosition.x + 0.9f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.1f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.9f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.01f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.8f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 
 	for (int i = 0; i < TileTypes; i++)
 	{

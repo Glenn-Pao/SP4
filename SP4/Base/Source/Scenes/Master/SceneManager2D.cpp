@@ -52,7 +52,7 @@ void CSceneManager2D::PreInit()
 {
 
 	// Blue background
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);

@@ -68,20 +68,20 @@ void  CSceneOptions::Init(int level)
 	if (!lua_isnumber(L, -1)) {
 		printf("`showFPS' should be a number\n");
 	}
-	fpsSelected = (int)lua_tointeger(L, -1);
+	fpsSelected = (bool)lua_tointeger(L, -1);
 
 	// Fullscreen
 	lua_getglobal(L, "fullscreen");
 	if (!lua_isnumber(L, -1)) {
 		printf("`fullscreen' should be a number\n");
 	}
-	fullscreenSelected = (int)lua_tointeger(L, -1);
+	fullscreenSelected = (bool)lua_tointeger(L, -1);
 
 	lua_getglobal(L, "colored");
 	if (!lua_isnumber(L, -1)) {
 		printf("`colored' should be a number\n");
 	}
-	coloredSelected = (int)lua_tointeger(L, -1);
+	coloredSelected = (bool)lua_tointeger(L, -1);
 
 	lua_close(L);
 }

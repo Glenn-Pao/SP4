@@ -143,7 +143,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
 		scene->choice = CSceneLoadGame::LEVEL_ONE;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			theGSM->m_bHideMouse = true;
 			theGSM->m_bWarpMouse = true;
@@ -156,7 +156,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
 		scene->choice = CSceneLoadGame::LEVEL_TWO;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
@@ -168,7 +168,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
 	{
 		scene->choice = CSceneLoadGame::LEVEL_THREE;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
@@ -180,7 +180,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
 	{
 		scene->choice = CSceneLoadGame::LEVEL_FOUR;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
@@ -192,7 +192,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
 	{
 		scene->choice = CSceneLoadGame::LEVEL_FIVE;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
@@ -204,7 +204,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		height * 0.9 <= mouse_y && mouse_y <= height)
 	{
 		scene->choice = CSceneLoadGame::BACK;
-		if (button_Left == true)
+		if ((bool)button_Left == true)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
 		}
