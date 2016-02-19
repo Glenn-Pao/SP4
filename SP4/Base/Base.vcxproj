@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AI\FSM.cpp" />
     <ClCompile Include="Source\AI\ProbabilitySystem.cpp" />
     <ClCompile Include="Source\AI\Waypoints.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AI\FSM.h" />
     <ClInclude Include="Source\AI\ProbabilitySystem.h" />
     <ClInclude Include="Source\AI\Waypoints.h" />
     <ClInclude Include="Source\Application.h" />

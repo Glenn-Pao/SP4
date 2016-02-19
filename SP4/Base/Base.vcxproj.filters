@@ -235,6 +235,9 @@
     <ClCompile Include="Source\GameMechanics\Objects\Door.cpp">
       <Filter>Game Mechanics\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI\FSM.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -482,6 +485,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\Door.h">
       <Filter>Game Mechanics\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\FSM.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
