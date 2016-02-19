@@ -6,6 +6,10 @@ using namespace std;
 #include "..\..\Menu Flow\MenuState.h"
 #include "HubState.h"
 #include "..\..\Menu Flow\pausestate.h"
+#include "..\..\Game Flow\Tutorial Games\TutorialGame1.h"
+#include "..\..\Game Flow\Tutorial Games\TutorialGame2.h"
+#include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
+#include "..\..\Game Flow\Tutorial Games\TutorialGame4.h"
 
 CHubState CHubState::theHubState;
 
@@ -153,7 +157,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CMenuState::Instance());
+			theGSM->ChangeState(CTutorialGame1::Instance());
 		}
 		else if (scene->loadGame2)
 		{
@@ -161,7 +165,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CMenuState::Instance());
+			theGSM->ChangeState(CTutorialGame2::Instance());
 		}
 		else if (scene->loadGame3)
 		{
@@ -169,7 +173,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CMenuState::Instance());
+			theGSM->ChangeState(CTutorialGame3::Instance());
 		}
 		else if (scene->loadGame4)
 		{
@@ -177,7 +181,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CMenuState::Instance());
+			theGSM->ChangeState(CTutorialGame4::Instance());
 		}
 	}
 #endif
