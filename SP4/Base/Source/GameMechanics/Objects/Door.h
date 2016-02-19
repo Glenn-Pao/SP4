@@ -1,11 +1,9 @@
 #pragma once
 #include "Objects.h"
-#include "BoundingBox.h"
 
 class CDoor : public CObjects
 {
 private:
-	CBoundingBox* CollideBox;
 	int id;
 
 public:
@@ -13,11 +11,11 @@ public:
 	CDoor(int id, Vector3 pos, Vector3 scale, Mesh* mesh);
 	~CDoor();
 
-	void setId(int);
+	//set and get the id number of the door
+	void setId(int);			
 	int getId();
 
+	//check whether player reached the door
 	void setReached(bool);
 	bool getIfReached();
-
-	CBoundingBox* getCollideBox();
 };

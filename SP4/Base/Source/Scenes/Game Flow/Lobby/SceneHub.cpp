@@ -263,28 +263,28 @@ void CSceneHub::Update(double dt)
 		theEnemies[i]->Update(m_cMap);
 	}
 
-	if (theDoor[0]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	if (theDoor[0]->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
 	{
 		if (theDoor[0]->getId() == 1)
 		{
 			loadGame1 = true;
 		}
 	}
-	else if (theDoor[1]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	else if (theDoor[1]->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
 	{
 		if (theDoor[1]->getId() == 2)
 		{
 			loadGame2 = true;
 		}
 	}
-	else if (theDoor[2]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	else if (theDoor[2]->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
 	{
 		if (theDoor[2]->getId() == 3)
 		{
 			loadGame3 = true;
 		}
 	}
-	else if (theDoor[3]->getCollideBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
+	else if (theDoor[3]->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x(), theHero->GetPos_y(), 0)))
 	{
 		if (theDoor[3]->getId() == 4)
 		{

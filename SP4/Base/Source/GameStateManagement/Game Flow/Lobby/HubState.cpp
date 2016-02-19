@@ -146,6 +146,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 	}
 	if (key == 'f')
 	{
+		//change this area to make a proper game afterwards
 		if (scene->loadGame1)
 		{
 			theGSM->m_bUnhideMouse = true;
