@@ -3,6 +3,7 @@
 
 #include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
+#include "..\..\Base\Source\GameMechanics\Objects\Question.h"
 //#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
 
 class CSceneTutorialGame3 : public CSceneGameBase
@@ -54,7 +55,11 @@ private:
 	//CGoodies** theArrayOfGoodies;
 	void RenderGoodies(void);
 
-	CSceneManager2D sceneManager2D;
+	//Questions
+	vector<CQuestion*>theQuestions;
+
+	CSceneManager2D sceneManager2D;	
+	int count;
 };
 
 #endif

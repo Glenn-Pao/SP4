@@ -25,6 +25,7 @@
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Door.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp" />
+    <ClCompile Include="Source\GameMechanics\Objects\Question.cpp" />
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp" />
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Door.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h" />
+    <ClInclude Include="Source\GameMechanics\Objects\Question.h" />
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h" />
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.h" />

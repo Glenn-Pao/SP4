@@ -13,3 +13,4 @@ SP4/Debug/Common.lib
 SP4/Release/Base.exe
 SP4/Release/Base.pdb
 SP4/Release/Common.lib
+SP4/Base/Base.vcxproj.filters

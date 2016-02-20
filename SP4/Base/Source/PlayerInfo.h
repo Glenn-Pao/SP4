@@ -4,7 +4,7 @@
 #include "Mesh.h"
 
 
-const int TileTypes = 7; // Increase it if more tile types added
+const int TileTypes = 8; // Increase it if more tile types added
 
 class CPlayerInfo
 {

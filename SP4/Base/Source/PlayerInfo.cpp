@@ -19,6 +19,7 @@ CPlayerInfo::CPlayerInfo(void)
 	tileCollided[4] = 34;
 	tileCollided[5] = 37;
 	tileCollided[6] = 38;
+	tileCollided[7] = 41;
 	// Increase the TileTypes if more tile types added at the .h
 
 	UseLuaFiles L;
@@ -399,6 +400,7 @@ int CPlayerInfo::CheckCollision(CMap* m_cMap)
 			(m_cMap->theScreenMap[checkTopPosition_Y][checkLeftPosition_X] == tileCollided[i]) ||
 			(m_cMap->theScreenMap[checkTopPosition_Y][checkRightPosition_X] == tileCollided[i]))
 		{
+			cout << "tileCollided" << tileCollided[i] << endl;
 			return tileCollided[i];
 		}
 	}

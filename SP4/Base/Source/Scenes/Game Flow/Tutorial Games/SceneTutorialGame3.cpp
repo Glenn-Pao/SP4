@@ -21,12 +21,22 @@ CSceneTutorialGame3::CSceneTutorialGame3(const int m_window_width, const int m_w
 
 CSceneTutorialGame3::~CSceneTutorialGame3()
 {
+	for (int i = 0; i < theQuestions.size(); i++)
+	{
+		if (theQuestions[i])
+		{
+			delete theQuestions[i];
+			theQuestions[i] = NULL;
+		}
+	}
 }
 
 void CSceneTutorialGame3::Init(int level)
 {
 	// Init the base scene
 	sceneManager2D.Init(level);
+
+	count = 0;
 
 	lua_State *L = lua_open();
 
@@ -49,8 +59,8 @@ void CSceneTutorialGame3::Init(int level)
 
 	// Initialise and load the tile map
 	m_cMap = new CMap();
-	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
-	m_cMap->LoadMap("Image//Maps//Game 2/Tutorial.csv");
+	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 41 * tileSize, 16 * tileSize, tileSize);
+	m_cMap->LoadMap("Image//Maps//Game 3/Tutorial.csv");
 
 	//initialise the waypoints
 	waypoints = new CWaypoints();
@@ -79,16 +89,23 @@ void CSceneTutorialGame3::Init(int level)
 				// Initialise the hero's position
 				theHero = new CPlayerInfo();
 				theHero->SetPos_x(k*m_cMap->GetTileSize());
-				theHero->SetPos_y((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());				
+				theHero->SetPos_y((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 			// Enemies
-			else if (m_cMap->theScreenMap[i][k] == 100)
+			else if (m_cMap->theScreenMap[i][k] == 41)
 			{
+				theQuestions.push_back(new CQuestion());
+				theQuestions.back()->setID(count);
+				theQuestions.back()->setActive(true);
+				theQuestions.back()->setInteractivity(true);
+				theQuestions.back()->setPositionX(k*m_cMap->GetTileSize());
+				theQuestions.back()->setPositionY(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
+				theQuestions.back()->setScale(Vector3(tileSize, tileSize, 1));
+				theQuestions.back()->setBoundingBox(Vector3((theQuestions.back()->getPosition().x - (theQuestions.back()->getScale().x * 1.5)), (theQuestions.back()->getPosition().y + (theQuestions.back()->getScale().y * 1.5)), 0), Vector3((theQuestions.back()->getPosition().x + (theQuestions.back()->getScale().x * 1.5)), (theQuestions.back()->getPosition().y - (theQuestions.back()->getScale().y * 1.5)), 0));
+				
 				// Set the strategy for the enemy
-				theEnemies.push_back(new CEnemy());
-				theEnemies.back()->ChangeStrategy(NULL, false);
-				theEnemies.back()->SetPos_x(k*m_cMap->GetTileSize());
-				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
+			/*	theQuestions.push_back(new CQuestion(count, true, false, "", Vector3((k*m_cMap->GetTileSize()), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, tileSize)));*/
+				count++;
 			}
 		}
 	}
@@ -106,6 +123,11 @@ void CSceneTutorialGame3::Init(int level)
 	theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1, 1, 1), 0, 0, 1, 1));
 	theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//tile4_treasurechest.tga"));
 	}*/
+
+	for (int i = 0; i < theQuestions.size(); i++)
+	{
+		theQuestions.at(i)->setMesh(meshList[GEO_TILE_QN]);
+	}
 }
 
 void CSceneTutorialGame3::PreInit()
@@ -133,8 +155,8 @@ void CSceneTutorialGame3::InitMeshes()
 	meshList[GEO_TILETREE]->textureID = LoadTGA("Image//tile3_tree.tga");
 	meshList[GEO_TILESTRUCTURE] = MeshBuilder::Generate2DMesh("GEO_TILESTRUCTURE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
-	meshList[GEO_TILE_DOOR] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
+	meshList[GEO_TILE_QN] = MeshBuilder::Generate2DMesh("GEO_TILE_QN", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_QN]->textureID = LoadTGA("Image//tile41_qn.tga");
 
 	// Hero
 	// Side
@@ -244,6 +266,18 @@ void CSceneTutorialGame3::Update(double dt)
 		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
 		theEnemies[i]->Update(m_cMap);
 	}
+	for (int i = 0; i < theQuestions.size(); i++)
+	{
+		if (theQuestions[i]->getBoundingBox()->CheckCollision(Vector3(theHero->GetPos_x() + theHero->GetMapOffset_x(), theHero->GetPos_y() - theHero->GetMapOffset_y() + m_cMap->GetTileSize() * 0.5f, 0)))
+		{
+			cout << "Collide" << endl;
+		}
+		else
+		{
+			cout << "No collide" << endl;
+		}
+	}
+	
 }
 
 /********************************************************************************
@@ -281,6 +315,7 @@ void CSceneTutorialGame3::Render()
 	RenderRearTileMap();
 	// Render the tile map
 	RenderTileMap();
+
 	// Render Hero
 	RenderHero();
 	// Render AIs
@@ -289,6 +324,8 @@ void CSceneTutorialGame3::Render()
 	//RenderWaypoints();
 	// Render the goodies
 	//RenderGoodies();
+
+
 
 	//On screen text
 	std::ostringstream ss;
@@ -361,9 +398,20 @@ void CSceneTutorialGame3::RenderTileMap()
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 30)
+			else if (m_cMap->theScreenMap[j][m] == 41)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+			/*	sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());*/
+				// Render the enemy
+				for (int i = 0; i < theQuestions.size(); i++)
+				{
+					int theQuestion_x = theQuestions[i]->getPositionX() - theHero->GetMapOffset_x();
+					int theQuestion_y = theQuestions[i]->getPositionY() + theHero->GetMapOffset_y();
+					if (((theQuestion_x >= 0 - m_cMap->GetTileSize()) && (theQuestion_x < sceneManager2D.m_window_width + m_cMap->GetTileSize())) &&
+						((theQuestion_y >= 0 - m_cMap->GetTileSize()) && (theQuestion_y < sceneManager2D.m_window_height + m_cMap->GetTileSize())))
+					{
+						sceneManager2D.Render2DMesh(theQuestions[i]->getMesh(), false, theQuestions[i]->getScale().x, theQuestions[i]->getScale().y, theQuestion_x, theQuestion_y);
+					}
+				}
 			}
 		}
 	}
