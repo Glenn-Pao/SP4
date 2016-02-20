@@ -17,8 +17,6 @@ void UIAnimator::Deactivate()
 
 void UIAnimator::Update(float dt)
 {
-
-	std::cout <<"Size: " << AnimationList.size() << std::endl;
 	if (isActive == true)
 	{
 		for (int i = 0; i < AnimationList.size(); ++ i)

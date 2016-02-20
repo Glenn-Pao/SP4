@@ -55,11 +55,11 @@ void CSceneMenu::Init(int level)
 	UIManager = new UISystem();
 
 	Button* PlayButton;
-	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(-100, sceneManager2D.m_window_height / 2, 0), Vector3(100, 50, 1));
+	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(-100, sceneManager2D.m_window_height / 2, 0), Vector3(20, 10, 1));
 
 	UIManager->addFeature(PlayButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), 5, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 2.5, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2 + 200,0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1.5, Vector3(200,100,1), 1000, 2);
 
 }
 

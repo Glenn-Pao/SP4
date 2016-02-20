@@ -52,7 +52,6 @@ void UIAnimation::DoAnimation(float dt)
 	{
 		case TRANSLATION: // if translation
 		{
-			cout << (feature->getCurrentPos() - EndTransformation).Length() << endl;
 			if ((feature->getCurrentPos() - EndTransformation).Length() < 2)
 			{
 				feature->setCurrentPos(EndTransformation);
@@ -71,6 +70,25 @@ void UIAnimation::DoAnimation(float dt)
 		}
 		case SCALING:
 		{
+			if ((feature->getScale() - EndTransformation).Length() < 5)
+			{
+				feature->setScale(EndTransformation);
+				isComplete = true;
+			}
+			else
+			{
+				if ((feature->getScale() - EndTransformation).x < 0 || (feature->getScale() - EndTransformation).y < 0)
+				{
+					Vector3 temp(feature->getScale() + ((EndTransformation + feature->getScale()).Normalized() * Speed * dt));
+					feature->setScale(temp);
+				}
+				if ((feature->getScale() - EndTransformation).x > 0 || (feature->getScale() - EndTransformation).y > 0)
+				{
+					Vector3 temp(feature->getScale() + ((EndTransformation - feature->getScale()).Normalized() * Speed * dt));
+					feature->setScale(temp);
+				}
+				
+			}
 			break;
 		}
 	}
