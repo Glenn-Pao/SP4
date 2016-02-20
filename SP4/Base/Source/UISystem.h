@@ -4,7 +4,7 @@
 #include "UIAnimator.h"
 #include "UIFeature.h"
 #include "Button.h"
-
+#include "Image.h"
 using std::vector;
 
 class UISystem
@@ -23,6 +23,7 @@ public:
 
 
 	Button* FindButton(string ID);
+	Image* FindImage(string ID);
 
 	void Update(float mouseX, float mouseY, float dt);
 	UISystem();

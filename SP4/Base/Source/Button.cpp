@@ -22,9 +22,8 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	this->CurrentMesh = ButtonMeshUP;
 	this->isClicked = false;
 	this->isHovered = false;
+
 	//External Class variables
-
-
 	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
 	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5), CurrentPos.y - (Scale.y * 0.5), 0);
 	

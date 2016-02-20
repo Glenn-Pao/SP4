@@ -50,17 +50,25 @@ void CSceneMenu::Init(int level)
 	meshList[PLAYBUTTON_DOWN] = MeshBuilder::GenerateQuad("PLAYBUTTON_UP", Color(0, 0, 0), 1.f);
 	meshList[PLAYBUTTON_DOWN]->textureID = LoadTGA("Image//Play Button Pressed.tga");
 	
+	meshList[BACKGROUND] = MeshBuilder::GenerateQuad("PLAYBUTTON_UP", Color(0, 0, 0), 1.f);
+	meshList[BACKGROUND]->textureID = LoadTGA("Image//marioalpha.tga");
+
 	choice = NONE;
 
 	UIManager = new UISystem();
 
 	Button* PlayButton;
-	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(-100, sceneManager2D.m_window_height / 2, 0), Vector3(20, 10, 1));
+	PlayButton = new Button("PlayButton", meshList[PLAYBUTTON_UP], meshList[PLAYBUTTON_DOWN], Vector3(-100, sceneManager2D.m_window_height / 2, 1), Vector3(20, 10, 1));
+	Image* BackGround;
+	BackGround = new Image("BackGround", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), Vector3(20, 10, 1));
+	
+	UIManager->addFeature(BackGround);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("BackGround"), 0, Vector3(1000, 500, 1), 1000, 2);
+
 
 	UIManager->addFeature(PlayButton);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), 10, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1.5, Vector3(200,100,1), 1000, 2);
-
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("PlayButton"), 1.5, Vector3(200, 100, 1), 1000, 2);
 }
 
 void CSceneMenu::Update(double dt)
@@ -133,7 +141,12 @@ void CSceneMenu::Render()
 		{
 		case UIFeature::UT_BUTTON:
 		{
-			sceneManager2D.Render2DMesh(static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentMesh(), false, static_cast<Button*>(UIManager->getUI_List()[i])->getScale().x, static_cast<Button*>(UIManager->getUI_List()[i])->getScale().y, static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentPos().x, static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentPos().y);
+			sceneManager2D.Render2DMesh(static_cast<Button*>(UIManager->getUI_List()[i])->getCurrentMesh(), false, UIManager->getUI_List()[i]->getScale().x, UIManager->getUI_List()[i]->getScale().y, UIManager->getUI_List()[i]->getCurrentPos().x, UIManager->getUI_List()[i]->getCurrentPos().y);
+			break;
+		}
+		case UIFeature::UT_IMAGE:
+		{
+			sceneManager2D.Render2DMesh(static_cast<Image*>(UIManager->getUI_List()[i])->getMesh(), false, UIManager->getUI_List()[i]->getScale().x, UIManager->getUI_List()[i]->getScale().y, UIManager->getUI_List()[i]->getCurrentPos().x, UIManager->getUI_List()[i]->getCurrentPos().y);
 			break;
 		}
 		}

@@ -31,6 +31,19 @@ Button* UISystem::FindButton(string ID)
 	} 
 	return NULL;
 }
+
+Image* UISystem::FindImage(string ID)
+{
+	for (std::vector<UIFeature*>::iterator CurrentFeature = ListOfUI.begin(); CurrentFeature != ListOfUI.end(); CurrentFeature++)
+	{
+		if ((*CurrentFeature)->getID() == ID && (*CurrentFeature)->getUI_Type() == UIFeature::UT_IMAGE)
+		{
+			return static_cast<Image*>((*CurrentFeature));
+		}
+	}
+	return NULL;
+}
+
 UIAnimator* UISystem::InvokeAnimator()
 {
 	return Animator;

@@ -2,7 +2,6 @@
 #define SCENE_MENU_H
 
 #include "..\Master\SceneManager2D.h"
-#include "..\..\Button.h"
 #include "..\..\UISystem.h"
 
 class CSceneMenu : public Scene
@@ -13,6 +12,7 @@ class CSceneMenu : public Scene
 		BLACK_QUAD,
 		PLAYBUTTON_UP,
 		PLAYBUTTON_DOWN,
+		BACKGROUND,
 		NUM_GEOMETRY,
 	};
 

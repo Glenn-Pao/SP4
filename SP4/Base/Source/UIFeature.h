@@ -11,6 +11,7 @@ public:
 	{
 		UT_START = 0,
 		UT_BUTTON,
+		UT_IMAGE,
 		UT_TOTAL
 	};
 
