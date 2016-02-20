@@ -353,7 +353,6 @@ void CSceneHub::Render()
 
 	for (int i = 0; i < theDoor.size(); i++)
 	{
-		if (loadGame1 == false)
 		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
 	}
 
