@@ -121,21 +121,6 @@
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\GameInfo.cpp">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Bar.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Button.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UIAnimation.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UIFeature.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UISystem.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Master\GameStateManager.cpp">
       <Filter>Game State Management\Master</Filter>
     </ClCompile>
@@ -180,9 +165,6 @@
     </ClCompile>
     <ClCompile Include="Source\Sound\Sound.cpp">
       <Filter>Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
-      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.cpp">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
@@ -255,6 +237,27 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.cpp">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Bar.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Button.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIAnimation.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIAnimator.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UIFeature.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UISystem.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -387,21 +390,6 @@
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\GameInfo.h">
       <Filter>Game Mechanics\SavingAndLoading</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Bar.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Button.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UIAnimation.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UIFeature.h">
-      <Filter>UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UISystem.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Master\GameState.h">
       <Filter>Game State Management\Master</Filter>
     </ClInclude>
@@ -449,9 +437,6 @@
     </ClInclude>
     <ClInclude Include="Source\Sound\Sound.h">
       <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
-      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.h">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
@@ -524,6 +509,27 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.h">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Bar.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Button.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIAnimation.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIAnimator.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UIFeature.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UISystem.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

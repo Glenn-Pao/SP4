@@ -3,6 +3,7 @@
 
 UISystem::UISystem()
 {
+	this->Animator = new UIAnimator();
 }
 
 vector<UIFeature*> UISystem::getUI_List()
@@ -30,10 +31,18 @@ Button* UISystem::FindButton(string ID)
 	} 
 	return NULL;
 }
+UIAnimator* UISystem::InvokeAnimator()
+{
+	return Animator;
+}
 
 
 void UISystem::Update(float mouseX, float mouseY, float dt)
 {
+	//Update Animator
+	Animator->Update(dt);
+
+	//Update UI List
 	for (std::vector<UIFeature*>::iterator CurrentFeature = ListOfUI.begin(); CurrentFeature != ListOfUI.end(); ++CurrentFeature)
 	{
 		switch ((*CurrentFeature)->getUI_Type())
@@ -46,6 +55,7 @@ void UISystem::Update(float mouseX, float mouseY, float dt)
 		}
 	}
 }
+
 
 UISystem::~UISystem()
 {

@@ -26,6 +26,12 @@ Vector3 CBoundingBox::getTopLeftCorner(void)
 	return TopLeftCorner;
 }
 
+void CBoundingBox::Reset(Vector3 Position, Vector3 Scale)
+{
+	this->setTopLeftCorner(Vector3(Position.x - (Scale.x * 0.5), Position.y + (Scale.y * 0.5), 0));
+	this->setBottomRightCorner(Vector3(Position.x + (Scale.x * 0.5), Position.y - (Scale.y * 0.5), 0));
+}
+
 //set and get the position X of the entity
 void CBoundingBox::setBottomRightCorner(Vector3 BottomRightCorner)
 {

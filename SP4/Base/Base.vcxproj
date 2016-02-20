@@ -92,6 +92,7 @@
     <ClCompile Include="Source\Strategy_Kill.cpp" />
     <ClCompile Include="Source\TreasureChest.cpp" />
     <ClCompile Include="Source\UIAnimation.cpp" />
+    <ClCompile Include="Source\UIAnimator.cpp" />
     <ClCompile Include="Source\UIFeature.cpp" />
     <ClCompile Include="Source\UISystem.cpp" />
     <ClCompile Include="Source\UsingLua.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Source\Strategy_Kill.h" />
     <ClInclude Include="Source\TreasureChest.h" />
     <ClInclude Include="Source\UIAnimation.h" />
+    <ClInclude Include="Source\UIAnimator.h" />
     <ClInclude Include="Source\UIFeature.h" />
     <ClInclude Include="Source\UISystem.h" />
     <ClInclude Include="Source\UsingLua.h" />

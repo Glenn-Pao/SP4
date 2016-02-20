@@ -19,6 +19,8 @@ public:
 
 
 	void TranslateCollisionBox(Vector3 translate);
+	
+	void Reset(Vector3 Position, Vector3 Scale);
 
 	// Set and get the Top Left Corner
 	void setTopLeftCorner(Vector3);

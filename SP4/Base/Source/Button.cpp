@@ -1,6 +1,9 @@
 #include "Button.h"
 
+#include "UsingLua.h"
+
 Button::Button()
+	: screenheight(600)
 {
 }
 
@@ -27,6 +30,12 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	
 	
 	this->CollisionBox = new CBoundingBox(TopLeft, BottomRight);
+
+	UseLuaFiles L;
+
+	L.ReadFiles("Lua//config.lua");
+
+	screenheight = L.DoLuaInt("SCREENHEIGHT");
 }
 
 Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale, bool isClicked, bool isHovered)
@@ -75,14 +84,9 @@ CBoundingBox* Button::getCollisionBox()
 	return CollisionBox;
 }
 
-UIAnimation* Button::InvokeAnimator()
-{
-	return Animator;
-}
-
 void Button::Update(float MouseX, float MouseY, float dt)
 {
-	if (CollisionBox->CheckCollision(Vector3(MouseX, MouseY, 0)) == true)
+	if (CollisionBox->CheckCollision(Vector3(MouseX, screenheight - MouseY, 0)) == true)
 	{
 		this->CurrentMesh = this->ButtonMeshUP;
 		isHovered = true;
@@ -92,6 +96,9 @@ void Button::Update(float MouseX, float MouseY, float dt)
 		this->CurrentMesh = this->ButtonMeshDOWN;
 		isHovered = false;
 	}
+
+	//Update CollideBox Position
+	this->getCollisionBox()->Reset(this->getCurrentPos(),this->getScale());
 /*
 	this->getCollisionBox()->setTopLeftCorner(this->getCurrentPos() + this->getScale());
 	this->getCollisionBox()->setBottomRightCorner(this->getCurrentPos() - this->getScale());*/
