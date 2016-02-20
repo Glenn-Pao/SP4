@@ -126,61 +126,61 @@ void CSceneGame2::Init(int level)
 				theHero = new CPlayerInfo();
 
 				int centerBorderX = (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize();
-				theHero->SetPos_x(k*m_cMap->GetTileSize());
-				if (theHero->GetPos_x() < centerBorderX)
+				theHero->setPositionX(k*m_cMap->GetTileSize());
+				if (theHero->getPositionX() < centerBorderX)
 				{
-					theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
+					theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
 					if (theHero->GetMapOffset_x() < 0)
 					{
 						theHero->SetMapOffset_x(0);
 					}
 					else
 					{
-						theHero->SetPos_x(centerBorderX);
+						theHero->setPositionX(centerBorderX);
 					}
 				}
-				else if (theHero->GetPos_x() > centerBorderX)
+				else if (theHero->getPositionX() > centerBorderX)
 				{
-					theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
+					theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
 					float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
 					if (theHero->GetMapOffset_x() > maxMapOffset_x)
 					{
-						theHero->SetPos_x(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
+						theHero->setPositionX(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
 						theHero->SetMapOffset_x(maxMapOffset_x);
 					}
 					else
 					{
-						theHero->SetPos_x(centerBorderX);
+						theHero->setPositionX(centerBorderX);
 					}
 				}
 
 				int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize();
-				theHero->SetPos_y((m_cMap->GetNumOfTiles_Height() - (i + 1))*m_cMap->GetTileSize());
-				if (theHero->GetPos_y() < centerBorderY)
+				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - (i + 1))*m_cMap->GetTileSize());
+				if (theHero->getPositionY() < centerBorderY)
 				{
-					theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
+					theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY());
 					float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
 					if (theHero->GetMapOffset_y() > maxMapOffset_y)
 					{
-						theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y));
+						theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y));
 						theHero->SetMapOffset_y(maxMapOffset_y);
 					}
 					else
 					{
-						theHero->SetPos_y(centerBorderY);
+						theHero->setPositionY(centerBorderY);
 					}
 				}
-				else if (theHero->GetPos_y() > centerBorderY)
+				else if (theHero->getPositionY() > centerBorderY)
 				{
-					theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
+					theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY());
 					if (theHero->GetMapOffset_y() < m_cMap->GetTileSize())
 					{
-						theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - m_cMap->GetTileSize()));
+						theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y() - m_cMap->GetTileSize()));
 						theHero->SetMapOffset_y(m_cMap->GetTileSize());
 					}
 					else
 					{
-						theHero->SetPos_y(centerBorderY);
+						theHero->setPositionY(centerBorderY);
 					}
 				}
 			}
@@ -300,7 +300,7 @@ void CSceneGame2::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	Vector3 prevHeroPos = Vector3(theHero->GetPos_x(), theHero->GetPos_y());
+	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 	// Update the hero
 	if (Application::IsKeyPressed('W'))
 		this->theHero->MoveUpDown(true, dt, m_cMap);
@@ -313,7 +313,7 @@ void CSceneGame2::Update(double dt)
 	/*if (Application::IsKeyPressed(' '))
 	this->theHero->SetToJumpUpwards(true);*/
 	// Update Hero animation counter if hero moved
-	if (prevHeroPos != Vector3(theHero->GetPos_x(), theHero->GetPos_y()))
+	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 	{
 		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
 		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
@@ -377,8 +377,8 @@ void CSceneGame2::Update(double dt)
 	// Update the enemies
 	for (int i = 0; i < theEnemies.size(); i++)
 	{
-		int theDestination_x = theHero->GetPos_x() + theHero->GetMapOffset_x();
-		int theDestination_y = theHero->GetPos_y() - theHero->GetMapOffset_y();
+		int theDestination_x = theHero->getPositionX() + theHero->GetMapOffset_x();
+		int theDestination_y = theHero->getPositionY() - theHero->GetMapOffset_y();
 		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
 		theEnemies[i]->Update(m_cMap);
 	}
@@ -485,43 +485,43 @@ void CSceneGame2::RenderTileMap()
 				break;
 			if (m_cMap->theScreenMap[j][m] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILEGROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILEGROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 2)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILETREE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILETREE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 10)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 11)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 30)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 33)
 			{
 				if (ShowNormalDoor)
-					sceneManager2D.Render2DMesh(meshList[GEO_TILE_NORMDOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());				
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_NORMDOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());				
 			}
 			else if (m_cMap->theScreenMap[j][m] == 34)
 			{
 				if (ShowGreenDoor)
-					sceneManager2D.Render2DMesh(meshList[GEO_TILE_GREENDOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_GREENDOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 37)
 			{
 				if (ShowBlue)
-					sceneManager2D.Render2DMesh(meshList[GEO_TILE_BLUEB], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_BLUEB], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[j][m] == 38)
 			{
 				if (ShowYellow)
-					sceneManager2D.Render2DMesh(meshList[GEO_TILE_YELLOWB], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_YELLOWB], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
 		}
 	}
@@ -536,22 +536,22 @@ void CSceneGame2::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
 	}
 		break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	}
@@ -632,8 +632,8 @@ void CSceneGame2::ReadData(CGameInfo* Data)
 {
 	if (Data->ifNew == false)
 	{
-		theHero->SetPos_x(Data->heroPosition.x);
-		theHero->SetPos_y(Data->heroPosition.y);
+		theHero->setPositionX(Data->heroPosition.x);
+		theHero->setPositionY(Data->heroPosition.y);
 		theHero->SetAnimationDirection(Data->heroAnimationDir);
 
 		JellybeanSystem->SetNumOfJellybeans(Data->noOfJellybeans);
@@ -641,8 +641,8 @@ void CSceneGame2::ReadData(CGameInfo* Data)
 }
 void CSceneGame2::StoreData(CGameInfo* Data)
 {
-	Data->heroPosition.x = theHero->GetPos_x();
-	Data->heroPosition.y = theHero->GetPos_y();
+	Data->heroPosition.x = theHero->getPositionX();
+	Data->heroPosition.y = theHero->getPositionY();
 	Data->heroAnimationDir = theHero->GetAnimationDirection();
 
 	Data->noOfJellybeans = JellybeanSystem->GetNumOfJellybeans();
@@ -652,59 +652,59 @@ void CSceneGame2::SetHeroOffset()
 {
 	// X
 	int centerBorderX = (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize();
-	if (theHero->GetPos_x() < centerBorderX)
+	if (theHero->getPositionX() < centerBorderX)
 	{
-		theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
+		theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
 		if (theHero->GetMapOffset_x() < 0)
 		{
 			theHero->SetMapOffset_x(0);
 		}
 		else
 		{
-			theHero->SetPos_x(centerBorderX);
+			theHero->setPositionX(centerBorderX);
 		}
 	}
-	else if (theHero->GetPos_x() > centerBorderX)
+	else if (theHero->getPositionX() > centerBorderX)
 	{
-		theHero->SetMapOffset_x(theHero->GetPos_x() - centerBorderX);
+		theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
 		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
 		if (theHero->GetMapOffset_x() > maxMapOffset_x)
 		{
-			theHero->SetPos_x(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
+			theHero->setPositionX(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
 			theHero->SetMapOffset_x(maxMapOffset_x);
 		}
 		else
 		{
-			theHero->SetPos_x(centerBorderX);
+			theHero->setPositionX(centerBorderX);
 		}
 	}
 	// Y
 	int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize() - m_cMap->GetTileSize();
-	if (theHero->GetPos_y() < centerBorderY)
+	if (theHero->getPositionY() < centerBorderY)
 	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
+		theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY());
 		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
 		if (theHero->GetMapOffset_y() > maxMapOffset_y)
 		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y + m_cMap->GetTileSize()));
+			theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y + m_cMap->GetTileSize()));
 			theHero->SetMapOffset_y(maxMapOffset_y);
 		}
 		else
 		{
-			theHero->SetPos_y(centerBorderY);
+			theHero->setPositionY(centerBorderY);
 		}
 	}
-	else if (theHero->GetPos_y() > centerBorderY)
+	else if (theHero->getPositionY() > centerBorderY)
 	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->GetPos_y());
+		theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY());
 		if (theHero->GetMapOffset_y() < m_cMap->GetTileSize())
 		{
-			theHero->SetPos_y(centerBorderY - (theHero->GetMapOffset_y()));
+			theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y()));
 			theHero->SetMapOffset_y(m_cMap->GetTileSize());
 		}
 		else
 		{
-			theHero->SetPos_y(centerBorderY);
+			theHero->setPositionY(centerBorderY);
 		}
 	}
 }

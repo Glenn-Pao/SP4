@@ -89,8 +89,8 @@ void CSceneHub::Init(int level)
 			{
 				// Initialise the hero's position
 				theHero = new CPlayerInfo();
-				theHero->SetPos_x(k*m_cMap->GetTileSize());
-				theHero->SetPos_y((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());				
+				theHero->setPositionX(k*m_cMap->GetTileSize());
+				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());				
 			}
 			// Enemies
 			else if (m_cMap->theScreenMap[i][k] == 100)
@@ -143,8 +143,10 @@ void CSceneHub::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_TILEGROUND] = MeshBuilder::Generate2DMesh("GEO_TILEGROUND", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEGROUND]->textureID = LoadTGA("Image//tile1_ground.tga");
+	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
+	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_GROUND]->textureID = LoadTGA("Image//Tile/ground.tga");
 	meshList[GEO_TILEHERO] = MeshBuilder::Generate2DMesh("GEO_TILEHERO", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILEHERO]->textureID = LoadTGA("Image//tile2_hero.tga");
 	meshList[GEO_TILETREE] = MeshBuilder::Generate2DMesh("GEO_TILETREE", Color(1, 1, 1), 0, 0, 1, 1);
@@ -200,7 +202,7 @@ void CSceneHub::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	Vector3 prevHeroPos = Vector3(theHero->GetPos_x(), theHero->GetPos_y());
+	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 	// Update the hero
 	if (Application::IsKeyPressed('W'))
 		this->theHero->MoveUpDown(true, dt, m_cMap);
@@ -213,7 +215,7 @@ void CSceneHub::Update(double dt)
 	/*if (Application::IsKeyPressed(' '))
 	this->theHero->SetToJumpUpwards(true);*/
 	// Update Hero animation counter if hero moved
-	if (prevHeroPos != Vector3(theHero->GetPos_x(), theHero->GetPos_y()))
+	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 	{
 		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
 		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
@@ -257,8 +259,8 @@ void CSceneHub::Update(double dt)
 	// Update the enemies
 	for (int i = 0; i < theEnemies.size(); i++)
 	{
-		int theDestination_x = theHero->GetPos_x() + theHero->GetMapOffset_x();
-		int theDestination_y = theHero->GetPos_y() - theHero->GetMapOffset_y();
+		int theDestination_x = theHero->getPositionX() + theHero->GetMapOffset_x();
+		int theDestination_y = theHero->getPositionY() - theHero->GetMapOffset_y();
 		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
 		theEnemies[i]->Update(m_cMap);
 	}
@@ -329,7 +331,12 @@ void CSceneHub::Render()
 {
 	sceneManager2D.Render();
 
-	sceneManager2D.RenderBackground();
+	sceneManager2D.modelStack.PushMatrix();
+
+	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+
+
+	//sceneManager2D.RenderBackground();
 
 	// Render the rear tile map
 	RenderRearTileMap();
@@ -346,9 +353,11 @@ void CSceneHub::Render()
 
 	for (int i = 0; i < theDoor.size(); i++)
 	{
+		if (loadGame1 == false)
 		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
 	}
-	
+
+	sceneManager2D.modelStack.PopMatrix();
 
 	//On screen text
 	std::ostringstream ss;
@@ -391,39 +400,33 @@ Render the tile map. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneHub::RenderTileMap()
 {
-	int m = 0;
-	int j = 0;
-	for (int i = 0; i < m_cMap->GetNumOfTiles_Height() + 1; i++)
+	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
-		for (int k = 0; k < m_cMap->GetNumOfTiles_Width() + 1; k++)
+		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
-			m = tileOffset_x + k;
-			j = i + tileOffset_y;
-			// If we have reached the right side of the Map, then do not display the extra column of tiles.
-			if ((tileOffset_x + k) >= m_cMap->getNumOfTiles_MapWidth())
-				break;
-			// If we have reached the bottom side of the Map, then do not display the extra row of tiles.
-			if ((i + tileOffset_y) >= m_cMap->getNumOfTiles_MapHeight())
-				break;
-			if (m_cMap->theScreenMap[j][m] == 1)
+			if (m_cMap->theScreenMap[i][k] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILEGROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 2)
+			else if (m_cMap->theScreenMap[i][k] == 2)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILETREE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILETREE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 10)
+			else if (m_cMap->theScreenMap[i][k] == 10)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i *m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 11)
+			else if (m_cMap->theScreenMap[i][k] == 11)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 30)
+			//else if (m_cMap->theScreenMap[i][k] == 30)
+			//{
+			//	sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+			//}
+			else
 			{
-				//sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize() - theHero->GetMapFineOffset_x(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize() + theHero->GetMapFineOffset_y());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
 		}
 	}
@@ -438,22 +441,22 @@ void CSceneHub::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
 	}
 		break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->GetPos_x(), theHero->GetPos_y());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
 	}
 		break;
 	}
@@ -467,13 +470,7 @@ void CSceneHub::RenderAIs()
 	// Render the enemy
 	for (int i = 0; i < theEnemies.size(); i++)
 	{
-		int theEnemy_x = theEnemies[i]->GetPos_x() - theHero->GetMapOffset_x();
-		int theEnemy_y = theEnemies[i]->GetPos_y() + theHero->GetMapOffset_y();
-		if (((theEnemy_x >= 0 - m_cMap->GetTileSize()) && (theEnemy_x < sceneManager2D.m_window_width + m_cMap->GetTileSize())) &&
-			((theEnemy_y >= 0 - m_cMap->GetTileSize()) && (theEnemy_y < sceneManager2D.m_window_height + m_cMap->GetTileSize())))
-		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
-		}
+		sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemies[i]->GetPos_x(), theEnemies[i]->GetPos_y());
 	}
 }
 
@@ -526,6 +523,6 @@ void CSceneHub::RenderWaypoints()
 {
 	for (int i = 0; i < temp.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x, temp.at(i).y);
 	}
 }

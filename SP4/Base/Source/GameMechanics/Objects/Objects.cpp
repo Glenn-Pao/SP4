@@ -139,7 +139,10 @@ void CObjects::setBoundingBox(Vector3 topleft, Vector3 bottomright)
 	if (BoundingBox == NULL)
 		BoundingBox = new CBoundingBox(topleft, bottomright);		
 	else
-		return;
+	{
+		BoundingBox->setTopLeftCorner(topleft);
+		BoundingBox->setBottomRightCorner(bottomright);
+	}
 }
 CBoundingBox* CObjects::getBoundingBox(void)
 {

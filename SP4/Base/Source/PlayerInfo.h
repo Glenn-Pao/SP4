@@ -2,12 +2,12 @@
 #include "Vector2.h"
 #include "Map.h"
 #include "Mesh.h"
-#include "GameMechanics\Objects\BoundingBox.h"
+#include "GameMechanics\Objects\Objects.h"
 
 
 const int TileTypes = 8; // Increase it if more tile types added
 
-class CPlayerInfo
+class CPlayerInfo : public CObjects
 {
 public:
 	CPlayerInfo(void);
@@ -52,8 +52,6 @@ public:
 	};
 	Mesh* meshList[NUM_GEOMETRY];
 
-	// Initialise this class instance
-	void Init(void);
 	// Returns true if the player is on ground
 	bool isOnGround(void);
 	// Returns true if the player is jumping upwards
@@ -66,10 +64,6 @@ public:
 	void SetToJumpUpwards(bool isOnJumpUpwards);
 	// Stop the player's movement
 	void SetToStop(void);
-	// Set position x of the player
-	void SetPos_x(int pos_x);
-	// Set position y of the player
-	void SetPos_y(int pos_y);
 	// Set Jumpspeed of the player
 	void SetJumpspeed(int jumpspeed);
 
@@ -77,10 +71,6 @@ public:
 	void MoveUpDown(const bool mode, const float timeDiff, CMap* m_cMap);
 	void MoveLeftRight(const bool mode, const float timeDiff, CMap* m_cMap);
 
-	// Get position x of the player
-	int GetPos_x(void);
-	// Get position y of the player
-	int GetPos_y(void);
 	// Get Jumpspeed of the player
 	int GetJumpspeed(void);
 	// Get mapOffset_x
@@ -91,10 +81,6 @@ public:
 	void SetMapOffset_x(int mapOffset_x){ this->mapOffset_x = mapOffset_x; };
 	// Set mapOffset_y
 	void SetMapOffset_y(int mapOffset_y){ this->mapOffset_y = mapOffset_y; };
-	// Get mapFineOffset_x
-	int GetMapFineOffset_x(void);
-	// Get mapFineOffset_y
-	int GetMapFineOffset_y(void);
 
 	// Get movement speed
 	float GetMovementSpeed(void){ return movementSpeed; };
@@ -141,10 +127,8 @@ public:
 	// Write the file and store variables
 	void writeToFile();
 
-	CBoundingBox* getBoundingBox(){ return this->BoundingBox; };
 private:
 	// Hero's information
-	Vector2 theHeroPosition;
 	int jumpspeed;
 	float movementSpeed;
 	bool hero_inMidAir_Up;
@@ -156,14 +140,10 @@ private:
 
 	// For scrolling.
 	int mapOffset_x, mapOffset_y;
-	int mapFineOffset_x, mapFineOffset_y;
 
 
 	// For tile checking
 	int tileCollided[TileTypes];
-
-
-	CBoundingBox* BoundingBox;	//the bounding box of the player
 
 	// For collision
 	float leftCollision, rightCollision, topCollision, bottomCollision;

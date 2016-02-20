@@ -179,7 +179,7 @@ void CSceneManager2D::Render2DMesh(Mesh *mesh, bool enableLight, int sizeX, int 
 		viewStack.PushMatrix();
 			viewStack.LoadIdentity();
 			modelStack.PushMatrix();
-				modelStack.LoadIdentity();
+				//modelStack.LoadIdentity();
 				modelStack.Translate( (float)x, (float)y, 0);
 				modelStack.Scale((float)sizeX, (float)sizeY, 0);
 

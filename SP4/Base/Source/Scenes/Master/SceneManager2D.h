@@ -51,6 +51,7 @@ public:
 	int m_window_width;
 	int m_window_height;
 
+	MS modelStack;
 private:
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
@@ -60,7 +61,6 @@ private:
 
 	float rotateAngle;
 
-	MS modelStack;
 	MS viewStack;
 	MS projectionStack;
 };

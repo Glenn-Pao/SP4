@@ -9,9 +9,6 @@ CPlayerInfo::CPlayerInfo(void)
 	, jumpspeed(0)
 	, mapOffset_x(0)
 	, mapOffset_y(0)
-	, mapFineOffset_x(0)
-	, mapFineOffset_y(0)
-	, BoundingBox(NULL)
 	, leftCollision(0)
 	, rightCollision(0)
 	, topCollision(0)
@@ -35,10 +32,6 @@ CPlayerInfo::CPlayerInfo(void)
 	{
 		meshList[i] = NULL;
 	}
-
-	theHeroPosition.Set(0, 0);
-
-	BoundingBox = new CBoundingBox();
 }
 
 CPlayerInfo::~CPlayerInfo(void)
@@ -51,18 +44,8 @@ CPlayerInfo::~CPlayerInfo(void)
 			meshList[i] = NULL;
 		}
 	}
-	if (BoundingBox)
-	{
-		delete BoundingBox;
-	}
 }
 
-// Initialise this class instance
-void CPlayerInfo::Init(void)
-{
-	theHeroPosition.x = 0;
-	theHeroPosition.y = 0;
-}
 
 // Returns true if the player is on ground
 bool CPlayerInfo::isOnGround(void)
@@ -113,18 +96,6 @@ void CPlayerInfo::SetToJumpUpwards(bool isOnJumpUpwards)
 	}
 }
 
-// Set position x of the player
-void CPlayerInfo::SetPos_x(int pos_x)
-{
-	theHeroPosition.x = pos_x;
-}
-
-// Set position y of the player
-void CPlayerInfo::SetPos_y(int pos_y)
-{
-	theHeroPosition.y = pos_y;
-}
-
 // Set Jumpspeed of the player
 void CPlayerInfo::SetJumpspeed(int jumpspeed)
 {
@@ -146,27 +117,27 @@ void CPlayerInfo::MoveUpDown(const bool mode, const float timeDiff, CMap* m_cMap
 {
 	if (mode)
 	{
-		theHeroPosition.y += (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+		setPositionY(getPositionY() + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 		// Animation
 		heroAnimationDirection = UP;
 		// Check Collision
 		switch (CheckCollision(m_cMap))
 		{
 		case 1:
-			theHeroPosition.y -= (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+			setPositionY(getPositionY() - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 			break;
 		}
 	}
 	else
 	{
-		theHeroPosition.y -= (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+		setPositionY(getPositionY() - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 		// Animation
 		heroAnimationDirection = DOWN;
 		// Check Collision
 		switch (CheckCollision(m_cMap))
 		{
 		case 1:
-			theHeroPosition.y += (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+			setPositionY(getPositionY() + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 			break;
 		}
 	}
@@ -179,44 +150,33 @@ void CPlayerInfo::MoveLeftRight(const bool mode, const float timeDiff, CMap* m_c
 {
 	if (mode)
 	{
-		theHeroPosition.x -= (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+		setPositionX(getPositionX() - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 		// Animation
 		heroAnimationDirection = LEFT;
 		// Check Collision
 		switch (CheckCollision(m_cMap))
 		{
 		case 1:
-			theHeroPosition.x += (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+			setPositionX(getPositionX() + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 			break;
 		}
 	}
 	else
 	{
-		theHeroPosition.x += (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+		setPositionX(getPositionX() + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 		// Animation
 		heroAnimationDirection = RIGHT;
 		// Check Collision
 		switch (CheckCollision(m_cMap))
 		{
 		case 1:
-			theHeroPosition.x -= (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
+			setPositionX(getPositionX() - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff));
 			break;
 		}
 	}
 }
 
 
-// Get position x of the player
-int CPlayerInfo::GetPos_x(void)
-{
-	return theHeroPosition.x;
-}
-
-// Get position y of the player
-int CPlayerInfo::GetPos_y(void)
-{
-	return theHeroPosition.y;
-}
 
 // Get Jumpspeed of the player
 int CPlayerInfo::GetJumpspeed(void)
@@ -235,21 +195,10 @@ int CPlayerInfo::GetMapOffset_y(void)
 	return mapOffset_y;
 }
 
-// Get mapFineOffset_x
-int CPlayerInfo::GetMapFineOffset_x(void)
-{
-	return mapFineOffset_x;
-}
-// Get mapFineOffset_y
-int CPlayerInfo::GetMapFineOffset_y(void)
-{
-	return mapFineOffset_y;
-}
-
 // Update Jump Upwards
 void CPlayerInfo::UpdateJumpUpwards()
 {
-	theHeroPosition.y -= jumpspeed;
+	//getPositionY() -= jumpspeed;
 	jumpspeed -= 1;
 	if (jumpspeed == 0)
 	{
@@ -261,7 +210,7 @@ void CPlayerInfo::UpdateJumpUpwards()
 // Update FreeFall
 void CPlayerInfo::UpdateFreeFall()
 {
-	theHeroPosition.y += jumpspeed;
+	//getPositionY() += jumpspeed;
 	jumpspeed += 1;
 }
 
@@ -270,7 +219,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 	const int topBorder, const int bottomBorder,
 	float timeDiff, CMap* m_cMap)
 {
-	if (theHeroPosition.x < leftBorder)
+	if (getPositionX() - mapOffset_x < leftBorder)
 	{
 		mapOffset_x = mapOffset_x - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		if (mapOffset_x < 0)
@@ -279,10 +228,10 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			theHeroPosition.x = leftBorder;
+			//getPositionX() = leftBorder;
 		}
 	}
-	else if (theHeroPosition.x > rightBorder)
+	else if (getPositionX() - mapOffset_x > rightBorder)
 	{
 		mapOffset_x = mapOffset_x + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
@@ -292,11 +241,11 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			theHeroPosition.x = rightBorder;
+			//getPositionX() = rightBorder;
 		}
 	}
 
-	if (theHeroPosition.y < topBorder)
+	if (getPositionY() + mapOffset_y < topBorder)
 	{
 		mapOffset_y = mapOffset_y + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
@@ -306,10 +255,10 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			theHeroPosition.y = topBorder;
+			//getPositionY() = topBorder;
 		}
 	}
-	else if (theHeroPosition.y > bottomBorder)
+	else if (getPositionY() + mapOffset_y > bottomBorder)
 	{
 		mapOffset_y = mapOffset_y - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		if (mapOffset_y < m_cMap->GetTileSize())
@@ -318,7 +267,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			theHeroPosition.y = bottomBorder;
+			//getPositionY() = bottomBorder;
 		}
 	}
 }
@@ -338,19 +287,19 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 	else if (hero_inMidAir_Up == true && hero_inMidAir_Down == false)
 	{
 	// Check if the hero can move up into mid air...
-	int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
-	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y + m_cMap->GetTileSize() + jumpspeed) / m_cMap->GetTileSize());
+	int checkPosition_X = (int) ((mapOffset_x+getPositionX()) / m_cMap->GetTileSize());
+	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (getPositionY() + m_cMap->GetTileSize() + jumpspeed) / m_cMap->GetTileSize());
 	if ( (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1) ||
 	(m_cMap->theScreenMap[checkPosition_Y][checkPosition_X+1] == 1) )
 	{
 	// Since the new position does not allow the hero to move into, then go back to the old position
-	theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
+	getPositionY() = ((int) (getPositionY() / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
 	hero_inMidAir_Up = false;
 	jumpspeed = 0;
 	}
 	else
 	{
-	theHeroPosition.y += jumpspeed;
+	getPositionY() += jumpspeed;
 	jumpspeed -= 1;
 	if (jumpspeed == 0)
 	{
@@ -362,12 +311,12 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 	else if (hero_inMidAir_Up == false && hero_inMidAir_Down == true)
 	{
 	// Check if the hero is still in mid air...
-	int checkPosition_X = (int) ((mapOffset_x+theHeroPosition.x) / m_cMap->GetTileSize());
+	int checkPosition_X = (int) ((mapOffset_x+getPositionX()) / m_cMap->GetTileSize());
 	if (checkPosition_X < 0)
 	checkPosition_X = 0;
 	if (checkPosition_X > m_cMap->getNumOfTiles_MapWidth())
 	checkPosition_X = m_cMap->getNumOfTiles_MapWidth();
-	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (theHeroPosition.y - jumpspeed) / m_cMap->GetTileSize());
+	int checkPosition_Y = m_cMap->GetNumOfTiles_Height() - (int) ceil( (float) (getPositionY() - jumpspeed) / m_cMap->GetTileSize());
 	if (checkPosition_Y < 0)
 	checkPosition_Y = 0;
 	if (checkPosition_Y > m_cMap->GetNumOfTiles_Height())
@@ -375,13 +324,13 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 	if (m_cMap->theScreenMap[checkPosition_Y][checkPosition_X] == 1)
 	{
 	// Since the new position does not allow the hero to move into, then go back to the old position
-	theHeroPosition.y = ((int) (theHeroPosition.y / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
+	getPositionY() = ((int) (getPositionY() / m_cMap->GetTileSize())) * m_cMap->GetTileSize();
 	hero_inMidAir_Down = false;
 	jumpspeed = 0;
 	}
 	else
 	{
-	theHeroPosition.y -= jumpspeed;
+	getPositionY() -= jumpspeed;
 	jumpspeed += 1;
 	}
 	}*/
@@ -391,12 +340,12 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 		timeDiff, m_cMap);
 
 	// Calculate the fine offset
-	mapFineOffset_x = mapOffset_x % m_cMap->GetTileSize();
-	mapFineOffset_y = mapOffset_y % m_cMap->GetTileSize();
+	//mapFineOffset_x = mapOffset_x % m_cMap->GetTileSize();
+	//mapFineOffset_y = mapOffset_y % m_cMap->GetTileSize();
 
 	// Bounding Box
-	BoundingBox->setTopLeftCorner(Vector3(theHeroPosition.x + mapOffset_x + (leftCollision - 0.5) * m_cMap->GetTileSize(), theHeroPosition.y - mapOffset_y + m_cMap->GetTileSize() * (topCollision + 0.5)));
-	BoundingBox->setBottomRightCorner(Vector3(theHeroPosition.x + mapOffset_x + (rightCollision - 0.5) * m_cMap->GetTileSize(), theHeroPosition.y - mapOffset_y + m_cMap->GetTileSize() * (bottomCollision + 0.5)));
+	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5)),
+		Vector3(getPositionX() + (rightCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5)));
 }
 
 /********************************************************************************
@@ -404,10 +353,12 @@ Check what the player if collided with
 ********************************************************************************/
 int CPlayerInfo::CheckCollision(CMap* m_cMap)
 {
-	int checkLeftPosition_X = (int)((mapOffset_x + theHeroPosition.x + leftCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkRightPosition_X = (int)((mapOffset_x + theHeroPosition.x + rightCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + bottomCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + topCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkLeftPosition_X = (int)((getPositionX() + leftCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkRightPosition_X = (int)((getPositionX() + rightCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	/*int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(getPositionY() - mapOffset_y + bottomCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(getPositionY() - mapOffset_y + topCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());*/
+	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(getPositionY() + bottomCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize()) + 1;
+	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(getPositionY() + topCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize()) + 1;
 
 	for (int i = 0; i < TileTypes; i++)
 	{
