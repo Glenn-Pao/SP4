@@ -11,6 +11,11 @@ CPlayerInfo::CPlayerInfo(void)
 	, mapOffset_y(0)
 	, mapFineOffset_x(0)
 	, mapFineOffset_y(0)
+	, BoundingBox(NULL)
+	, leftCollision(0)
+	, rightCollision(0)
+	, topCollision(0)
+	, bottomCollision(0)
 {
 	tileCollided[0] = 1; // Wall
 	tileCollided[1] = 10; // Killzone
@@ -31,6 +36,9 @@ CPlayerInfo::CPlayerInfo(void)
 		meshList[i] = NULL;
 	}
 
+	theHeroPosition.Set(0, 0);
+
+	BoundingBox = new CBoundingBox();
 }
 
 CPlayerInfo::~CPlayerInfo(void)
@@ -42,6 +50,10 @@ CPlayerInfo::~CPlayerInfo(void)
 			delete meshList[i];
 			meshList[i] = NULL;
 		}
+	}
+	if (BoundingBox)
+	{
+		delete BoundingBox;
 	}
 }
 
@@ -381,6 +393,10 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 	// Calculate the fine offset
 	mapFineOffset_x = mapOffset_x % m_cMap->GetTileSize();
 	mapFineOffset_y = mapOffset_y % m_cMap->GetTileSize();
+
+	// Bounding Box
+	BoundingBox->setTopLeftCorner(Vector3(theHeroPosition.x + mapOffset_x + (leftCollision - 0.5) * m_cMap->GetTileSize(), theHeroPosition.y - mapOffset_y + m_cMap->GetTileSize() * (topCollision + 0.5)));
+	BoundingBox->setBottomRightCorner(Vector3(theHeroPosition.x + mapOffset_x + (rightCollision - 0.5) * m_cMap->GetTileSize(), theHeroPosition.y - mapOffset_y + m_cMap->GetTileSize() * (bottomCollision + 0.5)));
 }
 
 /********************************************************************************
@@ -388,10 +404,10 @@ Check what the player if collided with
 ********************************************************************************/
 int CPlayerInfo::CheckCollision(CMap* m_cMap)
 {
-	int checkLeftPosition_X = (int)((mapOffset_x + theHeroPosition.x + 0.1f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkRightPosition_X = (int)((mapOffset_x + theHeroPosition.x + 0.9f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.01f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
-	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + 0.8f * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkLeftPosition_X = (int)((mapOffset_x + theHeroPosition.x + leftCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkRightPosition_X = (int)((mapOffset_x + theHeroPosition.x + rightCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkBottomPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + bottomCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
+	int checkTopPosition_Y = m_cMap->GetNumOfTiles_Height() - (int)ceil((float)(theHeroPosition.y - mapOffset_y + topCollision * m_cMap->GetTileSize()) / m_cMap->GetTileSize());
 
 	for (int i = 0; i < TileTypes; i++)
 	{
@@ -433,4 +449,12 @@ void CPlayerInfo::readFile()
 	// no. of animation counter moving
 	heroAnimationMaxCounter = L.DoLuaInt("animationMaxCounter");
 
+	// Left Collision
+	leftCollision = L.DoLuaFloat("leftCollision");
+	// Right Collision
+	rightCollision = L.DoLuaFloat("rightCollision");
+	// Top Collision
+	topCollision = L.DoLuaFloat("topCollision");
+	// Bottom Collision
+	bottomCollision = L.DoLuaFloat("bottomCollision");
 }

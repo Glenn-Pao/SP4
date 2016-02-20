@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Map.h"
 #include "Mesh.h"
+#include "GameMechanics\Objects\BoundingBox.h"
 
 
 const int TileTypes = 8; // Increase it if more tile types added
@@ -139,6 +140,8 @@ public:
 	void readFile();
 	// Write the file and store variables
 	void writeToFile();
+
+	CBoundingBox* getBoundingBox(){ return this->BoundingBox; };
 private:
 	// Hero's information
 	Vector2 theHeroPosition;
@@ -157,6 +160,11 @@ private:
 
 
 	// For tile checking
-
 	int tileCollided[TileTypes];
+
+
+	CBoundingBox* BoundingBox;	//the bounding box of the player
+
+	// For collision
+	float leftCollision, rightCollision, topCollision, bottomCollision;
 };
