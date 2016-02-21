@@ -58,6 +58,10 @@ private:
 	CDoor* theDoor;
 
 	float timer;
+
+	vector<CObjects*> dialogueTiles;
+
+	string scriptTimeUp, scriptFinished, scriptExit;
 };
 
 #endif
