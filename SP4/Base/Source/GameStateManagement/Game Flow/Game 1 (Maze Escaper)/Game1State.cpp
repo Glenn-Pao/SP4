@@ -3,18 +3,18 @@ using namespace std;
 
 #include "..\..\Master\GameState.h"
 #include "..\..\Master\GameStateManager.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame1.h"
+#include "Game1State.h"
 #include "..\..\Game Flow\Lobby\HubState.h"
 #include "..\..\Game Flow\Lobby\LoadGameSelect.h"
 #include "..\..\Menu Flow\MenuState.h"
 #include "..\..\Menu Flow\PauseState.h"
 
-CTutorialGame1 CTutorialGame1::theTutorialGame1State;
+CGame1State CGame1State::theTutorialGame1State;
 
-void CTutorialGame1::Init(CGameStateManager* theGSM)
+void CGame1State::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Init\n" << endl;
+	cout << "CGame1State::Init\n" << endl;
 #endif
 	counter = 0;
 
@@ -22,17 +22,17 @@ void CTutorialGame1::Init(CGameStateManager* theGSM)
 	scene = new CSceneManager(800, 600);	// Use this for 3D gameplay
 #else
 	//scene = new CSceneManager2D(800, 600);	// Use this for 2D gameplay
-	scene = new CSceneTutorialGame1(800, 600);	// Use this for 2D gameplay
+	scene = new CSceneGame1(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
 	scene->SetHeroOffset();
 	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
-void CTutorialGame1::Init(CGameStateManager* theGSM, const int width, const int height, int level)
+void CGame1State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Init\n" << endl;
+	cout << "CGame1State::Init\n" << endl;
 #endif
 	counter = 0;
 
@@ -40,17 +40,17 @@ void CTutorialGame1::Init(CGameStateManager* theGSM, const int width, const int 
 	scene = new CSceneManager(width, height);	// Use this for 3D gameplay
 #else
 	//scene = new CSceneManager2D(width, height);	// Use this for 2D gameplay
-	scene = new CSceneTutorialGame1(width, height);
+	scene = new CSceneGame1(width, height);
 #endif
 	scene->Init(level);
 	scene->SetHeroOffset();
 	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
-void CTutorialGame1::Cleanup()
+void CGame1State::Cleanup()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Cleanup\n" << endl;
+	cout << "CGame1State::Cleanup\n" << endl;
 #endif
 	// Delete the scene
 	scene->Exit();
@@ -58,17 +58,17 @@ void CTutorialGame1::Cleanup()
 	scene = NULL;
 }
 
-void CTutorialGame1::Pause()
+void CGame1State::Pause()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Pause\n" << endl;
+	cout << "CGame1State::Pause\n" << endl;
 #endif
 }
 
-void CTutorialGame1::Resume()
+void CGame1State::Resume()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Resume\n" << endl;
+	cout << "CGame1State::Resume\n" << endl;
 #endif
 
 	scene->PreInit();
@@ -77,13 +77,13 @@ void CTutorialGame1::Resume()
 #endif
 }
 
-void CTutorialGame1::HandleEvents(CGameStateManager* theGSM)
+void CGame1State::HandleEvents(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame1: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame1State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -100,13 +100,13 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM)
 #endif
 }
 
-void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
+void CGame1State::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
 {
 #if GSM_DEBUG_MODE
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame1: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame1State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -149,7 +149,7 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const unsigned char
 #endif
 }
 
-void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
+void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
 	const int button_Left, const int button_Middle, const int button_Right,
 	const int width, const int height)
 {
@@ -157,7 +157,7 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const double mouse_
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame1: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame1State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -174,7 +174,7 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const double mouse_
 #endif
 	switch (scene->currentState)
 	{
-		case CSceneTutorialGame1::COMPLETED:
+		case CSceneGame1::COMPLETED:
 		{
 			if (button_Left == true)
 			{
@@ -183,7 +183,7 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const double mouse_
 			}
 		}
 		break;
-		case CSceneTutorialGame1::TIME_UP:
+		case CSceneGame1::TIME_UP:
 		{
 			if (button_Left == true)
 			{
@@ -248,25 +248,25 @@ void CTutorialGame1::HandleEvents(CGameStateManager* theGSM, const double mouse_
 }
 
 
-void CTutorialGame1::Update(CGameStateManager* theGSM)
+void CGame1State::Update(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame1::Update\n" << endl;
+	cout << "CGame1State::Update\n" << endl;
 #endif
 	// Update the scene
 	scene->Update(0.16667);
 }
 
-void CTutorialGame1::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
+void CGame1State::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
 	// Update the scene
 	scene->Update(m_dElapsedTime);
 }
 
-void CTutorialGame1::Draw(CGameStateManager* theGSM)
+void CGame1State::Draw(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	//cout << "CTutorialGame1::Draw : " << counter << "\n" << endl;
+	//cout << "CGame1State::Draw : " << counter << "\n" << endl;
 #endif
 
 	// Render the scene

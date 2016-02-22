@@ -2,7 +2,7 @@
 
 #include "..\..\Master\GameState.h"
 #include "..\..\Base\Source\Scenes\Master\SceneManager.h"
-#include "..\..\Base\Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.h"
+#include "..\..\Base\Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h"
 #include "timer.h"
 
 //Include GLEW
@@ -14,7 +14,7 @@
 #define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
 
 //the tutorial level of game 1, maze escaper solo game
-class CTutorialGame1: public CGameState
+class CGame1State: public CGameState
 {
 public:
 	void Init(CGameStateManager* theGSM);
@@ -33,15 +33,15 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 	short GetStateID() { return stateID; };
-	static CTutorialGame1* Instance() {
+	static CGame1State* Instance() {
 		return &theTutorialGame1State;
 	}
 
 protected:
-	CTutorialGame1() { }
+	CGame1State() { }
 
 private:
-	static CTutorialGame1 theTutorialGame1State;
+	static CGame1State theTutorialGame1State;
 	int counter;
 	short stateID = 12;				//ID of state
 
@@ -55,6 +55,6 @@ private:
 #if TYPE_OF_VIEW == 3
 	CSceneManager *scene;	// Use this for 3D gameplay
 #else
-	CSceneTutorialGame1 *scene;	// Use this for 2D gameplay
+	CSceneGame1 *scene;	// Use this for 2D gameplay
 #endif
 };

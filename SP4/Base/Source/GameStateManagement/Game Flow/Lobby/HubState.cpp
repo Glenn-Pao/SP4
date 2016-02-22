@@ -6,7 +6,7 @@ using namespace std;
 #include "..\..\Menu Flow\MenuState.h"
 #include "HubState.h"
 #include "..\..\Menu Flow\pausestate.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame1.h"
+#include "..\..\Game Flow\Game 1 (Maze Escaper)\Game1State.h"
 #include "..\..\Game Flow\Tutorial Games\TutorialGame2.h"
 #include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
 #include "..\..\Game Flow\Tutorial Games\TutorialGame4.h"
@@ -157,7 +157,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CTutorialGame1::Instance());
+			theGSM->ChangeState(CGame1State::Instance(), 0);
 		}
 		else if (scene->loadGame2)
 		{

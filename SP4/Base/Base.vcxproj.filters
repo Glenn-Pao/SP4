@@ -261,6 +261,12 @@
     <ClCompile Include="Source\GameStateManagement\Menu Flow\MenuState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Game 1 (Maze Escaper)\Game1State.cpp">
+      <Filter>Game State Management\Game Flow\Game 1%28Maze Escaper%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.cpp">
+      <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -534,6 +540,12 @@
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Menu Flow\MenuState.h">
       <Filter>Game State Management\Menu Flow</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Game 1 (Maze Escaper)\Game1State.h">
+      <Filter>Game State Management\Game Flow\Game 1%28Maze Escaper%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h">
+      <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -145,8 +145,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		scene->choice = CSceneLoadGame::LEVEL_ONE;
 		if ((bool)button_Left == true)
 		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
+			//theGSM->m_bHideMouse = true;
+			//theGSM->m_bWarpMouse = true;
 			theGSM->saveAndLoadsys->LoadFile(0);
 			theGSM->ChangeState(CHubState::Instance(), 1);
 		}
