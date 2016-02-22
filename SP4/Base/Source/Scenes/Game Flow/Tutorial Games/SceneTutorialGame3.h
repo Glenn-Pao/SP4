@@ -3,8 +3,8 @@
 
 #include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
-#include "..\..\Base\Source\GameMechanics\Objects\Question.h"
-//#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
+#include "..\..\..\GameMechanics\Objects\Question.h"
+#include "..\..\..\GameMechanics\Objects\Door.h"
 
 class CSceneTutorialGame3 : public CSceneGameBase
 {
@@ -30,6 +30,15 @@ public:
 		WA_CHANGEWEAPON,
 		WA_TOTAL,
 	};
+	enum STATE
+	{
+		PLAYING,
+		EXITING,
+		COMPLETED,
+		FAILED,
+		NUM_OF_STATE
+	};
+	int currentState;
 	void RenderWaypoints();
 private:
 	void InitMeshes();
@@ -38,28 +47,22 @@ private:
 	// Hero's information
 	void RenderHero();
 
-	// Codes for Scrolling
-	//int tileOffset_x, tileOffset_y;
-
-	void RenderRearTileMap();
-	//int rearWallOffset_x, rearWallOffset_y;
-	//int rearWallTileOffset_x, rearWallTileOffset_y;
-	//int rearWallFineOffset_x, rearWallFineOffset_y;
+	void RenderRearTileMap(){}
 
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
-
-	// Goodies and Goodies Factory
-	//CGoodiesFactory theGoodiesFactory;
-	//CGoodies** theArrayOfGoodies;
-	void RenderGoodies(void);
+	void RenderGUI();	//the game interface
 
 	//Questions
 	vector<CQuestion*>theQuestions;
 
+	//Door
+	CDoor* theDoor;
+
 	CSceneManager2D sceneManager2D;	
 	int count;
+	int lives;		//number of lives available to player
 };
 
 #endif

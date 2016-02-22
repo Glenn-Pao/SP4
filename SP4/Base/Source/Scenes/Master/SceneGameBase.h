@@ -43,6 +43,7 @@ public:
 		GEO_TILE_DOOR,
 		GEO_TILE_QN,
 		GEO_OBJECT,
+		GEO_HEART,
 		NUM_GEOMETRY,
 	};
 public:

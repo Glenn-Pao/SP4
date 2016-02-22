@@ -4,6 +4,7 @@ using namespace std;
 #include "..\..\Master\GameState.h"
 #include "..\..\Master\GameStateManager.h"
 #include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
+#include "..\..\Game Flow\Lobby\HubState.h"
 //#include "LoadGameSelect.h"
 #include "..\..\Menu Flow\MenuState.h"
 #include "..\..\Menu Flow\PauseState.h"
@@ -223,6 +224,27 @@ void CTutorialGame3::HandleEvents(CGameStateManager* theGSM, const double mouse_
 		break;
 	}
 #endif
+	switch (scene->currentState)
+	{
+	case CSceneTutorialGame3::COMPLETED:
+	{
+		if (button_Left == true)
+		{
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	case CSceneTutorialGame3::FAILED:
+	{
+		if (button_Left == true)
+		{
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	}
 }
 
 
