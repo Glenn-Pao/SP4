@@ -82,6 +82,15 @@ void CObjects::setPositionX(float x)
 {
 	position.x = x;
 }
+//set and get the default position of the entity
+void CObjects::setDefaultPosition(Vector3 defaultPos)
+{
+	this->defaultPos = defaultPos;
+}
+Vector3 CObjects::getDefaultPosition(void)
+{
+	return defaultPos;
+}
 float CObjects::getPositionX(void)
 {
 	return position.x;
@@ -95,6 +104,42 @@ float CObjects::getPositionY(void)
 {
 	return position.y;
 }
+//set and get the rotation of the entity
+void CObjects::setRotatation(Vector3 rotate)
+{
+	this->rotate = rotate;
+}
+Vector3 CObjects::getRotatation(void)
+{
+	return rotate;
+}
+//set and get the default rotation of the entity
+void CObjects::setDefaultRotatation(Vector3 defaultRot)
+{
+	this->defaultRot = defaultRot;
+}
+Vector3 CObjects::getDefaultRotatation(void)
+{
+	return defaultRot;
+}
+//set and get the rotation X of the entity
+void CObjects::setRotatationX(float x)
+{
+	rotate.x = x;
+}
+float CObjects::getRotatationX(void)
+{
+	return rotate.x;
+}
+//set and get the rotation X of the entity
+void CObjects::setRotatationY(float y)
+{
+	rotate.y = y;
+}
+float CObjects::getRotatationY(void)
+{
+	return rotate.y;
+}
 //set and get the scale of the entity
 void CObjects::setScale(Vector3 scale)
 {
@@ -103,6 +148,15 @@ void CObjects::setScale(Vector3 scale)
 Vector3 CObjects::getScale()
 {
 	return scale;
+}
+//set and get the default scale of the entity
+void CObjects::setDefaultScale(Vector3 defaultScale)
+{
+	this->defaultScale = defaultScale;
+}
+Vector3 CObjects::getDefaultScale(void)
+{
+	return defaultScale;
 }
 //set and get the scale X of entity
 void CObjects::setScaleX(float x)

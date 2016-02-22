@@ -9,17 +9,18 @@
 #include <sstream>
 #include "..\..\Base\Source\Strategy_Kill.h"
 
-extern "C" {
-#include "..\..\..\Lua\lua.h"
-#include "..\..\..\Lua\lualib.h"
-#include "..\..\..\Lua\lauxlib.h"
-}
+#include "..\..\..\UsingLua.h"
 
 CSceneTutorialGame3::CSceneTutorialGame3(const int m_window_width, const int m_window_height)
 	: theDoor(NULL)
 	, currentState(PLAYING)
 	, lives(3)
-	, count(0)
+	, Qcount(0)
+	, Acount(0)
+	, scriptCorrect("")
+	, scriptExit("")
+	, scriptFinished("")
+	, scriptWrong("")
 {
 }
 
@@ -37,6 +38,15 @@ CSceneTutorialGame3::~CSceneTutorialGame3()
 	{
 		delete theDoor;
 	}
+	// Dialogues tiles
+	for (int i = 0; i < dialogueTiles.size(); i++)
+	{
+		if (dialogueTiles[i])
+		{
+			delete dialogueTiles[i];
+			dialogueTiles[i] = NULL;
+		}
+	}
 }
 
 void CSceneTutorialGame3::Init(int level)
@@ -44,24 +54,27 @@ void CSceneTutorialGame3::Init(int level)
 	// Init the base scene
 	sceneManager2D.Init(level);
 
-	lua_State *L = lua_open();
-
 	//Read a value from the lua text file
-	luaL_openlibs(L);
+	UseLuaFiles L;
 
-	if (luaL_loadfile(L, "Lua//scenePlay2D.lua") || lua_pcall(L, 0, 0, 0))
+	L.ReadFiles("Lua//Scene/Game3/tutorial.lua");
+
+	int tileSize = L.DoLuaInt("tileSize");
+	scriptWrong = L.DoLuaString("scriptWrong");
+	scriptCorrect = L.DoLuaString("scriptCorrect");
+	scriptFinished = L.DoLuaString("scriptFinished");
+	scriptExit = L.DoLuaString("scriptExit");
+
+	// Dialogues scripts
+	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
+	for (int i = 0; i < 3; i++)
 	{
-		printf("error: %s", lua_tostring(L, -1));
+		scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
+		AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn1Type" + to_string(i)));
+		AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn2Type" + to_string(i)));
 	}
-
-	// Fullscreen
-	lua_getglobal(L, "tileSize");
-	if (!lua_isnumber(L, -1)) {
-		printf("`tileSize' should be a number\n");
-	}
-	int tileSize = (int)lua_tointeger(L, -1);
-
-	lua_close(L);
+	QnDialogue.push_back(L.DoLuaString("scriptQn1"));
+	QnDialogue.push_back(L.DoLuaString("scriptQn2"));
 
 	// Initialise and load the tile map
 	m_cMap = new CMap();
@@ -94,15 +107,47 @@ void CSceneTutorialGame3::Init(int level)
 			// Questions
 			else if (m_cMap->theScreenMap[i][k] == 41)
 			{
-				theQuestions.push_back(new CQuestion());
-				theQuestions.back()->setID(count);
-				theQuestions.back()->setActive(true);
-				theQuestions.back()->setInteractivity(true);
-				theQuestions.back()->setPositionX(k*m_cMap->GetTileSize());
-				theQuestions.back()->setPositionY(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
-				theQuestions.back()->setScale(Vector3(tileSize, tileSize, 1));
-				theQuestions.back()->setBoundingBox(Vector3((theQuestions.back()->getPosition().x - (theQuestions.back()->getScale().x * 1.5)), (theQuestions.back()->getPosition().y + (theQuestions.back()->getScale().y * 1.5)), 0), Vector3((theQuestions.back()->getPosition().x + (theQuestions.back()->getScale().x * 1.5)), (theQuestions.back()->getPosition().y - (theQuestions.back()->getScale().y * 1.5)), 0));
-				count++;
+				theQuestions.push_back(new CQuestion(Qcount, false, true, QnDialogue[Qcount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
+				Qcount++;
+			}
+			// Possible answers
+			else if (m_cMap->theScreenMap[i][k] == 42)
+			{
+				theAnswers.push_back(new CAnswer(Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
+				Acount++;
+			}
+			// Dialogue script 1
+			else if (m_cMap->theScreenMap[i][k] == 49)
+			{
+				float pos_x = k*m_cMap->GetTileSize();
+				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
+				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
+			}
+			// Dialogue script 2
+			else if (m_cMap->theScreenMap[i][k] == 47)
+			{
+				float pos_x = k*m_cMap->GetTileSize();
+				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[1], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
+				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
+			}
+			// Dialogue script 3
+			else if (m_cMap->theScreenMap[i][k] == 48)
+			{
+				float pos_x = k*m_cMap->GetTileSize();
+				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
+				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 		}
 	}
@@ -151,6 +196,8 @@ void CSceneTutorialGame3::InitMeshes()
 	meshList[GEO_TILE_QN]->textureID = LoadTGA("Image//tile41_qn.tga");
 	meshList[GEO_HEART] = MeshBuilder::Generate2DMesh("GEO_HEART", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_HEART]->textureID = LoadTGA("Image//heart.tga");
+	meshList[GEO_TILE_ANS] = MeshBuilder::Generate2DMesh("GEO_TILE_ANS", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_ANS]->textureID = LoadTGA("Image//tile42_ans.tga");
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -220,18 +267,40 @@ void CSceneTutorialGame3::Update(double dt)
 		theHero->SetAnimationCounter(0);
 	}
 	theHero->HeroUpdate(m_cMap, dt);
+	// Dialogues tiles
+	for (int i = 0; i < dialogueTiles.size(); i++)
+	{
+		if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			dialogueTiles[i]->setActive(true);
+		}
+		else
+		{
+			dialogueTiles[i]->setActive(false);
+		}
+	}
 	for (int i = 0; i < theQuestions.size(); i++)
 	{
 		if (theQuestions[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			cout << "Collide" << endl;
+			theQuestions[i]->setActive(true);
 		}
 		else
 		{
-			cout << "No collide" << endl;
+			theQuestions[i]->setActive(false);
 		}
 	}
-	
+	for (int i = 0; i < theAnswers.size(); i++)
+	{
+		if (theAnswers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			theAnswers[i]->setActive(true);
+		}
+		else
+		{
+			theAnswers[i]->setActive(false);
+		}
+	}
 }
 
 /********************************************************************************
@@ -320,6 +389,10 @@ void CSceneTutorialGame3::RenderTileMap()
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
+			else if (m_cMap->theScreenMap[i][k] == 42)
+			{
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+			}
 			else
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
@@ -369,6 +442,46 @@ void CSceneTutorialGame3::RenderGUI()
 	ss.precision(3);
 	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+
+	for (int i = 0; i < dialogueTiles.size(); i++)
+	{
+		if (dialogueTiles[i]->getActive())
+		{
+			// Dialogue box
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+
+			// Text
+			int textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			break;
+		}
+	}
+	for (int i = 0; i < theQuestions.size(); i++)
+	{
+		if (theQuestions[i]->getActive())
+		{
+			// Dialogue box
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+
+			// Text
+			int textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			break;
+		}
+	}
+	for (int i = 0; i < theAnswers.size(); i++)
+	{
+		if (theAnswers[i]->getActive())
+		{
+			// Dialogue box
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+
+			// Text
+			int textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			break;
+		}
+	}
 
 	for (int i = 0; i < lives; i++)
 	{

@@ -4,6 +4,7 @@
 #include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\..\GameMechanics\Objects\Question.h"
+#include "..\..\..\GameMechanics\Objects\Answer.h"
 #include "..\..\..\GameMechanics\Objects\Door.h"
 
 class CSceneTutorialGame3 : public CSceneGameBase
@@ -57,12 +58,21 @@ private:
 	//Questions
 	vector<CQuestion*>theQuestions;
 
+	//Answers
+	vector<CAnswer*>theAnswers;
+
+	//tutorial dialogues
+	vector<CObjects*> dialogueTiles;
+
 	//Door
 	CDoor* theDoor;
 
 	CSceneManager2D sceneManager2D;	
-	int count;
+	int Qcount;	//number of questions
+	int Acount;		//number of answers
 	int lives;		//number of lives available to player
+
+	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
 };
 
 #endif

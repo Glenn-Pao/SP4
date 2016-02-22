@@ -1,10 +1,10 @@
-#include "Question.h"
+#include "Answer.h"
 
 
-CQuestion::CQuestion()
+CAnswer::CAnswer()
 {
 }
-CQuestion::CQuestion(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
+CAnswer::CAnswer(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
 {
 	this->id = id;
 	this->setActive(active);
@@ -26,15 +26,15 @@ CQuestion::CQuestion(int id, bool active, bool interactable, std::string dialogu
 	setBoundingBox(topleft, bottomright);
 }
 
-CQuestion::~CQuestion()
+CAnswer::~CAnswer()
 {
 }
 //set and get the id number of the object
-void CQuestion::setID(int id)
+void CAnswer::setID(int id)
 {
 	this->id = id;
 }
-int CQuestion::getID(void)
+int CAnswer::getID(void)
 {
 	return id;
 }

@@ -48,6 +48,10 @@ public:
 	void setPosition(Vector3);
 	Vector3 getPosition(void);
 
+	//set and get the default position of the entity
+	void setDefaultPosition(Vector3);
+	Vector3 getDefaultPosition(void);
+
 	//set and get the position X of the entity
 	void setPositionX(float);
 	float getPositionX(void);
@@ -56,9 +60,29 @@ public:
 	void setPositionY(float);
 	float getPositionY(void);
 
+	//set and get the rotation of the entity
+	void setRotatation(Vector3);
+	Vector3 getRotatation(void);
+
+	//set and get the default rotation of the entity
+	void setDefaultRotatation(Vector3);
+	Vector3 getDefaultRotatation(void);
+
+	//set and get the rotation X of the entity
+	void setRotatationX(float);
+	float getRotatationX(void);
+
+	//set and get the rotation X of the entity
+	void setRotatationY(float);
+	float getRotatationY(void);
+
 	//set and get the scale of the entity
 	void setScale(Vector3);
 	Vector3 getScale(void);
+
+	//set and get the default scale of the entity
+	void setDefaultScale(Vector3);
+	Vector3 getDefaultScale(void);
 
 	//set and get the scale X of entity
 	void setScaleX(float);
