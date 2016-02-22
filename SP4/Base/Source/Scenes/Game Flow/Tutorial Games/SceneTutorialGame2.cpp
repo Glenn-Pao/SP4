@@ -49,7 +49,7 @@ void CSceneTutorialGame2::Init(int level)
 
 	// Initialise and load the tile map
 	m_cMap = new CMap();
-	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
+	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 18 * tileSize, 25 * tileSize, tileSize);
 	m_cMap->LoadMap("Image//Maps//Game 2/Tutorial.csv");
 
 	//initialise the waypoints
@@ -68,6 +68,8 @@ void CSceneTutorialGame2::Init(int level)
 	m_cMinimap->GetBackground()->textureID = LoadTGA("Image//grass_darkgreen.tga");
 	m_cMinimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MINIMAPBORDER", Color(1, 1, 0), 1.f));
 	m_cMinimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MINIMAPAVATAR", Color(1, 1, 0), 1.f));
+
+	
 
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
@@ -89,7 +91,7 @@ void CSceneTutorialGame2::Init(int level)
 				theEnemies.back()->ChangeStrategy(NULL, false);
 				theEnemies.back()->SetPos_x(k*m_cMap->GetTileSize());
 				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
-			}
+			}			
 		}
 	}
 	// Jellybeans
@@ -106,6 +108,48 @@ void CSceneTutorialGame2::Init(int level)
 	theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1, 1, 1), 0, 0, 1, 1));
 	theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//tile4_treasurechest.tga"));
 	}*/
+	//GreyDoors.push_back(new CDoor(0, Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(50, 50, 0), meshList[GEO_TILE_DOOR]));
+	//GreyDoors.push_back(new CDoor(0, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+
+	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
+	{
+		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
+		{
+			int TSize_x = k*m_cMap->GetTileSize();
+			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+			if (m_cMap->theScreenMap[i][k] == 33)
+			{
+				GreyDoors.push_back(new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
+				GreyDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 37)
+			{
+				ColoursSet.push_back(new CColour("BLUE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 35)
+			{
+				greenDoor = new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_GREEN_DOOR]);
+				greenDoor->setActive(true);
+				greenDoor->setDoorType("COLOURED", "GREEN");
+			}
+			else if (m_cMap->theScreenMap[i][k] == 34)
+			{
+				BlueDoors.push_back(new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_BLUE_DOOR]));
+				BlueDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 38)
+			{
+				ColoursSet.push_back(new CColour("YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
+				ColoursSet.back()->setActive(true);
+			}
+		}
+	}
+
+	hasBlue = hasYellow = false;
+	castedBlue = castedYellow = castedGreen = false;
+
+	prevHeroPos.SetZero();
 }
 
 void CSceneTutorialGame2::PreInit()
@@ -125,16 +169,28 @@ void CSceneTutorialGame2::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_TILEGROUND] = MeshBuilder::Generate2DMesh("GEO_TILEGROUND", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEGROUND]->textureID = LoadTGA("Image//tile1_ground.tga");
 	meshList[GEO_TILEHERO] = MeshBuilder::Generate2DMesh("GEO_TILEHERO", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILEHERO]->textureID = LoadTGA("Image//tile2_hero.tga");
-	meshList[GEO_TILETREE] = MeshBuilder::Generate2DMesh("GEO_TILETREE", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILETREE]->textureID = LoadTGA("Image//tile3_tree.tga");
 	meshList[GEO_TILESTRUCTURE] = MeshBuilder::Generate2DMesh("GEO_TILESTRUCTURE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
 	meshList[GEO_TILE_DOOR] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
+	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
+	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_GROUND]->textureID = LoadTGA("Image//Tile/ground.tga");
+	/*GEO_COLOUR_BALL_BLUE,
+		GEO_COLOUR_BALL_YELLOW,
+		GEO_COLOUR_BALL_RED,
+		GEO_COLOUR_BALL_ORANGE,*/
+	meshList[GEO_COLOUR_BALL_BLUE] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_BLUE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_COLOUR_BALL_BLUE]->textureID = LoadTGA("Image//Tile/tile37_BlueBall.tga");
+	meshList[GEO_COLOUR_BALL_YELLOW] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_YELLOW", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_COLOUR_BALL_YELLOW]->textureID = LoadTGA("Image//Tile/tile38_YellowBall.tga");
+	meshList[GEO_GREEN_DOOR] = MeshBuilder::Generate2DMesh("GEO_GREEN_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_GREEN_DOOR]->textureID = LoadTGA("Image//Tile/tile35_GreenDoor.tga");
+	meshList[GEO_BLUE_DOOR] = MeshBuilder::Generate2DMesh("GEO_BLUE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_BLUE_DOOR]->textureID = LoadTGA("Image//Tile/tile34_BlueDoor.tga");
 
 	// Hero
 	// Side
@@ -182,7 +238,7 @@ void CSceneTutorialGame2::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
+	prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 	// Update the hero
 	if (Application::IsKeyPressed('W'))
 		this->theHero->MoveUpDown(true, dt, m_cMap);
@@ -195,6 +251,20 @@ void CSceneTutorialGame2::Update(double dt)
 	/*if (Application::IsKeyPressed(' '))
 	this->theHero->SetToJumpUpwards(true);*/
 	// Update Hero animation counter if hero moved
+	if (Application::IsKeyPressed('Q') && hasBlue)
+		castedBlue = true;
+
+	if (castedBlue)
+	{
+		if (Application::IsKeyPressed('E') && hasYellow)
+			castedYellow = true;
+	}
+	if (castedBlue && castedYellow)
+	{
+		if (Application::IsKeyPressed(' '))
+			castedGreen = true;
+	}
+
 	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 	{
 		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
@@ -244,6 +314,51 @@ void CSceneTutorialGame2::Update(double dt)
 		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
 		theEnemies[i]->Update(m_cMap);
 	}
+
+	//Doors
+	for (int i = 0; i < GreyDoors.size(); i++)
+	{
+		if (GreyDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			GreyDoors[i]->setActive(false);
+		}
+	}
+
+	if (greenDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+	{
+		if (castedGreen)
+			greenDoor->setActive(false);
+		else
+			theHero->setPosition(prevHeroPos);
+
+	}
+
+	for (int i = 0; i < BlueDoors.size(); i++)
+	{
+		if (BlueDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+
+			if (castedBlue)
+				BlueDoors[i]->setActive(false);
+			else
+				theHero->setPosition(prevHeroPos);
+		}
+	}
+
+	//Loop that settles colours
+	for (int i = 0; i < ColoursSet.size(); i++)
+	{
+		if (ColoursSet[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			if (ColoursSet[i]->getColour() == "BLUE")
+				hasBlue = true;
+			if (ColoursSet[i]->getColour() == "YELLOW")
+				hasYellow = true;
+
+			ColoursThePlayerHas.push_back(ColoursSet[i]->getColour());
+			ColoursSet[i]->setActive(false);
+		}
+	}
 }
 
 /********************************************************************************
@@ -275,8 +390,12 @@ void CSceneTutorialGame2::Render()
 {
 	sceneManager2D.Render();
 
-	sceneManager2D.RenderBackground();
+	sceneManager2D.modelStack.PushMatrix();
 
+	//sceneManager2D.RenderBackground();
+
+	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	
 	// Render the rear tile map
 	RenderRearTileMap();
 	// Render the tile map
@@ -289,13 +408,16 @@ void CSceneTutorialGame2::Render()
 	//RenderWaypoints();
 	// Render the goodies
 	//RenderGoodies();
+	RenderObjects();
+
+	sceneManager2D.modelStack.PopMatrix();
 
 	//On screen text
 	std::ostringstream ss;
-	ss.precision(5);
-	//ss << "theEnemy: " << theEnemy->GetPos_x() << ", " << theEnemy->GetPos_y();
-	ss << "theEnemiesLeft: " << theEnemies.size();
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+	//ss.precision(5);
+	////ss << "theEnemy: " << theEnemy->GetPos_x() << ", " << theEnemy->GetPos_y();
+	//ss << "theEnemiesLeft: " << theEnemies.size();
+	//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
 	ss.str(std::string());
 	ss.precision(5);
 	ss << "mapOffset_x: " << theHero->GetMapOffset_x();
@@ -306,6 +428,29 @@ void CSceneTutorialGame2::Render()
 	ss.precision(3);
 	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+
+	/*if (ColoursThePlayerHas.size() > 0){
+		ss.str(std::string());
+		ss.precision(3);
+		ss << "Colours: " << ColoursThePlayerHas.back();
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+	}*/
+
+	std::string castedColour = "";
+	ss.str(std::string());
+	if (castedBlue && !castedYellow)
+		castedColour += "Blue";
+	/*else if (castedYellow )
+		castedColour += "Yellow";*/
+
+	else if (castedGreen)
+		castedColour += "Green";
+	else if (castedBlue && castedYellow)
+		castedColour += "Blue and Yellow";
+	
+	ss << "Casted colour: " << castedColour;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+
 }
 
 /********************************************************************************
@@ -331,39 +476,21 @@ Render the tile map. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneTutorialGame2::RenderTileMap()
 {
-	int m = 0;
-	int j = 0;
-	for (int i = 0; i < m_cMap->GetNumOfTiles_Height() + 1; i++)
+	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
-		for (int k = 0; k < m_cMap->GetNumOfTiles_Width() + 1; k++)
+		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
-			m = tileOffset_x + k;
-			j = i + tileOffset_y;
-			// If we have reached the right side of the Map, then do not display the extra column of tiles.
-			if ((tileOffset_x + k) >= m_cMap->getNumOfTiles_MapWidth())
-				break;
-			// If we have reached the bottom side of the Map, then do not display the extra row of tiles.
-			if ((i + tileOffset_y) >= m_cMap->getNumOfTiles_MapHeight())
-				break;
-			if (m_cMap->theScreenMap[j][m] == 1)
+			if (m_cMap->theScreenMap[i][k] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILEGROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 2)
+			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILETREE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 10)
+			else
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
-			}
-			else if (m_cMap->theScreenMap[j][m] == 11)
-			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
-			}
-			else if (m_cMap->theScreenMap[j][m] == 30)
-			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - (i + 1)*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
 		}
 	}
@@ -416,6 +543,29 @@ void CSceneTutorialGame2::RenderAIs()
 		}
 	}
 }
+void CSceneTutorialGame2::RenderObjects()
+{
+	for (int i = 0; i < GreyDoors.size(); i++)
+	{
+		if (GreyDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(GreyDoors[i]->getMesh(), false, GreyDoors[i]->getScale().x, GreyDoors[i]->getScale().y, GreyDoors[i]->getPositionX(), GreyDoors[i]->getPositionY());
+	}
+	for (int i = 0; i < ColoursSet.size(); i++)
+	{
+		if (ColoursSet[i]->getActive())
+			sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, ColoursSet[i]->getScale().x, ColoursSet[i]->getScale().y, ColoursSet[i]->getPositionX(), ColoursSet[i]->getPositionY());
+	}
+
+	for (int i = 0; i < BlueDoors.size(); i++)
+	{
+		if (BlueDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(BlueDoors[i]->getMesh(), false, BlueDoors[i]->getScale().x, BlueDoors[i]->getScale().y, BlueDoors[i]->getPositionX(), BlueDoors[i]->getPositionY());
+	}
+
+	if (greenDoor->getActive())
+		sceneManager2D.Render2DMesh(greenDoor->getMesh(), false, greenDoor->getScale().x, greenDoor->getScale().y, greenDoor->getPositionX(), greenDoor->getPositionY());
+}
+
 
 /********************************************************************************
 Render the rear tile map. This is a private function for use in this class only
@@ -469,3 +619,4 @@ void CSceneTutorialGame2::RenderWaypoints()
 		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
 	}
 }
+

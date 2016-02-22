@@ -4,6 +4,7 @@
 #include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
 //#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
+#include "..\..\Base\Source\GameMechanics\Objects\Door.h"
 
 class CSceneTutorialGame2 : public CSceneGameBase
 {
@@ -30,6 +31,7 @@ public:
 		WA_TOTAL,
 	};
 	void RenderWaypoints();
+	void RenderObjects();
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -55,6 +57,16 @@ private:
 	void RenderGoodies(void);
 
 	CSceneManager2D sceneManager2D;
+	std::vector<CDoor*> GreyDoors;
+	std::vector<CDoor*> BlueDoors;
+	std::vector<CColour*> ColoursSet;
+	std::vector<std::string> ColoursThePlayerHas;
+
+	CDoor* greenDoor;
+	bool hasBlue, hasYellow;
+	bool castedBlue, castedYellow, castedGreen;
+	Vector3 prevHeroPos;
+
 };
 
 #endif
