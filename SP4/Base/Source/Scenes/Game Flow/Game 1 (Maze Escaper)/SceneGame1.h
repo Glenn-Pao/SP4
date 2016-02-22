@@ -54,6 +54,7 @@ private:
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
+	void RenderObjects();
 
 	CDoor* theDoor;
 

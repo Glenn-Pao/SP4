@@ -11,6 +11,8 @@
 
 #include "..\..\..\UsingLua.h"
 
+#include "..\..\..\AI\ProbabilitySystem.h"
+
 CSceneGame1::CSceneGame1(const int m_window_width, const int m_window_height)
 	: theDoor(NULL)
 	, currentState(PLAYING)
@@ -53,10 +55,13 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 
 	// Dialogues scripts
 	vector<string> scriptDialogues;
+
 	switch (level)
 	{
 		case 0:
 		{
+			timer = 30.f;
+
 			for (int i = 0; i < 6; i++)
 			{
 				scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
@@ -68,6 +73,15 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			m_cMap->LoadMap("Image//Maps//Game 1/Tutorial.csv");
 		}
 		break;
+		case 1:
+		{
+			timer = 40.f;
+			// Initialise and load the tile map
+			m_cMap = new CMap();
+			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 31 * tileSize, 30 * tileSize, tileSize);
+			m_cMap->LoadMap("Image//Maps//Game 1/Easy.csv");
+		}
+		break;
 	}
 
 	//initialise the waypoints
@@ -75,6 +89,10 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	waypoints->LoadWaypoints(m_cMap);
 	temp = waypoints->getWaypointsVector();
 
+	// Exit positions
+	vector<Vector3> exitPositions;
+
+	// Check objects' position in the map
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
@@ -173,13 +191,37 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 			}
+			else
+			{
+				// Exit pos
+				if (m_cMap->theScreenMap[i][k] == 110)
+				{
+					// Create a new door
+					exitPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+				}
+			}
 		}
 	}
+
 	// Jellybeans
 	JellybeanSystem = new CJellybeanSystem;
 
 	// Initialise the Meshes
 	InitMeshes();
+
+	// Randomly choose an exit for non-tutorial difficulties
+	if (level != 0)
+	{
+		CProbabilitySystem probabilitySystem;
+		// Add probabilties
+		for (int i = 0; i < exitPositions.size(); i++)
+		{
+			probabilitySystem.AddProbability(1.f);
+		}
+
+		// Create a new door
+		theDoor = new CDoor(1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+	}
 }
 
 void CSceneGame1::PreInit()
@@ -305,7 +347,22 @@ void CSceneGame1::Update(double dt)
 		{
 			currentState = EXITING;
 			// Animation
-			theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
+			if (theDoor->getPositionX() > theHero->getPositionX())
+			{
+				theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
+			}
+			else if(theDoor->getPositionX() < theHero->getPositionX())
+			{
+				theHero->SetAnimationDirection(CPlayerInfo::LEFT);
+			}
+			else if (theDoor->getPositionY() > theHero->getPositionY())
+			{
+				theHero->SetAnimationDirection(CPlayerInfo::UP);
+			}
+			else if (theDoor->getPositionY() < theHero->getPositionY())
+			{
+				theHero->SetAnimationDirection(CPlayerInfo::DOWN);
+			}
 		}
 		// Timer
 		timer -= dt;
@@ -389,6 +446,8 @@ void CSceneGame1::Render()
 	RenderRearTileMap();
 	// Render the tile map
 	RenderTileMap();
+	// Render Objects
+	RenderObjects();
 	// Render Hero
 	RenderHero();
 	// Render AIs
@@ -439,7 +498,10 @@ void CSceneGame1::RenderGUI()
 	ss.str(std::string());
 	ss.precision(3);
 	ss << timer;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+	if (timer > 10.f)
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+	else
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
 
 	switch (currentState)
 	{
@@ -553,6 +615,15 @@ void CSceneGame1::RenderAIs()
 			sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
 		}
 	}
+}
+
+/********************************************************************************
+Render the AIs. This is a private function for use in this class only
+********************************************************************************/
+void CSceneGame1::RenderObjects()
+{
+	// Door
+	sceneManager2D.Render2DMesh(theDoor->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theDoor->getPositionX(), theDoor->getPositionY());
 }
 
 void CSceneGame1::RenderWaypoints()

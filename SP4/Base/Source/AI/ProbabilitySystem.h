@@ -18,6 +18,8 @@ public:
 	void AddProbability(float percentage);
 	// Get total number of probabilities
 	float GetTotalNumOfProbabilities();
-	// Get a random probability
-	int GetARandProbability();
+	// Get a int random probability
+	int GetARandIntProbability();
+	// Get a float random probability
+	int GetARandFloatProbability();
 };
