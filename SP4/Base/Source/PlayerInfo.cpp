@@ -228,7 +228,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			//getPositionX() = leftBorder;
+			setPositionX(leftBorder + mapOffset_x);
 		}
 	}
 	else if (getPositionX() - mapOffset_x > rightBorder)
@@ -241,7 +241,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			//getPositionX() = rightBorder;
+			setPositionX(rightBorder + mapOffset_x);
 		}
 	}
 
@@ -255,7 +255,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			//getPositionY() = topBorder;
+			setPositionY(topBorder - mapOffset_y);
 		}
 	}
 	else if (getPositionY() + mapOffset_y > bottomBorder)
@@ -267,7 +267,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			//getPositionY() = bottomBorder;
+			setPositionY(bottomBorder - mapOffset_y);
 		}
 	}
 }
