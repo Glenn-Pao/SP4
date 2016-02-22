@@ -40,11 +40,11 @@ public:
 
 	int choice;
 	UISystem* UIManager;
+
+	CSceneManager2D sceneManager2D;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
-
-	CSceneManager2D sceneManager2D;
 };
 
 #endif

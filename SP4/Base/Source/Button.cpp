@@ -83,7 +83,7 @@ CBoundingBox* Button::getCollisionBox()
 	return CollisionBox;
 }
 
-void Button::Update(float MouseX, float MouseY, float dt)
+void Button::HandleEvent(float MouseX, float MouseY)
 {
 	if (CollisionBox->CheckCollision(Vector3(MouseX, screenheight - MouseY, 0)) == true)
 	{

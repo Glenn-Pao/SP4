@@ -135,7 +135,7 @@ void CSceneMenu::Render()
 	//// Render the background image
 	//sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
 
-	for (int i = 0; i < UIManager->getUI_List().size(); ++ i)
+	/*for (int i = 0; i < UIManager->getUI_List().size(); ++ i)
 	{
 		switch (UIManager->getUI_List()[i]->getUI_Type())
 		{
@@ -150,7 +150,8 @@ void CSceneMenu::Render()
 			break;
 		}
 		}
-	}
+	}*/
+	UIManager->Render(sceneManager2D);
 }
 
 /********************************************************************************

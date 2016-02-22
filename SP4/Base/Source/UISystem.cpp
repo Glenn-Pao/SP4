@@ -1,6 +1,8 @@
 #include "UISystem.h"
 
-
+#include "Mtx44.h"
+#include "GL\glew.h"
+#include "Scenes\Master\SceneManager2D.h"
 UISystem::UISystem()
 {
 	this->Animator = new UIAnimator();
@@ -14,6 +16,47 @@ vector<UIFeature*> UISystem::getUI_List()
 void UISystem::addFeature(UIFeature* object)
 {
 	this->ListOfUI.push_back(object);
+}
+
+void UISystem::Render(CSceneManager2D& scene)
+{
+	for (std::vector<UIFeature*>::iterator CurrentFeature = ListOfUI.begin(); CurrentFeature != ListOfUI.end(); CurrentFeature++)
+	{
+		switch ((*CurrentFeature)->getUI_Type())
+		{
+			case UIFeature::UT_BUTTON:
+			{
+				Button* button;
+
+				button = static_cast<Button*>((*CurrentFeature));
+
+				scene.Render2DMesh(button->getCurrentMesh(), false,
+					button->getScale().x,
+					button->getScale().y,
+					button->getCurrentPos().x,
+					button->getCurrentPos().y,
+					0,
+					false);
+				 break;
+			}
+
+			case UIFeature::UT_IMAGE:
+			{
+										Image* image;
+
+										image = static_cast<Image*>((*CurrentFeature));
+
+										scene.Render2DMesh(image->getMesh(), false,
+											image->getScale().x,
+											image->getScale().y,
+											image->getCurrentPos().x,
+											image->getCurrentPos().y,
+											 0,
+											 false);
+										 break;
+			}
+		}
+	}
 }
 
 void UISystem::removeFeature(string ID)
@@ -49,24 +92,26 @@ UIAnimator* UISystem::InvokeAnimator()
 	return Animator;
 }
 
-
-void UISystem::Update(float mouseX, float mouseY, float dt)
+void UISystem::HandleEvent(float mouseX, float mouseY, float m_window_width, float m_window_height, float m_world_width, float m_world_height)
 {
-	//Update Animator
-	Animator->Update(dt);
-
 	//Update UI List
 	for (std::vector<UIFeature*>::iterator CurrentFeature = ListOfUI.begin(); CurrentFeature != ListOfUI.end(); ++CurrentFeature)
 	{
 		switch ((*CurrentFeature)->getUI_Type())
 		{
-		case UIFeature::UT_BUTTON:
-		{
-			static_cast<Button*>((*CurrentFeature))->Update(mouseX, mouseY, dt);
-			break;
-		}
+			case UIFeature::UT_BUTTON:
+			{
+				static_cast<Button*>((*CurrentFeature))->HandleEvent(mouseX / m_window_width * m_world_width, mouseY / m_window_height * m_world_height);
+				break;
+			}
 		}
 	}
+}
+
+void UISystem::Update(float mouseX, float mouseY, float dt)
+{
+	//Update Animator
+	Animator->Update(dt);
 }
 
 

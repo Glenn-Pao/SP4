@@ -28,7 +28,7 @@ public:
 
 	CBoundingBox* getCollisionBox();
 
-	void Update(float MouseX, float MouseY, float dt);
+	void HandleEvent(float MouseX, float MouseY);
 
 	Button();
 	Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale);

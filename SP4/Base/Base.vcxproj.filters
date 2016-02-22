@@ -130,9 +130,6 @@
     <ClCompile Include="Source\GameStateManagement\Menu Flow\LoseState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Menu Flow\MenuState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Menu Flow\OptionsState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
@@ -176,9 +173,6 @@
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Menu Flow\SceneLose.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\Menu Flow\SceneMenu.cpp">
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Menu Flow\SceneOptions.cpp">
@@ -238,6 +232,11 @@
     <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.cpp">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Question.cpp" />
+    <ClCompile Include="Source\Image.cpp" />
     <ClCompile Include="Source\Bar.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -247,18 +246,20 @@
     <ClCompile Include="Source\UIAnimation.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UIAnimator.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="Source\UIFeature.cpp">
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Source\UISystem.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
-      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    <ClCompile Include="Source\Scenes\Menu Flow\SceneMenu.cpp">
+      <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\Question.cpp" />
-    <ClCompile Include="Source\UIAnimator.cpp">
-      <Filter>UI</Filter>
+    <ClCompile Include="Source\GameStateManagement\Menu Flow\MenuState.cpp">
+      <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,9 +404,6 @@
     <ClInclude Include="Source\GameStateManagement\Menu Flow\LoseState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Menu Flow\MenuState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Menu Flow\OptionsState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
@@ -449,9 +447,6 @@
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Menu Flow\SceneLose.h">
-      <Filter>Scenes\Menu Flow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Menu Flow\SceneMenu.h">
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Menu Flow\SceneOptions.h">
@@ -511,6 +506,11 @@
     <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.h">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
+      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Question.h" />
+    <ClInclude Include="Source\Image.h" />
     <ClInclude Include="Source\Bar.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -520,18 +520,20 @@
     <ClInclude Include="Source\UIAnimation.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UIAnimator.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="Source\UIFeature.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\UISystem.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
-      <Filter>Game Mechanics\Objects\BoundingBox</Filter>
+    <ClInclude Include="Source\Scenes\Menu Flow\SceneMenu.h">
+      <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\Question.h" />
-    <ClInclude Include="Source\UIAnimator.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="Source\GameStateManagement\Menu Flow\MenuState.h">
+      <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

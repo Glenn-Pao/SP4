@@ -136,6 +136,8 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	} while (m_iUserChoice == -1);*/
 #endif
 	// Play
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+
 	if (scene->UIManager->FindButton("PlayButton")->getisHovered() == true)
 	{
 		scene->choice = CSceneMenu::PLAY;
