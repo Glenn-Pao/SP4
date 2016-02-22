@@ -27,7 +27,7 @@ CObjects::CObjects(bool active, bool interactable, std::string dialogue, Vector3
 	defaultScale = scale;
 	this->scale = scale;
 
-	this->ModelMesh = NULL;							//initialize this first
+	//this->ModelMesh = NULL;							//initialize this first
 	this->ModelMesh = ModelMesh;
 	
 	BoundingBox = NULL;								//set up a bounding box in case there is a need to use it

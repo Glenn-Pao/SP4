@@ -409,3 +409,19 @@ void CPlayerInfo::readFile()
 	// Bottom Collision
 	bottomCollision = L.DoLuaFloat("bottomCollision");
 }
+float CPlayerInfo::getLeftCollision(void)
+{
+	return leftCollision;
+}
+float CPlayerInfo::getRightCollision(void)
+{
+	return rightCollision;
+}
+float CPlayerInfo::getTopCollision(void)
+{
+	return topCollision;
+}
+float CPlayerInfo::getBottomCollision(void)
+{
+	return bottomCollision;
+}

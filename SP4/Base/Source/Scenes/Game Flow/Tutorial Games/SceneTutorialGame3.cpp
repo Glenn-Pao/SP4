@@ -17,6 +17,11 @@ CSceneTutorialGame3::CSceneTutorialGame3(const int m_window_width, const int m_w
 	, lives(3)
 	, Qcount(0)
 	, Acount(0)
+	, timer(0)
+	, feedbacktimer(0)
+	, press(false)
+	, feedback(false)
+	, correct(false)
 	, scriptCorrect("")
 	, scriptExit("")
 	, scriptFinished("")
@@ -71,6 +76,9 @@ void CSceneTutorialGame3::Init(int level)
 	{
 		scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
 		AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn1Type" + to_string(i)));
+	}
+	for (int i = 0; i < 3; i++)
+	{
 		AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn2Type" + to_string(i)));
 	}
 	QnDialogue.push_back(L.DoLuaString("scriptQn1"));
@@ -97,6 +105,8 @@ void CSceneTutorialGame3::Init(int level)
 				theHero = new CPlayerInfo();
 				theHero->setPositionX(k*m_cMap->GetTileSize());
 				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				theHero->setBoundingBox(Vector3(theHero->getPositionX() + (theHero->getLeftCollision() - 0.5) * m_cMap->GetTileSize(), theHero->getPositionY() + m_cMap->GetTileSize() * (theHero->getTopCollision() - 0.5)),
+					Vector3(theHero->getPositionX() + (theHero->getRightCollision() - 0.5) * m_cMap->GetTileSize(), theHero->getPositionY() + m_cMap->GetTileSize() * (theHero->getBottomCollision() - 0.5)));
 			}
 			// Door
 			else if (m_cMap->theScreenMap[i][k] == 30)
@@ -107,13 +117,20 @@ void CSceneTutorialGame3::Init(int level)
 			// Questions
 			else if (m_cMap->theScreenMap[i][k] == 41)
 			{
-				theQuestions.push_back(new CQuestion(Qcount, false, true, QnDialogue[Qcount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
+				theQuestions.push_back(new CQuestion(Qcount, false, true, QnDialogue[Qcount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
 				Qcount++;
 			}
 			// Possible answers
 			else if (m_cMap->theScreenMap[i][k] == 42)
 			{
-				theAnswers.push_back(new CAnswer(Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
+				theAnswers.push_back(new CAnswer(Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1), false));
+
+				//set the correct answers
+				if (Acount == 1 || Acount == 4)
+				{
+					theAnswers.back()->setCorrect(true);
+				}
+
 				Acount++;
 			}
 			// Dialogue script 1
@@ -160,6 +177,10 @@ void CSceneTutorialGame3::Init(int level)
 	for (int i = 0; i < theQuestions.size(); i++)
 	{
 		theQuestions.at(i)->setMesh(meshList[GEO_TILE_QN]);
+	}
+	for (int i = 0; i < theAnswers.size(); i++)
+	{
+		theAnswers.back()->setMesh(meshList[GEO_TILE_ANS]);
 	}
 }
 
@@ -212,22 +233,22 @@ void CSceneTutorialGame3::InitMeshes()
 		theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
 	}
 	// Down
-	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_DOWN - CPlayerInfo::NUM_GEOMETRY_UP - 1; i++)
-	{
-		theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_DOWN_FRAME" + to_string(i), 1, 1, 21, 13, 10, 0 + i);
-		theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
-	}
-	// AI
-	meshList[GEO_TILE_KILLZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_KILLZONE", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILE_KILLZONE]->textureID = LoadTGA("Image//tile10_killzone.tga");
-	meshList[GEO_TILE_SAFEZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_SAFEZONE", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILE_SAFEZONE]->textureID = LoadTGA("Image//tile11_safezone.tga");
-	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
+for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_DOWN - CPlayerInfo::NUM_GEOMETRY_UP - 1; i++)
+{
+	theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i] = MeshBuilder::GeneratePartOfSpriteSheet2D("GEO_TILEHERO_DOWN_FRAME" + to_string(i), 1, 1, 21, 13, 10, 0 + i);
+	theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + i]->textureID = LoadTGA("Image//player1.tga");
+}
+// AI
+meshList[GEO_TILE_KILLZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_KILLZONE", Color(1, 1, 1), 0, 0, 1, 1);
+meshList[GEO_TILE_KILLZONE]->textureID = LoadTGA("Image//tile10_killzone.tga");
+meshList[GEO_TILE_SAFEZONE] = MeshBuilder::Generate2DMesh("GEO_TILE_SAFEZONE", Color(1, 1, 1), 0, 0, 1, 1);
+meshList[GEO_TILE_SAFEZONE]->textureID = LoadTGA("Image//tile11_safezone.tga");
+meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 1, 1);
+meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
 
-	// Jellybeans
-	JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
-	JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
+// Jellybeans
+JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
+JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
 
 }
 
@@ -244,63 +265,187 @@ void CSceneTutorialGame3::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
-	// Update the hero
-	if (Application::IsKeyPressed('W'))
-		this->theHero->MoveUpDown(true, dt, m_cMap);
-	if (Application::IsKeyPressed('S'))
-		this->theHero->MoveUpDown(false, dt, m_cMap);
-	if (Application::IsKeyPressed('A'))
-		this->theHero->MoveLeftRight(true, dt, m_cMap);
-	if (Application::IsKeyPressed('D'))
-		this->theHero->MoveLeftRight(false, dt, m_cMap);
+	switch (currentState)
+	{
+	case PLAYING:
+	{
+		Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
+		// Update the hero
+		if (Application::IsKeyPressed('W'))
+			this->theHero->MoveUpDown(true, dt, m_cMap);
+		if (Application::IsKeyPressed('S'))
+			this->theHero->MoveUpDown(false, dt, m_cMap);
+		if (Application::IsKeyPressed('A'))
+			this->theHero->MoveLeftRight(true, dt, m_cMap);
+		if (Application::IsKeyPressed('D'))
+			this->theHero->MoveLeftRight(false, dt, m_cMap);
+		if (theDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			theHero->setPosition(prevHeroPos);
 
-	// Update Hero animation counter if hero moved
-	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
-	{
-		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-			theHero->SetAnimationCounter(1);
-	}
-	else
-	{
-		theHero->SetAnimationCounter(0);
-	}
-	theHero->HeroUpdate(m_cMap, dt);
-	// Dialogues tiles
-	for (int i = 0; i < dialogueTiles.size(); i++)
-	{
-		if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		// Update Hero animation counter if hero moved
+		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 		{
-			dialogueTiles[i]->setActive(true);
+			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
+				theHero->SetAnimationCounter(1);
 		}
 		else
 		{
-			dialogueTiles[i]->setActive(false);
+			theHero->SetAnimationCounter(0);
 		}
+		theHero->HeroUpdate(m_cMap, dt);
+
+		// Dialogues tiles
+		for (int i = 0; i < dialogueTiles.size(); i++)
+		{
+			if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+				dialogueTiles[i]->setActive(true);
+			}
+			else
+			{
+				dialogueTiles[i]->setActive(false);
+			}
+		}
+		for (int i = 0; i < theQuestions.size(); i++)
+		{
+			//check collision between question and player
+			if (theQuestions[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()) && theQuestions[i]->getInteractivity())
+			{
+				theQuestions[i]->setActive(true);
+			}
+			else
+			{
+				theQuestions[i]->setActive(false);
+			}
+			if (theQuestions[i]->getActive())
+			{
+				for (int j = 0; j < theAnswers.size(); j++)
+				{
+					//check if the player has already picked up something
+					if (theAnswers[j]->getPickup())
+					{
+						//the item is not yet picked up so player should be able to pick it up
+						if (Application::IsKeyPressed('F') && !press)
+						{
+							press = true;			//disable the recurring effect
+							theAnswers[j]->setActive(false);
+							theAnswers[j]->setInteractivity(false);	//it should'nt be able to be picked up again
+							theAnswers[j]->setPickup(false);
+							feedback = true;
+
+							//check if it is the correct answer
+							if (!theAnswers[j]->getCorrect())
+							{
+								lives -= 1;
+								break;
+							}
+							else
+							{
+								correct = true;
+								theQuestions[i]->setInteractivity(false);		//disable the question so there won't be unnecessary lives lost
+							}
+						}
+					}
+				}
+			}
+		}
+		for (int i = 0; i < theAnswers.size(); i++)
+		{
+			//check collision between answer and player
+			if ((theAnswers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()) || theAnswers[i]->getPickup()) && theAnswers[i]->getInteractivity())
+			{
+				theAnswers[i]->setActive(true);
+			}
+			else
+			{
+				theAnswers[i]->setActive(false);
+			}
+			//the item is not yet picked up so player should be able to pick it up
+			if (Application::IsKeyPressed('F') && !press)
+			{
+				if (theAnswers[i]->getActive() && !theAnswers[i]->getPickup())
+				{
+					press = true;			//disable the recurring effect
+					theAnswers[i]->setPickup(true);
+				}
+				else if (theAnswers[i]->getActive() && theAnswers[i]->getPickup())
+				{
+					press = true;			//disable the recurring effect
+					theAnswers[i]->setPickup(false);
+				}
+			}
+			if (press)
+			{
+				timer += dt;
+			}
+			if (timer > 1)
+			{
+				press = false;
+				timer = 0;
+			}
+			if (feedback)
+			{
+				feedbacktimer += dt;
+			}
+			if (feedbacktimer > 10)
+			{
+				feedback = false;
+				correct = false;
+				feedbacktimer = 0;
+			}
+			
+		}
+		// Check Door
+		if (theDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			//meaning to say you can now exit the game
+			if (!theQuestions[0]->getInteractivity() && !theQuestions[1]->getInteractivity())
+			{
+				currentState = EXITING;
+				// Animation
+				theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
+
+			}
+		}
+		if (lives == 0)
+			currentState = FAILED;
 	}
-	for (int i = 0; i < theQuestions.size(); i++)
-	{
-		if (theQuestions[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+	break;
+		case EXITING:
 		{
-			theQuestions[i]->setActive(true);
+			// Translate hero position toward door
+			Vector3 theOldHeroPosition(theHero->getPositionX(), theHero->getPositionY(), 0);
+			Vector3 theNewHeroPosition(theOldHeroPosition);
+			Vector3 theTargetPosition(theDoor->getPositionX(), theDoor->getPositionY(), 0);
+
+			theNewHeroPosition += (theTargetPosition - theNewHeroPosition).Normalized() * theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt;
+
+			if ((theOldHeroPosition - theTargetPosition).Length() > (theOldHeroPosition - theNewHeroPosition).Length())
+			{
+				theHero->setPositionX(theNewHeroPosition.x);
+				theHero->setPositionY(theNewHeroPosition.y);
+
+				// Animation
+				theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+				if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
+					theHero->SetAnimationCounter(1);
+			}
+			else
+			{
+				theHero->setPositionX(theTargetPosition.x);
+				theHero->setPositionY(theTargetPosition.y);
+				currentState = COMPLETED;
+
+				// Animation
+				theHero->SetAnimationDirection(CPlayerInfo::UP);
+				theHero->SetAnimationCounter(0);
+			}
 		}
-		else
-		{
-			theQuestions[i]->setActive(false);
-		}
+			break;
 	}
-	for (int i = 0; i < theAnswers.size(); i++)
-	{
-		if (theAnswers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-		{
-			theAnswers[i]->setActive(true);
-		}
-		else
-		{
-			theAnswers[i]->setActive(false);
-		}
-	}
+
+
 }
 
 /********************************************************************************
@@ -345,7 +490,7 @@ void CSceneTutorialGame3::Render()
 	RenderHero();
 	// Render AIs
 	RenderAIs();
-	
+
 	sceneManager2D.modelStack.PopMatrix();
 	RenderGUI();
 }
@@ -389,15 +534,19 @@ void CSceneTutorialGame3::RenderTileMap()
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][k] == 42)
-			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
-			}
 			else
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
 		}
+	}
+	for (int i = 0; i < theAnswers.size(); i++)
+	{
+		//if it isn't picked up yet
+		if (!theAnswers[i]->getPickup())
+			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
+		else
+			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
 	}
 }
 
@@ -435,7 +584,6 @@ void CSceneTutorialGame3::RenderGUI()
 	// Jellybean
 	sceneManager2D.Render2DMesh(JellybeanSystem->mesh, false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
-
 	//On screen text
 	std::ostringstream ss;
 	// Jellybean
@@ -443,7 +591,17 @@ void CSceneTutorialGame3::RenderGUI()
 	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
-	for (int i = 0; i < dialogueTiles.size(); i++)
+	for (int i = 0; i < lives; i++)
+	{
+		// Lives left
+		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + (i *m_cMap->GetTileSize()), sceneManager2D.m_window_height - (2 * m_cMap->GetTileSize()));
+	}
+
+	switch (currentState)
+	{
+	case PLAYING:
+	{
+		for (int i = 0; i < dialogueTiles.size(); i++)
 	{
 		if (dialogueTiles[i]->getActive())
 		{
@@ -465,7 +623,7 @@ void CSceneTutorialGame3::RenderGUI()
 
 			// Text
 			int textSize = m_cMap->GetTileSize() * 0.5;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 2.5);
 			break;
 		}
 	}
@@ -482,15 +640,26 @@ void CSceneTutorialGame3::RenderGUI()
 			break;
 		}
 	}
-
-	for (int i = 0; i < lives; i++)
+	if (feedback)
 	{
-		// Lives left
-		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + (i *m_cMap->GetTileSize()), sceneManager2D.m_window_height - (2 * m_cMap->GetTileSize()));
+		// Dialogue box
+		sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+		//if it is the correct answer
+		if (correct)
+		{
+			// Text
+			int textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptCorrect, Color(0, 0, 0), textSize, 0, textSize * 1.5);
+		}
+		else
+		{
+			// Text
+			int textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptWrong, Color(0, 0, 0), textSize, 0, textSize * 0.5);
+		}
 	}
-
-	switch (currentState)
-	{
+	}
+		break;
 	case COMPLETED:
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "TUTORIAL COMPLETED!", Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 4);
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "<Click to exit>", Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 5);

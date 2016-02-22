@@ -20,8 +20,8 @@ scriptAnswerQn1Type2 = "Fireman"
 scriptQn2 = "I have eight legs. What am I?"
 
 -- Possible answers to the second question tile
-scriptAnswerQn2Type0 = "Spider"
-scriptAnswerQn2Type1 = "Housefly"
+scriptAnswerQn2Type0 = "Housefly"
+scriptAnswerQn2Type1 = "Spider"
 scriptAnswerQn2Type2 = "Mosquito"
 
 -- Possible outcomes available upon answering the question

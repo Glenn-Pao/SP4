@@ -127,6 +127,11 @@ public:
 	// Write the file and store variables
 	void writeToFile();
 
+
+	float getLeftCollision(void);
+	float getRightCollision(void);
+	float getTopCollision(void);
+	float getBottomCollision(void);
 private:
 	// Hero's information
 	int jumpspeed;

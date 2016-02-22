@@ -71,7 +71,11 @@ private:
 	int Qcount;	//number of questions
 	int Acount;		//number of answers
 	int lives;		//number of lives available to player
-
+	double timer;	//meant for the slight pause before you can pick up item again
+	double feedbacktimer;		//meant to display notice for a while as visual feedback on whether you got it right or wrong
+	bool press;		//if you pressed to pick up item or confirmed your answer
+	bool feedback;
+	bool correct;
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
 };
 
