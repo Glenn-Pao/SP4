@@ -220,13 +220,7 @@
     <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame3.cpp">
       <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame4.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame4.cpp">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.cpp">
@@ -266,6 +260,13 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.cpp">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Answer.cpp" />
+    <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp">
+      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.cpp">
+      <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,13 +501,7 @@
     <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame3.h">
       <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame4.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame4.h">
       <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame3.h">
@@ -546,6 +541,13 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Answer.h" />
+    <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h">
+      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.h">
+      <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

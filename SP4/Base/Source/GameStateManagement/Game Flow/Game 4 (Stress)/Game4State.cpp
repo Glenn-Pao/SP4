@@ -3,18 +3,18 @@ using namespace std;
 
 #include "..\..\Master\GameState.h"
 #include "..\..\Master\GameStateManager.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame4.h"
-//#include "LoadGameSelect.h"
+#include "Game4State.h"
+#include "..\..\Game Flow\Lobby\HubState.h"
+#include "..\..\Game Flow\Lobby\LoadGameSelect.h"
 #include "..\..\Menu Flow\MenuState.h"
 #include "..\..\Menu Flow\PauseState.h"
-//#include "PauseState.h"
 
-CTutorialGame4 CTutorialGame4::theTutorialGame4State;
+CGame4State CGame4State::theTutorialGame1State;
 
-void CTutorialGame4::Init(CGameStateManager* theGSM)
+void CGame4State::Init(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Init\n" << endl;
+	cout << "CGame4State::Init\n" << endl;
 #endif
 	counter = 0;
 
@@ -22,17 +22,17 @@ void CTutorialGame4::Init(CGameStateManager* theGSM)
 	scene = new CSceneManager(800, 600);	// Use this for 3D gameplay
 #else
 	//scene = new CSceneManager2D(800, 600);	// Use this for 2D gameplay
-	scene = new CSceneTutorialGame4(800, 600);	// Use this for 2D gameplay
+	scene = new SceneGame4(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
-void CTutorialGame4::Init(CGameStateManager* theGSM, const int width, const int height, int level)
+void CGame4State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Init\n" << endl;
+	cout << "CGame4State::Init\n" << endl;
 #endif
 	counter = 0;
 
@@ -40,17 +40,17 @@ void CTutorialGame4::Init(CGameStateManager* theGSM, const int width, const int 
 	scene = new CSceneManager(width, height);	// Use this for 3D gameplay
 #else
 	//scene = new CSceneManager2D(width, height);	// Use this for 2D gameplay
-	scene = new CSceneTutorialGame4(width, height);
+	scene = new SceneGame4(width, height);
 #endif
 	scene->Init(level);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 }
 
-void CTutorialGame4::Cleanup()
+void CGame4State::Cleanup()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Cleanup\n" << endl;
+	cout << "CGame4State::Cleanup\n" << endl;
 #endif
 	// Delete the scene
 	scene->Exit();
@@ -58,17 +58,17 @@ void CTutorialGame4::Cleanup()
 	scene = NULL;
 }
 
-void CTutorialGame4::Pause()
+void CGame4State::Pause()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Pause\n" << endl;
+	cout << "CGame4State::Pause\n" << endl;
 #endif
 }
 
-void CTutorialGame4::Resume()
+void CGame4State::Resume()
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Resume\n" << endl;
+	cout << "CGame4State::Resume\n" << endl;
 #endif
 
 	scene->PreInit();
@@ -77,13 +77,13 @@ void CTutorialGame4::Resume()
 #endif
 }
 
-void CTutorialGame4::HandleEvents(CGameStateManager* theGSM)
+void CGame4State::HandleEvents(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame4: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame4State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -100,13 +100,13 @@ void CTutorialGame4::HandleEvents(CGameStateManager* theGSM)
 #endif
 }
 
-void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
+void CGame4State::HandleEvents(CGameStateManager* theGSM, const unsigned char key, const bool status)
 {
 #if GSM_DEBUG_MODE
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame4: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame4State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -149,7 +149,7 @@ void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const unsigned char
 #endif
 }
 
-void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
+void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
 	const int button_Left, const int button_Middle, const int button_Right,
 	const int width, const int height)
 {
@@ -157,7 +157,7 @@ void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const double mouse_
 	//int m_iUserChoice = -1;
 
 	//do {
-	//	cout << "CTutorialGame4: Choose one <0> Go to Menu State : " ;
+	//	cout << "CGame4State: Choose one <0> Go to Menu State : " ;
 	//	cin >> m_iUserChoice;
 	//	cin.get();
 
@@ -172,54 +172,75 @@ void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const double mouse_
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
+	switch (scene->currentState)
+	{
+	case SceneGame4::COMPLETED:
+	{
+								   if (button_Left == true)
+								   {
+									   scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+									   theGSM->ChangeState(CHubState::Instance());
+								   }
+	}
+		break;
+	case SceneGame4::TIME_UP:
+	{
+								 if (button_Left == true)
+								 {
+									 scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+									 theGSM->ChangeState(CHubState::Instance());
+								 }
+	}
+		break;
+	}
 #if	TYPE_OF_VIEW == 3
 	switch (scene->currentState)
 	{
 	case CSceneManager::PRE_START:
 	{
-		if (button_Left == true)
-			scene->currentState = CSceneManager::STARTING;
+									 if (button_Left == true)
+										 scene->currentState = CSceneManager::STARTING;
 	}
 		break;
 	case CSceneManager::LEVEL_COMPLETED:
 	{
-		if (button_Left == true)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
+										   if (button_Left == true)
+										   {
+											   theGSM->m_bUnhideMouse = true;
+											   theGSM->m_bWarpMouse = false;
 
-			theGSM->ChangeState(CLevelSelectionState::Instance());
-		}
+											   theGSM->ChangeState(CLevelSelectionState::Instance());
+										   }
 	}
 		break;
 	case CSceneManager::GAMEOVER:
 	{
-		if (button_Left == true)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
+									if (button_Left == true)
+									{
+										theGSM->m_bUnhideMouse = true;
+										theGSM->m_bWarpMouse = false;
 
-			theGSM->ChangeState(CLevelSelectionState::Instance());
-		}
+										theGSM->ChangeState(CLevelSelectionState::Instance());
+									}
 	}
 		break;
 	case CSceneManager::GAMEOVER_TIME_LIMIT_END:
 	{
-		if (button_Left == true)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
+												   if (button_Left == true)
+												   {
+													   theGSM->m_bUnhideMouse = true;
+													   theGSM->m_bWarpMouse = false;
 
-			theGSM->ChangeState(CMenuState::Instance());
-		}
+													   theGSM->ChangeState(CMenuState::Instance());
+												   }
 	}
 		break;
 	case CSceneManager::PLAYING:
 	{
-		if (button_Left == true)
-			scene->UpdateWeaponStatus(scene->WA_FIRE);
-		else if (button_Right == true)
-			scene->UpdateWeaponStatus(scene->WA_FIRE_SECONDARY);
+								   if (button_Left == true)
+									   scene->UpdateWeaponStatus(scene->WA_FIRE);
+								   else if (button_Right == true)
+									   scene->UpdateWeaponStatus(scene->WA_FIRE_SECONDARY);
 	}
 		break;
 	}
@@ -227,25 +248,25 @@ void CTutorialGame4::HandleEvents(CGameStateManager* theGSM, const double mouse_
 }
 
 
-void CTutorialGame4::Update(CGameStateManager* theGSM)
+void CGame4State::Update(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	cout << "CTutorialGame4::Update\n" << endl;
+	cout << "CGame4State::Update\n" << endl;
 #endif
 	// Update the scene
 	scene->Update(0.16667);
 }
 
-void CTutorialGame4::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
+void CGame4State::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
 	// Update the scene
 	scene->Update(m_dElapsedTime);
 }
 
-void CTutorialGame4::Draw(CGameStateManager* theGSM)
+void CGame4State::Draw(CGameStateManager* theGSM)
 {
 #if GSM_DEBUG_MODE
-	//cout << "CTutorialGame4::Draw : " << counter << "\n" << endl;
+	//cout << "CGame4State::Draw : " << counter << "\n" << endl;
 #endif
 
 	// Render the scene

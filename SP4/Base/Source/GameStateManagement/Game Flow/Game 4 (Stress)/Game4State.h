@@ -1,19 +1,10 @@
 #pragma once
-
 #include "..\..\Master\GameState.h"
 #include "..\..\Base\Source\Scenes\Master\SceneManager.h"
-#include "..\..\Base\Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame4.h"
+#include "..\..\Base\Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h"
 #include "timer.h"
-//Include GLEW
-#include <GL/glew.h>
 
-//Include GLFW
-#include <GLFW/glfw3.h>
-
-#define TYPE_OF_VIEW 2	// 2 = 2D, 3 = 3D
-
-//the tutorial level of game 4, stress solo game
-class CTutorialGame4: public CGameState
+class CGame4State : public CGameState
 {
 public:
 	void Init(CGameStateManager* theGSM);
@@ -32,17 +23,17 @@ public:
 	void Update(CGameStateManager* theGSM, const double m_dElapsedTime);
 	void Draw(CGameStateManager* theGSM);
 	short GetStateID() { return stateID; };
-	static CTutorialGame4* Instance() {
-		return &theTutorialGame4State;
+	static CGame4State* Instance() {
+		return &theTutorialGame1State;
 	}
 
 protected:
-	CTutorialGame4() { }
+	CGame4State() { }
 
 private:
-	static CTutorialGame4 theTutorialGame4State;
+	static CGame4State theTutorialGame1State;
 	int counter;
-	short stateID = 16;				//ID of state
+	short stateID = 12;				//ID of state
 
 	//Declare variables to store the last and current mouse position
 	double mouse_last_x, mouse_last_y, mouse_diff_x, mouse_diff_y;
@@ -54,6 +45,7 @@ private:
 #if TYPE_OF_VIEW == 3
 	CSceneManager *scene;	// Use this for 3D gameplay
 #else
-	CSceneTutorialGame4 *scene;	// Use this for 2D gameplay
+	SceneGame4 *scene;	// Use this for 2D gameplay
 #endif
 };
+
