@@ -82,6 +82,24 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			m_cMap->LoadMap("Image//Maps//Game 1/Easy.csv");
 		}
 		break;
+		case 2:
+		{
+			timer = 100.f;
+			// Initialise and load the tile map
+			m_cMap = new CMap();
+			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 41 * tileSize, 40 * tileSize, tileSize);
+			m_cMap->LoadMap("Image//Maps//Game 1/Medium.csv");
+		}
+		break;
+		case 3:
+		{
+			timer = 160.f;
+			// Initialise and load the tile map
+			m_cMap = new CMap();
+			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 51 * tileSize, 50 * tileSize, tileSize);
+			m_cMap->LoadMap("Image//Maps//Game 1/Hard.csv");
+		}
+		break;
 	}
 
 	//initialise the waypoints
@@ -420,6 +438,13 @@ void CSceneGame1::Update(double dt)
 	}
 	break;
 	}
+
+
+	// ReCalculate the tile offsets
+	tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
+	// ReCalculate the tile offsets
+	tileOffset_y = (int)(theHero->GetMapOffset_y() / m_cMap->GetTileSize());
+	fps = (float)(1.f / dt);
 }
 
 /********************************************************************************
@@ -557,6 +582,13 @@ void CSceneGame1::RenderGUI()
 		}
 		break;
 	}
+
+	// Fps
+	ss.str(std::string());
+	ss.precision(3);
+	ss << "FPS:" << fps;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), 25, sceneManager2D.m_window_width - 250, 5);
+
 }
 
 /********************************************************************************
@@ -564,17 +596,27 @@ Render the tile map. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame1::RenderTileMap()
 {
-	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
+	int m = 0;
+	int j = 0; 
+	for (int i = 0; i < m_cMap->GetNumOfTiles_Height() + 1; i++)
 	{
-		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
+		for (int k = 0; k < m_cMap->GetNumOfTiles_Width() + 1; k++)
 		{
-			if (m_cMap->theScreenMap[i][k] == 1)
+			m = tileOffset_x + k;
+			j = tileOffset_y + i;
+			// If we have reached the right side of the Map, then do not display the extra column of tiles.
+			if (m >= m_cMap->getNumOfTiles_MapWidth())
+				break;
+			// If we have reached the bottom side of the Map, then do not display the extra column of tiles.
+			if (j >= m_cMap->getNumOfTiles_MapHeight())
+				break;
+			if (m_cMap->theScreenMap[j][m] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 			else
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 		}
 	}

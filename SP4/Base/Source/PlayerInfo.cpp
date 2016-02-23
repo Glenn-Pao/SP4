@@ -250,7 +250,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 	}
 
-	if (getPositionY() + mapOffset_y < topBorder)
+	if (getPositionY() + mapOffset_y - m_cMap->GetTileSize() < topBorder)
 	{
 		mapOffset_y = mapOffset_y + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
@@ -260,10 +260,10 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			setPositionY(topBorder - mapOffset_y);
+			setPositionY(topBorder - mapOffset_y + m_cMap->GetTileSize());
 		}
 	}
-	else if (getPositionY() + mapOffset_y > bottomBorder)
+	else if (getPositionY() + mapOffset_y - m_cMap->GetTileSize() > bottomBorder)
 	{
 		mapOffset_y = mapOffset_y - (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
 		if (mapOffset_y < m_cMap->GetTileSize())
@@ -272,7 +272,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			setPositionY(bottomBorder - mapOffset_y);
+			setPositionY(bottomBorder - mapOffset_y + m_cMap->GetTileSize());
 		}
 	}
 }

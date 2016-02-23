@@ -63,6 +63,8 @@ private:
 	vector<CObjects*> dialogueTiles;
 
 	string scriptTimeUp, scriptFinished, scriptExit;
+
+	float fps;
 };
 
 #endif
