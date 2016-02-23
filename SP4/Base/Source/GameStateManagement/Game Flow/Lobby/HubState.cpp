@@ -174,7 +174,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CGame3State::Instance());
+			theGSM->ChangeState(CGame3State::Instance(), 1);
 		}
 		else if (scene->loadGame4)
 		{

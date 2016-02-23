@@ -80,6 +80,7 @@ private:
 	bool press;		//if you pressed to pick up item or confirmed your answer
 	bool feedback;
 	bool correct;
+	bool unlock;	//unlock the door
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
 };
 
