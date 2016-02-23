@@ -127,10 +127,10 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
 			}
 			// Door
-			else if (m_cMap->theScreenMap[i][k] == 30)
+			else if (m_cMap->theScreenMap[i][k] == 110)
 			{
-				// Create a new door
-				theDoor = new CDoor(1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+				// Create a new exit pos
+				exitPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
 			// Tutorial
 			if (level == 0)
@@ -191,15 +191,6 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 			}
-			else
-			{
-				// Exit pos
-				if (m_cMap->theScreenMap[i][k] == 110)
-				{
-					// Create a new door
-					exitPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
-				}
-			}
 		}
 	}
 
@@ -221,6 +212,11 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 
 		// Create a new door
 		theDoor = new CDoor(1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+	}
+	else
+	{
+		// Create a new door
+		theDoor = new CDoor(1, exitPositions[0], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 	}
 }
 
