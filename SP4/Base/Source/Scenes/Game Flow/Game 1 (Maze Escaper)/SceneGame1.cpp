@@ -89,6 +89,8 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	waypoints->LoadWaypoints(m_cMap);
 	temp = waypoints->getWaypointsVector();
 
+	// Start positions
+	vector<Vector3> startPositions;
 	// Exit positions
 	vector<Vector3> exitPositions;
 
@@ -98,14 +100,12 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
 			// Hero
-			if (m_cMap->theScreenMap[i][k] == 1000 && theHero == NULL)
+			if (m_cMap->theScreenMap[i][k] == 109)
 			{
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-				// Initialise the hero's position
-				theHero = new CPlayerInfo();
-				theHero->setPositionX(pos_x);
-				theHero->setPositionY(pos_y);
+				
+				startPositions.push_back(Vector3(pos_x, pos_y));
 
 				// Tutorial
 				if (level == 0)
@@ -192,6 +192,26 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				}
 			}
 		}
+	}
+	// Randomly choose an start pos for non-tutorial and easy difficulties
+	if (level != 0 && level != 1)
+	{
+		CProbabilitySystem probabilitySystem;
+		// Add probabilties
+		for (int i = 0; i < startPositions.size(); i++)
+		{
+			probabilitySystem.AddProbability(1.f);
+		}
+
+		// Initialise the hero's position
+		theHero = new CPlayerInfo();
+		theHero->setPosition(startPositions[probabilitySystem.GetARandIntProbability()]);
+	}
+	else
+	{
+		// Initialise the hero's position
+		theHero = new CPlayerInfo();
+		theHero->setPosition(startPositions[0]);
 	}
 
 	// Jellybeans
@@ -282,7 +302,6 @@ void CSceneGame1::InitMeshes()
 	// Jellybeans
 	JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
 	JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
-
 }
 
 void CSceneGame1::Update(double dt)
@@ -552,10 +571,6 @@ void CSceneGame1::RenderTileMap()
 			if (m_cMap->theScreenMap[i][k] == 1)
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
-			}
-			else if (m_cMap->theScreenMap[i][k] == 30)
-			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
 			else
 			{
