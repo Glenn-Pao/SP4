@@ -7,6 +7,7 @@ using namespace std;
 //#include "LoadGameSelect.h"
 #include "..\..\Menu Flow\MenuState.h"
 #include "..\..\Menu Flow\PauseState.h"
+#include "..\..\Game Flow\Lobby\HubState.h"
 
 
 CTutorialGame2 CTutorialGame2::theTutorialGame2State;
@@ -146,6 +147,7 @@ void CTutorialGame2::HandleEvents(CGameStateManager* theGSM, const unsigned char
 		theGSM->PushState(CPauseState::Instance());
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
+	
 #endif
 }
 
@@ -223,9 +225,52 @@ void CTutorialGame2::HandleEvents(CGameStateManager* theGSM, const double mouse_
 	}
 		break;
 	}
+	switch (scene->currentState)
+	{
+	case CSceneTutorialGame2::COMPLETED:
+	{
+		if (button_Left == true)
+		{
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	case CSceneTutorialGame2::TIME_UP:
+	{
+		if (button_Left == true)
+		{
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	}
 #endif
-}
+	switch (scene->currentState)
+	{
+	case CSceneTutorialGame2::COMPLETED:
+	{
+		theGSM->m_bUnhideMouse = true;
+		theGSM->m_bWarpMouse = false;
+		if (button_Left == true)
+		{
+			
 
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	case CSceneTutorialGame2::PLAYING:
+	{
+		theGSM->m_bHideMouse = true;
+		theGSM->m_bWarpMouse = false;
+		
+	}
+		break;
+	}
+}
 
 void CTutorialGame2::Update(CGameStateManager* theGSM)
 {

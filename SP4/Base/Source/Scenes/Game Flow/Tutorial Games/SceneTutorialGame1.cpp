@@ -50,6 +50,7 @@ void CSceneTutorialGame1::Init(int level)
 	scriptTimeUp = L.DoLuaString("scriptTimeUp");
 	scriptFinished = L.DoLuaString("scriptFinished");
 	scriptExit = L.DoLuaString("scriptExit");
+	
 	// Dialogues scripts
 	vector<string> scriptDialogues;
 	for (int i = 0; i < 6; i++)

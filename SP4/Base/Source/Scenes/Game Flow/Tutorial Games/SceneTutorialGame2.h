@@ -30,8 +30,20 @@ public:
 		WA_CHANGEWEAPON,
 		WA_TOTAL,
 	};
+
+	enum STATE
+	{
+		PLAYING,
+		COMPLETED,
+		TIME_UP,
+		NUM_OF_STATE
+	};
+	int currentState;
+
 	void RenderWaypoints();
 	void RenderObjects();
+	void RenderGUI();
+
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -63,9 +75,14 @@ private:
 	std::vector<std::string> ColoursThePlayerHas;
 
 	CDoor* greenDoor;
+	CDoor* endDoor;
 	bool hasBlue, hasYellow;
 	bool castedBlue, castedYellow, castedGreen;
 	Vector3 prevHeroPos;
+
+	vector<CObjects*> dialogueTiles;
+
+	string scriptExit, scriptFinished;
 
 };
 
