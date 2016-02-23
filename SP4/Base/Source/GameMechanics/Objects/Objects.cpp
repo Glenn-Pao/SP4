@@ -1,9 +1,8 @@
 #include "Objects.h"
 
-//bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh
 CObjects::CObjects()
-	: active(false)
-	, interactable(false)
+	: m_Object_Type(DOOR)
+	, active(false)
 	, dialogue("")
 	, position(0,0,0)
 	, rotate(0,0,0)
@@ -12,10 +11,10 @@ CObjects::CObjects()
 	, BoundingBox(NULL)
 {
 }
-CObjects::CObjects(bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
+CObjects::CObjects(CObjects::OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
 {
+	this->m_Object_Type = m_Object_Type;
 	this->active = active;
-	this->interactable = interactable;
 	this->dialogue = dialogue;
 	
 	defaultPos = position;	
@@ -49,15 +48,6 @@ void CObjects::setActive(bool active)
 bool CObjects::getActive(void)
 {
 	return active;
-}
-//set and get the entity's interactivity status
-void CObjects::setInteractivity(bool interactable)
-{
-	this->interactable = interactable;
-}
-bool CObjects::getInteractivity(void)
-{
-	return interactable;
 }
 //set and get the dialogue of entity
 void CObjects::setDialogue(std::string dialogue)
@@ -201,4 +191,12 @@ void CObjects::setBoundingBox(Vector3 topleft, Vector3 bottomright)
 CBoundingBox* CObjects::getBoundingBox(void)
 {
 	return BoundingBox;
+}
+void CObjects::setObjType(CObjects::OBJECT_TYPE m_Object_Type)
+{
+	this->m_Object_Type = m_Object_Type;
+}
+CObjects::OBJECT_TYPE CObjects::getObjType(void)
+{
+	return m_Object_Type;
 }

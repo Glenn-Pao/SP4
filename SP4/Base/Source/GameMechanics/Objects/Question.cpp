@@ -38,3 +38,12 @@ int CQuestion::getID(void)
 {
 	return id;
 }
+//set and get the interactivity of the object
+void CQuestion::setInteractivity(bool interactable)
+{
+	this->interactable = interactable;
+}
+bool CQuestion::getInteractivity(void)
+{
+	return interactable;
+}

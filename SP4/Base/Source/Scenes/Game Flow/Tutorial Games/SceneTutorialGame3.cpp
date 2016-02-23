@@ -139,7 +139,7 @@ void CSceneTutorialGame3::Init(int level)
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
-				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
 				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
 				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
@@ -150,7 +150,7 @@ void CSceneTutorialGame3::Init(int level)
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
-				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[1], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[1], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
 				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
 				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
@@ -161,7 +161,7 @@ void CSceneTutorialGame3::Init(int level)
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
-				dialogueTiles.push_back(new CObjects(false, true, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
 				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
 				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);

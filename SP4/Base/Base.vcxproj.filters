@@ -229,7 +229,6 @@
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\Question.cpp" />
     <ClCompile Include="Source\Image.cpp" />
     <ClCompile Include="Source\Bar.cpp">
       <Filter>UI</Filter>
@@ -261,12 +260,17 @@
     <ClCompile Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.cpp">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\Answer.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp">
       <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.cpp">
       <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Answer.cpp">
+      <Filter>Game Mechanics\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Question.cpp">
+      <Filter>Game Mechanics\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -510,7 +514,6 @@
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\Question.h" />
     <ClInclude Include="Source\Image.h" />
     <ClInclude Include="Source\Bar.h">
       <Filter>UI</Filter>
@@ -542,12 +545,17 @@
     <ClInclude Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\Answer.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h">
       <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.h">
       <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Question.h">
+      <Filter>Game Mechanics\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Answer.h">
+      <Filter>Game Mechanics\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

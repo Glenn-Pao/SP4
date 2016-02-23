@@ -11,17 +11,19 @@
 #include <string>
 class CObjects
 {
+public:
 	enum OBJECT_TYPE
 	{
 		DOOR,
+		DIALOGUE,
+		COLOR,
 		QUESTION,
 		ANSWER,
 		CARD,
-		NO_OBJ,
+		NUM_OBJ,
 	};
 private:
 	bool active;							//entity is active or not?
-	bool interactable;					//whether this entity can be interacted with
 	std::string dialogue;				//the dialogue available from the entity IF interactable
 
 	Vector3 defaultPos;					//your entity's initial position
@@ -35,18 +37,16 @@ private:
 	Mesh* ModelMesh;					//the sprite of the entity
 	CBoundingBox* BoundingBox;	//the bounding box of the object
 
+	CObjects::OBJECT_TYPE m_Object_Type;		//the type of object it is
+
 public:
 	CObjects();
-	CObjects(bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh);
+	CObjects(CObjects::OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh);
 	~CObjects();
 
 	//set and get the entity's active status
 	void setActive(bool);
 	bool getActive(void);
-
-	//set and get the entity's interactivity status
-	void setInteractivity(bool);
-	bool getInteractivity(void);
 
 	//set and get the dialogue of entity
 	void setDialogue(std::string);
@@ -107,4 +107,7 @@ public:
 	//set and get the bounding box of entity. if needed.
 	void setBoundingBox(Vector3, Vector3);
 	CBoundingBox* getBoundingBox(void);
+
+	void setObjType(CObjects::OBJECT_TYPE);
+	CObjects::OBJECT_TYPE getObjType(void);
 };

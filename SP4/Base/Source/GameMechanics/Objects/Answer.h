@@ -8,6 +8,7 @@ class CAnswer : public CObjects
 {
 private:
 	int id;		//the id number of the question tile
+	bool interactable;		//check if it is interactable
 	bool pickup;	//check if it has been picked up already
 	bool correct;	//check if this is actually the correct answer
 public:
@@ -18,6 +19,10 @@ public:
 	//set and get the id number of the object
 	void setID(int);
 	int getID(void);
+
+	//set and get the interactivity of the object
+	void setInteractivity(bool);
+	bool getInteractivity(void);
 
 	//set and get the pickup status of the object
 	void setPickup(bool);

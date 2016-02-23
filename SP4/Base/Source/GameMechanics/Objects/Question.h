@@ -8,6 +8,7 @@ class CQuestion : public CObjects
 {
 private:
 	int id;		//the id number of the question tile
+	bool interactable;		//check if it is interactable
 public:
 	CQuestion(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh = NULL);
 	CQuestion();
@@ -16,5 +17,9 @@ public:
 	//set and get the id number of the object
 	void setID(int);
 	int getID(void);
+
+	//set and get the interactivity of the object
+	void setInteractivity(bool);
+	bool getInteractivity(void);
 };
 

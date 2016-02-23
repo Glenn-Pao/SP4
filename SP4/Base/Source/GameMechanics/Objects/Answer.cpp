@@ -58,3 +58,12 @@ bool CAnswer::getCorrect(void)
 {
 	return correct;
 }
+//set and get the interactivity of the object
+void CAnswer::setInteractivity(bool interactable)
+{
+	this->interactable = interactable;
+}
+bool CAnswer::getInteractivity(void)
+{
+	return interactable;
+}
