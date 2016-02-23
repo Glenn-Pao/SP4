@@ -101,7 +101,7 @@ void CSceneTutorialGame1::Init(int level)
 			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
 				// Create a new door
-				theDoor = new CDoor(1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+				theDoor = new CDoor(CObjects::DOOR, 1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 			}
 			// Timer Dialogue
 			else if (m_cMap->theScreenMap[i][k] == 101)

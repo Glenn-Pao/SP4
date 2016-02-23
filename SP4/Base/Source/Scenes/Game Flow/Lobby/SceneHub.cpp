@@ -119,10 +119,10 @@ void CSceneHub::Init(int level)
 	}*/
 
 
-	theDoor.push_back(new CDoor(1, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(2, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(3, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(4, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
 	
 }
 

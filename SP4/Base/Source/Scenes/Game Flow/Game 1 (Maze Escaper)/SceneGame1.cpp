@@ -211,12 +211,12 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		}
 
 		// Create a new door
-		theDoor = new CDoor(1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 	}
 	else
 	{
 		// Create a new door
-		theDoor = new CDoor(1, exitPositions[0], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[0], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 	}
 }
 

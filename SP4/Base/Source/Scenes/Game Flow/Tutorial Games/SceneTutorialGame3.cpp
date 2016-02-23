@@ -16,6 +16,7 @@ CSceneTutorialGame3::CSceneTutorialGame3(const int m_window_width, const int m_w
 	, lives(3)
 	, Qcount(0)
 	, Acount(0)
+	, Dcount(0)
 	, timer(0)
 	, feedbacktimer(0)
 	, press(false)
@@ -37,11 +38,6 @@ CSceneTutorialGame3::~CSceneTutorialGame3()
 			delete theQuestions[i];
 			theQuestions[i] = NULL;
 		}
-	}
-	if (theDoor)
-	{
-		delete theDoor;
-		theDoor = NULL;
 	}
 	for (int i = 0; i < theDoors.size(); i++)
 	{

@@ -119,28 +119,28 @@ void CSceneTutorialGame2::Init(int level)
 			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 			if (m_cMap->theScreenMap[i][k] == 33)
 			{
-				GreyDoors.push_back(new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
+				GreyDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
 				GreyDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 37)
 			{
-				ColoursSet.push_back(new CColour("BLUE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "BLUE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
 				ColoursSet.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 35)
 			{
-				greenDoor = new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_GREEN_DOOR]);
+				greenDoor = new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_GREEN_DOOR]);
 				greenDoor->setActive(true);
 				greenDoor->setDoorType("COLOURED", "GREEN");
 			}
 			else if (m_cMap->theScreenMap[i][k] == 34)
 			{
-				BlueDoors.push_back(new CDoor(1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_BLUE_DOOR]));
+				BlueDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_BLUE_DOOR]));
 				BlueDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 38)
 			{
-				ColoursSet.push_back(new CColour("YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
 				ColoursSet.back()->setActive(true);
 			}
 		}
