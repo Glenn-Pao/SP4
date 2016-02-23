@@ -152,32 +152,78 @@ void CGameStateManager::UpdateSound(const double m_dElapsedTime)
 
 	if (sound != NULL)
 	{
-		////it has to be within menu flow to play the menu sound
-		//if (i >= 1 && i <= 5 )
-		//{
-		//	sound->PlayMainMenu();
-		//}
-		////plays the game hub song
-		//else if (i == 6 || i == 7 || i == 10 || i == 11)
-		//{
-		//	//if previously from main menu
-		//	if (prevI <= 5)
-		//	{
-		//		sound->StopMainMenu();
-		//	}
-		//	sound->PlayLobby();
-		//}
-		////plays greg's game song
-		//else if (i == 11 || i == 12 || (i >= 18 && i <= 20))
-		//{
-		//	//if previously from game hub
-		//	if (prevI == 10)
-		//	{
-		//		sound->StopLobby();
-		//	}
-		//	sound->PlayMazeEscaper();
-		//}
-		//
+		//main menu
+		if (i == 1)
+		{
+			//play the main menu sound
+			sound->PlayMainMenu();
+
+			//stop all other sounds if playing
+			sound->StopLobby();
+			sound->StopMazeEscaper();
+			sound->StopMCQPower();
+			sound->StopStress();
+		}
+		//lobby
+		else if (i == 10)
+		{
+			sound->PlayLobby();
+
+			//stop all other sounds if playing
+			sound->StopMainMenu();
+			sound->StopMazeEscaper();
+			sound->StopPuzzleParty();
+			sound->StopMCQPower();
+			sound->StopStress();
+		}
+		//maze escaper, greg's game
+		else if (i == 12)
+		{
+			sound->PlayMazeEscaper();
+
+			//stop all other sounds if playing
+			sound->StopMainMenu();
+			sound->StopLobby();
+			sound->StopPuzzleParty();
+			sound->StopMCQPower();
+			sound->StopStress();
+		}
+		//puzzle party, job's game
+		else if (i == 14)
+		{
+			sound->PlayPuzzleParty();
+
+			//stop all other sounds if playing
+			sound->StopMainMenu();
+			sound->StopLobby();
+			sound->StopMazeEscaper();
+			sound->StopMCQPower();
+			sound->StopStress();
+		}
+		//mcq power, glenn's game
+		else if (i == 15)
+		{
+			sound->PlayMCQPower();
+
+			//stop all other sounds if playing
+			sound->StopMainMenu();
+			sound->StopLobby();
+			sound->StopMazeEscaper();
+			sound->StopPuzzleParty();
+			sound->StopStress();
+		}
+		//stress, rayson's game
+		else if (i == 16)
+		{
+			sound->PlayStress();
+
+			//stop all other sounds if playing
+			sound->StopMainMenu();
+			sound->StopLobby();
+			sound->StopMazeEscaper();
+			sound->StopPuzzleParty();
+			sound->StopMCQPower();
+		}
 	}
 }
 void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window)

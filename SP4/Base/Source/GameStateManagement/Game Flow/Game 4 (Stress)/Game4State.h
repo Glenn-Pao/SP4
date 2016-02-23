@@ -33,7 +33,7 @@ protected:
 private:
 	static CGame4State theTutorialGame1State;
 	int counter;
-	short stateID = 12;				//ID of state
+	short stateID = 16;				//ID of state
 
 	//Declare variables to store the last and current mouse position
 	double mouse_last_x, mouse_last_y, mouse_diff_x, mouse_diff_y;

@@ -36,8 +36,6 @@ public:
 	void PlayLobby();					//plays the game hub lobby sound
 	void StopLobby();					//stop the game hub lobby sound
 
-	void FadeOut();						//fade out the bgm
-	void FadeIn();						//fade in the bgm
 	void AdjustVol();						//adjust the volume in options
 
 private:
@@ -51,7 +49,12 @@ private:
 	ISound *Stress;	//background music for Stress, game by Rayson
 	ISound *Lobby;			//background for game hub
 
-	float volume;				//current volume of sound system
+	float volMM;				//current volume of main menu
+	float volME;				//current volume of maze escaper
+	float volPP;				//current volume of puzzle party
+	float volMP;				//current volume of mcq power
+	float volS;					//current volume of stress
+	float volLob;				//current volume of lobby
 	float maxVol;				//volume defined by lua script
 };
 
