@@ -32,6 +32,7 @@
     <ClCompile Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 1 (Maze Escaper)\Game1State.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.cpp" />
+    <ClCompile Include="Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\HubState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.cpp" />
@@ -71,6 +72,7 @@
     <ClCompile Include="Source\SceneGraph\Transform.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.cpp" />
+    <ClCompile Include="Source\Scenes\Game Flow\Game 3 (MCQ Power)\SceneGame3.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneHub.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.cpp" />
@@ -126,6 +128,7 @@
     <ClInclude Include="Source\GameMechanics\SavingAndLoading\SavingAndLoadingSystem.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 1 (Maze Escaper)\Game1State.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 2 (Puzzle Quest)\Game2State.h" />
+    <ClInclude Include="Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\HubState.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.h" />
@@ -168,6 +171,7 @@
     <ClInclude Include="Source\SceneGraph\Transform.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.h" />
+    <ClInclude Include="Source\Scenes\Game Flow\Game 3 (MCQ Power)\SceneGame3.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneHub.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.h" />

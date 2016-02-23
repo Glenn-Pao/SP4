@@ -8,7 +8,8 @@ using namespace std;
 #include "..\..\Menu Flow\pausestate.h"
 #include "..\..\Game Flow\Game 1 (Maze Escaper)\Game1State.h"
 #include "..\..\Game Flow\Tutorial Games\TutorialGame2.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
+//#include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
+#include "..\..\Base\Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.h"
 #include "..\..\Base\Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.h"
 
 CHubState CHubState::theHubState;
@@ -173,7 +174,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			theGSM->m_bWarpMouse = false;
 
 			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CTutorialGame3::Instance());
+			theGSM->ChangeState(CGame3State::Instance());
 		}
 		else if (scene->loadGame4)
 		{
