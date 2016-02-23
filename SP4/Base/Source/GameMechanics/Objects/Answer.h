@@ -12,7 +12,7 @@ private:
 	bool pickup;	//check if it has been picked up already
 	bool correct;	//check if this is actually the correct answer
 public:
-	CAnswer(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, bool pickup = false, bool correct = false, Mesh* ModelMesh = NULL);
+	CAnswer(CObjects::OBJECT_TYPE m_Object_Type, int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, bool pickup = false, bool correct = false, Mesh* ModelMesh = NULL);
 	CAnswer();
 	~CAnswer();
 

@@ -11,7 +11,7 @@ CObjects::CObjects()
 	, BoundingBox(NULL)
 {
 }
-CObjects::CObjects(CObjects::OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
+CObjects::CObjects(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh)
 {
 	this->m_Object_Type = m_Object_Type;
 	this->active = active;
@@ -192,11 +192,11 @@ CBoundingBox* CObjects::getBoundingBox(void)
 {
 	return BoundingBox;
 }
-void CObjects::setObjType(CObjects::OBJECT_TYPE m_Object_Type)
+void CObjects::setObjType(OBJECT_TYPE m_Object_Type)
 {
 	this->m_Object_Type = m_Object_Type;
 }
-CObjects::OBJECT_TYPE CObjects::getObjType(void)
+int CObjects::getObjType(void)
 {
-	return m_Object_Type;
+	return (int)m_Object_Type;
 }

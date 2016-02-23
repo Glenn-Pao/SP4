@@ -58,18 +58,22 @@ private:
 	//Questions
 	vector<CQuestion*>theQuestions;
 
+	//Doors
+	vector<CDoor*> theDoors;
+
 	//Answers
 	vector<CAnswer*>theAnswers;
+
+	//door
+	CDoor* theDoor;
 
 	//tutorial dialogues
 	vector<CObjects*> dialogueTiles;
 
-	//Door
-	CDoor* theDoor;
-
 	CSceneManager2D sceneManager2D;	
 	int Qcount;	//number of questions
 	int Acount;		//number of answers
+	int Dcount;		//number of doors
 	int lives;		//number of lives available to player
 	double timer;	//meant for the slight pause before you can pick up item again
 	double feedbacktimer;		//meant to display notice for a while as visual feedback on whether you got it right or wrong

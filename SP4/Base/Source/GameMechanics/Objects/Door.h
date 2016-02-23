@@ -8,7 +8,7 @@ private:
 
 public:
 	CColour();
-	CColour(std::string colour, Vector3 pos, Vector3 scale, Mesh* mesh);
+	CColour(CObjects::OBJECT_TYPE m_Object_Type, std::string colour, Vector3 pos, Vector3 scale, Mesh* mesh);
 	CColour(std::string colour);
 	~CColour();
 
@@ -26,7 +26,7 @@ private:
 
 public:
 	CDoor();
-	CDoor(int id, Vector3 pos, Vector3 scale, Mesh* mesh);
+	CDoor(CObjects::OBJECT_TYPE m_Object_Type, int id, Vector3 pos, Vector3 scale, Mesh* mesh);
 	~CDoor();
 
 	//set and get the id number of the door

@@ -10,7 +10,7 @@ private:
 	int id;		//the id number of the question tile
 	bool interactable;		//check if it is interactable
 public:
-	CQuestion(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh = NULL);
+	CQuestion(CObjects::OBJECT_TYPE m_Object_Type, int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh = NULL);
 	CQuestion();
 	~CQuestion();
 

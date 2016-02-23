@@ -12,8 +12,7 @@
 #include "..\..\..\UsingLua.h"
 
 CSceneTutorialGame3::CSceneTutorialGame3(const int m_window_width, const int m_window_height)
-	: theDoor(NULL)
-	, currentState(PLAYING)
+	: currentState(PLAYING)
 	, lives(3)
 	, Qcount(0)
 	, Acount(0)
@@ -42,6 +41,15 @@ CSceneTutorialGame3::~CSceneTutorialGame3()
 	if (theDoor)
 	{
 		delete theDoor;
+		theDoor = NULL;
+	}
+	for (int i = 0; i < theDoors.size(); i++)
+	{
+		if (theDoors[i])
+		{
+			delete theDoors[i];
+			theDoors[i] = NULL;
+		}
 	}
 	// Dialogues tiles
 	for (int i = 0; i < dialogueTiles.size(); i++)
@@ -112,18 +120,21 @@ void CSceneTutorialGame3::Init(int level)
 			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
 				// Create a new door
-				theDoor = new CDoor(1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+				theDoor = new CDoor(CObjects::DOOR, 1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+				//theDoors.push_back(new CDoor())
+				//theDoors.push_back(new CDoor(CObjects::DOOR, Dcount, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
+				
 			}
 			// Questions
 			else if (m_cMap->theScreenMap[i][k] == 41)
 			{
-				theQuestions.push_back(new CQuestion(Qcount, false, true, QnDialogue[Qcount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
+				theQuestions.push_back(new CQuestion(CObjects::QUESTION, Qcount, false, true, QnDialogue[Qcount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1)));
 				Qcount++;
 			}
 			// Possible answers
 			else if (m_cMap->theScreenMap[i][k] == 42)
 			{
-				theAnswers.push_back(new CAnswer(Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1), false));
+				theAnswers.push_back(new CAnswer(CObjects::ANSWER, Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1), false));
 
 				//set the correct answers
 				if (Acount == 1 || Acount == 4)

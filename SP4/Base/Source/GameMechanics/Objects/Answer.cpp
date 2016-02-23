@@ -4,8 +4,9 @@
 CAnswer::CAnswer()
 {
 }
-CAnswer::CAnswer(int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, bool pickup, bool correct, Mesh* ModelMesh)
+CAnswer::CAnswer(CObjects::OBJECT_TYPE m_Object_Type, int id, bool active, bool interactable, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, bool pickup, bool correct, Mesh* ModelMesh)
 {
+	this->setObjType(m_Object_Type);
 	this->id = id;
 	this->setActive(active);
 	this->setInteractivity(interactable);

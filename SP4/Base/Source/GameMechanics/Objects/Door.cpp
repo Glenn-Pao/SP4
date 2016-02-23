@@ -6,8 +6,9 @@ CDoor::CDoor()
 }
 
 
-CDoor::CDoor(int id, Vector3 pos, Vector3 scale, Mesh* mesh)
+CDoor::CDoor(CObjects::OBJECT_TYPE m_Object_Type, int id, Vector3 pos, Vector3 scale, Mesh* mesh)
 {
+	this->setObjType(m_Object_Type);
 	this->id = id;
 
 	this->setPosition(pos);
@@ -67,8 +68,9 @@ CColour::CColour()
 {
 }
 
-CColour::CColour(std::string colour, Vector3 pos, Vector3 scale, Mesh* mesh)
+CColour::CColour(CObjects::OBJECT_TYPE m_Object_Type, std::string colour, Vector3 pos, Vector3 scale, Mesh* mesh)
 {
+	this->setObjType(m_Object_Type);
 	this->colour = colour;
 
 	this->setPosition(pos);

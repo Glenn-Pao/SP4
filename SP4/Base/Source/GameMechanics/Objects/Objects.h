@@ -37,11 +37,11 @@ private:
 	Mesh* ModelMesh;					//the sprite of the entity
 	CBoundingBox* BoundingBox;	//the bounding box of the object
 
-	CObjects::OBJECT_TYPE m_Object_Type;		//the type of object it is
+	OBJECT_TYPE m_Object_Type;		//the type of object it is
 
 public:
 	CObjects();
-	CObjects(CObjects::OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh);
+	CObjects(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh);
 	~CObjects();
 
 	//set and get the entity's active status
@@ -108,6 +108,6 @@ public:
 	void setBoundingBox(Vector3, Vector3);
 	CBoundingBox* getBoundingBox(void);
 
-	void setObjType(CObjects::OBJECT_TYPE);
-	CObjects::OBJECT_TYPE getObjType(void);
+	void setObjType(OBJECT_TYPE);
+	int getObjType(void);
 };
