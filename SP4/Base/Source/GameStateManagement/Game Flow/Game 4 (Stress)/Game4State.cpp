@@ -174,15 +174,6 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 #endif
 	switch (scene->currentState)
 	{
-	case SceneGame4::COMPLETED:
-	{
-								   if (button_Left == true)
-								   {
-									   scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-									   theGSM->ChangeState(CHubState::Instance());
-								   }
-	}
-		break;
 	case SceneGame4::TIME_UP:
 	{
 								 if (button_Left == true)

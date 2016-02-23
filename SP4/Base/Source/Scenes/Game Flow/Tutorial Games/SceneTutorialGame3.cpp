@@ -106,7 +106,7 @@ void CSceneTutorialGame3::Init(int level)
 			if (m_cMap->theScreenMap[i][k] == 1000 && theHero == NULL)
 			{
 				// Initialise the hero's position
-				theHero = new CPlayerInfo();
+				theHero = new CPlayerInfo(m_cMap);
 				theHero->setPositionX(k*m_cMap->GetTileSize());
 				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 				theHero->setBoundingBox(Vector3(theHero->getPositionX() + (theHero->getLeftCollision() - 0.5) * m_cMap->GetTileSize(), theHero->getPositionY() + m_cMap->GetTileSize() * (theHero->getTopCollision() - 0.5)),

@@ -85,9 +85,6 @@
     <ClCompile Include="Source\Minimap.cpp">
       <Filter>Application Items</Filter>
     </ClCompile>
-    <ClCompile Include="Source\PlayerInfo.cpp">
-      <Filter>Application Items</Filter>
-    </ClCompile>
     <ClCompile Include="Source\PlayInfo3PV.cpp">
       <Filter>Application Items</Filter>
     </ClCompile>
@@ -193,9 +190,6 @@
     <ClCompile Include="Source\Scenes\Menu Flow\SceneWin.cpp">
       <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\Master\SceneGameBase.cpp">
-      <Filter>Scenes\Master</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\Master\SceneManager.cpp">
       <Filter>Scenes\Master</Filter>
     </ClCompile>
@@ -260,9 +254,6 @@
     <ClCompile Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.cpp">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp">
-      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.cpp">
       <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
     </ClCompile>
@@ -271,6 +262,18 @@
     </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\Question.cpp">
       <Filter>Game Mechanics\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Card.cpp">
+      <Filter>Game Mechanics\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp">
+      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerInfo.cpp">
+      <Filter>Application Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scenes\Master\SceneGameBase.cpp">
+      <Filter>Scenes\Master</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,9 +365,6 @@
       <Filter>Application Items</Filter>
     </ClInclude>
     <ClInclude Include="Source\Minimap.h">
-      <Filter>Application Items</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerInfo.h">
       <Filter>Application Items</Filter>
     </ClInclude>
     <ClInclude Include="Source\PlayInfo3PV.h">
@@ -478,9 +478,6 @@
     <ClInclude Include="Source\Scenes\Menu Flow\SceneWin.h">
       <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\Master\SceneGameBase.h">
-      <Filter>Scenes\Master</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\Master\SceneManager.h">
       <Filter>Scenes\Master</Filter>
     </ClInclude>
@@ -545,9 +542,6 @@
     <ClInclude Include="Source\Scenes\Game Flow\Game 1 (Maze Escaper)\SceneGame1.h">
       <Filter>Scenes\Game Flow\Game 1%28Maze Escaper%29</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h">
-      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 4 (Stress)\Game4State.h">
       <Filter>Game State Management\Game Flow\Game 4%28Stress%29</Filter>
     </ClInclude>
@@ -556,6 +550,18 @@
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\Answer.h">
       <Filter>Game Mechanics\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Card.h">
+      <Filter>Game Mechanics\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h">
+      <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerInfo.h">
+      <Filter>Application Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scenes\Master\SceneGameBase.h">
+      <Filter>Scenes\Master</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

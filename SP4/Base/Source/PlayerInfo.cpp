@@ -3,7 +3,7 @@
 
 #include "UsingLua.h"
 
-CPlayerInfo::CPlayerInfo(void)
+CPlayerInfo::CPlayerInfo(CMap* m_cMap)
 	: hero_inMidAir_Up(false)
 	, hero_inMidAir_Down(false)
 	, jumpspeed(0)
@@ -32,6 +32,11 @@ CPlayerInfo::CPlayerInfo(void)
 	{
 		meshList[i] = NULL;
 	}
+
+
+	// Bounding Box
+	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5)),
+	Vector3(getPositionX() + (rightCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5)));
 }
 
 CPlayerInfo::~CPlayerInfo(void)

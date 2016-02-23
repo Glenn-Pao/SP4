@@ -1,7 +1,7 @@
 #pragma once
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\..\GameMechanics\Objects\Door.h"
-
+#include "..\..\Base\Source\GameMechanics\Objects\Card.h"
 class SceneGame4 : public CSceneGameBase
 {
 
@@ -19,22 +19,11 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	enum WEAPON_ACTION
-	{
-		WA_NIL = 0,
-		WA_FIRE,
-		WA_RELOAD,
-		WA_CHANGEWEAPON,
-		WA_TOTAL,
-	};
-	void RenderWaypoints();
-
 	enum STATE
 	{
-		PLAYING,
-		EXITING,
-		COMPLETED,
+		PLAY,
 		TIME_UP,
+		PAUSE,
 		NUM_OF_STATE
 	};
 	int currentState;
@@ -50,16 +39,14 @@ private:
 
 	void RenderRearTileMap(){}
 
+	void RenderCard();
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
 
-	CDoor* theDoor;
-
 	float timer;
 
-	vector<CObjects*> dialogueTiles;
+	Card* StressCard;
 
-	string scriptTimeUp, scriptFinished, scriptExit;
 };
 

@@ -12,28 +12,13 @@
 #include "..\..\..\UsingLua.h"
 
 SceneGame4::SceneGame4(const int m_window_width, const int m_window_height)
-: theDoor(NULL)
-, currentState(PLAYING)
+: currentState(PLAY)
 , timer(30.0f)
 {
 }
 
 SceneGame4::~SceneGame4()
 {
-	// Door
-	if (theDoor)
-	{
-		delete theDoor;
-	}
-	// Dialogues tiles
-	for (int i = 0; i < dialogueTiles.size(); i++)
-	{
-		if (dialogueTiles[i])
-		{
-			delete dialogueTiles[i];
-			dialogueTiles[i] = NULL;
-		}
-	}
 }
 
 void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium), = 3(Hard)
@@ -47,9 +32,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	L.ReadFiles("Lua//Scene/Game1/tutorial.lua");
 
 	int tileSize = L.DoLuaInt("tileSize");
-	scriptTimeUp = L.DoLuaString("scriptTimeUp");
-	scriptFinished = L.DoLuaString("scriptFinished");
-	scriptExit = L.DoLuaString("scriptExit");
 
 	// Dialogues scripts
 	vector<string> scriptDialogues;
@@ -64,16 +46,11 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 
 			  // Initialise and load the tile map
 			  m_cMap = new CMap();
-			  m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 21 * tileSize, 20 * tileSize, tileSize);
-			  m_cMap->LoadMap("Image//Maps//Game 1/Tutorial.csv");
+			  m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
+			  m_cMap->LoadMap("Image//Maps//Game 4/Tutorial.csv");
 	}
 		break;
 	}
-
-	//initialise the waypoints
-	waypoints = new CWaypoints();
-	waypoints->LoadWaypoints(m_cMap);
-	temp = waypoints->getWaypointsVector();
 
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
@@ -85,18 +62,13 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 				// Initialise the hero's position
-				theHero = new CPlayerInfo();
+				theHero = new CPlayerInfo(m_cMap);
 				theHero->setPositionX(pos_x);
 				theHero->setPositionY(pos_y);
 
 				// Tutorial
 				if (level == 0)
 				{
-					// Control Dialogue
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 			}
 			// Enemies
@@ -111,67 +83,11 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 			// Door
 			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
-				// Create a new door
-				theDoor = new CDoor(CObjects::DOOR, 1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 			}
 			// Tutorial
 			if (level == 0)
 			{
-				// Timer Dialogue
-				if (m_cMap->theScreenMap[i][k] == 101)
-				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[1], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
-				}
-				// Objective Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 102)
-				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
-				}
-				// Path choosing Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 103)
-				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[3], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
-				}
-				// Exit found Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 104)
-				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[4], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
-				}
-				// Deadend Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 105)
-				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
-
-					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[5], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
-					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
-				}
+			
 			}
 		}
 	}
@@ -180,6 +96,9 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 
 	// Initialise the Meshes
 	InitMeshes();
+
+
+	StressCard = new Card(Card::CARD, true, "NIL", Vector3(300, 300, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD],Card::ZERO);
 }
 
 void SceneGame4::PreInit()
@@ -213,7 +132,10 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
 	meshList[GEO_TILE_DOOR] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
-
+	meshList[GEO_RED_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_RED_CARD]->textureID = LoadTGA("Image//RedCard.tga");
+	meshList[GEO_STRESS_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_STRESS_CARD]->textureID = LoadTGA("Image//StressCard.tga");
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -260,9 +182,11 @@ void SceneGame4::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
+	cout << StressCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) << endl;
+
 	switch (currentState)
 	{
-	case PLAYING:
+	case PLAY:
 	{
 					Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 					// Update the hero
@@ -286,65 +210,10 @@ void SceneGame4::Update(double dt)
 						theHero->SetAnimationCounter(0);
 					}
 					theHero->HeroUpdate(m_cMap, dt);
-
-
-					// Dialogues tiles
-					for (int i = 0; i < dialogueTiles.size(); i++)
-					{
-						if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-						{
-							dialogueTiles[i]->setActive(true);
-						}
-						else
-						{
-							dialogueTiles[i]->setActive(false);
-						}
-					}
-					// Check Door
-					if (theDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-					{
-						currentState = EXITING;
-						// Animation
-						theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
-					}
+				
 					// Timer
 					timer -= dt;
-					if (timer <= 0.0f)
-					{
-						timer = 0.0f;
-						currentState = TIME_UP;
-					}
-	}
-		break;
-	case EXITING:
-	{
-					// Translate hero position toward door
-					Vector3 theOldHeroPosition(theHero->getPositionX(), theHero->getPositionY(), 0);
-					Vector3 theNewHeroPosition(theOldHeroPosition);
-					Vector3 theTargetPosition(theDoor->getPositionX(), theDoor->getPositionY(), 0);
-
-					theNewHeroPosition += (theTargetPosition - theNewHeroPosition).Normalized() * theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt;
-
-					if ((theOldHeroPosition - theTargetPosition).Length()  > (theOldHeroPosition - theNewHeroPosition).Length())
-					{
-						theHero->setPositionX(theNewHeroPosition.x);
-						theHero->setPositionY(theNewHeroPosition.y);
-
-						// Animation
-						theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-						if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-							theHero->SetAnimationCounter(1);
-					}
-					else
-					{
-						theHero->setPositionX(theTargetPosition.x);
-						theHero->setPositionY(theTargetPosition.y);
-						currentState = COMPLETED;
-
-						// Animation
-						theHero->SetAnimationDirection(CPlayerInfo::UP);
-						theHero->SetAnimationCounter(0);
-					}
+			
 	}
 		break;
 	}
@@ -393,11 +262,16 @@ void SceneGame4::Render()
 	RenderHero();
 	// Render AIs
 	RenderAIs();
-
+	RenderCard();
 	sceneManager2D.modelStack.PopMatrix();
 
 	// Render GUI
 	RenderGUI();
+}
+
+void SceneGame4::RenderCard()
+{
+	sceneManager2D.Render2DMesh(StressCard->getMesh(), false, StressCard->getScale().x, StressCard->getScale().y, StressCard->getPosition().x, StressCard->getPosition().y,0);
 }
 
 /********************************************************************************
@@ -443,42 +317,19 @@ void SceneGame4::RenderGUI()
 
 	switch (currentState)
 	{
-	case PLAYING:
+	case PLAY:
 	{
-					for (int i = 0; i < dialogueTiles.size(); i++)
-					{
-						if (dialogueTiles[i]->getActive())
-						{
-							// Dialogue box
-							sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
-
-							// Text
-							int textSize = m_cMap->GetTileSize() * 0.5;
-							sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
-							break;
-						}
-					}
-	}
 		break;
-	case COMPLETED:
+	}
+	case PAUSE:
 	{
-					  int textSize = m_cMap->GetTileSize();
-					  sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
-
-					  textSize = m_cMap->GetTileSize() * 0.5;
-					  sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
-	}
 		break;
+	}
 
 	case TIME_UP:
 	{
-					int textSize = m_cMap->GetTileSize();
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptTimeUp, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptTimeUp.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
-
-					textSize = m_cMap->GetTileSize() * 0.5;
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
+					break;
 	}
-		break;
 	}
 }
 
@@ -552,13 +403,5 @@ void SceneGame4::RenderAIs()
 		{
 			sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
 		}
-	}
-}
-
-void SceneGame4::RenderWaypoints()
-{
-	for (int i = 0; i < temp.size(); i++)
-	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x, temp.at(i).y);
 	}
 }

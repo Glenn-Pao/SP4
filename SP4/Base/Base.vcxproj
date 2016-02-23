@@ -24,6 +24,7 @@
     <ClCompile Include="Source\GameMechanics\Jellybean\JellybeanSystem.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Answer.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp" />
+    <ClCompile Include="Source\GameMechanics\Objects\Card.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Door.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Objects.cpp" />
     <ClCompile Include="Source\GameMechanics\Objects\Question.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Source\GameMechanics\Jellybean\JellybeanSystem.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Answer.h" />
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h" />
+    <ClInclude Include="Source\GameMechanics\Objects\Card.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Door.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Objects.h" />
     <ClInclude Include="Source\GameMechanics\Objects\Question.h" />

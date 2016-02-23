@@ -204,13 +204,13 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		}
 
 		// Initialise the hero's position
-		theHero = new CPlayerInfo();
+		theHero = new CPlayerInfo(m_cMap);
 		theHero->setPosition(startPositions[probabilitySystem.GetARandIntProbability()]);
 	}
 	else
 	{
 		// Initialise the hero's position
-		theHero = new CPlayerInfo();
+		theHero = new CPlayerInfo(m_cMap);
 		theHero->setPosition(startPositions[0]);
 	}
 

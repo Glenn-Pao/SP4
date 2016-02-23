@@ -123,7 +123,7 @@ void CSceneGame2::Init(int level)
 			if (m_cMap->theScreenMap[i][k] == 1000 && theHero == NULL)
 			{
 				// Initialise the hero's position
-				theHero = new CPlayerInfo();
+				theHero = new CPlayerInfo(m_cMap);
 
 				int centerBorderX = (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize();
 				theHero->setPositionX(k*m_cMap->GetTileSize());

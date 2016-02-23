@@ -10,7 +10,7 @@ const int TileTypes = 8; // Increase it if more tile types added
 class CPlayerInfo : public CObjects
 {
 public:
-	CPlayerInfo(void);
+	CPlayerInfo(CMap* m_cMap);
 	~CPlayerInfo(void);
 
 	enum GEOMETRY_TYPE

@@ -78,7 +78,7 @@ void CSceneTutorialGame1::Init(int level)
 				float pos_x = k*m_cMap->GetTileSize();
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 				// Initialise the hero's position
-				theHero = new CPlayerInfo();
+				theHero = new CPlayerInfo(m_cMap);
 				theHero->setPositionX(pos_x);
 				theHero->setPositionY(pos_y);
 
