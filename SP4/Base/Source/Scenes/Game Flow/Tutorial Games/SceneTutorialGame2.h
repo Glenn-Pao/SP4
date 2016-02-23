@@ -84,6 +84,8 @@ private:
 
 	string scriptExit, scriptFinished;
 
+	int castedColoursCounter;
+	float timer;
 };
 
 #endif

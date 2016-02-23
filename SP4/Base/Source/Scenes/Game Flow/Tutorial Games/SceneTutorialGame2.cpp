@@ -195,6 +195,8 @@ void CSceneTutorialGame2::Init(int level)
 	castedBlue = castedYellow = castedGreen = false;
 
 	prevHeroPos.SetZero();
+	castedColoursCounter = 0;
+	timer = 0;
 }
 
 void CSceneTutorialGame2::PreInit()
@@ -232,6 +234,8 @@ void CSceneTutorialGame2::InitMeshes()
 	meshList[GEO_COLOUR_BALL_BLUE]->textureID = LoadTGA("Image//Tile/tile37_BlueBall.tga");
 	meshList[GEO_COLOUR_BALL_YELLOW] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_YELLOW", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_COLOUR_BALL_YELLOW]->textureID = LoadTGA("Image//Tile/tile38_YellowBall.tga");
+	meshList[GEO_COLOUR_BALL_GREEN] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_GREEN", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_COLOUR_BALL_GREEN]->textureID = LoadTGA("Image//Tile/green ball.tga");
 	meshList[GEO_GREEN_DOOR] = MeshBuilder::Generate2DMesh("GEO_GREEN_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_GREEN_DOOR]->textureID = LoadTGA("Image//Tile/tile35_GreenDoor.tga");
 	meshList[GEO_BLUE_DOOR] = MeshBuilder::Generate2DMesh("GEO_BLUE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
@@ -314,6 +318,21 @@ void CSceneTutorialGame2::Update(double dt)
 				castedGreen = true;
 		}
 
+		if (castedBlue || castedYellow || castedGreen)
+		{
+			timer += 0.1f;
+			if (timer > 5.f)
+			{
+				timer = 0;
+				if (castedBlue)
+					castedBlue = false;
+				else if (castedYellow)
+					castedYellow = false;
+				else if (castedGreen)
+					castedGreen = false;
+			}
+		}
+
 		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 		{
 			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
@@ -372,30 +391,38 @@ void CSceneTutorialGame2::Update(double dt)
 		//Doors
 		for (int i = 0; i < GreyDoors.size(); i++)
 		{
-			if (GreyDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			if (GreyDoors[i]->getActive() == true)
 			{
-				GreyDoors[i]->setActive(false);
+				if (GreyDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+				{
+					GreyDoors[i]->setActive(false);
+				}
 			}
 		}
 
 		if (greenDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (castedGreen)
-				greenDoor->setActive(false);
-			else
-				theHero->setPosition(prevHeroPos);
-
+			if (greenDoor->getActive() == true)
+			{
+				if (castedGreen)
+					greenDoor->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
 		}
 
 		for (int i = 0; i < BlueDoors.size(); i++)
 		{
-			if (BlueDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			if (BlueDoors[i]->getActive() == true)
 			{
+				if (BlueDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+				{
 
-				if (castedBlue)
-					BlueDoors[i]->setActive(false);
-				else
-					theHero->setPosition(prevHeroPos);
+					if (castedBlue)
+						BlueDoors[i]->setActive(false);
+					else
+						theHero->setPosition(prevHeroPos);
+				}
 			}
 		}
 
@@ -615,6 +642,16 @@ void CSceneTutorialGame2::RenderObjects()
 		if (ColoursSet[i]->getActive())
 			sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, ColoursSet[i]->getScale().x, ColoursSet[i]->getScale().y, ColoursSet[i]->getPositionX(), ColoursSet[i]->getPositionY());
 	}
+
+
+	if (castedBlue && !castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_BLUE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+	if (castedYellow && !castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_YELLOW], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + m_cMap->GetTileSize() - 10, theHero->getPositionY() + m_cMap->GetTileSize());
+
+
+	if (castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + 10, theHero->getPositionY() + m_cMap->GetTileSize());
 
 	for (int i = 0; i < BlueDoors.size(); i++)
 	{

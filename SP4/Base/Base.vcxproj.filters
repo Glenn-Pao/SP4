@@ -275,6 +275,9 @@
     <ClCompile Include="Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.cpp">
       <Filter>Game State Management\Game Flow\Game 3%28MCQ%29</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI\AIBase.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -562,6 +565,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.h">
       <Filter>Game State Management\Game Flow\Game 3%28MCQ%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\AIBase.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
