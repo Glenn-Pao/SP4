@@ -11,6 +11,14 @@
 #include <string>
 class CObjects
 {
+	enum OBJECT_TYPE
+	{
+		DOOR,
+		QUESTION,
+		ANSWER,
+		CARD,
+		NO_OBJ,
+	};
 private:
 	bool active;							//entity is active or not?
 	bool interactable;					//whether this entity can be interacted with
