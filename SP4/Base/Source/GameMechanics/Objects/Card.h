@@ -5,33 +5,44 @@ class Card : public CObjects
 {
 public:
 
-	enum Number
+	enum Element
 	{
-		ZERO,
-		ONE,
-		TWO,
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN,
-		EIGHT,
-		NINE
+		NONE,
+		FIRE,
+		WATER,
+		LEAF
 	};
 
-	Mesh* CardFaceUpMesh;
+	enum State
+	{
+		ON_DRAW,
+		ON_DRAG,
+		ON_HAND,
+		ON_DISCARD
+	};
 
-	void setNumber_Type(Number Number_Type);
+	//void setisHeld(bool isHeld);
 	void setCardFaceUpMesh(Mesh* CardFaceUpMesh);
-
+	void setCurrentState_Type(Card::State CurrentState_Type);
+	void setPreviouseState_Type(Card::State PreviouseStateType);
+	void setElement_Type(Element Element_Type);
+	
+	//bool getisHeld();
 	Mesh* getCardFaceUpMesh();
-	int getNumber_Type();
+	Card::State getPreviouseState_Type();
+	Card::State getCurrentState_Type();
+	Card::Element getElement_Type();
 
-	Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh, Mesh* CardFaceUpMesh, Number Number_Type);
+	Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh, Mesh* CardFaceUpMesh, State CurrentState_Type, Element Element_Type/*, bool isHeld*/);
 	~Card();
 
 private:
+	//bool isHeld;
 
-	Number Number_Type;
+	Mesh* CardFaceUpMesh;
+
+	State CurrentState_Type, PreviouseState_Type;
+
+	Element Element_Type;
 };
 

@@ -20,6 +20,7 @@ public:
 		QUESTION,
 		ANSWER,
 		CARD,
+		TRIGGER,
 		NUM_OBJ,
 	};
 private:

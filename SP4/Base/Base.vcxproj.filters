@@ -257,9 +257,6 @@
     <ClCompile Include="Source\GameMechanics\Objects\Question.cpp">
       <Filter>Game Mechanics\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameMechanics\Objects\Card.cpp">
-      <Filter>Game Mechanics\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.cpp">
       <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
     </ClCompile>
@@ -277,6 +274,15 @@
     </ClCompile>
     <ClCompile Include="Source\AI\AIBase.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Deck.cpp">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Card.cpp">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameMechanics\Objects\Trigger.cpp">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -548,9 +554,6 @@
     <ClInclude Include="Source\GameMechanics\Objects\Answer.h">
       <Filter>Game Mechanics\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameMechanics\Objects\Card.h">
-      <Filter>Game Mechanics\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Game 4 (Stress)\SceneGame4.h">
       <Filter>Scenes\Game Flow\Game 4%28Stress%29</Filter>
     </ClInclude>
@@ -568,6 +571,15 @@
     </ClInclude>
     <ClInclude Include="Source\AI\AIBase.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Deck.h">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Card.h">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameMechanics\Objects\Trigger.h">
+      <Filter>Game Mechanics\Objects\Game4</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -678,6 +690,9 @@
     </Filter>
     <Filter Include="Game Mechanics\Objects\BoundingBox">
       <UniqueIdentifier>{7ddcd022-7430-4f23-91b5-e6f77e187400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Mechanics\Objects\Game4">
+      <UniqueIdentifier>{228eb41f-116f-4241-b232-a8b54a086c4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

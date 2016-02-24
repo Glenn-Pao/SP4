@@ -35,21 +35,23 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 
 	// Dialogues scripts
 	vector<string> scriptDialogues;
+
+
 	switch (level)
 	{
 	case 0:
 	{
-			  for (int i = 0; i < 6; i++)
-			  {
-				  scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
-			  }
+		for (int i = 0; i < 6; i++)
+		{
+			scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
+		}
 
-			  // Initialise and load the tile map
-			  m_cMap = new CMap();
-			  m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
-			  m_cMap->LoadMap("Image//Maps//Game 4/Tutorial.csv");
+		// Initialise and load the tile map
+		m_cMap = new CMap();
+		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
+		m_cMap->LoadMap("Image//Maps//Game 4/Tutorial.csv");
 	}
-		break;
+	break;
 	}
 
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
@@ -87,18 +89,66 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 			// Tutorial
 			if (level == 0)
 			{
-			
+
 			}
 		}
 	}
+
 	// Jellybeans
 	JellybeanSystem = new CJellybeanSystem;
 
 	// Initialise the Meshes
 	InitMeshes();
 
+	//Decks
+	DrawPile = new Deck(Vector3(100, 100, 1), Vector3(0, 0, 0));
 
-	StressCard = new Card(Card::CARD, true, "NIL", Vector3(300, 300, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD],Card::ZERO);
+	for (int i = 0; i < 6; ++ i)
+	{
+		if (i < 2)
+		{
+			DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::ON_DRAW, Card::WATER));
+		}
+		if (i >= 2 && i < 4)
+		{
+			DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+
+		}
+		if (i >= 4 && i < 6)
+		{
+			DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+		}
+	}
+	
+	
+	
+	HandPileGreen = new Deck(Vector3(400, 100, 1), Vector3(0, -2, 0));
+	//HandPileGreen->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+
+	HandPileRed = new Deck(Vector3(300, 100, 1), Vector3(0, -2, 0));
+	//HandPileRed->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+
+	HandPileBlue = new Deck(Vector3(500, 100, 1), Vector3(0, -2, 0));
+	//HandPileBlue->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+
+
+	DiscardPile = new Deck(Vector3(400, 300, 1), Vector3(0, 0, 0));
+
+	DiscardPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+
+	//Triggers
+	CardDraw = new Trigger(meshList[GEO_DRAW], Vector3(125, 225, 0), Vector3(50, 50, 1));
+
+	CardSelectRed = new Trigger(meshList[GEO_SELECT], Vector3(300, 225, 1), Vector3(50, 50, 1));
+
+	CardPlaced = new Trigger(meshList[GEO_PLACE], Vector3(400, 175, 1), Vector3(50, 50, 1));
+
+	SelectedCard = new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAG, Card::Element::NONE);
+
+	isCardDrawn = false;
+	isCardSelected = false;
+	isCardPlaced = false;
+	isStandingOnTrigger = false;
 }
 
 void SceneGame4::PreInit()
@@ -134,8 +184,18 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
 	meshList[GEO_RED_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_RED_CARD]->textureID = LoadTGA("Image//RedCard.tga");
+	meshList[GEO_BLUE_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_BLUE_CARD]->textureID = LoadTGA("Image//BlueCard.tga");
+	meshList[GEO_GREEN_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_GREEN_CARD]->textureID = LoadTGA("Image//GreenCard.tga");
 	meshList[GEO_STRESS_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_STRESS_CARD]->textureID = LoadTGA("Image//StressCard.tga");
+	meshList[GEO_DRAW] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_DRAW]->textureID = LoadTGA("Image//DrawCard.tga");
+	meshList[GEO_SELECT] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_SELECT]->textureID = LoadTGA("Image//SelectCard.tga");
+	meshList[GEO_PLACE] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_PLACE]->textureID = LoadTGA("Image//PlaceCard.tga");
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -182,8 +242,6 @@ void SceneGame4::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	cout << StressCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) << endl;
-
 	switch (currentState)
 	{
 	case PLAY:
@@ -214,9 +272,82 @@ void SceneGame4::Update(double dt)
 					// Timer
 					timer -= dt;
 			
+					//if Card is Selected
+					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardSelected == false && HandPileRed->getListOfCards().size() > 0 && SelectedCard->getElement_Type() == Card::Element::NONE)
+					{
+						isStandingOnTrigger = true;
+						if (isCardSelected == false)
+						{
+							isCardSelected = true;
+							SelectedCard = HandPileRed->getListOfCards().back();
+							SelectedCard->setCurrentState_Type(Card::State::ON_DRAG);
+							HandPileRed->RemoveCard(HandPileRed->getListOfCards().size() - 1);
+						}
+					}
+					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
+					{
+						isCardSelected = false;
+						isStandingOnTrigger = false;
+					}
+					if (CardPlaced->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardPlaced == false)
+					{
+						isStandingOnTrigger = true;
+						if (isCardPlaced == false)
+						{
+							isCardPlaced = true;
+							DiscardPile->AddCard(SelectedCard);
+							SelectedCard->setElement_Type(Card::NONE);
+						}
+					}
+					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
+					{
+						isCardPlaced = false;
+						isStandingOnTrigger = false;
+					}
+
+					// If Card Not Drawn
+					if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardDrawn == false && DrawPile->getListOfCards().size() > 0)
+					{
+						isStandingOnTrigger = true;
+
+						if (isCardDrawn == false)
+						{
+							isCardDrawn = true;
+							
+							//Change Card State If Drawn And Remove From Draw Pile Before Adding Card To Hand Pile
+							DrawPile->getListOfCards().back()->setCurrentState_Type(Card::State::ON_HAND);
+							switch (DrawPile->getListOfCards().back()->getElement_Type())
+							{
+							case Card::Element::FIRE:
+							{
+								HandPileRed->AddCard(DrawPile->getListOfCards().back());
+								break;
+							}
+							case Card::Element::LEAF:
+							{
+								HandPileGreen->AddCard(DrawPile->getListOfCards().back());
+								break;
+							}
+							case Card::Element::WATER:
+							{
+								HandPileBlue->AddCard(DrawPile->getListOfCards().back());
+								break;
+							}
+							}
+							DrawPile->RemoveCard(DrawPile->getListOfCards().size() - 1);
+						}
+
+					}
+					if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == false)
+					{
+						isCardDrawn = false;
+						isStandingOnTrigger = false;
+					}
 	}
 		break;
 	}
+	cout << DrawPile->getListOfCards().size() << endl;
+	
 }
 
 /********************************************************************************
@@ -251,7 +382,6 @@ void SceneGame4::Render()
 	sceneManager2D.modelStack.PushMatrix();
 
 	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
-
 	//sceneManager2D.RenderBackground();
 
 	// Render the rear tile map
@@ -262,16 +392,55 @@ void SceneGame4::Render()
 	RenderHero();
 	// Render AIs
 	RenderAIs();
-	RenderCard();
+	//Render Cards
+	for (int i = 0; i < DrawPile->getListOfCards().size(); ++i)
+	{
+		RenderCard(DrawPile->getListOfCards()[i]);
+	}
+	for (int i = 0; i < HandPileRed->getListOfCards().size(); ++i)
+	{
+		RenderCard(HandPileRed->getListOfCards()[i]);
+	}
+	for (int i = 0; i < HandPileGreen->getListOfCards().size(); ++i)
+	{
+		RenderCard(HandPileGreen->getListOfCards()[i]);
+	}
+	for (int i = 0; i < HandPileBlue->getListOfCards().size(); ++i)
+	{
+		RenderCard(HandPileBlue->getListOfCards()[i]);
+	}
+	for (int i = 0; i < DiscardPile->getListOfCards().size(); ++i)
+	{
+		RenderCard(DiscardPile->getListOfCards()[i]);
+	}
+
 	sceneManager2D.modelStack.PopMatrix();
+
+	//Render Triggers
+	sceneManager2D.Render2DMesh(CardDraw->getMesh(), false, CardDraw->getScale().x, CardDraw->getScale().y, CardDraw->getPosition().x, CardDraw->getPosition().y, 0);
+	sceneManager2D.Render2DMesh(CardSelectRed->getMesh(), false, CardSelectRed->getScale().x, CardSelectRed->getScale().y, CardSelectRed->getPosition().x, CardSelectRed->getPosition().y, 0);
+	sceneManager2D.Render2DMesh(CardPlaced->getMesh(), false, CardPlaced->getScale().x, CardPlaced->getScale().y, CardPlaced->getPosition().x, CardPlaced->getPosition().y, 0);
 
 	// Render GUI
 	RenderGUI();
+	
 }
 
-void SceneGame4::RenderCard()
+void SceneGame4::RenderCard(Card* card)
 {
-	sceneManager2D.Render2DMesh(StressCard->getMesh(), false, StressCard->getScale().x, StressCard->getScale().y, StressCard->getPosition().x, StressCard->getPosition().y,0);
+	switch (card->getCurrentState_Type())
+	{
+	case Card::State::ON_DRAW:
+	{
+		sceneManager2D.Render2DMesh(card->getMesh(), false, card->getScale().x, card->getScale().y, card->getPosition().x, card->getPosition().y, 0);
+		break;
+	}
+	default:
+	{
+		sceneManager2D.Render2DMesh(card->getCardFaceUpMesh(), false, card->getScale().x, card->getScale().y, card->getPosition().x, card->getPosition().y, 0);
+		break;
+	}
+	}
 }
 
 /********************************************************************************

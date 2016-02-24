@@ -1,7 +1,8 @@
 #pragma once
 #include "..\..\Master\SceneGameBase.h"
-#include "..\..\..\GameMechanics\Objects\Door.h"
-#include "..\..\Base\Source\GameMechanics\Objects\Card.h"
+#include "..\..\Base\Source\GameMechanics\Objects\Deck.h"
+#include "..\..\Base\Source\GameMechanics\Objects\Trigger.h"
+
 class SceneGame4 : public CSceneGameBase
 {
 
@@ -26,6 +27,15 @@ public:
 		PAUSE,
 		NUM_OF_STATE
 	};
+	enum Deck_Type
+	{
+		DRAW_DECK,
+		REDHAND_DECK,
+		BLUEHAND_DECK,
+		GREENHAND_DECK,
+		DISCARD_DECK,
+	};
+
 	int currentState;
 
 private:
@@ -39,14 +49,33 @@ private:
 
 	void RenderRearTileMap(){}
 
-	void RenderCard();
+	void RenderCard(Card* card);
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
 
 	float timer;
 
-	Card* StressCard;
+	Deck* DrawPile;
+	Trigger* CardDraw;
 
+	Deck* HandPileGreen;
+	Trigger* CardSelectGreen;
+
+	Deck* HandPileRed;
+	Trigger* CardSelectRed;
+
+	Deck* HandPileBlue;
+	Trigger* CardSelectBlue;
+
+	Deck* DiscardPile;
+	Trigger* CardPlaced;
+
+	Card* SelectedCard;
+	
+	bool isCardDrawn;
+	bool isCardSelected;
+	bool isCardPlaced;
+	bool isStandingOnTrigger;
 };
 
