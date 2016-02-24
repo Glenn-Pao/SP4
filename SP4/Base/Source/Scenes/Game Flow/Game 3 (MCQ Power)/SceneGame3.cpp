@@ -514,6 +514,12 @@ void CSceneGame3::Update(double dt)
 	}
 
 
+	// ReCalculate the tile offsets
+	tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
+	// ReCalculate the tile offsets
+	tileOffset_y = (int)(theHero->GetMapOffset_y() / m_cMap->GetTileSize());
+
+	fps = 1 / dt;
 }
 
 /********************************************************************************
@@ -586,35 +592,52 @@ Render the tile map. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame3::RenderTileMap()
 {
-	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
+	int m = 0;
+	int j = 0;
+	
+	//render according to the height and width of screen, you could put it as occlusion. :)
+	for (int i = 0; i < m_cMap->GetNumOfTiles_Height() + 1; i++)
 	{
-		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
+		for (int k = 0; k < m_cMap->GetNumOfTiles_Width() + 1; k++)
 		{
-			if (m_cMap->theScreenMap[i][k] == 1)
+			m = tileOffset_x + k;
+			j = tileOffset_y + i;
+			// If we have reached the right side of the Map, then do not display the extra column of tiles.
+			if (m >= m_cMap->getNumOfTiles_MapWidth())
+				break;
+			// If we have reached the bottom side of the Map, then do not display the extra column of tiles.
+			if (j >= m_cMap->getNumOfTiles_MapHeight())
+				break;
+			if (m_cMap->theScreenMap[j][m] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][k] == 30)
+
+			else if (m_cMap->theScreenMap[j][m] == 30)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][k] == 41)
+			else if (m_cMap->theScreenMap[j][m] == 41)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 			else
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 		}
 	}
 	for (int i = 0; i < theAnswers.size(); i++)
 	{
-		//if it isn't picked up yet
-		if (!theAnswers[i]->getPickup())
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+		//render the object if it is within range
+		if ((theAnswers[i]->getPosition() - theHero->getPosition()).Length() <= m_cMap->GetScreenWidth())
+		{	
+			//if it isn't picked up yet
+			if (!theAnswers[i]->getPickup())
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
+			else
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+		}
 	}
 }
 
@@ -658,6 +681,13 @@ void CSceneGame3::RenderGUI()
 	ss.precision(3);
 	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+
+	//On screen text
+	std::ostringstream ss1;
+	// Jellybean
+	ss1.precision(3);
+	ss1 << "FPS: " << fps;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss1.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 3));
 
 	for (int i = 0; i < lives; i++)
 	{

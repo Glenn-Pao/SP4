@@ -82,6 +82,8 @@ private:
 	bool correct;
 	bool unlock;	//unlock the door
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
+
+	float fps;		//debugging frames
 };
 
 #endif

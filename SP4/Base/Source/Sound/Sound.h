@@ -9,6 +9,9 @@ using namespace irrklang;
 
 class CSound
 {
+	enum
+	{
+	};
 public:
 	CSound();
 	~CSound();
