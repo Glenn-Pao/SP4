@@ -13,6 +13,7 @@ public:
 	CSceneGame3(const int m_window_width, const int m_window_height);
 	~CSceneGame3();
 
+	void LuaInit(int level);
 	virtual void Init(int level);
 	virtual void PreInit();
 	virtual void Update(double dt);
@@ -70,7 +71,11 @@ private:
 	//tutorial dialogues
 	vector<CObjects*> dialogueTiles;
 
+	// Dialogues scripts
+	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
+
 	CSceneManager2D sceneManager2D;	
+	int tileSize;	//the tile size
 	int Qcount;	//number of questions
 	int Acount;		//number of answers
 	int Dcount;		//number of doors
@@ -82,6 +87,8 @@ private:
 	bool correct;
 	bool unlock;	//unlock the door
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
+
+	float fps;		//debugging frames
 };
 
 #endif

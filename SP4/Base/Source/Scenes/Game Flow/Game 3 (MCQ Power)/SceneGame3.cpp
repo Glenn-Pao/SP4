@@ -13,6 +13,7 @@
 
 CSceneGame3::CSceneGame3(const int m_window_width, const int m_window_height)
 	: currentState(PLAYING)
+	, tileSize(0)
 	, lives(3)
 	, Qcount(0)
 	, Acount(0)
@@ -66,28 +67,90 @@ CSceneGame3::~CSceneGame3()
 		}
 	}
 }
-
-void CSceneGame3::Init(int level)
+void CSceneGame3::LuaInit(int level)
 {
-	// Init the base scene
-	sceneManager2D.Init(level);
-
 	//Read a value from the lua text file
 	UseLuaFiles L;
-
-	if (level == 0)
+	switch (level)
+	{
+	case 0:
+	{
 		L.ReadFiles("Lua//Scene/Game3/tutorial.lua");
-	else if (level == 1)
+	}
+		break;
+	case 1:
+	{
 		L.ReadFiles("Lua//Scene/Game3/easy.lua");
 
-	int tileSize = L.DoLuaInt("tileSize");
+		//the additional questions
+		QnDialogue.push_back(L.DoLuaString("scriptQn3"));
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn3Type" + to_string(i)));
+		}
+	}
+		break;
+	case 2:
+	{
+		L.ReadFiles("Lua//Scene/Game3/medium.lua");
+
+		//the additional questions
+		QnDialogue.push_back(L.DoLuaString("scriptQn3"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn4"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn5"));
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn3Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn4Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn5Type" + to_string(i)));
+		}
+	}
+	case 3:
+	{
+		L.ReadFiles("Lua//Scene/Game3/hard.lua");
+
+		//the additional questions
+		QnDialogue.push_back(L.DoLuaString("scriptQn3"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn4"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn5"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn6"));
+		QnDialogue.push_back(L.DoLuaString("scriptQn7"));
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn3Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn4Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn5Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn6Type" + to_string(i)));
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn7Type" + to_string(i)));
+		}
+	}
+		break;
+	}
+
+	tileSize = L.DoLuaInt("tileSize");
 	scriptWrong = L.DoLuaString("scriptWrong");
 	scriptCorrect = L.DoLuaString("scriptCorrect");
 	scriptFinished = L.DoLuaString("scriptFinished");
 	scriptExit = L.DoLuaString("scriptExit");
 
-	// Dialogues scripts
-	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
 	for (int i = 0; i < 3; i++)
 	{
 		scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
@@ -99,27 +162,42 @@ void CSceneGame3::Init(int level)
 	}
 	QnDialogue.push_back(L.DoLuaString("scriptQn1"));
 	QnDialogue.push_back(L.DoLuaString("scriptQn2"));
+}
+void CSceneGame3::Init(int level)
+{
+	// Init the base scene
+	sceneManager2D.Init(level);
+	LuaInit(level);
 
-	if (level == 1)
-	{
-		QnDialogue.push_back(L.DoLuaString("scriptQn3"));
-		for (int i = 0; i < 3; i++)
-		{
-			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn3Type" + to_string(i)));
-		}
-	}
-
-	// Initialise and load the tile map
+	//initialise the tile map
 	m_cMap = new CMap();
-	if (level == 0)
+
+	switch (level)
+	{
+	case 0:
 	{
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 33 * tileSize, 16 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Tutorial.csv");
 	}
-	else if (level == 1)
+		break;
+	case 1:
 	{
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 16 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Easy.csv");
+	}
+		break;
+	case 2:
+	{
+		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 31 * tileSize, tileSize);
+		m_cMap->LoadMap("Image//Maps//Game 3/Medium.csv");
+	}
+		break;
+	case 3:
+	{
+		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 31 * tileSize, tileSize);
+		m_cMap->LoadMap("Image//Maps//Game 3/Hard.csv");
+	}
+		break;
 	}
 
 	//initialise the waypoints
@@ -144,9 +222,6 @@ void CSceneGame3::Init(int level)
 			// Door
 			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
-				// Create a new door
-				//theDoor = new CDoor(CObjects::DOOR, 1, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
-				//theDoors.push_back(new CDoor())
 				theDoors.push_back(new CDoor(CObjects::DOOR, Dcount, Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
 				theDoors.back()->setActive(true);
 				Dcount++;
@@ -163,7 +238,7 @@ void CSceneGame3::Init(int level)
 				theAnswers.push_back(new CAnswer(CObjects::ANSWER, Acount, false, true, AnsDialogue[Acount], Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize(), 0), Vector3(0, 0, 0), Vector3(tileSize, tileSize, 1), false));
 
 				//set the correct answers
-				if (Acount == 1 || Acount == 4  || Acount == 7)
+				if (Acount == 1 || Acount == 4  || Acount == 7 || Acount == 11 || Acount == 13 || Acount == 15 || Acount == 19)
 				{
 					theAnswers.back()->setCorrect(true);
 				}
@@ -440,20 +515,26 @@ void CSceneGame3::Update(double dt)
 		for (int i = 0; i < theDoors.size(); i++)
 		{
 			// Check Door
-			if (theDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			if (theDoors[i]->getActive())
 			{
-				//meaning to say you can now exit the game
-				if (!theQuestions[theQuestions.size()-1]->getInteractivity())
-				{
-					currentState = EXITING;
-					// Animation
-					theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
-
-				}
-				if (theDoors[i]->getActive())
+				if (theDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 				{
 					theHero->setPosition(prevHeroPos);
 				}
+			}
+			//find the inactive doors
+			else
+			{
+				if (theDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+				{
+					//meaning to say you can now exit the game
+					if (!theQuestions[theQuestions.size() - 1]->getInteractivity())
+					{
+						currentState = EXITING;
+						// Animation
+						theHero->SetAnimationDirection(CPlayerInfo::RIGHT);
+					}
+				}		
 			}
 			//when player gets the correct answer
 			if (unlock)
@@ -463,6 +544,7 @@ void CSceneGame3::Update(double dt)
 				{
 					theDoors[0]->setActive(false);
 					unlock = false;
+					Dcount--;
 					cout << "Door " << theDoors[0]->getId() << " unlocked";
 				}
 				//unlock the even number doors
@@ -475,7 +557,6 @@ void CSceneGame3::Update(double dt)
 						cout << "Door " << theDoors[i]->getId() << " unlocked";
 					}
 				}
-				
 			}
 		}
 	}
@@ -514,6 +595,12 @@ void CSceneGame3::Update(double dt)
 	}
 
 
+	// ReCalculate the tile offsets
+	tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
+	// ReCalculate the tile offsets
+	tileOffset_y = (int)(theHero->GetMapOffset_y() / m_cMap->GetTileSize());
+
+	fps = 1 / dt;
 }
 
 /********************************************************************************
@@ -586,35 +673,58 @@ Render the tile map. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame3::RenderTileMap()
 {
-	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
+	int m = 0;
+	int j = 0;
+	
+	//render according to the height and width of screen, you could put it as occlusion. :)
+	for (int i = 0; i < m_cMap->GetNumOfTiles_Height() + 1; i++)
 	{
-		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
+		for (int k = 0; k < m_cMap->GetNumOfTiles_Width() + 1; k++)
 		{
-			if (m_cMap->theScreenMap[i][k] == 1)
+			m = tileOffset_x + k;
+			j = tileOffset_y + i;
+			// If we have reached the right side of the Map, then do not display the extra column of tiles.
+			if (m >= m_cMap->getNumOfTiles_MapWidth())
+				break;
+			// If we have reached the bottom side of the Map, then do not display the extra column of tiles.
+			if (j >= m_cMap->getNumOfTiles_MapHeight())
+				break;
+			if (m_cMap->theScreenMap[j][m] == 1)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_WALL], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][k] == 30)
+
+			else if (m_cMap->theScreenMap[j][m] == 30)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[i][k] == 41)
+			else if (m_cMap->theScreenMap[j][m] == 41)
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 			else
 			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
 		}
 	}
 	for (int i = 0; i < theAnswers.size(); i++)
 	{
-		//if it isn't picked up yet
-		if (!theAnswers[i]->getPickup())
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
-		else
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+		//render the object if it is within range
+		if ((theAnswers[i]->getPosition() - theHero->getPosition()).Length() <= m_cMap->GetScreenWidth())
+		{	
+			//if it isn't picked up yet
+			if (!theAnswers[i]->getPickup())
+			{
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
+				theAnswers[i]->setPosition(theAnswers[i]->getDefaultPosition());
+			}
+			else
+			{
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+				theAnswers[i]->setPosition(Vector3(theHero->getPositionX(), theHero->getPositionY(), 0));
+			}		
+		}
 	}
 }
 
@@ -659,10 +769,17 @@ void CSceneGame3::RenderGUI()
 	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
+	//On screen text
+	std::ostringstream ss1;
+	// Jellybean
+	ss1.precision(3);
+	ss1 << "FPS: " << fps;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss1.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - (m_cMap->GetTileSize() *2));
+
 	for (int i = 0; i < lives; i++)
 	{
 		// Lives left
-		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + (i *m_cMap->GetTileSize()), sceneManager2D.m_window_height - (2 * m_cMap->GetTileSize()));
+		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m_cMap->GetScreenWidth() - (i *m_cMap->GetTileSize()) - m_cMap->GetTileSize(), sceneManager2D.m_window_height - (m_cMap->GetTileSize()));
 	}
 
 	switch (currentState)

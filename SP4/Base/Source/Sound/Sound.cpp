@@ -2,7 +2,8 @@
 #include "..\Application.h"
 
 CSound::CSound()
-	: MainMenu(NULL)
+	: m_Sound_Type(MAIN_MENU)
+	, MainMenu(NULL)
 	, MazeEscaper(NULL)
 	, MCQPower(NULL)
 	, PuzzleParty(NULL)
@@ -281,6 +282,97 @@ void CSound::AdjustVol()
 		volume -= 0.01f;
 	}
 	TheSound->setSoundVolume(volume);*/
+}
+void CSound::setSoundType(int m_Sound_Type)
+{
+	this->m_Sound_Type = (SOUND_TYPE)m_Sound_Type;
+}
+int CSound::getSoundType(void)
+{
+	return (int)m_Sound_Type;
+}
+void CSound::PlaySong()
+{
+	//play song depending on type
+	switch (m_Sound_Type)
+	{
+	case LOBBY:
+	{
+		PlayLobby();
+
+		StopMainMenu();
+		StopMazeEscaper();
+		StopPuzzleParty();
+		StopMCQPower();
+		StopStress();
+	}
+		break;
+	case MAIN_MENU:
+	{
+		PlayMainMenu();
+
+		StopLobby();
+		StopMazeEscaper();
+		StopPuzzleParty();
+		StopMCQPower();
+		StopStress();
+	}
+		break;
+	case MAZE:
+	{
+		PlayMazeEscaper();
+
+		StopLobby();
+		StopMainMenu();
+		StopPuzzleParty();
+		StopMCQPower();
+		StopStress();
+	}	
+		break;
+	case PUZZLE:
+	{
+		PlayPuzzleParty();
+
+		StopLobby();
+		StopMainMenu();
+		StopMazeEscaper();
+		StopMCQPower();
+		StopStress();
+	}		
+		break;
+	case MCQ:
+	{
+		PlayMCQPower();
+
+		StopLobby();
+		StopMainMenu();
+		StopMazeEscaper();
+		StopPuzzleParty();
+		StopStress();
+	}		
+		break;
+	case STRESS:
+	{
+		PlayStress();
+
+		StopLobby();
+		StopMainMenu();
+		StopMazeEscaper();
+		StopPuzzleParty();
+		StopMCQPower();
+	}
+		break;
+	default:
+	{
+		StopLobby();
+		StopMainMenu();
+		StopMazeEscaper();
+		StopPuzzleParty();
+		StopMCQPower();
+		StopStress();
+	}
+		break;
+	}
 }
 //dump the sound once done
 void CSound::Exit()
