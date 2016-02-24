@@ -3,14 +3,22 @@
 //sound engine
 #include <irrKlang.h>
 #include <iostream>
+#include <vector>
 
 #pragma comment (lib, "irrKlang.lib")
 using namespace irrklang; 
 
 class CSound
 {
-	enum
+	enum SOUND_TYPE
 	{
+		LOBBY,
+		MAIN_MENU,
+		MAZE,
+		PUZZLE,
+		MCQ,
+		STRESS,
+		NUM_SOUND
 	};
 public:
 	CSound();
@@ -41,6 +49,11 @@ public:
 
 	void AdjustVol();						//adjust the volume in options
 
+	void setSoundType(int);
+	int getSoundType(void);
+
+	void PlaySong();
+
 private:
 	//Handles to play different sounds
 	ISoundEngine *TheSound;	//main sound system
@@ -51,6 +64,8 @@ private:
 	ISound *MCQPower;	//background music for MCQ, game 3 by Glenn
 	ISound *Stress;	//background music for Stress, game by Rayson
 	ISound *Lobby;			//background for game hub
+
+	SOUND_TYPE m_Sound_Type;
 
 	float volMM;				//current volume of main menu
 	float volME;				//current volume of maze escaper

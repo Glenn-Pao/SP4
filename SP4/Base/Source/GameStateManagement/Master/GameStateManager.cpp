@@ -152,78 +152,34 @@ void CGameStateManager::UpdateSound(const double m_dElapsedTime)
 
 	if (sound != NULL)
 	{
-		//main menu
-		if (i == 1)
+		switch (i)
 		{
-			//play the main menu sound
-			sound->PlayMainMenu();
-
-			//stop all other sounds if playing
-			sound->StopLobby();
-			sound->StopMazeEscaper();
-			sound->StopMCQPower();
-			sound->StopStress();
+			//main menu
+		case 1:
+			sound->setSoundType(1);
+			break;
+			//lobby
+		case 10:
+			sound->setSoundType(0);
+			break;
+			//maze
+		case 12:
+			sound->setSoundType(2);
+			break;
+			//puzzle
+		case 14:
+			sound->setSoundType(3);
+			break;
+			//mcq
+		case 15:
+			sound->setSoundType(4);
+			break;
+			//stress
+		case 16:
+			sound->setSoundType(5);
+			break;
 		}
-		//lobby
-		else if (i == 10)
-		{
-			sound->PlayLobby();
-
-			//stop all other sounds if playing
-			sound->StopMainMenu();
-			sound->StopMazeEscaper();
-			sound->StopPuzzleParty();
-			sound->StopMCQPower();
-			sound->StopStress();
-		}
-		//maze escaper, greg's game
-		else if (i == 12)
-		{
-			sound->PlayMazeEscaper();
-
-			//stop all other sounds if playing
-			sound->StopMainMenu();
-			sound->StopLobby();
-			sound->StopPuzzleParty();
-			sound->StopMCQPower();
-			sound->StopStress();
-		}
-		//puzzle party, job's game
-		else if (i == 14)
-		{
-			sound->PlayPuzzleParty();
-
-			//stop all other sounds if playing
-			sound->StopMainMenu();
-			sound->StopLobby();
-			sound->StopMazeEscaper();
-			sound->StopMCQPower();
-			sound->StopStress();
-		}
-		//mcq power, glenn's game
-		else if (i == 15)
-		{
-			sound->PlayMCQPower();
-
-			//stop all other sounds if playing
-			sound->StopMainMenu();
-			sound->StopLobby();
-			sound->StopMazeEscaper();
-			sound->StopPuzzleParty();
-			sound->StopStress();
-		}
-		//stress, rayson's game
-		else if (i == 16)
-		{
-			sound->PlayStress();
-
-			//stop all other sounds if playing
-			sound->StopMainMenu();
-			sound->StopLobby();
-			sound->StopMazeEscaper();
-			sound->StopPuzzleParty();
-			sound->StopMCQPower();
-		}
+		sound->PlaySong();	//depending on the type
 	}
 }
 void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window)
