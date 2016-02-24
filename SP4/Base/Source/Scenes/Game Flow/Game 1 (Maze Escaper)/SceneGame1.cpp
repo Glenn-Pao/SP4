@@ -17,6 +17,7 @@ CSceneGame1::CSceneGame1(const int m_window_width, const int m_window_height)
 	: theDoor(NULL)
 	, currentState(PLAYING)
 	, timer(30.0f)
+	, level(0)
 {
 }
 
@@ -40,6 +41,7 @@ CSceneGame1::~CSceneGame1()
 
 void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium), = 3(Hard)
 {
+	this->level = level;
 	// Init the base scene
 	sceneManager2D.Init(level);
 
@@ -75,7 +77,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		break;
 		case 1:
 		{
-			timer = 40.f;
+			timer = 30.f;
 			// Initialise and load the tile map
 			m_cMap = new CMap();
 			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 31 * tileSize, 30 * tileSize, tileSize);
@@ -84,7 +86,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		break;
 		case 2:
 		{
-			timer = 100.f;
+			timer = 50.f;
 			// Initialise and load the tile map
 			m_cMap = new CMap();
 			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 41 * tileSize, 40 * tileSize, tileSize);
@@ -93,7 +95,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		break;
 		case 3:
 		{
-			timer = 160.f;
+			timer = 45.f;
 			// Initialise and load the tile map
 			m_cMap = new CMap();
 			m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 51 * tileSize, 50 * tileSize, tileSize);

@@ -20,7 +20,8 @@ public:
 	void Update(float dt);
 
 	void StartTransformation(UIFeature* feature, float AnimationStartTime, Vector3 Target, float Speed, int choice);
-
+	void StopAnimations();
+	int GetNumOfAnimations();
 	UIAnimator();
 	~UIAnimator();
 };

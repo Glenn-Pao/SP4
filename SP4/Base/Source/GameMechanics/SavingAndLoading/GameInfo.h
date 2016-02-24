@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Vector2.h"
+#include "..\Difficulty\DifficultySystem.h"
 
 class CGameInfo
 {
@@ -31,4 +32,5 @@ public:
 	int heroAnimationDir;// Hero animation direction
 	int noOfJellybeans;// numer of jellybeans player have
 	Vector2 heroMapOffset;// Hero map offset
+	CDifficultySystem difficultySystems[4]; // difficulty System Of the 4 Minigames
 };

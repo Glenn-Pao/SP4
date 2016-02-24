@@ -149,41 +149,24 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->PushState(CPauseState::Instance());
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
-	if (key == 'f')
+	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
-		//change this area to make a proper game afterwards
-		if (scene->loadGame1)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
+		scene->currentState = CSceneHub::SELECTING;
+		int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
 
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CGame1State::Instance(), 0);
-		}
-		else if (scene->loadGame2)
+		string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
+		for (int i = 0; i < 4; i++)
 		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
-
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CTutorialGame2::Instance());
+			if (i <= unlocked)
+			{
+				scene->UIManager->FindButton(buttonName[i])->setisLocked(false);
+			}
+			else
+			{
+				scene->UIManager->FindButton(buttonName[i])->setisLocked(true);
+			}
 		}
-		else if (scene->loadGame3)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
-
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CGame3State::Instance(), 1);
-		}
-		else if (scene->loadGame4)
-		{
-			theGSM->m_bUnhideMouse = true;
-			theGSM->m_bWarpMouse = false;
-
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-			theGSM->ChangeState(CGame4State::Instance());
-		}
+		scene->UIManager->InvokeAnimator()->StopAnimations();
 	}
 #endif
 }
@@ -263,7 +246,57 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 		break;
 	}
 #endif
+
+	// UI
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+
+
+	if (button_Left == true)
+	{
+		string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
+		for (int i = 0; i < 4; i++)
+		{
+			if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
+			{
+				switch (scene->game_interacted)
+				{
+				case CSceneHub::GAME1:
+				{
+					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+					theGSM->ChangeState(CGame1State::Instance(), i);
+					return;
+				}
+				break;
+				case CSceneHub::GAME2:
+				{
+					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+					theGSM->ChangeState(CTutorialGame2::Instance(), i);
+					return;
+				}
+				break;
+				case CSceneHub::GAME3:
+				{
+					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+					theGSM->ChangeState(CGame3State::Instance(), i);
+					return;
+				}
+				break;
+				case CSceneHub::GAME4:
+				{
+					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+					theGSM->ChangeState(CGame4State::Instance(), i);
+					return;
+				}
+				break;
+				}
+			}
+		}
+
+		scene->currentState = CSceneHub::PLAYING;
+		scene->UIManager->InvokeAnimator()->StopAnimations();
+	}
 }
+
 
 
 void CHubState::Update(CGameStateManager* theGSM)

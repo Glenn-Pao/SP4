@@ -4,12 +4,6 @@
 class UIAnimation
 {
 private:
-	enum Transformation
-	{
-		TRANSLATION,
-		ROTATION,
-		SCALING
-	};
 
 	UIFeature* feature;
 	Vector3 EndTransformation;
@@ -20,6 +14,12 @@ private:
 	bool isComplete;
 	float Timer;
 public:
+	enum Transformation
+	{
+		TRANSLATION,
+		ROTATION,
+		SCALING
+	};
 
 	void setTimer(float Timer);
 	void setisComplete(bool isComplete);

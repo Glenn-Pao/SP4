@@ -7,7 +7,7 @@ Button::Button()
 {
 }
 
-Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale)
+Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* ButtonMeshLOCKED, Vector3 CurrentPos, Vector3 Scale)
 {
 	//Parent class variables
 	this->setID(ID);
@@ -19,9 +19,11 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	//Child class variables
 	this->ButtonMeshUP = ButtonMeshUP;
 	this->ButtonMeshDOWN = ButtonMeshDOWN;
+	this->ButtonMeshLOCKED = ButtonMeshLOCKED;
 	this->CurrentMesh = ButtonMeshUP;
 	this->isClicked = false;
 	this->isHovered = false;
+	this->isLocked = false;
 
 	//External Class variables
 	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
@@ -37,7 +39,7 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 	screenheight = L.DoLuaInt("SCREENHEIGHT");
 }
 
-Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 CurrentPos, Vector3 Scale, bool isClicked, bool isHovered)
+Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* ButtonMeshLOCKED, Vector3 CurrentPos, Vector3 Scale, bool isClicked, bool isHovered)
 {
 	this->setID(ID);
 	this->setCurrentPos(CurrentPos);
@@ -47,9 +49,11 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Vector3 Curr
 
 	this->ButtonMeshUP = ButtonMeshUP;
 	this->ButtonMeshDOWN = ButtonMeshDOWN;
+	this->ButtonMeshLOCKED = ButtonMeshLOCKED;
 	this->CurrentMesh = ButtonMeshUP;
 	this->isClicked = isClicked;
 	this->isHovered = isHovered;
+	this->isLocked = false;
 
 	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
 	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5), CurrentPos.y - (Scale.y * 0.5), 0);
@@ -68,6 +72,11 @@ void Button::setisHovered(bool isHovered)
 	this->isHovered = isHovered;
 }
 
+void Button::setisLocked(bool isLocked)
+{
+	this->isLocked = isLocked;
+}
+
 bool Button::getisClicked()
 {
 	return isClicked;
@@ -78,6 +87,11 @@ bool Button::getisHovered()
 	return isHovered;
 }
 
+bool Button::getisLocked()
+{
+	return isLocked;
+}
+
 CBoundingBox* Button::getCollisionBox()
 {
 	return CollisionBox;
@@ -85,15 +99,23 @@ CBoundingBox* Button::getCollisionBox()
 
 void Button::HandleEvent(float MouseX, float MouseY)
 {
-	if (CollisionBox->CheckCollision(Vector3(MouseX, screenheight - MouseY, 0)) == true)
+	if (isLocked)
 	{
-		this->CurrentMesh = this->ButtonMeshUP;
-		isHovered = true;
+		this->CurrentMesh = this->ButtonMeshLOCKED;
+		isHovered = false;
 	}
 	else
 	{
-		this->CurrentMesh = this->ButtonMeshDOWN;
-		isHovered = false;
+		if (CollisionBox->CheckCollision(Vector3(MouseX, screenheight - MouseY, 0)) == true)
+		{
+			this->CurrentMesh = this->ButtonMeshDOWN;
+			isHovered = true;
+		}
+		else
+		{
+			this->CurrentMesh = this->ButtonMeshUP;
+			isHovered = false;
+		}
 	}
 
 	//Update CollideBox Position

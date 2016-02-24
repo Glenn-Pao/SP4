@@ -40,6 +40,7 @@ public:
 	};
 	int currentState;
 
+	int level;
 private:
 	void InitMeshes();
 	// Handle to the GUI

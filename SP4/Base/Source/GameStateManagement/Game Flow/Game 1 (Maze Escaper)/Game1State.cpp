@@ -178,6 +178,10 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		{
 			if (button_Left == true)
 			{
+				if (theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
+				{
+					theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
+				}
 				scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 				theGSM->ChangeState(CHubState::Instance());
 			}
@@ -187,6 +191,10 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		{
 			if (button_Left == true)
 			{
+				if (theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
+				{
+					theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
+				}
 				scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 				theGSM->ChangeState(CHubState::Instance());
 			}

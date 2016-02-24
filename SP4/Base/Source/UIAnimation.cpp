@@ -52,14 +52,14 @@ void UIAnimation::DoAnimation(float dt)
 	{
 		case TRANSLATION: // if translation
 		{
-			if ((feature->getCurrentPos() - EndTransformation).Length() < 2)
+			if ((feature->getCurrentPos() - EndTransformation).Length() < 1)
 			{
 				feature->setCurrentPos(EndTransformation);
 				isComplete = true;
      		}
 			else
 			{
-				Vector3 temp(feature->getCurrentPos() + ((EndTransformation - feature->getCurrentPos()) * Speed * dt));
+				Vector3 temp(feature->getCurrentPos() + ((EndTransformation - feature->getCurrentPos()).Length() * (EndTransformation - feature->getCurrentPos()).Normalized() * Speed * dt));
 				feature->setCurrentPos(temp);
 			}
 			break;
@@ -70,24 +70,15 @@ void UIAnimation::DoAnimation(float dt)
 		}
 		case SCALING:
 		{
-			if ((feature->getScale() - EndTransformation).Length() < 5)
+			if ((feature->getScale() - EndTransformation).Length() < 1)
 			{
 				feature->setScale(EndTransformation);
 				isComplete = true;
 			}
 			else
 			{
-				if ((feature->getScale() - EndTransformation).x < 0 || (feature->getScale() - EndTransformation).y < 0)
-				{
-					Vector3 temp(feature->getScale() + ((EndTransformation + feature->getScale()).Normalized() * Speed * dt));
-					feature->setScale(temp);
-				}
-				if ((feature->getScale() - EndTransformation).x > 0 || (feature->getScale() - EndTransformation).y > 0)
-				{
-					Vector3 temp(feature->getScale() + ((EndTransformation - feature->getScale()).Normalized() * Speed * dt));
-					feature->setScale(temp);
-				}
-				
+				Vector3 temp(feature->getScale() + ((EndTransformation - feature->getScale()).Length() * (EndTransformation - feature->getScale()).Normalized() * Speed * dt));
+				feature->setScale(temp);
 			}
 			break;
 		}

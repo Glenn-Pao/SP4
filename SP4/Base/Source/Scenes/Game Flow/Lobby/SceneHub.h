@@ -4,6 +4,7 @@
 #include "..\..\Master\SceneManager2D.h"
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Door.h"
+#include "..\..\..\UISystem.h"
 
 class CSceneHub : public CSceneGameBase
 {
@@ -21,7 +22,15 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	bool loadGame1, loadGame2, loadGame3, loadGame4;
+	enum GAME_INTERACTED
+	{
+		NO_GAME,
+		GAME1,
+		GAME2,
+		GAME3,
+		GAME4
+	};
+	int game_interacted;
 	
 	enum WEAPON_ACTION
 	{
@@ -32,6 +41,17 @@ public:
 		WA_TOTAL,
 	};
 	void RenderWaypoints();
+	
+	enum STATE
+	{
+		PLAYING,
+		SELECTING
+	};
+
+	STATE currentState;
+	UISystem* UIManager;
+
+	CSceneManager2D sceneManager2D;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -66,8 +86,6 @@ private:
 	//CGoodies** theArrayOfGoodies;
 	void RenderGoodies(void);
 
-
-	CSceneManager2D sceneManager2D;
 
 	std::vector<CDoor*> theDoor;
 };

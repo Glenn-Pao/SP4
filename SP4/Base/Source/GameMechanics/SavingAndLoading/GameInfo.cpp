@@ -27,6 +27,11 @@ void CGameInfo::ResetData()
 	heroPosition.Set(0, 0);
 	noOfJellybeans = 10;
 	heroMapOffset.Set(0, 0);
+
+	for (int i = 0; i < 4; i++)
+	{
+		difficultySystems[i].setCurrentDifficultyUnlocked(CDifficultySystem::TUTORIAL);
+	}
 }
 
 /********************************************************************************
@@ -48,6 +53,12 @@ void CGameInfo::LoadFile()
 	noOfJellybeans = L.DoLuaInt("noOfJellybeans");
 	heroMapOffset.x = L.DoLuaFloat("heroMapOffsetX");
 	heroMapOffset.y = L.DoLuaFloat("heroMapOffsetY");
+
+	// Minigames' informations
+	for (int i = 0; i < 4; i++)
+	{
+		difficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("difficultyUnlocked" + std::to_string(i)));
+	}
 }
 
 /********************************************************************************
@@ -63,12 +74,19 @@ void CGameInfo::SaveToFile()
 		myfile << "]]--" << endl;
 		myfile << endl;
 		myfile << "ifNew = " << 0 << endl;
+		myfile << endl;
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
 		myfile << "heroAnimationDir = " << heroAnimationDir << endl;
 		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
 		myfile << "heroMapOffsetX = " << heroMapOffset.x << endl;
 		myfile << "heroMapOffsetY = " << heroMapOffset.y << endl;
+		myfile << endl;
+		// Minigames' informations
+		for (int i = 0; i < 4; i++)
+		{
+			myfile << "difficultyUnlocked" << i << " = " << difficultySystems[i].getCurrentDifficultyUnlocked() << endl;
+		}
 	}
 }
 
@@ -88,10 +106,17 @@ void CGameInfo::ClearFile()
 		myfile << "]]--" << endl;
 		myfile << endl;
 		myfile << "ifNew = " << 0 << endl;
+		myfile << endl;
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
 		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
 		myfile << "heroMapOffsetX = " << heroPosition.x << endl;
 		myfile << "heroMapOffsetY = " << heroPosition.y << endl;
+		myfile << endl;
+		// Minigames' informations
+		for (int i = 0; i < 4; i++)
+		{
+			myfile << "difficultyUnlocked" << i << " = " << difficultySystems[i].getCurrentDifficultyUnlocked() << endl;
+		}
 	}
 }
