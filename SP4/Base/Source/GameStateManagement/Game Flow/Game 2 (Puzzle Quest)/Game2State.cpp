@@ -6,6 +6,7 @@ using namespace std;
 #include "..\..\Menu Flow\MenuState.h"
 #include "Game2State.h"
 #include "..\..\Menu Flow\pausestate.h"
+#include "..\..\Game Flow\Lobby\HubState.h"
 
 CGame2State CGame2State::theGame2State;
 
@@ -221,6 +222,29 @@ void CGame2State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		break;
 	}
 #endif
+	switch (scene->currentState)
+	{
+	case CSceneGame2::COMPLETED:
+	{
+		theGSM->m_bUnhideMouse = true;
+		theGSM->m_bWarpMouse = false;
+		if (button_Left == true)
+		{
+
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->ChangeState(CHubState::Instance());
+		}
+	}
+		break;
+	case CSceneGame2::PLAYING:
+	{
+		theGSM->m_bHideMouse = true;
+		theGSM->m_bWarpMouse = false;
+
+	}
+		break;
+	}
 }
 
 
