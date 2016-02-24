@@ -79,6 +79,7 @@ void CScenePause::Render()
 		// Resume
 		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 290);
 		break;
+
 	case QUIT:
 		// Quit
 		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, 225);

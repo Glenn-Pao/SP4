@@ -26,6 +26,7 @@ public:
 	{
 		NONE,
 		RESUME,
+		SAVE,
 		QUIT,
 		NUM_CHOICES,
 	};
