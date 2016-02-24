@@ -10,7 +10,8 @@ public:
 		NONE,
 		FIRE,
 		WATER,
-		LEAF
+		LEAF,
+		ALL
 	};
 
 	enum State

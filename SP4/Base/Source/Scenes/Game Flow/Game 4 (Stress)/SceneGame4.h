@@ -58,7 +58,12 @@ private:
 
 	vector<Deck*> DeckList;
 
+	Card* SelectedCard;
 	bool isStandingOnTrigger;
 	bool isCardDrawn;
+	bool isCardSelectedR;
+	bool isCardSelectedG;
+	bool isCardSelectedB;
+	bool isPlaced;
 };
 
