@@ -1,10 +1,12 @@
 #include "Deck.h"
 
 
-Deck::Deck(Vector3 Position, Vector3 GapBetweenCards)
+Deck::Deck(Deck_Type type, Vector3 Position, Vector3 GapBetweenCards, Trigger* button)
 {
+	this->type = type;
 	this->Position = Position;
 	this->GapBetweenCards = GapBetweenCards;
+	this->button = button;
 }
 void Deck::AddCard(Card* card)
 {
@@ -12,9 +14,24 @@ void Deck::AddCard(Card* card)
 	this->ListOfCards.push_back(card);
 }
 
+bool Deck::CheckTrigger(CBoundingBox BoundingBox)
+{
+	return this->button->CheckCollision(BoundingBox);
+}
+
+Trigger* Deck::getTrigger()
+{
+	return button;
+}
+
 vector<Card*> Deck::getListOfCards()
 {
 	return ListOfCards;
+}
+
+Deck::Deck_Type Deck::getDeckType()
+{
+	return type;
 }
 
 void Deck::RemoveCard(int Placing)

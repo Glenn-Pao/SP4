@@ -100,8 +100,46 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	// Initialise the Meshes
 	InitMeshes();
 
+	//DrawPile
+	Trigger* DrawTrigger = new Trigger(meshList[GEO_DRAW],Vector3(100,225,1),Vector3(50,50,1));
+	Deck* DrawPile = new Deck(Deck::Deck_Type::DRAW, Vector3(100, 100, 1), Vector3(0, 5, 0), DrawTrigger);
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::ON_DRAW, Card::WATER));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+
+
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+	DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::ON_DRAW, Card::LEAF));
+	DeckList.push_back(DrawPile);
+
+	//HandPile 
+
+	//Red
+	Trigger* SelectTriggerR = new Trigger(meshList[GEO_SELECT], Vector3(300, 200, 1), Vector3(50, 50, 1));
+	Deck* RedHandPile = new Deck(Deck::Deck_Type::HANDR, Vector3(300, 75, 1), Vector3(0, -5, 0), SelectTriggerR);
+	DeckList.push_back(RedHandPile);
+
+	//Green
+	Trigger* SelectTriggerG = new Trigger(meshList[GEO_SELECT], Vector3(400, 200, 1), Vector3(50, 50, 1));
+	Deck* GreenHandPile = new Deck(Deck::Deck_Type::HANDG, Vector3(400, 75, 1), Vector3(0, -5, 0), SelectTriggerG);
+	DeckList.push_back(GreenHandPile);
+
+	//Blue
+	Trigger* SelectTriggerB = new Trigger(meshList[GEO_SELECT], Vector3(500, 200, 1), Vector3(50, 50, 1));
+	Deck* BlueHandPile = new Deck(Deck::Deck_Type::HANDB, Vector3(500, 75, 1), Vector3(0, -5, 0), SelectTriggerB);
+	DeckList.push_back(BlueHandPile);
+
+	//DiscardPile
+	Trigger* PlaceTrigger = new Trigger(meshList[GEO_PLACE], Vector3(300, 275, 1), Vector3(50, 50, 1));
+	Deck* DiscardPile = new Deck(Deck::Deck_Type::DISCARD, Vector3(350, 250, 1), Vector3(0, -5, 0), PlaceTrigger);
+	DiscardPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::ON_DRAW, Card::FIRE));
+	DeckList.push_back(DiscardPile);
+
 	//Decks
-	DrawPile = new Deck(Vector3(100, 100, 1), Vector3(0, 0, 0));
+	/*DrawPile = new Deck(Vector3(100, 100, 1), Vector3(0, 0, 0));
 
 	for (int i = 0; i < 6; ++ i)
 	{
@@ -118,37 +156,37 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		{
 			DrawPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
 		}
-	}
+	}*/
 	
 	
 	
-	HandPileGreen = new Deck(Vector3(400, 100, 1), Vector3(0, -2, 0));
-	//HandPileGreen->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+	//HandPileGreen = new Deck(Vector3(400, 100, 1), Vector3(0, -2, 0));
+	////HandPileGreen->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
 
-	HandPileRed = new Deck(Vector3(300, 100, 1), Vector3(0, -2, 0));
-	//HandPileRed->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+	//HandPileRed = new Deck(Vector3(300, 100, 1), Vector3(0, -2, 0));
+	////HandPileRed->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
 
-	HandPileBlue = new Deck(Vector3(500, 100, 1), Vector3(0, -2, 0));
-	//HandPileBlue->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+	//HandPileBlue = new Deck(Vector3(500, 100, 1), Vector3(0, -2, 0));
+	////HandPileBlue->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
 
 
-	DiscardPile = new Deck(Vector3(400, 300, 1), Vector3(0, 0, 0));
+	//DiscardPile = new Deck(Vector3(400, 300, 1), Vector3(0, 0, 0));
 
-	DiscardPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
+	//DiscardPile->AddCard(new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAW, Card::FIRE));
 
-	//Triggers
-	CardDraw = new Trigger(meshList[GEO_DRAW], Vector3(125, 225, 0), Vector3(50, 50, 1));
+	////Triggers
+	//CardDraw = new Trigger(meshList[GEO_DRAW], Vector3(125, 225, 0), Vector3(50, 50, 1));
 
-	CardSelectRed = new Trigger(meshList[GEO_SELECT], Vector3(300, 225, 1), Vector3(50, 50, 1));
+	//CardSelectRed = new Trigger(meshList[GEO_SELECT], Vector3(300, 225, 1), Vector3(50, 50, 1));
 
-	CardPlaced = new Trigger(meshList[GEO_PLACE], Vector3(400, 175, 1), Vector3(50, 50, 1));
+	//CardPlaced = new Trigger(meshList[GEO_PLACE], Vector3(400, 175, 1), Vector3(50, 50, 1));
 
-	SelectedCard = new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAG, Card::Element::NONE);
+	//SelectedCard = new Card(Card::CARD, true, "NIL", Vector3(300, 200, 1), Vector3(0, 0, 0), Vector3(75, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::ON_DRAG, Card::Element::NONE);
 
-	isCardDrawn = false;
-	isCardSelected = false;
-	isCardPlaced = false;
-	isStandingOnTrigger = false;
+	//isCardDrawn = false;
+	//isCardSelected = false;
+	//isCardPlaced = false;
+	//isStandingOnTrigger = false;
 }
 
 void SceneGame4::PreInit()
@@ -227,6 +265,8 @@ void SceneGame4::InitMeshes()
 	JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
 	JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
 
+	isStandingOnTrigger = false;
+	isCardDrawn = false;
 }
 
 void SceneGame4::Update(double dt)
@@ -272,81 +312,163 @@ void SceneGame4::Update(double dt)
 					// Timer
 					timer -= dt;
 			
-					//if Card is Selected
-					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardSelected == false && HandPileRed->getListOfCards().size() > 0 && SelectedCard->getElement_Type() == Card::Element::NONE)
+					for (int i = 0; i < DeckList.size(); ++i)
 					{
-						isStandingOnTrigger = true;
-						if (isCardSelected == false)
+						switch (DeckList[i]->getDeckType())
 						{
-							isCardSelected = true;
-							SelectedCard = HandPileRed->getListOfCards().back();
-							SelectedCard->setCurrentState_Type(Card::State::ON_DRAG);
-							HandPileRed->RemoveCard(HandPileRed->getListOfCards().size() - 1);
-						}
-					}
-					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
-					{
-						isCardSelected = false;
-						isStandingOnTrigger = false;
-					}
-					if (CardPlaced->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardPlaced == false)
-					{
-						isStandingOnTrigger = true;
-						if (isCardPlaced == false)
+							// if deck is a draw deck
+						case Deck::DRAW:
 						{
-							isCardPlaced = true;
-							DiscardPile->AddCard(SelectedCard);
-							SelectedCard->setElement_Type(Card::NONE);
-						}
-					}
-					if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
-					{
-						isCardPlaced = false;
-						isStandingOnTrigger = false;
-					}
+								
+							cout << DeckList[i]->getListOfCards().size() << endl;
+							// if draw deck's trigger is triggered
+							if (DeckList[i]->CheckTrigger((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardDrawn == false && DeckList[i]->getListOfCards().size() > 0)
+							{
+								isStandingOnTrigger = true;
 
-					// If Card Not Drawn
-					if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardDrawn == false && DrawPile->getListOfCards().size() > 0)
-					{
-						isStandingOnTrigger = true;
+								if (isCardDrawn == false)
+								{
+									isCardDrawn = true;
+									
+										//Search for a hand deck
+										for (int j = 0; j < DeckList.size(); ++j)
+										{
+											if (DeckList[j]->getDeckType() != Deck::DRAW && DeckList[j]->getDeckType() != Deck::DISCARD && DeckList[j]->getListOfCards().size() < 5)
+											{
+												
+												if (DeckList[j]->getDeckType() == Deck::HANDR && DeckList[i]->getListOfCards().back()->getElement_Type() == Card::Element::FIRE)
+												{
 
-						if (isCardDrawn == false)
-						{
-							isCardDrawn = true;
+													DeckList[i]->getListOfCards().back()->setCurrentState_Type(Card::ON_HAND);
+													DeckList[j]->AddCard(DeckList[i]->getListOfCards().back());
+													//remove card from draw deck
+													DeckList[i]->RemoveCard(DeckList[i]->getListOfCards().size() - 1);
+													break;
+												}
+												if (DeckList[j]->getDeckType() == Deck::HANDB && DeckList[i]->getListOfCards().back()->getElement_Type() == Card::Element::WATER)
+												{
+													DeckList[i]->getListOfCards().back()->setCurrentState_Type(Card::ON_HAND);
+													DeckList[j]->AddCard(DeckList[i]->getListOfCards().back());
+													//remove card from draw deck
+													DeckList[i]->RemoveCard(DeckList[i]->getListOfCards().size() - 1);
+													break;
+
+												}
+												if (DeckList[j]->getDeckType() == Deck::HANDG && DeckList[i]->getListOfCards().back()->getElement_Type() == Card::Element::LEAF)
+												{
+
+													DeckList[i]->getListOfCards().back()->setCurrentState_Type(Card::ON_HAND);
+													DeckList[j]->AddCard(DeckList[i]->getListOfCards().back());
+													//remove card from draw deck
+													DeckList[i]->RemoveCard(DeckList[i]->getListOfCards().size() - 1);
+													break;
+												}
+											}
+										}
+
+								}
+								
+							}
+							if (DeckList[i]->getTrigger()->CheckCollision((*theHero->getBoundingBox())) == false)
+							{
+								isCardDrawn = false;
+								isStandingOnTrigger = false;
+							}
 							
-							//Change Card State If Drawn And Remove From Draw Pile Before Adding Card To Hand Pile
-							DrawPile->getListOfCards().back()->setCurrentState_Type(Card::State::ON_HAND);
-							switch (DrawPile->getListOfCards().back()->getElement_Type())
-							{
-							case Card::Element::FIRE:
-							{
-								HandPileRed->AddCard(DrawPile->getListOfCards().back());
-								break;
-							}
-							case Card::Element::LEAF:
-							{
-								HandPileGreen->AddCard(DrawPile->getListOfCards().back());
-								break;
-							}
-							case Card::Element::WATER:
-							{
-								HandPileBlue->AddCard(DrawPile->getListOfCards().back());
-								break;
-							}
-							}
-							DrawPile->RemoveCard(DrawPile->getListOfCards().size() - 1);
+							break;
 						}
+						case Deck::HANDR:
+						{
+							break;
+						}
+						case Deck::HANDG:
+						{
+							break;
+						}
+						case Deck::HANDB:
+						{
+							break;
+						}
+						case Deck::DISCARD:
+						{
+							break;
+						}
+						}
+					}
+					////if Card is Selected
+					//if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardSelected == false && HandPileRed->getListOfCards().size() > 0 && SelectedCard->getElement_Type() == Card::Element::NONE)
+					//{
+					//	isStandingOnTrigger = true;
+					//	if (isCardSelected == false)
+					//	{
+					//		isCardSelected = true;
+					//		SelectedCard = HandPileRed->getListOfCards().back();
+					//		SelectedCard->setCurrentState_Type(Card::State::ON_DRAG);
+					//		HandPileRed->RemoveCard(HandPileRed->getListOfCards().size() - 1);
+					//	}
+					//}
+					//if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
+					//{
+					//	isCardSelected = false;
+					//	isStandingOnTrigger = false;
+					//}
+					//if (CardPlaced->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardPlaced == false)
+					//{
+					//	isStandingOnTrigger = true;
+					//	if (isCardPlaced == false)
+					//	{
+					//		isCardPlaced = true;
+					//		DiscardPile->AddCard(SelectedCard);
+					//		SelectedCard->setElement_Type(Card::NONE);
+					//	}
+					//}
+					//if (CardSelectRed->CheckCollision((*theHero->getBoundingBox())) == false)
+					//{
+					//	isCardPlaced = false;
+					//	isStandingOnTrigger = false;
+					//}
 
-					}
-					if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == false)
-					{
-						isCardDrawn = false;
-						isStandingOnTrigger = false;
-					}
+					//// If Card Not Drawn
+					//if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == true && isStandingOnTrigger == false && isCardDrawn == false && DrawPile->getListOfCards().size() > 0)
+					//{
+					//	isStandingOnTrigger = true;
+
+					//	if (isCardDrawn == false)
+					//	{
+					//		isCardDrawn = true;
+					//		
+					//		//Change Card State If Drawn And Remove From Draw Pile Before Adding Card To Hand Pile
+					//		DrawPile->getListOfCards().back()->setCurrentState_Type(Card::State::ON_HAND);
+					//		switch (DrawPile->getListOfCards().back()->getElement_Type())
+					//		{
+					//		case Card::Element::FIRE:
+					//		{
+					//			HandPileRed->AddCard(DrawPile->getListOfCards().back());
+					//			break;
+					//		}
+					//		case Card::Element::LEAF:
+					//		{
+					//			HandPileGreen->AddCard(DrawPile->getListOfCards().back());
+					//			break;
+					//		}
+					//		case Card::Element::WATER:
+					//		{
+					//			HandPileBlue->AddCard(DrawPile->getListOfCards().back());
+					//			break;
+					//		}
+					//		}
+					//		DrawPile->RemoveCard(DrawPile->getListOfCards().size() - 1);
+					//	}
+
+					//}
+					//if (CardDraw->CheckCollision((*theHero->getBoundingBox())) == false)
+					//{
+					//	isCardDrawn = false;
+					//	isStandingOnTrigger = false;
+					//}
 	}
 		break;
 	}
-	cout << DrawPile->getListOfCards().size() << endl;
 	
 }
 
@@ -393,7 +515,7 @@ void SceneGame4::Render()
 	// Render AIs
 	RenderAIs();
 	//Render Cards
-	for (int i = 0; i < DrawPile->getListOfCards().size(); ++i)
+	/*for (int i = 0; i < DrawPile->getListOfCards().size(); ++i)
 	{
 		RenderCard(DrawPile->getListOfCards()[i]);
 	}
@@ -413,13 +535,55 @@ void SceneGame4::Render()
 	{
 		RenderCard(DiscardPile->getListOfCards()[i]);
 	}
-
+*/
+	for (int i = 0; i < DeckList.size(); ++i)
+	{
+		for (int j = 0; j < DeckList[i]->getListOfCards().size(); ++j)
+		{
+			switch (DeckList[i]->getListOfCards()[j]->getCurrentState_Type())
+			{
+			case Card::State::ON_DRAW:
+			{
+				sceneManager2D.Render2DMesh(
+					DeckList[i]->getListOfCards()[j]->getMesh(), 
+					false, 
+					DeckList[i]->getListOfCards()[j]->getScaleX(),
+					DeckList[i]->getListOfCards()[j]->getScaleY(),
+					DeckList[i]->getListOfCards()[j]->getPositionX(),
+					DeckList[i]->getListOfCards()[j]->getPositionY(),
+					0);
+				break;
+			}
+			default:
+			{
+				sceneManager2D.Render2DMesh(
+					DeckList[i]->getListOfCards()[j]->getCardFaceUpMesh(),
+					false,
+					DeckList[i]->getListOfCards()[j]->getScaleX(),
+					DeckList[i]->getListOfCards()[j]->getScaleY(),
+					DeckList[i]->getListOfCards()[j]->getPositionX(),
+					DeckList[i]->getListOfCards()[j]->getPositionY(),
+					0);
+				break;
+				}
+			}
+			
+		}
+		sceneManager2D.Render2DMesh(
+			DeckList[i]->getTrigger()->getMesh(),
+			false,
+			DeckList[i]->getTrigger()->getScale().x,
+			DeckList[i]->getTrigger()->getScale().y,
+			DeckList[i]->getTrigger()->getPosition().x,
+			DeckList[i]->getTrigger()->getPosition().y,
+			0);
+	}
 	sceneManager2D.modelStack.PopMatrix();
 
-	//Render Triggers
-	sceneManager2D.Render2DMesh(CardDraw->getMesh(), false, CardDraw->getScale().x, CardDraw->getScale().y, CardDraw->getPosition().x, CardDraw->getPosition().y, 0);
-	sceneManager2D.Render2DMesh(CardSelectRed->getMesh(), false, CardSelectRed->getScale().x, CardSelectRed->getScale().y, CardSelectRed->getPosition().x, CardSelectRed->getPosition().y, 0);
-	sceneManager2D.Render2DMesh(CardPlaced->getMesh(), false, CardPlaced->getScale().x, CardPlaced->getScale().y, CardPlaced->getPosition().x, CardPlaced->getPosition().y, 0);
+	////Render Triggers
+	//sceneManager2D.Render2DMesh(CardDraw->getMesh(), false, CardDraw->getScale().x, CardDraw->getScale().y, CardDraw->getPosition().x, CardDraw->getPosition().y, 0);
+	//sceneManager2D.Render2DMesh(CardSelectRed->getMesh(), false, CardSelectRed->getScale().x, CardSelectRed->getScale().y, CardSelectRed->getPosition().x, CardSelectRed->getPosition().y, 0);
+	//sceneManager2D.Render2DMesh(CardPlaced->getMesh(), false, CardPlaced->getScale().x, CardPlaced->getScale().y, CardPlaced->getPosition().x, CardPlaced->getPosition().y, 0);
 
 	// Render GUI
 	RenderGUI();

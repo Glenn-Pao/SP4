@@ -56,26 +56,9 @@ private:
 
 	float timer;
 
-	Deck* DrawPile;
-	Trigger* CardDraw;
+	vector<Deck*> DeckList;
 
-	Deck* HandPileGreen;
-	Trigger* CardSelectGreen;
-
-	Deck* HandPileRed;
-	Trigger* CardSelectRed;
-
-	Deck* HandPileBlue;
-	Trigger* CardSelectBlue;
-
-	Deck* DiscardPile;
-	Trigger* CardPlaced;
-
-	Card* SelectedCard;
-	
-	bool isCardDrawn;
-	bool isCardSelected;
-	bool isCardPlaced;
 	bool isStandingOnTrigger;
+	bool isCardDrawn;
 };
 
