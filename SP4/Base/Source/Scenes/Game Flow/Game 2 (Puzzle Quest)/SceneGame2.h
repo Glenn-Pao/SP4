@@ -85,14 +85,16 @@ private:
 	std::vector<CDoor*> BlueDoors;
 	std::vector<CDoor*> YellowDoors;
 	std::vector<CDoor*> OrangeDoors;
+	std::vector<CDoor*> PurpleDoors;
+	std::vector<CDoor*> GreenDoors;
 	std::vector<CColour*> ColoursSet;
 	std::vector<std::string> ColoursThePlayerHas;
 	std::vector<string> scriptDialogues;
 
 	CDoor* greenDoor;
 	CDoor* endDoor;
-	bool hasBlue, hasYellow, hasRed;
-	bool castedBlue, castedYellow, castedGreen, castedOrange, castedRed;
+	bool hasBlue, hasYellow, hasRed, hasPurple;
+	bool castedBlue, castedYellow, castedGreen, castedOrange, castedRed, castedPurple;
 	Vector3 prevHeroPos;
 
 	vector<CObjects*> dialogueTiles;

@@ -30,7 +30,7 @@ CSceneGame2::~CSceneGame2()
 
 void CSceneGame2::Init(int level)
 {
-	level += 2;
+	
 	this->level = level;
 	// Init the base scene
 	sceneManager2D.Init(level);
@@ -139,8 +139,8 @@ void CSceneGame2::Init(int level)
 		break;
 	}
 
-	hasBlue = hasYellow = hasRed = false;
-	castedBlue = castedYellow = castedGreen = castedRed = castedOrange = false;
+	hasBlue = hasYellow = hasRed = hasPurple = false;
+	castedBlue = castedYellow = castedGreen = castedRed = castedOrange = castedPurple = false;
 
 	prevHeroPos.SetZero();
 	castedColoursCounter = 0;
@@ -308,7 +308,81 @@ void CSceneGame2::InitLevel2()
 
 void CSceneGame2::InitLevel3()
 {
+	// Dialogues scripts
+	for (int i = 0; i < 6; i++)
+	{
+		scriptDialogues.push_back(L->DoLuaString("script" + to_string(i)));
+	}
 
+	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
+	{
+		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
+		{
+			int TSize_x = k*m_cMap->GetTileSize();
+			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+			if (m_cMap->theScreenMap[i][k] == 33)
+			{
+				GreyDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
+				GreyDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 27)
+			{
+				endDoor = new CDoor(CObjects::DOOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+
+			}
+			else if (m_cMap->theScreenMap[i][k] == 34)
+			{
+				BlueDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_BLUE_DOOR]));
+				BlueDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 26)
+			{
+				OrangeDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_ORANGE_DOOR]));
+				OrangeDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 36)
+			{
+				YellowDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_YELLOW_DOOR]));
+				YellowDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 25)
+			{
+				PurpleDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_PURPLE_DOOR]));
+				PurpleDoors.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 35)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "GREEN", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_GREEN_DOOR]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 24)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "PURPLE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_PURPLE]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 37)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "BLUE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 38)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 39)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "RED", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_RED]));
+				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 40)
+			{
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "ORANGE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_ORANGE]));
+				ColoursSet.back()->setActive(true);
+			}
+		}
+	}
 }
 
 /********************************************************************************
@@ -333,10 +407,7 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
 	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_GROUND]->textureID = LoadTGA("Image//Tile/ground.tga");
-	/*GEO_COLOUR_BALL_BLUE,
-	GEO_COLOUR_BALL_YELLOW,
-	GEO_COLOUR_BALL_RED,
-	GEO_COLOUR_BALL_ORANGE,*/
+	
 	meshList[GEO_COLOUR_BALL_BLUE] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_BLUE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_COLOUR_BALL_BLUE]->textureID = LoadTGA("Image//Tile/tile37_BlueBall.tga");
 	meshList[GEO_COLOUR_BALL_YELLOW] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_YELLOW", Color(1, 1, 1), 0, 0, 1, 1);
@@ -347,6 +418,8 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_COLOUR_BALL_RED]->textureID = LoadTGA("Image//Tile/tile39_RedBall.tga");
 	meshList[GEO_COLOUR_BALL_ORANGE] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_ORANGE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_COLOUR_BALL_ORANGE]->textureID = LoadTGA("Image//Tile/tile40_OrangeBall.tga");
+	meshList[GEO_COLOUR_BALL_PURPLE] = MeshBuilder::Generate2DMesh("GEO_COLOUR_BALL_PURPLE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_COLOUR_BALL_PURPLE]->textureID = LoadTGA("Image//Tile/tile24_PurpleBall.tga");
 	
 
 	meshList[GEO_GREEN_DOOR] = MeshBuilder::Generate2DMesh("GEO_GREEN_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
@@ -357,6 +430,8 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_YELLOW_DOOR]->textureID = LoadTGA("Image//Tile/tile36_YellowDoor.tga");
 	meshList[GEO_ORANGE_DOOR] = MeshBuilder::Generate2DMesh("GEO_ORANGE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_ORANGE_DOOR]->textureID = LoadTGA("Image//Tile/tile26_OrangeDoor.tga");
+	meshList[GEO_PURPLE_DOOR] = MeshBuilder::Generate2DMesh("GEO_PURPLE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_PURPLE_DOOR]->textureID = LoadTGA("Image//Tile/tile25_PurpleDoor.tga");
 	
 	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
@@ -424,12 +499,12 @@ void CSceneGame2::Update(double dt)
 		// Update Hero animation counter if hero moved
 		if (Application::IsKeyPressed('Q') && hasBlue)
 			castedBlue = true;
-
 		if (Application::IsKeyPressed('E') && hasYellow)
 			castedYellow = true;
-
 		if (Application::IsKeyPressed('R') && hasRed)
 			castedRed = true;
+		if (Application::IsKeyPressed('T') && hasPurple)
+			castedPurple = true;
 
 		if (castedBlue && castedYellow)
 		{
@@ -444,7 +519,7 @@ void CSceneGame2::Update(double dt)
 		}
 
 
-		if (castedBlue || castedYellow || castedGreen || castedRed || castedOrange)
+		if (castedBlue || castedYellow || castedGreen || castedRed || castedOrange || castedPurple)
 		{
 			timer += 0.1f;
 			if (timer > 5.f)
@@ -460,6 +535,8 @@ void CSceneGame2::Update(double dt)
 					castedRed = false;
 				else if (castedOrange)
 					castedOrange = false;
+				else if (castedPurple)
+					castedPurple = false;
 			}
 		}
 
@@ -689,7 +766,116 @@ void CSceneGame2::UpdateLevel2(double dt)
 
 void CSceneGame2::UpdateLevel3(double dt)
 {
+	//Doors
+	for (int i = 0; i < GreyDoors.size(); i++)
+	{
+		if (GreyDoors[i]->getActive() == true)
+		{
+			if (GreyDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+				GreyDoors[i]->setActive(false);
+			}
+		}
+	}
 
+	for (int i = 0; i < GreenDoors.size(); i++)
+	{
+		if (GreenDoors[i]->getActive() == true)
+		{
+			if (GreenDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+
+				if (castedGreen)
+					GreenDoors[i]->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
+		}
+	}
+
+	for (int i = 0; i < BlueDoors.size(); i++)
+	{
+		if (BlueDoors[i]->getActive() == true)
+		{
+			if (BlueDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+
+				if (castedBlue)
+					BlueDoors[i]->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
+		}
+	}
+
+	for (int i = 0; i < YellowDoors.size(); i++)
+	{
+		if (YellowDoors[i]->getActive() == true)
+		{
+			if (YellowDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+
+				if (castedYellow)
+					YellowDoors[i]->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
+		}
+	}
+
+	for (int i = 0; i < OrangeDoors.size(); i++)
+	{
+		if (OrangeDoors[i]->getActive() == true)
+		{
+			if (OrangeDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+
+				if (castedOrange)
+					OrangeDoors[i]->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
+		}
+	}
+
+	for (int i = 0; i < PurpleDoors.size(); i++)
+	{
+		if (PurpleDoors[i]->getActive() == true)
+		{
+			if (PurpleDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+
+				if (castedPurple)
+					PurpleDoors[i]->setActive(false);
+				else
+					theHero->setPosition(prevHeroPos);
+			}
+		}
+	}
+
+	//Loop that settles colours
+	for (int i = 0; i < ColoursSet.size(); i++)
+	{
+		if (ColoursSet[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		{
+			if (ColoursSet[i]->getColour() == "BLUE")
+				hasBlue = true;
+			if (ColoursSet[i]->getColour() == "YELLOW")
+				hasYellow = true;
+			if (ColoursSet[i]->getColour() == "RED")
+				hasRed = true;
+			if (ColoursSet[i]->getColour() == "PURPLE")
+				hasPurple = true;
+
+			ColoursThePlayerHas.push_back(ColoursSet[i]->getColour());
+			ColoursSet[i]->setActive(false);
+		}
+	}
+
+	if (endDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+	{
+		currentState = COMPLETED;
+	}
 }
 
 /********************************************************************************
@@ -977,7 +1163,62 @@ void CSceneGame2::RenderLevel2()
 
 void CSceneGame2::RenderLevel3()
 {
+	for (int i = 0; i < GreyDoors.size(); i++)
+	{
+		if (GreyDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(GreyDoors[i]->getMesh(), false, GreyDoors[i]->getScale().x, GreyDoors[i]->getScale().y, GreyDoors[i]->getPositionX(), GreyDoors[i]->getPositionY());
+	}
+	for (int i = 0; i < ColoursSet.size(); i++)
+	{
+		if (ColoursSet[i]->getActive())
+			sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, ColoursSet[i]->getScale().x, ColoursSet[i]->getScale().y, ColoursSet[i]->getPositionX(), ColoursSet[i]->getPositionY());
+	}
 
+
+	if (castedBlue && !castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_BLUE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+	if (castedYellow && !castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_YELLOW], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + m_cMap->GetTileSize() - 10, theHero->getPositionY() + m_cMap->GetTileSize());
+	if (castedRed && !castedOrange)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_RED], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+
+	if (castedOrange)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + 10, theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+	if (castedGreen)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + 10, theHero->getPositionY() + m_cMap->GetTileSize());
+	if (castedPurple)
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_PURPLE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + m_cMap->GetTileSize() - 10, theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+
+	for (int i = 0; i < BlueDoors.size(); i++)
+	{
+		if (BlueDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(BlueDoors[i]->getMesh(), false, BlueDoors[i]->getScale().x, BlueDoors[i]->getScale().y, BlueDoors[i]->getPositionX(), BlueDoors[i]->getPositionY());
+	}
+	for (int i = 0; i < YellowDoors.size(); i++)
+	{
+		if (YellowDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(YellowDoors[i]->getMesh(), false, YellowDoors[i]->getScale().x, YellowDoors[i]->getScale().y, YellowDoors[i]->getPositionX(), YellowDoors[i]->getPositionY());
+	}
+
+	for (int i = 0; i < OrangeDoors.size(); i++)
+	{
+		if (OrangeDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(OrangeDoors[i]->getMesh(), false, OrangeDoors[i]->getScale().x, OrangeDoors[i]->getScale().y, OrangeDoors[i]->getPositionX(), OrangeDoors[i]->getPositionY());
+	}
+
+	for (int i = 0; i < PurpleDoors.size(); i++)
+	{
+		if (PurpleDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(PurpleDoors[i]->getMesh(), false, PurpleDoors[i]->getScale().x, PurpleDoors[i]->getScale().y, PurpleDoors[i]->getPositionX(), PurpleDoors[i]->getPositionY());
+	}
+
+	for (int i = 0; i < GreenDoors.size(); i++)
+	{
+		if (GreenDoors[i]->getActive())
+			sceneManager2D.Render2DMesh(GreenDoors[i]->getMesh(), false, GreenDoors[i]->getScale().x, GreenDoors[i]->getScale().y, GreenDoors[i]->getPositionX(), GreenDoors[i]->getPositionY());
+	}
+
+	sceneManager2D.Render2DMesh(endDoor->getMesh(), false, endDoor->getScale().x, endDoor->getScale().y, endDoor->getPositionX(), endDoor->getPositionY());
 }
 /********************************************************************************
 Render the rear tile map. This is a private function for use in this class only
