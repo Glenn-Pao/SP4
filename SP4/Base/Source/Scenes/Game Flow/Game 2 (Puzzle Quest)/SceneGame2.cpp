@@ -30,7 +30,7 @@ CSceneGame2::~CSceneGame2()
 
 void CSceneGame2::Init(int level)
 {
-	level = 1;
+	level = 0;
 	this->level = level;
 	// Init the base scene
 	sceneManager2D.Init(level);
@@ -97,8 +97,6 @@ void CSceneGame2::Init(int level)
 	m_cMinimap->GetBackground()->textureID = LoadTGA("Image//grass_darkgreen.tga");
 	m_cMinimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MINIMAPBORDER", Color(1, 1, 0), 1.f));
 	m_cMinimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MINIMAPAVATAR", Color(1, 1, 0), 1.f));
-
-
 
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
@@ -537,7 +535,7 @@ void CSceneGame2::Update(double dt)
 		}
 
 
-		if (castedBlue || castedYellow || castedGreen || castedRed || castedOrange || castedPurple)
+		if (castedBlue || castedGreen || castedRed || castedOrange || castedPurple)
 		{
 			timer += 0.1f;
 			if (timer > 5.f)
@@ -555,6 +553,16 @@ void CSceneGame2::Update(double dt)
 					castedOrange = false;
 				else if (castedPurple)
 					castedPurple = false;
+			}
+		}
+		if (castedYellow)
+		{
+			timer += 0.1f;
+			if (timer > 5.f)
+			{
+				timer = 0;
+				if (castedYellow)
+					castedYellow = false;
 			}
 		}
 

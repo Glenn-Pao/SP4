@@ -98,6 +98,7 @@ void CSceneGameBase::StoreData(CGameInfo* Data)
 	Data->heroAnimationDir = theHero->GetAnimationDirection();
 	Data->heroMapOffset.x = theHero->GetMapOffset_x();
 	Data->heroMapOffset.y = theHero->GetMapOffset_y();
+	Data->ifNew = true;
 }
 // Find and Set the actual offset of hero
 void CSceneGameBase::SetHeroOffset()

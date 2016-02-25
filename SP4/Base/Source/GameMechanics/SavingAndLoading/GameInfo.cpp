@@ -104,7 +104,7 @@ void CGameInfo::ClearFile()
 		myfile << "Use these values to initialise the Data's Infomations" << endl;
 		myfile << "]]--" << endl;
 		myfile << endl;
-		myfile << "ifNew = " << 0 << endl;
+		myfile << "ifNew = " << 1 << endl;
 		myfile << endl;
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
