@@ -231,9 +231,9 @@ void CGame2State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		if (button_Left == true)
 		{
 			// Unlock new difficulty
-			if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
+			if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].getCurrentDifficultyUnlocked() <= scene->level)
 			{
-				theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
+				theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].setCurrentDifficultyUnlocked(scene->level + 1);
 			}
 			// Withdraw jellybean
 			theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
