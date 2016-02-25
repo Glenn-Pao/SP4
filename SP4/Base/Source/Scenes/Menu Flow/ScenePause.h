@@ -2,6 +2,7 @@
 #define SCENE_PAUSE_H
 
 #include "..\Master\SceneManager2D.h"
+#include "..\..\UISystem.h"
 
 class CScenePause : public Scene
 {
@@ -30,8 +31,17 @@ public:
 		QUIT,
 		NUM_CHOICES,
 	};
-
 	int choice;
+
+	enum STATE
+	{
+		GAME,
+		LOBBY,
+		NUM_STATES
+	};
+	
+	STATE currentState;
+	UISystem* UIManager;
 
 private:
 	unsigned m_vertexArrayID;

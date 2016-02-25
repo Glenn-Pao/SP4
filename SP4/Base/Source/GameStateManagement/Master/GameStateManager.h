@@ -18,7 +18,7 @@ public:
 	void Cleanup();
 
 	void ChangeState(CGameState* state, int level = 0);
-	void PushState(CGameState* state);
+	void PushState(CGameState* state, int level = 0);
 	void PopState();
 
 	void HandleEvents();
