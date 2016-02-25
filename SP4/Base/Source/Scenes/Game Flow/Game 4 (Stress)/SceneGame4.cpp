@@ -392,6 +392,14 @@ void SceneGame4::Update(double dt)
 		}
 		break;
 	}
+	case STATE::WIN:
+	{
+		break;
+	}
+	case STATE::LOSE:
+	{
+		break;
+	}
 	}
 }
 
