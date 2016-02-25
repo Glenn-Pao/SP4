@@ -7,22 +7,21 @@ using namespace std;
 
 CJellybeanSystem::CJellybeanSystem(void)
 	: noOfJellybeans(10)
+	, noOfJellybeansDeposited(0)
 {
-	mesh = NULL;
+	/*minNoOfJellybeansDeposited[CDifficultySystem::TUTORIAL] = 0;
+	maxNoOfJellybeansDeposited[CDifficultySystem::TUTORIAL] = 0;
+	minNoOfJellybeansDeposited[CDifficultySystem::EASY] = 1;
+	minNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] = 6;
+	minNoOfJellybeansDeposited[CDifficultySystem::HARD] = 11;
+	maxNoOfJellybeansDeposited[CDifficultySystem::EASY] = 5;
+	maxNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] = 10;
+	maxNoOfJellybeansDeposited[CDifficultySystem::HARD] = 15;*/
 	readFile();
-	minNoOfJellybeansDeposited[EASY] = 1;
-	minNoOfJellybeansDeposited[MEDIUM] = 6;
-	minNoOfJellybeansDeposited[HARD] = 11;
-	maxNoOfJellybeansDeposited[EASY] = 5;
-	maxNoOfJellybeansDeposited[MEDIUM] = 10;
-	maxNoOfJellybeansDeposited[HARD] = 15;
 }
 
 CJellybeanSystem::~CJellybeanSystem(void)
 {
-	if (mesh)
-		delete mesh;
-	writeToFile();
 }
 
 /********************************************************************************
@@ -35,12 +34,12 @@ void CJellybeanSystem::readFile()
 	L.ReadFiles("Lua//jellybeanInfo.lua");
 
 	noOfJellybeans = L.DoLuaInt("noOfJellybeans");
-	minNoOfJellybeansDeposited[EASY] = L.DoLuaInt("easyMinDeposit");
-	minNoOfJellybeansDeposited[MEDIUM] = L.DoLuaInt("mediumMinDeposit");
-	minNoOfJellybeansDeposited[HARD] = L.DoLuaInt("hardMinDeposit");
-	maxNoOfJellybeansDeposited[EASY] = L.DoLuaInt("easyMaxDeposit");
-	maxNoOfJellybeansDeposited[MEDIUM] = L.DoLuaInt("mediumMaxDeposit");
-	maxNoOfJellybeansDeposited[HARD] = L.DoLuaInt("hardMaxDeposit");
+	minNoOfJellybeansDeposited[CDifficultySystem::EASY] = L.DoLuaInt("easyMinDeposit");
+	minNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] = L.DoLuaInt("mediumMinDeposit");
+	minNoOfJellybeansDeposited[CDifficultySystem::HARD] = L.DoLuaInt("hardMinDeposit");
+	maxNoOfJellybeansDeposited[CDifficultySystem::EASY] = L.DoLuaInt("easyMaxDeposit");
+	maxNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] = L.DoLuaInt("mediumMaxDeposit");
+	maxNoOfJellybeansDeposited[CDifficultySystem::HARD] = L.DoLuaInt("hardMaxDeposit");
 }
 
 /********************************************************************************
@@ -56,68 +55,31 @@ void CJellybeanSystem::writeToFile()
 		myfile << "]]--" << endl;
 		myfile << endl;
 		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
-		myfile << "easyMinDeposit = " << minNoOfJellybeansDeposited[EASY] << endl;
-		myfile << "mediumMinDeposit = " << minNoOfJellybeansDeposited[MEDIUM] << endl;
-		myfile << "hardMinDeposit = " << minNoOfJellybeansDeposited[HARD] << endl;
-		myfile << "easyMaxDeposit = " << maxNoOfJellybeansDeposited[EASY] << endl;
-		myfile << "mediumMaxDeposit = " << maxNoOfJellybeansDeposited[MEDIUM] << endl;
-		myfile << "hardMaxDeposit = " << maxNoOfJellybeansDeposited[HARD] << endl;
+		myfile << "easyMinDeposit = " << minNoOfJellybeansDeposited[CDifficultySystem::EASY] << endl;
+		myfile << "mediumMinDeposit = " << minNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] << endl;
+		myfile << "hardMinDeposit = " << minNoOfJellybeansDeposited[CDifficultySystem::HARD] << endl;
+		myfile << "easyMaxDeposit = " << maxNoOfJellybeansDeposited[CDifficultySystem::EASY] << endl;
+		myfile << "mediumMaxDeposit = " << maxNoOfJellybeansDeposited[CDifficultySystem::MEDIUM] << endl;
+		myfile << "hardMaxDeposit = " << maxNoOfJellybeansDeposited[CDifficultySystem::HARD] << endl;
 	}
 }
 
 /********************************************************************************
 Deposit jellybeans to play minigame
 ********************************************************************************/
-bool CJellybeanSystem::DepositJellybeans(int depositAmount, DIFFICULTY difficulty)
+void CJellybeanSystem::DepositJellybeans(int depositAmount)
 {
-	// Check min bet
-	switch (difficulty)
-	{
-	case EASY:
-		if (depositAmount < minNoOfJellybeansDeposited[EASY])
-		{
-			return false;
-		}
-		break;
-	case MEDIUM:
-		if (depositAmount < minNoOfJellybeansDeposited[MEDIUM])
-		{
-			return false;
-		}
-		break;
-	case HARD:
-		if (depositAmount < minNoOfJellybeansDeposited[HARD])
-		{
-			return false;
-		}
-		break;
-	}
-	// Check jellybeans left
-	if (noOfJellybeans >= depositAmount)
-	{
-		noOfJellybeansDeposited = depositAmount;
-		noOfJellybeans -= depositAmount;
-		return true;
-	}
-
-	return false;
+	noOfJellybeansDeposited = depositAmount;
+	noOfJellybeans -= depositAmount;
 }
 
 
 /********************************************************************************
 Withdraw jellybeans from minigame
 ********************************************************************************/
-void CJellybeanSystem::WithdrawJellybeans(bool won)
+void CJellybeanSystem::WithdrawJellybeans()
 {
-	if (won)
-	{
-		noOfJellybeans += noOfJellybeansDeposited * 2;
-	}
-	else
-	{
-		noOfJellybeansDeposited = 0;
-	}
-	writeToFile();
+	noOfJellybeans += noOfJellybeansDeposited * 2;
 }
 
 

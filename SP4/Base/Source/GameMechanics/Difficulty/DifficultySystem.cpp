@@ -15,7 +15,7 @@ CDifficultySystem::~CDifficultySystem(void)
 }
 
 /********************************************************************************
-Unlocked difficulty
+Unlocked Difficulty
 ********************************************************************************/
 void CDifficultySystem::UnlockedDifficulty()
 {

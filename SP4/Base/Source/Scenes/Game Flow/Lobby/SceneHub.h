@@ -45,13 +45,18 @@ public:
 	enum STATE
 	{
 		PLAYING,
-		SELECTING
+		DIFFICULTY_SELECTION,
+		JELLYBEAN_SELECTION
 	};
 
 	STATE currentState;
 	UISystem* UIManager;
 
 	CSceneManager2D sceneManager2D;
+
+	int noOfJellybeansDeposited;
+
+	int difficultySelected;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -86,6 +91,10 @@ private:
 	//CGoodies** theArrayOfGoodies;
 	void RenderGoodies(void);
 
+	void UpdateUI(double dt);
+	void UpdateUI_Playing();
+	void UpdateUI_DifficultySelection();
+	void UpdateUI_JellybeanSelection();
 
 	std::vector<CDoor*> theDoor;
 };

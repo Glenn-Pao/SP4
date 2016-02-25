@@ -94,9 +94,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		}
 	}
 
-	// Jellybeans
-	JellybeanSystem = new CJellybeanSystem;
-
 	// Initialise the Meshes
 	InitMeshes();
 
@@ -218,8 +215,8 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
 
 	// Jellybeans
-	JellybeanSystem->mesh = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
-	JellybeanSystem->mesh->textureID = LoadTGA("Image//jellybean.tga");
+	meshList[GEO_JELLYBEAN] = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_JELLYBEAN]->textureID = LoadTGA("Image//jellybean.tga");
 
 
 }
@@ -665,10 +662,6 @@ void SceneGame4::Exit()
 			delete meshList[i];
 	}
 	sceneManager2D.Exit();
-
-	// Delete JellybeanSystem
-	if (JellybeanSystem)
-		delete JellybeanSystem;
 }
 
 
@@ -678,13 +671,13 @@ Handle to the GUI
 void SceneGame4::RenderGUI()
 {
 	// Jellybean
-	sceneManager2D.Render2DMesh(JellybeanSystem->mesh, false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.Render2DMesh(meshList[GEO_JELLYBEAN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	//On screen text
 	std::ostringstream ss;
 	// Jellybean
 	ss.precision(3);
-	ss << ": " << JellybeanSystem->GetNumOfJellybeans();
+	ss << ": " << noOfJellybeans;
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	// Timer

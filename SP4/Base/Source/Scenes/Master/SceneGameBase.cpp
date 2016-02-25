@@ -18,7 +18,7 @@ CSceneGameBase::CSceneGameBase()
 	, rearWallTileOffset_y(0)
 	, rearWallFineOffset_x(0)
 	, rearWallFineOffset_y(0)
-	, JellybeanSystem(NULL)
+	, noOfJellybeans(0)
 	, theHero(NULL)
 	, waypoints(NULL)
 {
@@ -35,7 +35,7 @@ CSceneGameBase::CSceneGameBase(const int m_window_width, const int m_window_heig
 	, rearWallTileOffset_y(0)
 	, rearWallFineOffset_x(0)
 	, rearWallFineOffset_y(0)
-	, JellybeanSystem(NULL)
+	, noOfJellybeans(0)
 	, theHero(NULL)
 	, waypoints(NULL)
 {
@@ -87,9 +87,9 @@ void CSceneGameBase::ReadData(CGameInfo* Data)
 		theHero->SetAnimationDirection(Data->heroAnimationDir);
 		theHero->SetMapOffset_x(Data->heroMapOffset.x);
 		theHero->SetMapOffset_y(Data->heroMapOffset.y);
-
-		JellybeanSystem->SetNumOfJellybeans(Data->noOfJellybeans);
 	}
+
+	noOfJellybeans = Data->jellybean.GetNumOfJellybeans();
 }
 void CSceneGameBase::StoreData(CGameInfo* Data)
 {
@@ -98,8 +98,6 @@ void CSceneGameBase::StoreData(CGameInfo* Data)
 	Data->heroAnimationDir = theHero->GetAnimationDirection();
 	Data->heroMapOffset.x = theHero->GetMapOffset_x();
 	Data->heroMapOffset.y = theHero->GetMapOffset_y();
-
-	Data->noOfJellybeans = JellybeanSystem->GetNumOfJellybeans();
 }
 // Find and Set the actual offset of hero
 void CSceneGameBase::SetHeroOffset()

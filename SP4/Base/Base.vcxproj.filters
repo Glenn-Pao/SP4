@@ -208,12 +208,6 @@
     <ClCompile Include="Source\AI\FSM.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame2.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
@@ -504,12 +498,6 @@
     </ClInclude>
     <ClInclude Include="Source\AI\FSM.h">
       <Filter>AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame2.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>

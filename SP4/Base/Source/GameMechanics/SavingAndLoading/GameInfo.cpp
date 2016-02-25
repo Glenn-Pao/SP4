@@ -25,12 +25,11 @@ void CGameInfo::ResetData()
 
 	// Player's Infomation
 	heroPosition.Set(0, 0);
-	noOfJellybeans = 10;
 	heroMapOffset.Set(0, 0);
 
 	for (int i = 0; i < 4; i++)
 	{
-		difficultySystems[i].setCurrentDifficultyUnlocked(CDifficultySystem::TUTORIAL);
+		DifficultySystems[i].setCurrentDifficultyUnlocked(CDifficultySystem::TUTORIAL);
 	}
 }
 
@@ -50,14 +49,14 @@ void CGameInfo::LoadFile()
 	heroPosition.x = L.DoLuaFloat("heroPositionX");
 	heroPosition.y = L.DoLuaFloat("heroPositionY");
 	heroAnimationDir = L.DoLuaInt("heroAnimationDir");
-	noOfJellybeans = L.DoLuaInt("noOfJellybeans");
+	jellybean.SetNumOfJellybeans(L.DoLuaInt("noOfJellybeans"));
 	heroMapOffset.x = L.DoLuaFloat("heroMapOffsetX");
 	heroMapOffset.y = L.DoLuaFloat("heroMapOffsetY");
 
 	// Minigames' informations
 	for (int i = 0; i < 4; i++)
 	{
-		difficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("difficultyUnlocked" + std::to_string(i)));
+		DifficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("DifficultyUnlocked" + std::to_string(i)));
 	}
 }
 
@@ -78,14 +77,14 @@ void CGameInfo::SaveToFile()
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
 		myfile << "heroAnimationDir = " << heroAnimationDir << endl;
-		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
+		myfile << "noOfJellybeans = " << jellybean.GetNumOfJellybeans() << endl;
 		myfile << "heroMapOffsetX = " << heroMapOffset.x << endl;
 		myfile << "heroMapOffsetY = " << heroMapOffset.y << endl;
 		myfile << endl;
 		// Minigames' informations
 		for (int i = 0; i < 4; i++)
 		{
-			myfile << "difficultyUnlocked" << i << " = " << difficultySystems[i].getCurrentDifficultyUnlocked() << endl;
+			myfile << "DifficultyUnlocked" << i << " = " << DifficultySystems[i].getCurrentDifficultyUnlocked() << endl;
 		}
 	}
 }
@@ -109,14 +108,14 @@ void CGameInfo::ClearFile()
 		myfile << endl;
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
-		myfile << "noOfJellybeans = " << noOfJellybeans << endl;
+		myfile << "noOfJellybeans = " << jellybean.GetNumOfJellybeans() << endl;
 		myfile << "heroMapOffsetX = " << heroPosition.x << endl;
 		myfile << "heroMapOffsetY = " << heroPosition.y << endl;
 		myfile << endl;
 		// Minigames' informations
 		for (int i = 0; i < 4; i++)
 		{
-			myfile << "difficultyUnlocked" << i << " = " << difficultySystems[i].getCurrentDifficultyUnlocked() << endl;
+			myfile << "DifficultyUnlocked" << i << " = " << DifficultySystems[i].getCurrentDifficultyUnlocked() << endl;
 		}
 	}
 }

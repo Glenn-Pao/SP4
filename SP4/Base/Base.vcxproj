@@ -40,7 +40,6 @@
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\HubState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.cpp" />
-    <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame2.cpp" />
     <ClCompile Include="Source\GameStateManagement\Master\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\Menu Flow\InstructionState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Menu Flow\LoseState.cpp" />
@@ -79,7 +78,6 @@
     <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneHub.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.cpp" />
     <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.cpp" />
-    <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.cpp" />
     <ClCompile Include="Source\Scenes\Master\SceneGameBase.cpp" />
     <ClCompile Include="Source\Scenes\Master\SceneManager.cpp" />
     <ClCompile Include="Source\Scenes\Master\SceneManager2D.cpp" />
@@ -137,7 +135,6 @@
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\HubState.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.h" />
     <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.h" />
-    <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame2.h" />
     <ClInclude Include="Source\GameStateManagement\Master\GameState.h" />
     <ClInclude Include="Source\GameStateManagement\Master\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\Menu Flow\InstructionState.h" />
@@ -179,7 +176,6 @@
     <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneHub.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Lobby\SceneLoadGame.h" />
     <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.h" />
-    <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame2.h" />
     <ClInclude Include="Source\Scenes\Master\SceneGameBase.h" />
     <ClInclude Include="Source\Scenes\Master\SceneManager.h" />
     <ClInclude Include="Source\Scenes\Master\SceneManager2D.h" />

@@ -2,6 +2,7 @@
 #include <string>
 #include "Vector2.h"
 #include "..\Difficulty\DifficultySystem.h"
+#include "..\Jellybean\JellybeanSystem.h"
 
 class CGameInfo
 {
@@ -30,7 +31,7 @@ public:
 	// Player's Infomation
 	Vector2 heroPosition;// Hero position
 	int heroAnimationDir;// Hero animation direction
-	int noOfJellybeans;// numer of jellybeans player have
+	CJellybeanSystem jellybean;// jellybeans system of the player
 	Vector2 heroMapOffset;// Hero map offset
-	CDifficultySystem difficultySystems[4]; // difficulty System Of the 4 Minigames
+	CDifficultySystem DifficultySystems[4]; // Difficulty System Of the 4 Minigames
 };

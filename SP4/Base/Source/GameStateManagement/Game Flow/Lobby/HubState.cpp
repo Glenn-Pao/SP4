@@ -151,9 +151,12 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 	}
 	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
-		scene->currentState = CSceneHub::SELECTING;
-		int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->difficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
+		// Set current state to difficulty selection
+		scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
+		// check unlocked difficulty
+		int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
 
+		// Set each difficulty buttons to be locked or unlocked
 		string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
 		for (int i = 0; i < 4; i++)
 		{
@@ -253,47 +256,163 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 
 	if (button_Left == true)
 	{
-		string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
-		for (int i = 0; i < 4; i++)
+		switch (scene->currentState)
 		{
-			if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
+		case CSceneHub::DIFFICULTY_SELECTION:
+		{
+			string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
+			for (int i = 0; i < 4; i++)
 			{
-				switch (scene->game_interacted)
+				if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
 				{
-				case CSceneHub::GAME1:
-				{
-					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-					theGSM->ChangeState(CGame1State::Instance(), i);
-					return;
-				}
-				break;
-				case CSceneHub::GAME2:
-				{
-					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-					theGSM->ChangeState(CGame2State::Instance(), i);
-					return;
-				}
-				break;
-				case CSceneHub::GAME3:
-				{
-					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-					theGSM->ChangeState(CGame3State::Instance(), i);
-					return;
-				}
-				break;
-				case CSceneHub::GAME4:
-				{
-					scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
-					theGSM->ChangeState(CGame4State::Instance(), i);
-					return;
-				}
-				break;
+					// Set scene difficulty
+					scene->difficultySelected = i;
+					if (i == 0)
+					{
+						PlayMiniGame(theGSM);
+						return;
+					}
+					else
+					{
+						// Set current deposit jellybean to min
+						scene->noOfJellybeansDeposited = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(i);
+						CheckJellybeanSelectionButtons(theGSM);
+
+						// Set State to jellybean selection state
+						scene->currentState = CSceneHub::JELLYBEAN_SELECTION;
+						scene->UIManager->InvokeAnimator()->StopAnimations();
+						return;
+					}
 				}
 			}
+			// Check if player click outside the popout window
+			Vector3 centerPosOfBackground = scene->UIManager->FindImage("SelectionBackground")->getCurrentPos();
+			Vector3 scalingOfBackground = scene->UIManager->FindImage("SelectionBackground")->getScale();
+			CBoundingBox bb(Vector3(centerPosOfBackground.x - scalingOfBackground.x * 0.5, centerPosOfBackground.y + scalingOfBackground.y * 0.5 + scene->UIManager->FindImage("DifficultyHeader")->getScale().y), Vector3(centerPosOfBackground.x + scalingOfBackground.x * 0.5, centerPosOfBackground.y - scalingOfBackground.y * 0.5));
+			if (bb.CheckCollision(Vector3(mouse_x / width * scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height - mouse_y / height * scene->sceneManager2D.m_window_height)) == false)
+			{
+				scene->currentState = CSceneHub::PLAYING;
+				scene->UIManager->InvokeAnimator()->StopAnimations();
+			}
 		}
+		break;
+		case CSceneHub::JELLYBEAN_SELECTION:
+		{
+			string buttonName[3] = { "UpArrowButton", "DownArrowButton", "EnterButton" };
+			for (int i = 0; i < 3; i++)
+			{
+				if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
+				{
+					switch (i)
+					{
+					case 0:
+					{
+						if (scene->UIManager->FindButton(buttonName[i])->getisLocked() == false)
+						{
+							scene->noOfJellybeansDeposited++;
 
-		scene->currentState = CSceneHub::PLAYING;
-		scene->UIManager->InvokeAnimator()->StopAnimations();
+							CheckJellybeanSelectionButtons(theGSM);
+						}
+					}
+					break;
+					case 1:
+					{
+						if (scene->UIManager->FindButton(buttonName[i])->getisLocked() == false)
+						{
+							scene->noOfJellybeansDeposited--;
+
+							CheckJellybeanSelectionButtons(theGSM);
+						}
+					}
+					break;
+					case 2:
+					{
+						PlayMiniGame(theGSM);
+						return;
+					}
+					break;
+					}
+				}
+			}
+			// Check if player click outside the popout window
+			Vector3 centerPosOfBackground = scene->UIManager->FindImage("SelectionBackground")->getCurrentPos();
+			Vector3 scalingOfBackground = scene->UIManager->FindImage("SelectionBackground")->getScale();
+			CBoundingBox bb(Vector3(centerPosOfBackground.x - scalingOfBackground.x * 0.5, centerPosOfBackground.y + scalingOfBackground.y * 0.5 + scene->UIManager->FindImage("JellybeanHeader")->getScale().y), Vector3(centerPosOfBackground.x + scalingOfBackground.x * 0.5, centerPosOfBackground.y - scalingOfBackground.y * 0.5));
+			if (bb.CheckCollision(Vector3(mouse_x / width * scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height - mouse_y / height * scene->sceneManager2D.m_window_height)) == false)
+			{
+				scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
+				scene->UIManager->InvokeAnimator()->StopAnimations();
+			}
+		}
+		break;
+		}
+	}
+}
+
+void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
+{
+	// Check if current more than or equal to max
+	if (scene->noOfJellybeansDeposited >= theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMaxNumOfJellybeansCanBeDeposited(scene->difficultySelected))
+	{
+		scene->UIManager->FindButton("UpArrowButton")->setisLocked(true);
+	}
+	else
+	{
+		scene->UIManager->FindButton("UpArrowButton")->setisLocked(false);
+	}
+	// Check if current less than or equal to min
+	if (scene->noOfJellybeansDeposited <= theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(scene->difficultySelected))
+	{
+		scene->UIManager->FindButton("DownArrowButton")->setisLocked(true);
+	}
+	else
+	{
+		scene->UIManager->FindButton("DownArrowButton")->setisLocked(false);
+	}
+	// Check if player has enough jellybeans
+	if (scene->noOfJellybeansDeposited > theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans())
+	{
+		scene->UIManager->FindButton("EnterButton")->setisLocked(true);
+	}
+	else
+	{
+		scene->UIManager->FindButton("EnterButton")->setisLocked(false);
+	}
+}
+
+void CHubState::PlayMiniGame(CGameStateManager* theGSM)
+{
+	theGSM->saveAndLoadsys->GetGameInfo()->jellybean.DepositJellybeans(scene->noOfJellybeansDeposited);
+	switch (scene->game_interacted)
+	{
+	case CSceneHub::GAME1:
+	{
+		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+		theGSM->ChangeState(CGame1State::Instance(), scene->difficultySelected);
+		return;
+	}
+	break;
+	case CSceneHub::GAME2:
+	{
+		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+		theGSM->ChangeState(CGame2State::Instance(), scene->difficultySelected);
+		return;
+	}
+	break;
+	case CSceneHub::GAME3:
+	{
+		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+		theGSM->ChangeState(CGame3State::Instance(), scene->difficultySelected);
+		return;
+	}
+	break;
+	case CSceneHub::GAME4:
+	{
+		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+		theGSM->ChangeState(CGame4State::Instance(), scene->difficultySelected);
+		return;
+	}
+	break;
 	}
 }
 

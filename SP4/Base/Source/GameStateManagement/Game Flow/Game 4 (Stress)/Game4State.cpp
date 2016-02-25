@@ -26,7 +26,7 @@ void CGame4State::Init(CGameStateManager* theGSM)
 #endif
 	scene->Init(1);
 	scene->SetHeroOffset();
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame4State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -44,7 +44,7 @@ void CGame4State::Init(CGameStateManager* theGSM, const int width, const int hei
 #endif
 	scene->Init(level);
 	scene->SetHeroOffset();
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame4State::Cleanup()

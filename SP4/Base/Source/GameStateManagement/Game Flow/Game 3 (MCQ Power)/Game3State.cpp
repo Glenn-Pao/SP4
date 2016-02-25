@@ -25,8 +25,8 @@ void CGame3State::Init(CGameStateManager* theGSM)
 	scene = new CSceneGame3(800, 600);	// Use this for 2D gameplay
 #endif
 	scene->Init(1);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame3State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -43,8 +43,8 @@ void CGame3State::Init(CGameStateManager* theGSM, const int width, const int hei
 	scene = new CSceneGame3(width, height);
 #endif
 	scene->Init(level);
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
 	scene->SetHeroOffset();
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame3State::Cleanup()

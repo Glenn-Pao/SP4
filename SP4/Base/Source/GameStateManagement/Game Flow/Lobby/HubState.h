@@ -51,6 +51,10 @@ private:
 
 	GLFWwindow* m_window;
 
+	void PlayMiniGame(CGameStateManager* theGSM);
+
+	void CheckJellybeanSelectionButtons(CGameStateManager* theGSM);
+
 	// The handler for the scene
 #if TYPE_OF_VIEW == 3
 	CSceneManager *scene;	// Use this for 3D gameplay
