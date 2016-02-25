@@ -45,18 +45,21 @@ void CGameInfo::LoadFile()
 	// if new
 	ifNew = L.DoLuaInt("ifNew");
 
-	// Player's Infomation
-	heroPosition.x = L.DoLuaFloat("heroPositionX");
-	heroPosition.y = L.DoLuaFloat("heroPositionY");
-	heroAnimationDir = L.DoLuaInt("heroAnimationDir");
-	jellybean.SetNumOfJellybeans(L.DoLuaInt("noOfJellybeans"));
-	heroMapOffset.x = L.DoLuaFloat("heroMapOffsetX");
-	heroMapOffset.y = L.DoLuaFloat("heroMapOffsetY");
-
-	// Minigames' informations
-	for (int i = 0; i < 4; i++)
+	if (ifNew == false)
 	{
-		DifficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("DifficultyUnlocked" + std::to_string(i)));
+		// Player's Infomation
+		heroPosition.x = L.DoLuaFloat("heroPositionX");
+		heroPosition.y = L.DoLuaFloat("heroPositionY");
+		heroAnimationDir = L.DoLuaInt("heroAnimationDir");
+		jellybean.SetNumOfJellybeans(L.DoLuaInt("noOfJellybeans"));
+		heroMapOffset.x = L.DoLuaFloat("heroMapOffsetX");
+		heroMapOffset.y = L.DoLuaFloat("heroMapOffsetY");
+
+		// Minigames' informations
+		for (int i = 0; i < 4; i++)
+		{
+			DifficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("DifficultyUnlocked" + std::to_string(i)));
+		}
 	}
 }
 

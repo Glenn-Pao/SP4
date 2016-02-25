@@ -148,7 +148,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
 			theGSM->saveAndLoadsys->LoadFile(0);
-			theGSM->ChangeState(CHubState::Instance(), 1);
+			theGSM->ChangeState(CHubState::Instance());
 		}
 	}
 	// Level 2
@@ -161,6 +161,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 2);
+			theGSM->saveAndLoadsys->LoadFile(1);
+			theGSM->ChangeState(CHubState::Instance());
 		}
 	}
 	// Level 3
@@ -173,6 +175,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 3);
+			theGSM->saveAndLoadsys->LoadFile(2);
+			theGSM->ChangeState(CHubState::Instance());
 		}
 	}
 	// Level 4
@@ -185,6 +189,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 4);
+			theGSM->saveAndLoadsys->LoadFile(3);
+			theGSM->ChangeState(CHubState::Instance());
 		}
 	}
 	// Level 5
@@ -197,6 +203,8 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 			//theGSM->m_bHideMouse = true;
 			//theGSM->m_bWarpMouse = true;
 			//theGSM->ChangeState(CPlayState::Instance(), 5);
+			theGSM->saveAndLoadsys->LoadFile(4);
+			theGSM->ChangeState(CHubState::Instance());
 		}
 	}
 	// Back

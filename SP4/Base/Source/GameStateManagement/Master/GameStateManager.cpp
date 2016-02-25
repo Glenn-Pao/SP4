@@ -27,6 +27,10 @@ void CGameStateManager::Init(const char* title, int width, int height,
 	saveAndLoadsys = NULL;
 	saveAndLoadsys = new CSavingAndLoadingSystem();
 	saveAndLoadsys->AddData("Lua//Data1.lua");
+	saveAndLoadsys->AddData("Lua//Data2.lua");
+	saveAndLoadsys->AddData("Lua//Data3.lua");
+	saveAndLoadsys->AddData("Lua//Data4.lua");
+	saveAndLoadsys->AddData("Lua//Data5.lua");
 
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::Init\n" << endl;
