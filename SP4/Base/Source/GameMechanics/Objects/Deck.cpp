@@ -1,37 +1,26 @@
 #include "Deck.h"
 
 
-Deck::Deck(Deck_Type type, Vector3 Position, Vector3 GapBetweenCards, Trigger* button)
+Deck::Deck(Vector3 Position, Vector3 GapBetweenCards)
 {
-	this->type = type;
 	this->Position = Position;
 	this->GapBetweenCards = GapBetweenCards;
-	this->button = button;
 }
 void Deck::AddCard(Card* card)
 {
 	card->setPosition((this->Position + (this->GapBetweenCards * ListOfCards.size())));
+	card->getBoundingBox()->Reset(card->getPosition(), card->getScale());
 	this->ListOfCards.push_back(card);
 }
 
-bool Deck::CheckTrigger(CBoundingBox BoundingBox)
+Vector3 Deck::getPosition()
 {
-	return this->button->CheckCollision(BoundingBox);
-}
-
-Trigger* Deck::getTrigger()
-{
-	return button;
+	return Position;
 }
 
 vector<Card*> Deck::getListOfCards()
 {
 	return ListOfCards;
-}
-
-Deck::Deck_Type Deck::getDeckType()
-{
-	return type;
 }
 
 void Deck::RemoveCard(int Placing)

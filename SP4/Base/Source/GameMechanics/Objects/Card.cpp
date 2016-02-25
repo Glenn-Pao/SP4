@@ -1,7 +1,7 @@
 #include "Card.h"
 
 
-Card::Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh, Mesh* CardFaceUpMesh, State CurrentState_Type, Element Element_Type/*, bool isHeld*/)
+Card::Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3 position, Vector3 rotate, Vector3 scale, Mesh* ModelMesh, Mesh* CardFaceUpMesh, Element Element_Type, bool isRevealed/*, bool isHeld*/)
 {
 	this->setObjType(m_Object_Type);
 	this->setActive(active);
@@ -16,35 +16,20 @@ Card::Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3
 	this->setDefaultScale(scale);
 	this->setScale(scale);
 
-	//this->ModelMesh = NULL;							//initialize this first
+	//initialize this first
 	this->setMesh(ModelMesh);
 
 
-	Vector3 TopLeft(position.x - (scale.x * 0.25), position.y + (scale.y * 0.75), 0);
-	Vector3 BottomRight(position.x + (scale.x * 0.75), position.y - (scale.y * 0.25), 0);
+	Vector3 TopLeft(position.x - (scale.x * 0.5), position.y + (scale.y * 0.5), 0);
+	Vector3 BottomRight(position.x + (scale.x * 0.5), position.y - (scale.y * 0.5), 0);
 
 	this->setBoundingBox(TopLeft, BottomRight);
 
-	this->CurrentState_Type = CurrentState_Type;
-	this->PreviouseState_Type = CurrentState_Type;
+	this->isRevealed = isRevealed;
+
 	this->CardFaceUpMesh = CardFaceUpMesh;
 	this->Element_Type = Element_Type;
 	//this->isHeld = isHeld
-}
-
-//void Card::setisHeld(bool isHeld)
-//{
-//	this->isHeld = isHeld;
-//}
-
-void Card::setCurrentState_Type(Card::State CurrentState_Type)
-{
-	this->CurrentState_Type = CurrentState_Type;
-}
-
-void Card::setPreviouseState_Type(Card::State PreviouseState_Type)
-{
-	this->CurrentState_Type = PreviouseState_Type;
 }
 
 void Card::setElement_Type(Element Element_Type)
@@ -57,19 +42,14 @@ void Card::setCardFaceUpMesh(Mesh* CardFaceUpMesh)
 	this->CardFaceUpMesh = CardFaceUpMesh;
 }
 
-//bool Card::getisHeld()
-//{
-//	return isHeld;
-//}
-
-Card::State Card::getCurrentState_Type()
+void Card::setisRevealed(bool isRevealed)
 {
-	return CurrentState_Type;
+	this->isRevealed = isRevealed;
 }
 
-Card::State Card::getPreviouseState_Type()
+bool Card::getisRevealed()
 {
-	return PreviouseState_Type;
+	return isRevealed;
 }
 
 Mesh* Card::getCardFaceUpMesh()

@@ -56,6 +56,7 @@ public:
 		GEO_SELECT,
 		GEO_PLACE,
 		GEO_STRESS,
+		GEO_PATTERN,
 
 		//Game2
 		GEO_COLOUR_BALL_BLUE,

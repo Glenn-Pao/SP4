@@ -20,28 +20,14 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	enum Stage
-	{
-		STAGE_1_DRAW,
-		STAGE_2_SELECT,
-		STAGE_3_PLACE,
-		STAGE_4_STRESS,
-	};
-
 	enum STATE
 	{
 		PLAY,
 		TIME_UP,
 		PAUSE,
+		WIN,
+		LOSE,
 		NUM_OF_STATE
-	};
-	enum Deck_Type
-	{
-		DRAW_DECK,
-		REDHAND_DECK,
-		BLUEHAND_DECK,
-		GREENHAND_DECK,
-		DISCARD_DECK,
 	};
 
 	int currentState;
@@ -63,15 +49,18 @@ private:
 
 	float timer;
 
-	vector<Deck*> DeckList;
+	float ScoreToBeat;
+	float Score;
 
-	Trigger* StressButton;
+	Deck* PatternToFollow;
+
+	Deck* PatternInserted;
+
+	Card* RedPile;
+	Card* GreenPile;
+	Card* BluePile;
+
 	Card* SelectedCard;
-	bool isStandingOnTrigger;
-	bool isCardDrawn;
-	bool isCardSelectedR;
-	bool isCardSelectedG;
-	bool isCardSelectedB;
-	bool isPlaced;
+
 };
 

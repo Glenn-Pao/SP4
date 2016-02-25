@@ -8,35 +8,25 @@ using std::vector;
 class Deck
 {
 public:
-	enum Deck_Type
-	{
-		DRAW,
-		HANDR,
-		HANDB,
-		HANDG,
-		DISCARD
-	};
+
 	vector<Card*> getListOfCards();
-	Deck_Type getDeckType();
 
 	bool CheckTrigger(CBoundingBox BoundingBox);
 
 	Trigger* getTrigger();
 
+	Vector3 getPosition();
+
 	void AddCard(Card* card);
 	void RemoveCard(int Placing);
 
+	vector<Card*> ListOfCards;
 
-	Deck(Deck_Type type, Vector3 Position, Vector3 GapBetweenCards, Trigger* button);
+	Deck(Vector3 Position, Vector3 GapBetweenCards);
 
 	~Deck();
 private:
 
-	Trigger* button;
-
-	Deck_Type type;
-
-	vector<Card*> ListOfCards;
 
 	Vector3 Position;
 
