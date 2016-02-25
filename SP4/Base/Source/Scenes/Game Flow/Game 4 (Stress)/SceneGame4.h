@@ -20,6 +20,14 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	enum Stage
+	{
+		STAGE_1_DRAW,
+		STAGE_2_SELECT,
+		STAGE_3_PLACE,
+		STAGE_4_STRESS,
+	};
+
 	enum STATE
 	{
 		PLAY,
@@ -49,7 +57,6 @@ private:
 
 	void RenderRearTileMap(){}
 
-	void RenderCard(Card* card);
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
@@ -58,6 +65,7 @@ private:
 
 	vector<Deck*> DeckList;
 
+	Trigger* StressButton;
 	Card* SelectedCard;
 	bool isStandingOnTrigger;
 	bool isCardDrawn;
