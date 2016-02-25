@@ -44,14 +44,17 @@ public:
 	void RenderObjects();
 	void RenderGUI();
 
+	void InitTutorial();
 	void InitLevel1();
 	void InitLevel2();
 	void InitLevel3();
 
+	void UpdateTutorial(double dt);
 	void UpdateLevel1(double dt);
 	void UpdateLevel2(double dt);
 	void UpdateLevel3(double dt);
 
+	void RenderTutorial();
 	void RenderLevel1();
 	void RenderLevel2();
 	void RenderLevel3();
