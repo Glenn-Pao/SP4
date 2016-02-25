@@ -87,7 +87,7 @@ void CGameStateManager::ChangeState(CGameState* state, int level)
 #endif
 }
 
-void CGameStateManager::PushState(CGameState* state)
+void CGameStateManager::PushState(CGameState* state, int level)
 {
 	// pause current state
 	if ( !StackOfStates.empty() ) {
@@ -97,7 +97,7 @@ void CGameStateManager::PushState(CGameState* state)
 
 	// store and init the new state
 	StackOfStates.push_back(state);
-	StackOfStates.back()->Init(this, m_window_width, m_window_height);
+	StackOfStates.back()->Init(this, m_window_width, m_window_height, level);
 	
 #if GSM_DEBUG_MODE
 	cout << "CGameStateManager::PushState\n" << endl;

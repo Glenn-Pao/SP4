@@ -108,100 +108,46 @@ void CScenePause::Init(int level)
 	QuitButton = new Button("QuitButton", meshList[CSceneManager2D::GEO_QUIT], meshList[CSceneManager2D::GEO_QUIT_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
 	UIManager->addFeature(QuitButton);
 }
-
-void CScenePause::Update(double dt)
+/********************************************************************************
+Update UI
+********************************************************************************/
+void CScenePause::UpdateUI(double dt)
 {
-	sceneManager2D.Update(dt);
-
-	// UI
 	switch (currentState)
 	{
-	//check if player is inside lobby when pause is triggered, save feature is allowed
 	case LOBBY:
 	{
-		// if no animation
-		if (UIManager->InvokeAnimator()->GetNumOfAnimations() == 0)
-		{
-			// Difficulty
-			// if Difficulty Header positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0)
-			if (UIManager->FindImage("background")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("background"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Easy Button
-			// if Easy Button positon not Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0)
-			if (UIManager->FindButton("ResumeButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 0.1, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Medium Button
-			// if Medium Button positon not Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0)
-			if (UIManager->FindButton("SaveButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 0.15, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Hard Button
-			// if Easy Button positon not Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0)
-			if (UIManager->FindButton("QuitButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 0.2, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Selection background
-			// if background size not Vector3(0,0,0)
-			if (UIManager->FindImage("paused_icon")->getScale() != Vector3(0, 0, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("paused_icon"), 0, Vector3(0, 0, 0), 20, UIAnimation::SCALING);
-			}
-		}
+		UpdateUI_Lobby();
 	}
 		break;
 	case GAME:
 	{
-		// if no animation
-		if (UIManager->InvokeAnimator()->GetNumOfAnimations() == 0)
-		{
-			// Difficulty
-			// if Difficulty Header positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0)
-			if (UIManager->FindImage("Difficulty")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Difficulty"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0), 10, UIAnimation::TRANSLATION);
-			}
-			// Tutorial Button
-			// if Tutorial Button positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0)
-			if (UIManager->FindButton("TutorialButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("TutorialButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Easy Button
-			// if Easy Button positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0)
-			if (UIManager->FindButton("EasyButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("EasyButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Medium Button
-			// if Medium Button positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0)
-			if (UIManager->FindButton("MediumButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MediumButton"), 0.15, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Hard Button
-			// if Easy Button positon not Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0)
-			if (UIManager->FindButton("HardButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("HardButton"), 0.2, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), 20, UIAnimation::TRANSLATION);
-			}
-			// Selection background
-			// if background size not Vector3(sceneManager2D.m_window_width * 0.4, sceneManager2D.m_window_height * 0.5, 0)
-			if (UIManager->FindImage("Selection_background")->getScale() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.4, 0))
-			{
-				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Selection_background"), 0, Vector3(sceneManager2D.m_window_width * 0.4, sceneManager2D.m_window_height * 0.5, 0), 20, UIAnimation::SCALING);
-			}
-		}
+		UpdateUI_Game();
 	}
 		break;
 	}
 
 	UIManager->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+}
+/********************************************************************************
+Update UI - lobby
+********************************************************************************/
+void CScenePause::UpdateUI_Lobby()
+{
+
+}
+/********************************************************************************
+Update UI - game
+********************************************************************************/
+void CScenePause::UpdateUI_Game()
+{
+
+}
+void CScenePause::Update(double dt)
+{
+	sceneManager2D.Update(dt);
+
+	
 }
 
 /********************************************************************************

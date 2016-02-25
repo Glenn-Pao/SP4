@@ -47,6 +47,10 @@ private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 
+	void UpdateUI(double dt);
+	void UpdateUI_Lobby();
+	void UpdateUI_Game();
+
 	CSceneManager2D sceneManager2D;
 };
 
