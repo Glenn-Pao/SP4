@@ -285,11 +285,8 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 					}
 				}
 			}
-			// Check if player click outside the popout window
-			Vector3 centerPosOfBackground = scene->UIManager->FindImage("SelectionBackground")->getCurrentPos();
-			Vector3 scalingOfBackground = scene->UIManager->FindImage("SelectionBackground")->getScale();
-			CBoundingBox bb(Vector3(centerPosOfBackground.x - scalingOfBackground.x * 0.5, centerPosOfBackground.y + scalingOfBackground.y * 0.5 + scene->UIManager->FindImage("DifficultyHeader")->getScale().y), Vector3(centerPosOfBackground.x + scalingOfBackground.x * 0.5, centerPosOfBackground.y - scalingOfBackground.y * 0.5));
-			if (bb.CheckCollision(Vector3(mouse_x / width * scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height - mouse_y / height * scene->sceneManager2D.m_window_height)) == false)
+			// Back Button
+			if (scene->UIManager->FindButton("BackButton")->getisHovered() == true)
 			{
 				scene->currentState = CSceneHub::PLAYING;
 				scene->UIManager->InvokeAnimator()->StopAnimations();
@@ -334,11 +331,8 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 					}
 				}
 			}
-			// Check if player click outside the popout window
-			Vector3 centerPosOfBackground = scene->UIManager->FindImage("SelectionBackground")->getCurrentPos();
-			Vector3 scalingOfBackground = scene->UIManager->FindImage("SelectionBackground")->getScale();
-			CBoundingBox bb(Vector3(centerPosOfBackground.x - scalingOfBackground.x * 0.5, centerPosOfBackground.y + scalingOfBackground.y * 0.5 + scene->UIManager->FindImage("JellybeanHeader")->getScale().y), Vector3(centerPosOfBackground.x + scalingOfBackground.x * 0.5, centerPosOfBackground.y - scalingOfBackground.y * 0.5));
-			if (bb.CheckCollision(Vector3(mouse_x / width * scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height - mouse_y / height * scene->sceneManager2D.m_window_height)) == false)
+			// Back Button
+			if (scene->UIManager->FindButton("BackButton")->getisHovered() == true)
 			{
 				scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
 				scene->UIManager->InvokeAnimator()->StopAnimations();

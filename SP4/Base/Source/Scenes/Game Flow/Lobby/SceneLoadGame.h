@@ -2,13 +2,32 @@
 #define SCENE_LOAD_GAME_H
 
 #include "..\..\Master\SceneManager2D.h"
+#include "..\..\..\UISystem.h"
 
 class CSceneLoadGame : public Scene
 {
 	enum GEOMETRY_TYPE
 	{
-		GRAY_QUAD,
-		BLACK_QUAD,
+		GEO_HEADER,
+
+		GEO_DATA1_BUTTON_UP,
+		GEO_DATA1_BUTTON_DOWN,
+
+		GEO_DATA2_BUTTON_UP,
+		GEO_DATA2_BUTTON_DOWN,
+
+		GEO_DATA3_BUTTON_UP,
+		GEO_DATA3_BUTTON_DOWN,
+
+		GEO_DATA4_BUTTON_UP,
+		GEO_DATA4_BUTTON_DOWN,
+
+		GEO_DATA5_BUTTON_UP,
+		GEO_DATA5_BUTTON_DOWN,
+
+		GEO_BACK_BUTTON_UP,
+		GEO_BACK_BUTTON_DOWN,
+
 		NUM_GEOMETRY,
 	};
 
@@ -22,25 +41,12 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	enum CHOICE
-	{
-		NONE,
-		BACK,
-		LEVEL_ONE,
-		LEVEL_TWO,
-		LEVEL_THREE,
-		LEVEL_FOUR,
-		LEVEL_FIVE,
-		NUM_CHOICES,
-	};
+	UISystem* UIManager;
 
-	int choice;
-
+	CSceneManager2D sceneManager2D;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
-
-	CSceneManager2D sceneManager2D;
 };
 
 #endif

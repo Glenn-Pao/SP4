@@ -190,6 +190,13 @@ void CSceneHub::Init(int level)
 	Button* EnterButton;
 	EnterButton = new Button("EnterButton", meshList[GEO_ENTER_BUTTON_UP], meshList[GEO_ENTER_BUTTON_DOWN], meshList[GEO_ENTER_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.25, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
 	UIManager->addFeature(EnterButton);
+
+
+
+	// Back button
+	Button* BackButton;
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(BackButton);
 }
 
 void CSceneHub::PreInit()
@@ -330,6 +337,12 @@ void CSceneHub::InitMeshes()
 
 	meshList[GEO_ENTER_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_ENTER_BUTTON_LOCKED", Color(0, 0, 0), 1.f);
 	meshList[GEO_ENTER_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Confirm_Button_Locked.tga");
+
+	// Back
+	meshList[GEO_BACK_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_BACK_BUTTON_UP]->textureID = LoadTGA("Image//UI/Back_Button.tga");
+	meshList[GEO_BACK_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_BACK_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Back_Button_Pressed.tga");
 }
 
 void CSceneHub::Update(double dt)
@@ -345,30 +358,33 @@ void CSceneHub::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
-	// Update the hero
-	if (Application::IsKeyPressed('W'))
-		this->theHero->MoveUpDown(true, dt, m_cMap);
-	if (Application::IsKeyPressed('S'))
-		this->theHero->MoveUpDown(false, dt, m_cMap);
-	if (Application::IsKeyPressed('A'))
-		this->theHero->MoveLeftRight(true, dt, m_cMap);
-	if (Application::IsKeyPressed('D'))
-		this->theHero->MoveLeftRight(false, dt, m_cMap);
-	/*if (Application::IsKeyPressed(' '))
-	this->theHero->SetToJumpUpwards(true);*/
-	// Update Hero animation counter if hero moved
-	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+	if (currentState == PLAYING)
 	{
-		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-			theHero->SetAnimationCounter(1);
+		Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
+		// Update the hero
+		if (Application::IsKeyPressed('W'))
+			this->theHero->MoveUpDown(true, dt, m_cMap);
+		if (Application::IsKeyPressed('S'))
+			this->theHero->MoveUpDown(false, dt, m_cMap);
+		if (Application::IsKeyPressed('A'))
+			this->theHero->MoveLeftRight(true, dt, m_cMap);
+		if (Application::IsKeyPressed('D'))
+			this->theHero->MoveLeftRight(false, dt, m_cMap);
+		/*if (Application::IsKeyPressed(' '))
+		this->theHero->SetToJumpUpwards(true);*/
+		// Update Hero animation counter if hero moved
+		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+		{
+			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
+				theHero->SetAnimationCounter(1);
+		}
+		else
+		{
+			theHero->SetAnimationCounter(0);
+		}
+		theHero->HeroUpdate(m_cMap, dt);
 	}
-	else
-	{
-		theHero->SetAnimationCounter(0);
-	}
-	theHero->HeroUpdate(m_cMap, dt);
 
 	// ReCalculate the tile offsets
 	tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
@@ -534,6 +550,14 @@ void CSceneHub::UpdateUI_Playing()
 		{
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("EnterButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), 20, UIAnimation::TRANSLATION);
 		}
+
+
+
+		// Back Button
+		if (UIManager->FindButton("BackButton")->getScale() != Vector3(0, 0, 0))
+		{
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("BackButton"), 0.25, Vector3(0, 0, 0), 20, UIAnimation::SCALING);
+		}
 	}
 }
 /********************************************************************************
@@ -597,12 +621,14 @@ void CSceneHub::UpdateUI_DifficultySelection()
 		{
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("EnterButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), 20, UIAnimation::TRANSLATION);
 		}
-	}
-	// If hero moved out of collision area
-	if (game_interacted == NO_GAME)
-	{
-		currentState = PLAYING;
-		UIManager->InvokeAnimator()->StopAnimations();
+
+
+
+		// Back Button
+		if (UIManager->FindButton("BackButton")->getScale() != Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0))
+		{
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("BackButton"), 0.25, Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0), 20, UIAnimation::SCALING);
+		}
 	}
 }
 
@@ -666,12 +692,13 @@ void CSceneHub::UpdateUI_JellybeanSelection()
 		{
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("HardButton"), 0.2, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), 20, UIAnimation::TRANSLATION);
 		}
-	}
-	// If hero moved out of collision area
-	if (game_interacted == NO_GAME)
-	{
-		currentState = PLAYING;
-		UIManager->InvokeAnimator()->StopAnimations();
+
+
+		// Back Button
+		if (UIManager->FindButton("BackButton")->getScale() != Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0))
+		{
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("BackButton"), 0.25, Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0), 20, UIAnimation::SCALING);
+		}
 	}
 }
 

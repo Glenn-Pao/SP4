@@ -138,88 +138,31 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
-	// Level 1
-	if (width * 0.05 <= mouse_x && mouse_x <= width * 0.305 &&
-		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
+
+	// UI
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+
+	if ((bool)button_Left == true)
 	{
-		scene->choice = CSceneLoadGame::LEVEL_ONE;
-		if ((bool)button_Left == true)
+		const int noOfNbuttons = 5;
+		string buttonName[noOfNbuttons] = { "Data1Button", "Data2Button", "Data3Button", "Data4Button", "Data5Button" };
+		for (int i = 0; i < noOfNbuttons; i++)
 		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			theGSM->saveAndLoadsys->LoadFile(0);
-			theGSM->ChangeState(CHubState::Instance());
+			if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
+			{
+				//theGSM->m_bHideMouse = true;
+				//theGSM->m_bWarpMouse = true;
+				theGSM->saveAndLoadsys->LoadFile(i);
+				theGSM->ChangeState(CHubState::Instance());
+				return;
+			}
 		}
-	}
-	// Level 2
-	else if (width * 0.375 <= mouse_x && mouse_x <= width * 0.63 &&
-		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
-	{
-		scene->choice = CSceneLoadGame::LEVEL_TWO;
-		if ((bool)button_Left == true)
-		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			//theGSM->ChangeState(CPlayState::Instance(), 2);
-			theGSM->saveAndLoadsys->LoadFile(1);
-			theGSM->ChangeState(CHubState::Instance());
-		}
-	}
-	// Level 3
-	else if (width * 0.7 <= mouse_x && mouse_x <= width * 0.955 &&
-		height * 0.25 <= mouse_y && mouse_y <= height * 0.5)
-	{
-		scene->choice = CSceneLoadGame::LEVEL_THREE;
-		if ((bool)button_Left == true)
-		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			//theGSM->ChangeState(CPlayState::Instance(), 3);
-			theGSM->saveAndLoadsys->LoadFile(2);
-			theGSM->ChangeState(CHubState::Instance());
-		}
-	}
-	// Level 4
-	else if (width * 0.2075 <= mouse_x && mouse_x <= width * 0.4675 &&
-		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
-	{
-		scene->choice = CSceneLoadGame::LEVEL_FOUR;
-		if ((bool)button_Left == true)
-		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			//theGSM->ChangeState(CPlayState::Instance(), 4);
-			theGSM->saveAndLoadsys->LoadFile(3);
-			theGSM->ChangeState(CHubState::Instance());
-		}
-	}
-	// Level 5
-	else if (width * 0.5375 <= mouse_x && mouse_x <= width * 0.7925 &&
-		height * 0.55 <= mouse_y && mouse_y <= height * 0.8)
-	{
-		scene->choice = CSceneLoadGame::LEVEL_FIVE;
-		if ((bool)button_Left == true)
-		{
-			//theGSM->m_bHideMouse = true;
-			//theGSM->m_bWarpMouse = true;
-			//theGSM->ChangeState(CPlayState::Instance(), 5);
-			theGSM->saveAndLoadsys->LoadFile(4);
-			theGSM->ChangeState(CHubState::Instance());
-		}
-	}
-	// Back
-	else if (0 <= mouse_x && mouse_x <= width * 0.2 &&
-		height * 0.9 <= mouse_y && mouse_y <= height)
-	{
-		scene->choice = CSceneLoadGame::BACK;
-		if ((bool)button_Left == true)
+		// Back Button
+		if (scene->UIManager->FindButton("BackButton")->getisHovered() == true)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
+			return;
 		}
-	}
-	else
-	{
-		scene->choice = CSceneMenu::NONE;
 	}
 }
 

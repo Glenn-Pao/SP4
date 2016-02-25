@@ -11,12 +11,23 @@
 
 CSceneLoadGame::CSceneLoadGame()
 {
+	// Set all of the meshes NULL
+	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	{
+		meshList[i] = NULL;
+	}
 }
 
 CSceneLoadGame::CSceneLoadGame(const int m_window_width, const int m_window_height)
 {
 	sceneManager2D.m_window_width = m_window_width;
 	sceneManager2D.m_window_height = m_window_height;
+
+	// Set all of the meshes NULL
+	for (int i = 0; i < NUM_GEOMETRY; ++i)
+	{
+		meshList[i] = NULL;
+	}
 }
 
 CSceneLoadGame::~CSceneLoadGame()
@@ -30,21 +41,97 @@ void  CSceneLoadGame::Init(int level)
 
 	delete sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND];
 
-	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND] = MeshBuilder::Generate2DMesh("GEO_BACKGROUND", Color(1, 1, 1), 0, 0, 800, 600);
-	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND]->textureID = LoadTGA("Image//Scenes/Level_selection.tga");
+	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND] = MeshBuilder::GenerateQuad("GEO_BACKGROUND", Color(1, 1, 1), 1);
+	sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND]->textureID = LoadTGA("Image//UI/pink_white_stripe_background.tga");
 
-
-	// Create the meshes
-	for (int i = 0; i < NUM_GEOMETRY; ++i)
-	{
-		meshList[i] = NULL;
-	}
 
 	// Load the ground mesh and texture
-	meshList[GRAY_QUAD] = MeshBuilder::Generate2DMesh("GRAY_QUAD", Color(0.5, 0.5, 0.5), 0, 0, 800, 600);
-	meshList[BLACK_QUAD] = MeshBuilder::Generate2DMesh("BLACK_QUAD", Color(0, 0, 0), 0, 0, 205, 155);
+	// Header
+	meshList[GEO_HEADER] = MeshBuilder::GenerateQuad("GEO_HEADER", Color(1, 1, 1), 1);
+	meshList[GEO_HEADER]->textureID = LoadTGA("Image//UI/LoadGame_Header.tga");
 
-	choice = NONE;
+	// Buttons
+	// Data 1
+	meshList[GEO_DATA1_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA1_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DATA1_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data1_Button.tga");
+	meshList[GEO_DATA1_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA1_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DATA1_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data1_Button_Pressed.tga");
+	// Data 2
+	meshList[GEO_DATA2_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA2_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DATA2_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data2_Button.tga");
+	meshList[GEO_DATA2_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA2_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DATA2_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data2_Button_Pressed.tga");
+	// Data 3
+	meshList[GEO_DATA3_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA3_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DATA3_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data3_Button.tga");
+	meshList[GEO_DATA3_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA3_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DATA3_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data3_Button_Pressed.tga");
+	// Data 4
+	meshList[GEO_DATA4_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA4_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DATA4_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data4_Button.tga");
+	meshList[GEO_DATA4_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA4_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DATA4_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data4_Button_Pressed.tga");
+	// Data 5
+	meshList[GEO_DATA5_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA5_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DATA5_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data5_Button.tga");
+	meshList[GEO_DATA5_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA5_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DATA5_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data5_Button_Pressed.tga");
+	// Back
+	meshList[GEO_BACK_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_BACK_BUTTON_UP]->textureID = LoadTGA("Image//UI/Back_Button.tga");
+	meshList[GEO_BACK_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_BACK_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Back_Button_Pressed.tga");
+
+	// UI
+	UIManager = new UISystem();
+
+	// Background
+	Image* Background;
+	Background = new Image("Background", sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0));
+	UIManager->addFeature(Background);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), 6, UIAnimation::TRANSLATION);
+
+
+	// Header
+	Image* Header;
+	Header = new Image("Header", meshList[GEO_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.89, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Header);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Header"), 0.25, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.2, 0), 6, UIAnimation::SCALING);
+
+
+	// Buttons
+	// Data 1 button
+	Button* Data1Button;
+	Data1Button = new Button("Data1Button", meshList[GEO_DATA1_BUTTON_UP], meshList[GEO_DATA1_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Data1Button);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Data1Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), 6, UIAnimation::SCALING);
+	// Data 2 button
+	Button* Data2Button;
+	Data2Button = new Button("Data2Button", meshList[GEO_DATA2_BUTTON_UP], meshList[GEO_DATA2_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Data2Button);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Data2Button"), 0.35, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), 6, UIAnimation::SCALING);
+	// Data 3 button
+	Button* Data3Button;
+	Data3Button = new Button("Data3Button", meshList[GEO_DATA3_BUTTON_UP], meshList[GEO_DATA3_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.8, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Data3Button);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Data3Button"), 0.4, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), 6, UIAnimation::SCALING);
+	// Data 4 button
+	Button* Data4Button;
+	Data4Button = new Button("Data4Button", meshList[GEO_DATA4_BUTTON_UP], meshList[GEO_DATA4_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.35, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Data4Button);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Data4Button"), 0.45, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), 6, UIAnimation::SCALING);
+	// Data 5 button
+	Button* Data5Button;
+	Data5Button = new Button("Data5Button", meshList[GEO_DATA5_BUTTON_UP], meshList[GEO_DATA5_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(Data5Button);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Data5Button"), 0.5, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), 6, UIAnimation::SCALING);
+
+
+	// Back button
+	Button* BackButton;
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.1, sceneManager2D.m_window_height * 0.1, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(BackButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("BackButton"), 0.55, Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0), 6, UIAnimation::SCALING);
 }
 
 void   CSceneLoadGame::Update(double dt)
@@ -61,6 +148,9 @@ void   CSceneLoadGame::Update(double dt)
 	*/
 
 	sceneManager2D.Update(dt);
+
+	// UI
+	UIManager->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
 }
 
 /********************************************************************************
@@ -70,40 +160,7 @@ void   CSceneLoadGame::Render()
 {
 	sceneManager2D.Render();
 
-	// Gray Quad
-	sceneManager2D.Render2DMesh(meshList[GRAY_QUAD], false, 1, 1, 1, 0);
-
-	// Black Quad
-	switch (choice)
-	{
-	case BACK:
-		// BACK
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 1, -50);
-		break;
-	case LEVEL_ONE:
-		// 1
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 40, 300);
-		break;
-	case LEVEL_TWO:
-		// 2
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 300, 300);
-		break;
-	case LEVEL_THREE:
-		// 3
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 560, 300);
-		break;
-	case LEVEL_FOUR:
-		// 4
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 170, 120);
-		break;
-	case LEVEL_FIVE:
-		// 5
-		sceneManager2D.Render2DMesh(meshList[BLACK_QUAD], false, 1, 1, 430, 120);
-		break;
-	}
-
-	// Render the background image
-	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
+	UIManager->Render(sceneManager2D);
 }
 
 /********************************************************************************
