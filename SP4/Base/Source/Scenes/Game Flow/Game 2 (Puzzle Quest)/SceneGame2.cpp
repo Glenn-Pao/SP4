@@ -120,23 +120,11 @@ void CSceneGame2::Init(int level)
 				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
-			// Enemies
-			else if (m_cMap->theScreenMap[i][k] == 100)
-			{
-				// Set the strategy for the enemy
-				theEnemies.push_back(new CEnemy());
-				theEnemies.back()->ChangeStrategy(NULL, false);
-				theEnemies.back()->SetPos_x(k*m_cMap->GetTileSize());
-				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
-			}
 		}
 	}
 
 	// Initialise the Meshes
 	InitMeshes();
-
-	//GreyDoors.push_back(new CDoor(0, Vector3(k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize(), 0), Vector3(50, 50, 0), meshList[GEO_TILE_DOOR]));
-	//GreyDoors.push_back(new CDoor(0, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
 
 	switch (level)
 	{
@@ -168,6 +156,8 @@ void CSceneGame2::Init(int level)
 	prevHeroPos.SetZero();
 	castedColoursCounter = 0;
 	timer = 0;
+	cooldownTimer = 0;
+	catchcooldown = false;
 }
 
 void CSceneGame2::PreInit()
@@ -248,6 +238,14 @@ void CSceneGame2::InitTutorial()
 			{
 				ColoursSet.push_back(new CColour(CObjects::COLOR, "YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
 				ColoursSet.back()->setActive(true);
+			}
+			else if (m_cMap->theScreenMap[i][k] == 100)
+			{
+				// Set the strategy for the enemy
+				AIsList.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 0), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList.back()->setActive(true);
+				AIsList.back()->setFSM(CFSM::MOVING);
+				AIsList.back()->SetAIvariables(Vector3(tileSize * 2, 0, 0), Vector3(0, -tileSize * 2, 0), Vector3(-tileSize * 2, 0, 0));
 			}
 		}
 	}
@@ -618,6 +616,22 @@ void CSceneGame2::Update(double dt)
 			else
 			{
 				dialogueTiles[i]->setActive(false);
+			}
+		}
+
+		for (int i = 0; i < AIsList.size(); i++)
+		{
+			AIsList[i]->UpdateFSM(dt);
+			if (AIsList[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+				cout << "AAAAAAAAAAA" << endl;
+				//catchcooldown = true;
+				/*if (catchcooldown)
+				{
+					cooldownTimer += 0.1f;
+					if (cooldownTimer > 5.f)
+						catchcooldown = false;
+				}*/
 			}
 		}
 
@@ -1024,7 +1038,7 @@ void CSceneGame2::Render()
 	RenderTileMap();
 	// Render Hero
 	RenderHero();
-	// Render AIs
+	//RenderAIs();
 	RenderAIs();
 	//Render Waypoints
 	//RenderWaypoints();
@@ -1150,16 +1164,21 @@ Render the AIs. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame2::RenderAIs()
 {
-	// Render the enemy
-	for (int i = 0; i < theEnemies.size(); i++)
+	//// Render the enemy
+	//for (int i = 0; i < theEnemies.size(); i++)
+	//{
+	//	int theEnemy_x = theEnemies[i]->GetPos_x() - theHero->GetMapOffset_x();
+	//	int theEnemy_y = theEnemies[i]->GetPos_y() + theHero->GetMapOffset_y();
+	//	if (((theEnemy_x >= 0 - m_cMap->GetTileSize()) && (theEnemy_x < sceneManager2D.m_window_width + m_cMap->GetTileSize())) &&
+	//		((theEnemy_y >= 0 - m_cMap->GetTileSize()) && (theEnemy_y < sceneManager2D.m_window_height + m_cMap->GetTileSize())))
+	//	{
+	//		sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
+	//	}
+	//}
+
+	for (int i = 0; i < AIsList.size(); i++)
 	{
-		int theEnemy_x = theEnemies[i]->GetPos_x() - theHero->GetMapOffset_x();
-		int theEnemy_y = theEnemies[i]->GetPos_y() + theHero->GetMapOffset_y();
-		if (((theEnemy_x >= 0 - m_cMap->GetTileSize()) && (theEnemy_x < sceneManager2D.m_window_width + m_cMap->GetTileSize())) &&
-			((theEnemy_y >= 0 - m_cMap->GetTileSize()) && (theEnemy_y < sceneManager2D.m_window_height + m_cMap->GetTileSize())))
-		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
-		}
+		sceneManager2D.Render2DMesh(AIsList[i]->getMesh(), false, AIsList[i]->getScale().x, AIsList[i]->getScale().y, AIsList[i]->getPositionX(), AIsList[i]->getPositionY());
 	}
 }
 void CSceneGame2::RenderObjects()

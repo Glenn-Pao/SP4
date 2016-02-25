@@ -14,12 +14,13 @@ public:
 		NOSTATE,
 		IDLE,
 		MOVING,
-
+		REACHED,
 		NUM_STATES,
 	};
-	void setState(CFSM::STATES);
-	CFSM::STATES getState();
-
-private:
+	/*void setState(CFSM::STATES);
+	CFSM::STATES getState();*/
+	
 	CFSM::STATES state;
+private:
+	
 };

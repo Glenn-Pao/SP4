@@ -5,6 +5,8 @@
 #include "..\..\Master\SceneGameBase.h"
 //#include "..\GameMechanics\SavingAndLoading\GameInfo.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Door.h"
+#include "..\..\..\AI\AIBase.h"
+#include "..\..\..\AI\FSM.h"
 #include "..\..\..\UsingLua.h"
 class CSceneGame2 : public CSceneGameBase
 {
@@ -110,6 +112,11 @@ private:
 	int tileSize;
 
 	UseLuaFiles* L;
+
+	vector<AI*> AIsList;
+
+	bool catchcooldown;
+	double cooldownTimer;
 };
 
 #endif

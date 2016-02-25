@@ -21,6 +21,7 @@ public:
 		ANSWER,
 		CARD,
 		TRIGGER,
+		AI,
 		NUM_OBJ,
 	};
 private:
