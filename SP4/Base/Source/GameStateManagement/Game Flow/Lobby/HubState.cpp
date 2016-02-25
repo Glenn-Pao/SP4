@@ -7,7 +7,6 @@ using namespace std;
 #include "HubState.h"
 #include "..\..\Menu Flow\pausestate.h"
 #include "..\..\Game Flow\Game 1 (Maze Escaper)\Game1State.h"
-#include "..\..\Game Flow\Tutorial Games\TutorialGame2.h"
 #include "..\..\Game Flow\Game 2 (Puzzle Quest)\Game2State.h"
 //#include "..\..\Game Flow\Tutorial Games\TutorialGame3.h"
 #include "..\..\Base\Source\GameStateManagement\Game Flow\Game 3 (MCQ Power)\Game3State.h"
