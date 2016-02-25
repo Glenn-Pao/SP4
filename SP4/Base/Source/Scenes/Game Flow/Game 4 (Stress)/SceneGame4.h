@@ -31,6 +31,15 @@ public:
 		NUM_OF_STATE
 	};
 
+	enum TutorialStage
+	{
+		Stage1,
+		Stage2,
+		Stage3
+	};
+
+	TutorialStage currentStage;
+
 	int currentState;
 
 private:
@@ -68,5 +77,6 @@ private:
 
 	CProbabilitySystem ps;
 
+	Trigger* Instructions;
 };
 
