@@ -10,7 +10,6 @@
 #include "..\..\Base\Source\Strategy_Kill.h"
 
 #include "..\..\..\UsingLua.h"
-#include "..\..\Base\Source\AI\ProbabilitySystem.h"
 
 SceneGame4::SceneGame4(const int m_window_width, const int m_window_height)
 : currentState(PLAY)
@@ -103,7 +102,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	PatternToFollow = new Deck(Vector3(200, 300,1), Vector3(50,0,0));
 
 
-	CProbabilitySystem ps;
+	
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -145,8 +144,12 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	
 	SelectedCard = new  Card(Card::CARD, false, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 
+	NoneCard = new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
+
 	ScoreToBeat = 10;
 	Score = 0;
+
+	SendPattern = new Trigger(meshList[GEO_STRESS],Vector3(100,200,1),Vector3(50,50,50));
 }
 
 void SceneGame4::PreInit()
@@ -273,9 +276,57 @@ void SceneGame4::Update(double dt)
 		}
 		theHero->HeroUpdate(m_cMap, dt);
 
+		cout << Score << endl;
+
 		//Update Decks
 		if (Application::IsKeyPressed('F'))
 		{
+			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			{
+				for (int i = PatternToFollow->getListOfCards().size()-1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 8; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(35, 50, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+				}
+
+
+				Score += 8;
+
+			}
+
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -318,6 +369,7 @@ void SceneGame4::Update(double dt)
 				{
 				}
 			}
+
 
 		// Timer
 		timer -= dt;
@@ -381,10 +433,19 @@ void SceneGame4::Render()
 	RenderRearTileMap();
 	// Render the tile map
 	RenderTileMap();
-	// Render Hero
-	RenderHero();
 	// Render AIs
 	RenderAIs();
+	//for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
+	//{
+	//	cout<< PatternToFollow->getListOfCards()[i]->getElement_Type()<<" ";
+	//}
+	//cout << endl;
+	//for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+	//{
+	//	cout << PatternInserted->getListOfCards()[i]->getElement_Type() << " ";
+	//}
+	//cout << endl;
+	//cout << endl;
 
 	//Render Pattern To Follow
 	for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
@@ -449,6 +510,14 @@ void SceneGame4::Render()
 		{
 			sceneManager2D.Render2DMesh(SelectedCard->getCardFaceUpMesh(), false, SelectedCard->getScaleX(), SelectedCard->getScaleY(), theHero->getPositionX(), theHero->getPositionY() + 50, 0);
 		}
+
+		// Render Hero
+		RenderHero();
+
+		//Render Trigger
+		sceneManager2D.Render2DMesh(SendPattern->getMesh(), false, SendPattern->getScale().x, SendPattern->getScale().y, SendPattern->getPosition().x, SendPattern->getPosition().y, 0);
+
+		sceneManager2D.modelStack.PopMatrix();
 
 	/*for (int i = 0; i < HandPileRed->getListOfCards().size(); ++i)
 	{

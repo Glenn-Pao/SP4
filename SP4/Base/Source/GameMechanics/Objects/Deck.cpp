@@ -13,9 +13,33 @@ void Deck::AddCard(Card* card)
 	this->ListOfCards.push_back(card);
 }
 
+void Deck::setAllCardTo(Card* card)
+{
+	for (int i = 0; i < this->getListOfCards().size(); ++i)
+	{
+		this->getListOfCards()[i] = card;
+	}
+}
+
 Vector3 Deck::getPosition()
 {
 	return Position;
+}
+
+bool Deck::isDeckIdentical(Deck* deck)
+{
+	if (deck->getListOfCards().size() == this->getListOfCards().size())
+	{
+		for (int i = 0; i < this->getListOfCards().size(); ++i)
+		{
+			if (this->getListOfCards()[i]->getElement_Type() != deck->getListOfCards()[i]->getElement_Type())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	return false;
 }
 
 vector<Card*> Deck::getListOfCards()

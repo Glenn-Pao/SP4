@@ -20,7 +20,11 @@ public:
 	void AddCard(Card* card);
 	void RemoveCard(int Placing);
 
+	void setAllCardTo(Card* card);
+
 	vector<Card*> ListOfCards;
+
+	bool isDeckIdentical(Deck* deck);
 
 	Deck(Vector3 Position, Vector3 GapBetweenCards);
 

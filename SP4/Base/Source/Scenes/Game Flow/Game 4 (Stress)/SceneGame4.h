@@ -2,6 +2,7 @@
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Deck.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Trigger.h"
+#include "..\..\Base\Source\AI\ProbabilitySystem.h"
 
 class SceneGame4 : public CSceneGameBase
 {
@@ -61,6 +62,11 @@ private:
 	Card* BluePile;
 
 	Card* SelectedCard;
+	Card* NoneCard;
+
+	Trigger* SendPattern;
+
+	CProbabilitySystem ps;
 
 };
 
