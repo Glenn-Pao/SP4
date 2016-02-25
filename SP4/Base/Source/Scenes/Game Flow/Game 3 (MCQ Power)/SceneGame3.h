@@ -42,6 +42,7 @@ public:
 	};
 	int currentState;
 	void RenderWaypoints();
+	int level;
 private:
 	void InitMeshes();
 	// Handle to the tilemaps

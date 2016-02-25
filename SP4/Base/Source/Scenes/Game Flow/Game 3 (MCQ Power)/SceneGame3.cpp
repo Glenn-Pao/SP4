@@ -165,6 +165,7 @@ void CSceneGame3::LuaInit(int level)
 }
 void CSceneGame3::Init(int level)
 {
+	this->level = level;
 	// Init the base scene
 	sceneManager2D.Init(level);
 	LuaInit(level);

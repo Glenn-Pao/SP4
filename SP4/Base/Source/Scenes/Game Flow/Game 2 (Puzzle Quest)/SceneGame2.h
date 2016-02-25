@@ -59,6 +59,7 @@ public:
 	void RenderLevel2();
 	void RenderLevel3();
 
+	int level;
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -107,7 +108,6 @@ private:
 	int castedColoursCounter;
 	float timer;
 	int tileSize;
-	int level;
 
 	UseLuaFiles* L;
 };
