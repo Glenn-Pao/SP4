@@ -149,7 +149,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->PushState(CPauseState::Instance());
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
-	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
+	if (key == 'f' && scene->currentState == CSceneHub::PLAYING && scene->game_interacted != CSceneHub::NO_GAME)
 	{
 		// Set current state to difficulty selection
 		scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
