@@ -140,29 +140,66 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 #endif
 
 	// UI
-	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
-
+	switch (scene->currentState)
+	{
+		case CSceneLoadGame::SELECTING:
+		{
+			scene->UIManagerSelecting->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		}
+		break;
+		case CSceneLoadGame::CONFIRMATION:
+		{
+			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		}
+		break;
+	}
 	if ((bool)button_Left == true)
 	{
-		const int noOfNbuttons = 5;
-		string buttonName[noOfNbuttons] = { "Data1Button", "Data2Button", "Data3Button", "Data4Button", "Data5Button" };
-		for (int i = 0; i < noOfNbuttons; i++)
+		switch (scene->currentState)
 		{
-			if (scene->UIManager->FindButton(buttonName[i])->getisHovered() == true)
+		case CSceneLoadGame::SELECTING:
+		{
+			const int noOfNbuttons = 5;
+			string buttonName[noOfNbuttons] = { "Data1Button", "Data2Button", "Data3Button", "Data4Button", "Data5Button" };
+			for (int i = 0; i < noOfNbuttons; i++)
 			{
-				//theGSM->m_bHideMouse = true;
-				//theGSM->m_bWarpMouse = true;
-				theGSM->saveAndLoadsys->LoadFile(i);
-				theGSM->ChangeState(CHubState::Instance());
+				if (scene->UIManagerSelecting->FindButton(buttonName[i])->getisHovered() == true)
+				{
+					scene->DataSelected = i;
+					scene->currentState = CSceneLoadGame::CONFIRMATION;
+					scene->ShowConfirmation();
+				}
+			}
+			// Back Button
+			if (scene->UIManagerSelecting->FindButton("BackButton")->getisHovered() == true)
+			{
+				theGSM->ChangeState(CMenuState::Instance());
 				return;
 			}
 		}
-		// Back Button
-		if (scene->UIManager->FindButton("BackButton")->getisHovered() == true)
+		break;
+		case CSceneLoadGame::CONFIRMATION:
 		{
-			theGSM->ChangeState(CMenuState::Instance());
-			return;
+			// Yes Button
+			if (scene->UIManagerConfirmation->FindButton("YesButton")->getisHovered() == true)
+			{
+				//theGSM->m_bHideMouse = true;
+				//theGSM->m_bWarpMouse = true;
+				theGSM->saveAndLoadsys->LoadFile(scene->DataSelected);
+				theGSM->ChangeState(CHubState::Instance());
+				return;
+			}
+			// No Button
+			if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)
+			{
+				scene->DataSelected = -1;
+				scene->currentState = CSceneLoadGame::SELECTING;
+				scene->HideConfirmation();
+			}
 		}
+		break;
+		}
+		
 	}
 }
 

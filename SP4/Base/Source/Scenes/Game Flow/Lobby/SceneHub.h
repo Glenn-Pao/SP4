@@ -46,17 +46,26 @@ public:
 	{
 		PLAYING,
 		DIFFICULTY_SELECTION,
-		JELLYBEAN_SELECTION
+		JELLYBEAN_SELECTION,
+		CONFIRMATION
 	};
 
 	STATE currentState;
-	UISystem* UIManager;
+	UISystem* UIManagerDifficultySelection;
+	UISystem* UIManagerJellybeanSelection;
+	UISystem* UIManagerBlackQuad;
+	UISystem* UIManagerConfirmation;
 
 	CSceneManager2D sceneManager2D;
 
 	int noOfJellybeansDeposited;
 
 	int difficultySelected;
+
+	void ChangeUI_Playing();
+	void ChangeUI_DifficultySelection();
+	void ChangeUI_JellybeanSelection();
+	void ChangeUI_Confirmation();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -92,11 +101,19 @@ private:
 	void RenderGoodies(void);
 
 	void UpdateUI(double dt);
-	void UpdateUI_Playing();
-	void UpdateUI_DifficultySelection();
-	void UpdateUI_JellybeanSelection();
+
+	void Show_DifficultySelection();
+	void Hide_DifficultySelection();
+
+	void Show_JellybeanSelection();
+	void Hide_JellybeanSelection();
+
+	void HideConfirmation();
+	void ShowConfirmation();
 
 	std::vector<CDoor*> theDoor;
+
+	float UI_Speed;
 };
 
 #endif
