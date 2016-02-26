@@ -181,6 +181,10 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 
 		UIManager = new UISystem();
 
+		//Button* OK = new Button("OKButton",);
+		//UIManager->addFeature(OK);
+		//UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("OKButton"), );
+
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(250, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(250, 425, 1), Vector3(80, 0, 0));
@@ -256,7 +260,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	case HARD:
 	{
 		//GamePlay Variables
-		MissingCardTimer = 0;
+		MissingCardTimer = -1;
 		ScoreToBeat = 20;
 		Score = 0;
 		Timer = 60;
@@ -862,6 +866,7 @@ void SceneGame4::Update(double dt)
 	}
 	case DifficultyLevel::EASY:
 	{
+		UIManager->Update(dt);
 		switch (CurrentState)
 		{
 		case PLAY:
@@ -1085,6 +1090,8 @@ Render this scene
 void SceneGame4::Render()
 {
 	sceneManager2D.Render();
+
+	UIManager->Render(sceneManager2D);
 
 	sceneManager2D.modelStack.PushMatrix();
 

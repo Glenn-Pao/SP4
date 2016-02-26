@@ -152,6 +152,8 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	const int button_Left, const int button_Middle, const int button_Right,
 	const int width, const int height)
 {
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+
 #if GSM_DEBUG_MODE
 	//int m_iUserChoice = -1;
 

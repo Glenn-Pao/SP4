@@ -108,7 +108,7 @@ void UISystem::HandleEvent(float mouseX, float mouseY, float m_window_width, flo
 	}
 }
 
-void UISystem::Update(float mouseX, float mouseY, float dt)
+void UISystem::Update(float dt)
 {
 	//Update Animator
 	Animator->Update(dt);

@@ -150,6 +150,9 @@ public:
 
 	// Jellybeans
 	int noOfJellybeans;
+
+	CSceneManager2D sceneManager2D;
+
 protected:
 	Mesh* meshList[NUM_GEOMETRY];
 
@@ -182,7 +185,6 @@ protected:
 	CGoodiesFactory theGoodiesFactory;
 	CGoodies** theArrayOfGoodies;
 	//void RenderGoodies(void);
-	CSceneManager2D sceneManager2D;
 private:
 	unsigned m_vertexArrayID;
 };

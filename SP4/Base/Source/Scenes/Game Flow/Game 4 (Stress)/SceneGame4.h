@@ -50,6 +50,8 @@ public:
 	int CurrentLevel;
 	TutorialPhase CurrentPhase;
 
+	UISystem* UIManager;
+
 private:
 	void InitMeshes();
 
@@ -100,7 +102,6 @@ private:
 
 	Trigger* Instructions;
 
-	UISystem* UIManager;
 
 	float MissingCardTimer;
 };

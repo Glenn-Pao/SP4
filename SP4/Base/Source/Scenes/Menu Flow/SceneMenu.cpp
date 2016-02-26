@@ -73,7 +73,7 @@ void CSceneMenu::Init(int level)
 
 void CSceneMenu::Update(double dt)
 {
-	UIManager->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+	UIManager->Update(dt);
 	/*
 	if (Application::IsKeyPressed('1'))
 	glEnable(GL_CULL_FACE);

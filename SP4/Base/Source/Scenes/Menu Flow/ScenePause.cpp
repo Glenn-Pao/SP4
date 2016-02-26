@@ -127,7 +127,7 @@ void CScenePause::UpdateUI(double dt)
 		break;
 	}
 
-	UIManager->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+	UIManager->Update(dt);
 }
 /********************************************************************************
 Update UI - lobby

@@ -211,7 +211,6 @@
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Image.cpp" />
     <ClCompile Include="Source\Bar.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -277,6 +276,9 @@
     </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\Trigger.cpp">
       <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Image.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -502,7 +504,6 @@
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Image.h" />
     <ClInclude Include="Source\Bar.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -568,6 +569,9 @@
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\Trigger.h">
       <Filter>Game Mechanics\Objects\Game4</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Image.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -528,10 +528,10 @@ Update UI
 ********************************************************************************/
 void CSceneHub::UpdateUI(double dt)
 {
-	UIManagerDifficultySelection->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
-	UIManagerJellybeanSelection->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
-	UIManagerBlackQuad->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
-	UIManagerConfirmation->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+	UIManagerDifficultySelection->Update(dt);
+	UIManagerJellybeanSelection->Update(dt);
+	UIManagerBlackQuad->Update(dt);
+	UIManagerConfirmation->Update(dt);
 }
 
 /********************************************************************************

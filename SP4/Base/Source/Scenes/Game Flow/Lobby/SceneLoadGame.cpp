@@ -242,8 +242,8 @@ void   CSceneLoadGame::Update(double dt)
 	sceneManager2D.Update(dt);
 
 	// UI
-	UIManagerSelecting->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
-	UIManagerConfirmation->Update(Application::mouse_current_x, Application::mouse_current_y, dt);
+	UIManagerSelecting->Update( dt);
+	UIManagerConfirmation->Update(dt);
 }
 
 /********************************************************************************

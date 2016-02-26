@@ -29,7 +29,7 @@ public:
 
 	void HandleEvent(float mouseX, float mouseY, float m_window_width, float m_window_height, float m_world_width, float m_world_height);
 
-	void Update(float mouseX, float mouseY, float dt);
+	void Update(float dt);
 	void Render(CSceneManager2D& scene);
 	UISystem();
 	~UISystem();
