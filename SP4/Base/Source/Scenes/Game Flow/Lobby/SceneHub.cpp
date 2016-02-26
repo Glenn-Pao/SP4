@@ -539,6 +539,10 @@ Change UI - playing
 ********************************************************************************/
 void CSceneHub::ChangeUI_Playing()
 {
+	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	Hide_DifficultySelection();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(0, 0, 0), UI_Speed * 2, UIAnimation::SCALING);
@@ -548,6 +552,10 @@ Change UI - difficulty selection
 ********************************************************************************/
 void CSceneHub::ChangeUI_DifficultySelection()
 {
+	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	HideConfirmation();
 	Hide_JellybeanSelection();
 	Show_DifficultySelection();
@@ -559,6 +567,10 @@ Change UI - jellybean selection
 ********************************************************************************/
 void CSceneHub::ChangeUI_JellybeanSelection()
 {
+	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	Hide_DifficultySelection();
 	Show_JellybeanSelection();
 	HideConfirmation();
@@ -568,6 +580,10 @@ Change UI - Confirmation
 ********************************************************************************/
 void CSceneHub::ChangeUI_Confirmation()
 {
+	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	ShowConfirmation();
 }
 

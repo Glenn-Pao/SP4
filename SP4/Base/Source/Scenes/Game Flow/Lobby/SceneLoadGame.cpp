@@ -202,6 +202,7 @@ void  CSceneLoadGame::Init(int level)
 
 void CSceneLoadGame::HideConfirmation()
 {
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
 	// Confirmation Window
 	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
@@ -214,6 +215,7 @@ void CSceneLoadGame::HideConfirmation()
 
 void CSceneLoadGame::ShowConfirmation()
 {
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
 	// Confirmation Window
 	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
