@@ -76,17 +76,19 @@ private:
 	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
 
 	CSceneManager2D sceneManager2D;	
-	int tileSize;	//the tile size
-	int Qcount;	//number of questions
-	int Acount;		//number of answers
-	int Dcount;		//number of doors
-	int lives;		//number of lives available to player
-	double timer;	//meant for the slight pause before you can pick up item again
+	int tileSize;						//the tile size
+	int Qcount;						//number of questions
+	int Acount;							//number of answers
+	int Dcount;							//number of doors
+	int lives;							//number of lives available to player
+	int tempID;						//to find the answer id
+	double timer;						//meant for the slight pause before you can pick up item again
 	double feedbacktimer;		//meant to display notice for a while as visual feedback on whether you got it right or wrong
-	bool press;		//if you pressed to pick up item or confirmed your answer
-	bool feedback;
-	bool correct;
-	bool unlock;	//unlock the door
+	bool press;							//if you pressed to pick up item or confirmed your answer
+	bool feedback;					//show the feedback after player has confirmed answer
+	bool correct;						//trigger true if correct answer is given
+	bool unlock;						//unlock the door
+	bool pickupActive;				//whether the player is already actively carrying an answer type
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
 
 	float fps;		//debugging frames

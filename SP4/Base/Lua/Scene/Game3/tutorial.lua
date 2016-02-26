@@ -5,8 +5,9 @@ Use these values to initialise the scene variables
 tileSize = 50
 
 script0 = "You have 3 lives. You lose 1 life if you answer wrong."
-script1 = "Give the correct answer to move on."
+script1 = "Press F to pick up answer or drop to question."
 script2 = "Give the correct answer to exit the stage."
+script3 = "Is this the right door?"
 
 -- Question to be asked for the first question tile
 scriptQn1 = "I sell fish in the fish market. What am I?"

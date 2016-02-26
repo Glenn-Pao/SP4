@@ -19,11 +19,13 @@ CSceneGame3::CSceneGame3(const int m_window_width, const int m_window_height)
 	, Acount(0)
 	, Dcount(0)
 	, timer(0)
+	, tempID(-1)
 	, feedbacktimer(0)
 	, press(false)
 	, feedback(false)
 	, correct(false)
 	, unlock(false)
+	, pickupActive(false)
 	, scriptCorrect("")
 	, scriptExit("")
 	, scriptFinished("")
@@ -110,6 +112,7 @@ void CSceneGame3::LuaInit(int level)
 		{
 			AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn5Type" + to_string(i)));
 		}
+		break;
 	}
 	case 3:
 	{
@@ -151,9 +154,12 @@ void CSceneGame3::LuaInit(int level)
 	scriptFinished = L.DoLuaString("scriptFinished");
 	scriptExit = L.DoLuaString("scriptExit");
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i <= 3; i++)
 	{
 		scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
+	}
+	for (int i = 0; i < 3; i++)
+	{
 		AnsDialogue.push_back(L.DoLuaString("scriptAnswerQn1Type" + to_string(i)));
 	}
 	for (int i = 0; i < 3; i++)
@@ -275,6 +281,17 @@ void CSceneGame3::Init(int level)
 				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
+				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
+			}
+			// Dialogue script 3
+			else if (m_cMap->theScreenMap[i][k] == 50)
+			{
+				float pos_x = k*m_cMap->GetTileSize();
+				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[3], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
 				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
 				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
@@ -422,11 +439,32 @@ void CSceneGame3::Update(double dt)
 			//check collision between question and player
 			if (theQuestions[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()) && theQuestions[i]->getInteractivity())
 			{
+				//reveal the question
 				theQuestions[i]->setActive(true);
 			}
 			else
 			{
+				//hide the question
 				theQuestions[i]->setActive(false);
+			}
+			int num = i * 3;					//the first index of the possible answers of that question
+			int maxNum = num + 3;		//a reference point to disable answers
+			//ensure it only updates when necessary
+			if (!theQuestions[i]->getInteractivity() && correct)
+			{
+				for (int j = num; j < maxNum; j++)
+				{
+					cout << num << endl;
+					if (theAnswers[j]->getInteractivity())
+					{
+						theAnswers[j]->setInteractivity(false);
+					}
+					else
+					{
+						//ignore and move on
+						continue;					
+					}
+				}
 			}
 			if (theQuestions[i]->getActive())
 			{
@@ -443,6 +481,7 @@ void CSceneGame3::Update(double dt)
 							theAnswers[j]->setInteractivity(false);	//it should'nt be able to be picked up again
 							theAnswers[j]->setPickup(false);
 							feedback = true;
+							tempID = -1;				//return back to original position
 
 							//check if it is the correct answer
 							if (!theAnswers[j]->getCorrect())
@@ -467,31 +506,46 @@ void CSceneGame3::Update(double dt)
 			//check collision between answer and player
 			if ((theAnswers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()) || theAnswers[i]->getPickup()) && theAnswers[i]->getInteractivity())
 			{
+				//show the possible answer
 				theAnswers[i]->setActive(true);
 			}
 			else
 			{
+				//hide the possible answer
 				theAnswers[i]->setActive(false);
 			}
-			//the item is not yet picked up so player should be able to pick it up
+			//the item is not yet picked up, allow the player to pick up
+			//press F to pick up the item
 			if (Application::IsKeyPressed('F') && !press)
 			{
-				if (theAnswers[i]->getActive() && !theAnswers[i]->getPickup())
+				if (theAnswers[i]->getActive())
 				{
-					press = true;			//disable the recurring effect
-					theAnswers[i]->setPickup(true);
-				}
-				else if (theAnswers[i]->getActive() && theAnswers[i]->getPickup())
-				{
-					press = true;			//disable the recurring effect
-					theAnswers[i]->setPickup(false);
+					//if the id is -1 (aka no item picked up) then set the tempID
+					if (!theAnswers[i]->getPickup())
+					{
+						//indicates that there is no item on hand right now
+						if (tempID == -1)
+						{
+							press = true;			//disable the recurring effect
+							theAnswers[i]->setPickup(true);
+							tempID = theAnswers[i]->getID();
+						}
+						//if there is an item you can pick up but the tempID isnt the same as the one currently on hand
+						else if (tempID != theAnswers[i]->getID())
+						{
+							theAnswers[tempID]->setPickup(false);		//drop the item
+							theAnswers[i]->setPickup(true);				//replace the item
+							tempID = theAnswers[i]->getID();
+						}
+					}
 				}
 			}
+			
 			if (press)
 			{
 				timer += dt;
 			}
-			if (timer > 1)
+			if (timer > 2)
 			{
 				press = false;
 				timer = 0;
@@ -527,7 +581,7 @@ void CSceneGame3::Update(double dt)
 				if (theDoors[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 				{
 					//meaning to say you can now exit the game
-					if (!theQuestions[theQuestions.size() - 1]->getInteractivity())
+					if (!theQuestions[theQuestions.size() - 1]->getInteractivity() && theDoors[i]->getId() == theDoors[theDoors.size()-1]->getId())
 					{
 						currentState = EXITING;
 						// Animation
@@ -714,6 +768,7 @@ void CSceneGame3::RenderTileMap()
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, theAnswers[i]->getScaleX(), theAnswers[i]->getScaleY(), theAnswers[i]->getPositionX(), theAnswers[i]->getPositionY());
 				theAnswers[i]->setPosition(theAnswers[i]->getDefaultPosition());
 			}
+			//show the picked up item's answer
 			else
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
@@ -790,7 +845,7 @@ void CSceneGame3::RenderGUI()
 
 			// Text
 			int textSize = m_cMap->GetTileSize() * 0.5;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 3.5);
 			break;
 		}
 	}
@@ -809,14 +864,47 @@ void CSceneGame3::RenderGUI()
 	}
 	for (int i = 0; i < theAnswers.size(); i++)
 	{
+		//show the picked up item's answer
 		if (theAnswers[i]->getActive())
 		{
 			// Dialogue box
-			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
-
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize() * 2, 0, 0);
 			// Text
 			int textSize = m_cMap->GetTileSize() * 0.5;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+
+			if (tempID == -1)
+			{
+				//as long as an alternate answer is active nearby, render it
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			}
+			else if (tempID == theAnswers[i]->getID())
+			{
+				//show the currently selected answer
+				std::ostringstream answer;
+				answer << "You chose: " << theAnswers[tempID]->getDialogue();
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], answer.str(), Color(0, 0, 0), textSize, 0, textSize * 1.5);
+
+				if (tempID == theAnswers[i]->getID())
+				{
+					continue;
+				}
+				else
+				{
+					//as long as an alternate answer is active nearby, render it
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+				}
+				
+			}
+			else if (tempID != theAnswers[i]->getID())
+			{
+				//show the currently selected answer
+				std::ostringstream answer;
+				answer << "You chose: " << theAnswers[tempID]->getDialogue();
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], answer.str(), Color(0, 0, 0), textSize, 0, textSize * 1.5);
+
+				//as long as an alternate answer is active nearby, render it
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+			}
 			break;
 		}
 	}
