@@ -235,7 +235,6 @@ void CGame2State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 			}
 			// Withdraw jellybean
 			theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 			theGSM->ChangeState(CHubState::Instance());
 		}
 	}

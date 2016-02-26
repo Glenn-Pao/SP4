@@ -417,32 +417,30 @@ void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
 void CHubState::PlayMiniGame(CGameStateManager* theGSM)
 {
 	theGSM->saveAndLoadsys->GetGameInfo()->jellybean.DepositJellybeans(scene->noOfJellybeansDeposited);
+	scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+	theGSM->saveAndLoadsys->SaveToFile();
 	switch (scene->game_interacted)
 	{
 	case CSceneHub::GAME1:
 	{
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 		theGSM->ChangeState(CGame1State::Instance(), scene->difficultySelected);
 		return;
 	}
 	break;
 	case CSceneHub::GAME2:
 	{
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 		theGSM->ChangeState(CGame2State::Instance(), scene->difficultySelected);
 		return;
 	}
 	break;
 	case CSceneHub::GAME3:
 	{
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 		theGSM->ChangeState(CGame3State::Instance(), scene->difficultySelected);
 		return;
 	}
 	break;
 	case CSceneHub::GAME4:
 	{
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 		theGSM->ChangeState(CGame4State::Instance(), scene->difficultySelected);
 		return;
 	}

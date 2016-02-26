@@ -146,7 +146,6 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const unsigned char ke
 		theGSM->m_bWarpMouse = false;
 
 		theGSM->PushState(CPauseState::Instance());
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
 #endif
 }
@@ -187,7 +186,6 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 				}
 				// Withdraw jellybean
 				theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
-				scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 				theGSM->ChangeState(CHubState::Instance());
 			}
 		}
@@ -196,7 +194,6 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		{
 			if (button_Left == true)
 			{
-				scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 				theGSM->ChangeState(CHubState::Instance());
 			}
 		}
