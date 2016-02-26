@@ -23,6 +23,7 @@ public:
 
 	enum State
 	{
+		PREPARE,
 		PLAY,
 		TIME_UP,
 		PAUSE,
@@ -100,5 +101,7 @@ private:
 	Trigger* Instructions;
 
 	UISystem* UIManager;
+
+	float MissingCardTimer;
 };
 

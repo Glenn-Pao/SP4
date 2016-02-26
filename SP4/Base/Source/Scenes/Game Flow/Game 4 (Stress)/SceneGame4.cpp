@@ -103,64 +103,94 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	InitMeshes();
 
 
+
+	
+	
+	int Chance;
+
 	switch (CurrentLevel)
 	{
 	case TUTORIAL:
 	{
+		//Initialise Deck
+		PatternInserted = new Deck(Vector3(300, 300, 1), Vector3(80, 0, 0));
+		PatternToFollow = new Deck(Vector3(300, 425, 1), Vector3(80, 0, 0));
+
 		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
 		CurrentPhase = TutorialPhase::PHASE_1;
 		Timer = 0;
+
+		//Create 3 Cards Difficulty
+
+		for (int i = 0; i < 3; ++i)
+		{
+			ps.AddProbability(1);
+		}
+
+		for (int i = 0; i < 3; ++i)
+		{
+			Chance = ps.GetARandIntProbability();
+			//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+			PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+			switch (Chance)
+			{
+			case 0:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true)); break; }
+			case 1:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true)); break; }
+			case 2:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true)); break; }
+			}
+		}
 		break;
 	}
 	case EASY:
 	{
+		//GamePlay Variables
+		MissingCardTimer = 0;
 		ScoreToBeat = 20;
 		Score = 0;
 		Timer = 60;
 
 		UIManager = new UISystem();
 
-		//Sprites
+		//Initialise Deck
+		PatternInserted = new Deck(Vector3(85, 300, 1), Vector3(80, 0, 0));
+		PatternToFollow = new Deck(Vector3(85, 425, 1), Vector3(80, 0, 0));
 
-		//3
-		//2
-		//1
-		//GO
+		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
+		CurrentPhase = TutorialPhase::PHASE_1;
+
+		//Create 3 Cards Difficulty
+
+		for (int i = 0; i < 3; ++i)
+		{
+			ps.AddProbability(1);
+		}
+
+		for (int i = 0; i < 4; ++i)
+		{
+			Chance = ps.GetARandIntProbability();
+			//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+			PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+			switch (Chance)
+			{
+			case 0:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true)); break; }
+			case 1:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true)); break; }
+			case 2:
+			{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true)); break; }
+			}
+		}
 		break;
 	}
 
 	}
 
-	//Initialise Deck
-	PatternInserted = new Deck(Vector3(100, 300, 1), Vector3(80, 0, 0));
-	PatternToFollow = new Deck(Vector3(100, 425, 1), Vector3(80, 0, 0));
-
-	for (int i = 0; i < 3; ++i)
-	{
-		ps.AddProbability(1);
-	}
-
-	int Chance;
-
-	for (int i = 0; i < 8; ++i)
-	{
-		Chance = ps.GetARandIntProbability();
-		//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
-		PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
-		switch (Chance)
-		{
-		case 0:
-		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true)); break; }
-		case 1:
-		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true)); break; }
-		case 2:
-		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true)); break; }
-		}
-	}
-
-	RedCard = new Card(Card::CARD, true, "NIL", Vector3(300, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true);
-	GreenCard = new Card(Card::CARD, true, "NIL", Vector3(400, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true);
-	BlueCard = new Card(Card::CARD, true, "NIL", Vector3(500, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true);
+	RedCard = new Card(Card::CARD, true, "NIL", Vector3(275, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true);
+	GreenCard = new Card(Card::CARD, true, "NIL", Vector3(375, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true);
+	BlueCard = new Card(Card::CARD, true, "NIL", Vector3(475, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true);
 	SelectedCard = new  Card(Card::CARD, false, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 	NoneCard = new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 	SendPattern = new Trigger(meshList[GEO_STRESS], Vector3(100, 150, 1), Vector3(50, 50, 50), Vector3(100, 150, 1), Vector3(50, 50, 50), true);
@@ -205,12 +235,16 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_GREEN_CARD]->textureID = LoadTGA("Image//GreenCard.tga");
 	meshList[GEO_STRESS_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_STRESS_CARD]->textureID = LoadTGA("Image//StressCard.tga");
+	meshList[GEO_MISSING_CARD] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_MISSING_CARD]->textureID = LoadTGA("Image//MissingCard.tga");
 	meshList[GEO_INSTRUCTIONS] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction1.tga");
 	meshList[GEO_STRESS] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_STRESS]->textureID = LoadTGA("Image//StressButton.tga");
 	meshList[GEO_PATTERN] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_PATTERN]->textureID = LoadTGA("Image//PatternToFollow.tga");
+
+	
 
 	// Hero
 	// Side
@@ -366,66 +400,145 @@ void SceneGame4::UpdateTutorialInstructions(double dt)
 
 void SceneGame4::UpdateDecks(double dt)
 {
-	//Update Decks
-	if (Application::IsKeyPressed('F'))
+
+	switch (CurrentLevel)
 	{
-		if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+	case DifficultyLevel::TUTORIAL:
+	{
+		//Update Decks
+		if (Application::IsKeyPressed('F'))
 		{
-			for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
 			{
-				delete PatternToFollow->ListOfCards[i];
-				PatternToFollow->ListOfCards.pop_back();
-			}
+				//Reset Time For Missing Card
+				MissingCardTimer = 0;
 
-			for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
-			{
-				delete PatternInserted->ListOfCards[i];
-				PatternInserted->ListOfCards.pop_back();
-			}
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
 
-			for (int i = 0; i < 8; ++i)
-			{
-				//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
-				PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+				for (int i = 0; i < 4; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
 
-				int randNo = ps.GetARandIntProbability();
+					int randNo = ps.GetARandIntProbability();
 
-				switch (randNo)
-				{
-				case 0:
-				{
-					PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
-					break;
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
 				}
-				case 1:
-				{
-					PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
-					break;
-				}
-				case 2:
-				{
-					PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
-					break;
-				}
-				}
+
 				Score += 8;
 			}
-		}
 
-		for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
-		{
-			if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
-				PatternInserted->getListOfCards()[i]->setCardFaceUpMesh(SelectedCard->getCardFaceUpMesh());
-				PatternInserted->getListOfCards()[i]->setElement_Type(SelectedCard->getElement_Type());
-				PatternInserted->getListOfCards()[i]->setisRevealed(true);
-				PatternInserted->getListOfCards()[i]->setActive(true);
-			}
-			else
-			{
+				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+				{
+					PatternInserted->getListOfCards()[i]->setCardFaceUpMesh(SelectedCard->getCardFaceUpMesh());
+					PatternInserted->getListOfCards()[i]->setElement_Type(SelectedCard->getElement_Type());
+					PatternInserted->getListOfCards()[i]->setisRevealed(true);
+					PatternInserted->getListOfCards()[i]->setActive(true);
+				}
+				else
+				{
+				}
 			}
 		}
+		break;
 	}
+	case DifficultyLevel::EASY:
+	{
+		//Update Decks
+		if (Application::IsKeyPressed('F'))
+		{
+			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			{
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 4; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+					Score += 8;
+				}
+			}
+
+			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+			{
+				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+				{
+					PatternInserted->getListOfCards()[i]->setCardFaceUpMesh(SelectedCard->getCardFaceUpMesh());
+					PatternInserted->getListOfCards()[i]->setElement_Type(SelectedCard->getElement_Type());
+					PatternInserted->getListOfCards()[i]->setisRevealed(true);
+					PatternInserted->getListOfCards()[i]->setActive(true);
+				}
+				else
+				{
+				}
+			}
+		}
+		break;
+	}
+	}
+	
 }
 
 void SceneGame4::UpdateRGBCard(double dt)
@@ -475,6 +588,7 @@ void SceneGame4::UpdateTimer(double dt)
 
 void SceneGame4::Update(double dt)
 {
+
 	if (Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2'))
@@ -485,9 +599,7 @@ void SceneGame4::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	sceneManager2D.Update(dt);
-
-
-
+	
 	switch (CurrentLevel)
 	{
 	case DifficultyLevel::TUTORIAL:
@@ -516,8 +628,16 @@ void SceneGame4::Update(double dt)
 		{
 		case PLAY:
 		{
+			MissingCardTimer += dt;
+
+			if (MissingCardTimer > 3)
+			{
+				MissingCardTimer = 0;
+
+				PatternToFollow->getListOfCards()[Math::RandIntMinMax(0, 3)]->setisRevealed(false);
+			}
+
 			UpdateHero(dt);
-			UpdateTutorialInstructions(dt);
 			UpdateDecks(dt);
 			UpdateRGBCard(dt);
 			UpdateTimer(dt);
@@ -568,13 +688,16 @@ void SceneGame4::RenderDeck()
 	//Render Pattern To Follow
 	for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
 	{
-		if (PatternToFollow->getListOfCards()[i]->getisRevealed() == true)
+		if (PatternToFollow->getListOfCards()[i]->getActive() == true)
 		{
-			sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
-		}
-		else
-		{
-			sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
+			if (PatternToFollow->getListOfCards()[i]->getisRevealed() == true)
+			{
+				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
+			}
+			else
+			{
+				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
+			}
 		}
 	}
 	sceneManager2D.Render2DMesh(meshList[GEO_PATTERN], false, 200, 30, PatternToFollow->getPosition().x, PatternToFollow->getPosition().y + 75, 0);
@@ -582,6 +705,7 @@ void SceneGame4::RenderDeck()
 	//Render Pattern To Insert
 	for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 	{
+
 		if (PatternInserted->getListOfCards()[i]->getisRevealed() == true)
 		{
 			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternInserted->getListOfCards()[i]->getScaleX(), PatternInserted->getListOfCards()[i]->getScaleY(), PatternInserted->getListOfCards()[i]->getPositionX(), PatternInserted->getListOfCards()[i]->getPositionY(), 0);
@@ -649,7 +773,13 @@ void SceneGame4::RenderTimer()
 }
 void SceneGame4::RenderScore()
 {
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "" + Score, Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+	std::ostringstream ss;
+	// Timer
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), 0, m_cMap->GetTileSize() * 0.5);
+	ss.str(std::string());
+	ss.precision(3);
+	ss << Score;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.5);
 
 }
 
@@ -678,6 +808,8 @@ void SceneGame4::Render()
 			RenderTrigger();
 			RenderHero();
 			RenderTutorialInstructions();
+			sceneManager2D.modelStack.PopMatrix();
+
 			RenderGUI();
 			break;
 		}
@@ -686,6 +818,8 @@ void SceneGame4::Render()
 			RenderRearTileMap();
 			RenderTileMap();
 			RenderTutorialInstructions();
+			sceneManager2D.modelStack.PopMatrix();
+
 			RenderGUI();
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
@@ -705,16 +839,20 @@ void SceneGame4::Render()
 			RenderRGBCards();
 			RenderTrigger();
 			RenderHero();
+			sceneManager2D.modelStack.PopMatrix();
+
 			RenderGUI();
 			RenderTimer();
+			RenderScore();
 			break;
 		}
 		case State::TIME_UP:
 		{
 			RenderRearTileMap();
 			RenderTileMap();
-			RenderGUI();
+			sceneManager2D.modelStack.PopMatrix();
 
+			RenderGUI();
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
@@ -736,7 +874,6 @@ void SceneGame4::Render()
 	//}
 	//cout << endl;
 	//cout << endl;
-	sceneManager2D.modelStack.PopMatrix();
 
 	/*for (int i = 0; i < HandPileRed->getListOfCards().size(); ++i)
 	{

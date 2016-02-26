@@ -4,10 +4,10 @@ Use these values to initialise the Data's Infomations
 
 ifNew = 0
 
-heroPositionX = 218
-heroPositionY = 408
+heroPositionX = 530
+heroPositionY = 124
 heroAnimationDir = 2
-noOfJellybeans = 10
+noOfJellybeans = 8
 heroMapOffsetX = 0
 heroMapOffsetY = 50
 
