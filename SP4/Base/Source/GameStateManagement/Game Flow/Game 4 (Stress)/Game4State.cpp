@@ -172,7 +172,7 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
-	switch (scene->currentState)
+	switch (scene->CurrentState)
 	{
 	case SceneGame4::TIME_UP:
 	{

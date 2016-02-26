@@ -12,8 +12,8 @@
 #include "..\..\..\UsingLua.h"
 
 SceneGame4::SceneGame4(const int m_window_width, const int m_window_height)
-: currentState(PLAY)
-, timer(30.0f)
+	: CurrentState(PLAY)
+	, Timer(0)
 {
 }
 
@@ -23,6 +23,8 @@ SceneGame4::~SceneGame4()
 
 void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium), = 3(Hard)
 {
+	CurrentLevel = level;
+
 	// Init the base scene
 	sceneManager2D.Init(level);
 
@@ -36,10 +38,21 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	// Dialogues scripts
 	vector<string> scriptDialogues;
 
-
 	switch (level)
 	{
-	case 0:
+	case DifficultyLevel::TUTORIAL:
+	{
+		for (int i = 0; i < 6; i++)
+		{
+			scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
+		}
+
+		// Initialise and load the tile map
+		m_cMap = new CMap();
+		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
+		m_cMap->LoadMap("Image//Maps//Game 4/Tutorial.csv");
+	}
+	case DifficultyLevel::EASY:
 	{
 		for (int i = 0; i < 6; i++)
 		{
@@ -82,78 +95,73 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 				theEnemies.back()->SetPos_x(k*m_cMap->GetTileSize());
 				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
 			}
-			// Door
-			else if (m_cMap->theScreenMap[i][k] == 30)
-			{
-			}
-			// Tutorial
-			if (level == 0)
-			{
 
-			}
 		}
 	}
 
 	// Initialise the Meshes
 	InitMeshes();
 
+
+	switch (CurrentLevel)
+	{
+	case TUTORIAL:
+	{
+		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
+		CurrentPhase = TutorialPhase::PHASE_1;
+		Timer = 0;
+		break;
+	}
+	case EASY:
+	{
+		ScoreToBeat = 20;
+		Score = 0;
+		Timer = 60;
+
+		UIManager = new UISystem();
+
+		//Sprites
+
+		//3
+		//2
+		//1
+		//GO
+		break;
+	}
+
+	}
+
+	//Initialise Deck
 	PatternInserted = new Deck(Vector3(80, 300, 1), Vector3(80, 0, 0));
-	
 	PatternToFollow = new Deck(Vector3(100, 450,1), Vector3(80,0,0));
-
-
-	
 
 	for (int i = 0; i < 3; ++i)
 	{
 		ps.AddProbability(1);
 	}
 
+	int Chance;
+	
 	for (int i = 0; i < 8; ++i)
 	{
+		Chance  = ps.GetARandIntProbability();
 		//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
 		PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
-
-		int randNo = ps.GetARandIntProbability();
-
-		switch(randNo)
-		{
-		case 0:
-		{
-			PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
-			break;
-		}
+		switch (Chance)
+		{case 0:
+		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));break;}
 		case 1:
-		{
-			PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
-			break;
-		}
+		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));break;}
 		case 2:
-		{
-			PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
-			break;
-		}
-		}
+		{PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));break;}}
 	}
 
-	RedPile = new Card(Card::CARD, true, "NIL", Vector3(300, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true);
-	
-	GreenPile = new Card(Card::CARD, true, "NIL", Vector3(400, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true);
-	
-	BluePile = new Card(Card::CARD, true, "NIL", Vector3(500, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true);
-	
+	RedCard = new Card(Card::CARD, true, "NIL", Vector3(300, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true);
+	GreenCard = new Card(Card::CARD, true, "NIL", Vector3(400, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true);
+	BlueCard = new Card(Card::CARD, true, "NIL", Vector3(500, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true);
 	SelectedCard = new  Card(Card::CARD, false, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
-
 	NoneCard = new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
-
-	ScoreToBeat = 10;
-	Score = 0;
-
 	SendPattern = new Trigger(meshList[GEO_STRESS], Vector3(100, 150, 1), Vector3(50, 50, 50), Vector3(100, 150, 1), Vector3(50, 50, 50), true);
-
-	Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
-	
-	currentStage = TutorialStage::Stage1;
 }
 
 void SceneGame4::PreInit()
@@ -236,6 +244,216 @@ void SceneGame4::InitMeshes()
 
 }
 
+void SceneGame4::UpdateHero(double dt)
+{
+
+	// Update Hero animation counter if hero moved
+	Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
+
+	// Update the hero
+	if (Application::IsKeyPressed('W'))
+		this->theHero->MoveUpDown(true, dt, m_cMap);
+	if (Application::IsKeyPressed('S'))
+		this->theHero->MoveUpDown(false, dt, m_cMap);
+	if (Application::IsKeyPressed('A'))
+		this->theHero->MoveLeftRight(true, dt, m_cMap);
+	if (Application::IsKeyPressed('D'))
+		this->theHero->MoveLeftRight(false, dt, m_cMap);
+
+	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+	{
+		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
+			theHero->SetAnimationCounter(1);
+	}
+	else
+	{
+		theHero->SetAnimationCounter(0);
+	}
+
+	theHero->HeroUpdate(m_cMap, dt);
+
+}
+
+void SceneGame4::UpdateTutorialInstructions(double dt)
+{
+	//Update Instructions
+	switch (CurrentPhase)
+	{
+		// Pick Up A Card
+	case TutorialPhase::PHASE_1:
+	{
+		if (Application::IsKeyPressed('F') && Instructions->CheckCollision((*theHero->getBoundingBox())) == true)
+		{
+			meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction2.tga");
+			Instructions->setPosition(Vector3(375, 350, 0));
+			Instructions->setScale(Vector3(600, 100, 0));
+			Instructions->getBoundingBox()->Reset(Instructions->getPosition(), Instructions->getScale());
+
+			CurrentPhase = TutorialPhase::PHASE_2;
+		}
+		break;
+	}
+	//Place Card Onto Stress Cards
+	case TutorialPhase::PHASE_2:
+	{
+		if (Application::IsKeyPressed('F') && Instructions->CheckCollision((*theHero->getBoundingBox())) == true)
+		{
+
+			meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction3.tga");
+			Instructions->setPosition(Vector3(400, 150, 0));
+			Instructions->setScale(Vector3(250, 100, 50));
+			Instructions->getBoundingBox()->Reset(Instructions->getPosition(), Instructions->getScale());
+
+			CurrentPhase = TutorialPhase::PHASE_3;
+		}
+		break;
+	}
+	// Pick Up A Different Card
+	case TutorialPhase::PHASE_3:
+	{
+		if (Application::IsKeyPressed('F') && Instructions->CheckCollision((*theHero->getBoundingBox())) == true)
+		{
+			meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction4.tga");
+			CurrentPhase = TutorialPhase::PHASE_4;
+		}
+		break;
+	}
+	// Match The Pattern 
+	case TutorialPhase::PHASE_4:
+	{
+		if (PatternToFollow->isDeckIdentical(PatternInserted) == true)
+		{
+			meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction5.tga");
+			CurrentPhase = TutorialPhase::PHASE_5;
+		}
+		break;
+	}
+	//Press The Stress Button
+	case TutorialPhase::PHASE_5:
+	{
+		if (PatternToFollow->isDeckIdentical(PatternInserted) == true)
+		{
+			if (Application::IsKeyPressed('F') && SendPattern->CheckCollision((*theHero->getBoundingBox())) == true)
+			{
+				meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction6.tga");
+				CurrentState = State::TIME_UP;
+			}
+		}
+		break;
+	}
+	}
+}
+
+void SceneGame4::UpdateDecks(double dt)
+{
+	//Update Decks
+	if (Application::IsKeyPressed('F'))
+	{
+		if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+		{
+			for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+			{
+				delete PatternToFollow->ListOfCards[i];
+				PatternToFollow->ListOfCards.pop_back();
+			}
+
+			for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+			{
+				delete PatternInserted->ListOfCards[i];
+				PatternInserted->ListOfCards.pop_back();
+			}
+
+			for (int i = 0; i < 8; ++i)
+			{
+				//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+				PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+				int randNo = ps.GetARandIntProbability();
+
+					switch (randNo)
+					{
+						case 0:
+						{
+							PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+							break;
+						}
+						case 1:
+						{
+							PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+							break;
+							}
+						case 2:
+						{
+							PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+							break;
+						}
+					}
+				Score += 8;
+			}
+		}
+
+		for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+		{
+			if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+			{
+				PatternInserted->getListOfCards()[i]->setCardFaceUpMesh(SelectedCard->getCardFaceUpMesh());
+				PatternInserted->getListOfCards()[i]->setElement_Type(SelectedCard->getElement_Type());
+				PatternInserted->getListOfCards()[i]->setisRevealed(true);
+				PatternInserted->getListOfCards()[i]->setActive(true);
+			}
+			else
+			{
+			}
+		}
+	}
+}
+
+void SceneGame4::UpdateRGBCard(double dt)
+{
+	if (RedCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+	{
+		if (Application::IsKeyPressed('F'))
+		{
+			SelectedCard = RedCard;
+		}
+	}
+
+	if (GreenCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+	{
+		if (Application::IsKeyPressed('F'))
+		{
+			SelectedCard = GreenCard;
+		}
+		else
+		{
+		}
+	}
+	if (BlueCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
+	{
+		if (Application::IsKeyPressed('F'))
+		{
+			SelectedCard = BlueCard;
+		}
+		else
+		{
+		}
+	}
+}
+
+void SceneGame4::UpdateTimer(double dt)
+{
+	if (Timer < 0)
+	{
+		Timer = 0;
+		CurrentState = State::TIME_UP;
+	}
+	else
+	{
+		Timer -= dt;
+	}
+}
+
 void SceneGame4::Update(double dt)
 {
 	if (Application::IsKeyPressed('1'))
@@ -249,204 +467,51 @@ void SceneGame4::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	switch (currentState)
+
+
+	switch (CurrentLevel)
 	{
-	case PLAY:
+	case DifficultyLevel::TUTORIAL:
 	{
-		Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
-		// Update the hero
-		if (Application::IsKeyPressed('W'))
-			this->theHero->MoveUpDown(true, dt, m_cMap);
-		if (Application::IsKeyPressed('S'))
-			this->theHero->MoveUpDown(false, dt, m_cMap);
-		if (Application::IsKeyPressed('A'))
-			this->theHero->MoveLeftRight(true, dt, m_cMap);
-		if (Application::IsKeyPressed('D'))
-			this->theHero->MoveLeftRight(false, dt, m_cMap);
-		// Update Hero animation counter if hero moved
-		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+		switch (CurrentState)
 		{
-			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-				theHero->SetAnimationCounter(1);
+		case PLAY:
+		{
+			UpdateTutorialInstructions(dt);
+			UpdateDecks(dt);
+			UpdateRGBCard(dt);
+			UpdateHero(dt);
+			break;
 		}
-		else
+		case State::TIME_UP:
 		{
-			theHero->SetAnimationCounter(0);
-		}
-		theHero->HeroUpdate(m_cMap, dt);
-
-		cout << Score << endl;
-
-		//Update Instructions
-		if (Instructions->CheckCollision((*theHero->getBoundingBox())) == true)
-		{
-			switch (currentStage)
-			{
-			case TutorialStage::Stage1:
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction2.tga");
-					Instructions->setMesh(meshList[GEO_INSTRUCTIONS]);
-					Instructions->setPosition(Vector3(375,350,0));
-					Instructions->setScale(Vector3(600,100,0));
-					Instructions->getBoundingBox()->Reset(Instructions->getPosition(), Instructions->getScale());
-
-					currentStage = TutorialStage::Stage2;
-				}
-				break;
-			}
-			case TutorialStage::Stage2:
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					
-					meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction3.tga");
-					Instructions->setMesh(meshList[GEO_INSTRUCTIONS]);
-					Instructions->setPosition(Vector3(400, 150, 0));
-					Instructions->setScale(Vector3(250, 100, 50));
-					Instructions->getBoundingBox()->Reset(Instructions->getPosition(), Instructions->getScale());
-
-					currentStage = TutorialStage::Stage3;
-				}
-				break;
-			}
-			case TutorialStage::Stage3:
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction4.tga");
-				}
-				break;
-			}
-			}
-		
+			break;
 		}
 
-		//Update Decks
-		if (Application::IsKeyPressed('F'))
-		{
-			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
-			{
-				for (int i = PatternToFollow->getListOfCards().size()-1; i >= 0; --i)
-				{
-					delete PatternToFollow->ListOfCards[i];
-					PatternToFollow->ListOfCards.pop_back();
-				}
-
-				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
-				{
-					delete PatternInserted->ListOfCards[i];
-					PatternInserted->ListOfCards.pop_back();
-				}
-
-				for (int i = 0; i < 8; ++i)
-				{
-					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
-					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
-
-					int randNo = ps.GetARandIntProbability();
-
-					switch (randNo)
-					{
-					case 0:
-					{
-						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
-						break;
-					}
-					case 1:
-					{
-						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
-						break;
-					}
-					case 2:
-					{
-						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
-						break;
-					}
-					}
-				}
-
-
-				Score += 8;
-
-			}
-
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
-			{
-				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
-				{
-					PatternInserted->getListOfCards()[i]->setCardFaceUpMesh(SelectedCard->getCardFaceUpMesh());
-					PatternInserted->getListOfCards()[i]->setElement_Type(SelectedCard->getElement_Type());
-					PatternInserted->getListOfCards()[i]->setisRevealed(true);
-					PatternInserted->getListOfCards()[i]->setActive(true);
-				}
-				else
-				{
-				}
-			}
 		}
-			if (RedPile->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					SelectedCard = RedPile;
-				}
-			}
-
-			if (GreenPile->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					SelectedCard = GreenPile;
-				}
-				else
-				{
-				}
-			}
-			if (BluePile->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
-			{
-				if (Application::IsKeyPressed('F'))
-				{
-					SelectedCard = BluePile;
-				}
-				else
-				{
-				}
-			}
-
-
-		// Timer
-		timer -= dt;
-		if (timer < 0)
-		{
-			timer = 0; 
-			currentState = STATE::TIME_UP;
-		}
-		break;
 	}
-	case STATE::TIME_UP:
+	case DifficultyLevel::EASY:
 	{
-		if (Score >= ScoreToBeat)
+		switch (CurrentState)
 		{
-			currentState = STATE::WIN;
-		}
-		else
+		case PLAY:
 		{
-			currentState = STATE::LOSE;
+			UpdateHero(dt);
+			UpdateTutorialInstructions(dt);
+			UpdateDecks(dt);
+			UpdateRGBCard(dt);
+			UpdateTimer(dt);
+			break;
 		}
-		break;
-	}
-	case STATE::WIN:
-	{
-		break;
-	}
-	case STATE::LOSE:
-	{
-		break;
+		case State::TIME_UP:
+		{
+			break;
+		}
+
+		}
 	}
 	}
+	
 }
 
 /********************************************************************************
@@ -470,41 +535,19 @@ void SceneGame4::UpdateWeaponStatus(const unsigned char key)
 	}
 }
 
-
-/********************************************************************************
-Render this scene
-********************************************************************************/
-void SceneGame4::Render()
+void SceneGame4::RenderTutorialInstructions()
 {
-	sceneManager2D.Render();
+	//Render Instructions
+	sceneManager2D.Render2DMesh(Instructions->getMesh(), false, Instructions->getMeshScale().x, Instructions->getMeshScale().y, Instructions->getMeshPosition().x, Instructions->getMeshPosition().y, 0);
 
-	sceneManager2D.modelStack.PushMatrix();
+}
 
-	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
-	//sceneManager2D.RenderBackground();
-
-	// Render the rear tile map
-	RenderRearTileMap();
-	// Render the tile map
-	RenderTileMap();
-	// Render AIs
-	RenderAIs();
-	//for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
-	//{
-	//	cout<< PatternToFollow->getListOfCards()[i]->getElement_Type()<<" ";
-	//}
-	//cout << endl;
-	//for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
-	//{
-	//	cout << PatternInserted->getListOfCards()[i]->getElement_Type() << " ";
-	//}
-	//cout << endl;
-	//cout << endl;
-
+void SceneGame4::RenderDeck()
+{
 	//Render Pattern To Follow
 	for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
 	{
-		if(PatternToFollow->getListOfCards()[i]->getisRevealed() == true)
+		if (PatternToFollow->getListOfCards()[i]->getisRevealed() == true)
 		{
 			sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
 		}
@@ -527,54 +570,151 @@ void SceneGame4::Render()
 			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getMesh(), false, PatternInserted->getListOfCards()[i]->getScaleX(), PatternInserted->getListOfCards()[i]->getScaleY(), PatternInserted->getListOfCards()[i]->getPositionX(), PatternInserted->getListOfCards()[i]->getPositionY(), 0);
 		}
 	}
+}
+
+void SceneGame4::RenderRGBCards()
+{
+	if (RedCard->getisRevealed() == true)
+	{
+		sceneManager2D.Render2DMesh(RedCard->getCardFaceUpMesh(), false, RedCard->getScaleX(), RedCard->getScaleY(), RedCard->getPositionX(), RedCard->getPositionY(), 0);
+	}
+	else
+	{
+		sceneManager2D.Render2DMesh(RedCard->getMesh(), false, RedCard->getScaleX(), RedCard->getScaleY(), RedCard->getPositionX(), RedCard->getPositionY(), 0);
+	}
 
 
-	//Render Cards
-	
-		if (RedPile->getisRevealed() == true)
-		{
-			sceneManager2D.Render2DMesh(RedPile->getCardFaceUpMesh(), false, RedPile->getScaleX(), RedPile->getScaleY(), RedPile->getPositionX(), RedPile->getPositionY(), 0);
-		}
-		else
-		{
-			sceneManager2D.Render2DMesh(RedPile->getMesh(), false, RedPile->getScaleX(), RedPile->getScaleY(), RedPile->getPositionX(), RedPile->getPositionY(), 0);
-		}
+	if (BlueCard->getisRevealed() == true)
+	{
+		sceneManager2D.Render2DMesh(BlueCard->getCardFaceUpMesh(), false, BlueCard->getScaleX(), BlueCard->getScaleY(), BlueCard->getPositionX(), BlueCard->getPositionY(), 0);
+	}
+	else
+	{
+		sceneManager2D.Render2DMesh(BlueCard->getMesh(), false, BlueCard->getScaleX(), BlueCard->getScaleY(), BlueCard->getPositionX(), BlueCard->getPositionY(), 0);
+	}
 
-	
-		if (BluePile->getisRevealed() == true)
-		{
-			sceneManager2D.Render2DMesh(BluePile->getCardFaceUpMesh(), false, BluePile->getScaleX(), BluePile->getScaleY(), BluePile->getPositionX(), BluePile->getPositionY(), 0);
-		}
-		else
-		{
-			sceneManager2D.Render2DMesh(BluePile->getMesh(), false, BluePile->getScaleX(), BluePile->getScaleY(), BluePile->getPositionX(), BluePile->getPositionY(), 0);
-		}
-	
-		if (GreenPile->getisRevealed() == true)
-		{
-			sceneManager2D.Render2DMesh(GreenPile->getCardFaceUpMesh(), false, GreenPile->getScaleX(), GreenPile->getScaleY(), GreenPile->getPositionX(), GreenPile->getPositionY(), 0);
-		}
-		else
-		{
-			sceneManager2D.Render2DMesh(GreenPile->getMesh(), false, GreenPile->getScaleX(), GreenPile->getScaleY(), GreenPile->getPositionX(), GreenPile->getPositionY(), 0);
-		}
+	if (GreenCard->getisRevealed() == true)
+	{
+		sceneManager2D.Render2DMesh(GreenCard->getCardFaceUpMesh(), false, GreenCard->getScaleX(), GreenCard->getScaleY(), GreenCard->getPositionX(), GreenCard->getPositionY(), 0);
+	}
+	else
+	{
+		sceneManager2D.Render2DMesh(GreenCard->getMesh(), false, GreenCard->getScaleX(), GreenCard->getScaleY(), GreenCard->getPositionX(), GreenCard->getPositionY(), 0);
+	}
 	//Render Card With Player;
 
-		if (SelectedCard->getActive() == true)
+	if (SelectedCard->getActive() == true)
+	{
+		sceneManager2D.Render2DMesh(SelectedCard->getCardFaceUpMesh(), false, SelectedCard->getScaleX(), SelectedCard->getScaleY(), theHero->getPositionX(), theHero->getPositionY() + 50, 0);
+	}
+
+}
+
+void SceneGame4::RenderTrigger()
+{
+	sceneManager2D.Render2DMesh(SendPattern->getMesh(), false, SendPattern->getMeshScale().x, SendPattern->getMeshScale().y, SendPattern->getMeshPosition().x, SendPattern->getMeshPosition().y, 0);
+}
+
+void SceneGame4::RenderTimer()
+{
+	std::ostringstream ss;
+	// Timer
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
+	ss.str(std::string());
+	ss.precision(3);
+	ss << Timer;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+
+}
+void SceneGame4::RenderScore()
+{
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "" + Score, Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+
+}
+
+/********************************************************************************
+Render this scene
+********************************************************************************/
+void SceneGame4::Render()
+{
+	sceneManager2D.Render();
+
+	sceneManager2D.modelStack.PushMatrix();
+
+	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	switch (CurrentLevel)
+	{
+	case DifficultyLevel::TUTORIAL:
+	{
+		switch (CurrentState)
 		{
-			sceneManager2D.Render2DMesh(SelectedCard->getCardFaceUpMesh(), false, SelectedCard->getScaleX(), SelectedCard->getScaleY(), theHero->getPositionX(), theHero->getPositionY() + 50, 0);
+		case State::PLAY:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			RenderDeck();
+			RenderRGBCards();
+			RenderTrigger();
+			RenderHero();
+			RenderTutorialInstructions();
+			RenderGUI();
+			break;
 		}
+		case State::TIME_UP:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			RenderTutorialInstructions();
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+		}
+	}
+	case DifficultyLevel::EASY:
+	{
+		switch(CurrentState)
+		{
+		case State::PLAY:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			RenderDeck();
+			RenderRGBCards();
+			RenderTrigger();
+			RenderHero();
+			RenderGUI();
+			RenderTimer();
+			break;
+		}
+		case State::TIME_UP:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			RenderGUI();
+			
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+		}
+	}
+	}
+	//sceneManager2D.RenderBackground();
 
-		// Render Hero
-		RenderHero();
 
-		//Render Trigger
-		sceneManager2D.Render2DMesh(SendPattern->getMesh(), false, SendPattern->getMeshScale().x, SendPattern->getMeshScale().y, SendPattern->getMeshPosition().x, SendPattern->getMeshPosition().y, 0);
+	//for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
+	//{
+	//	cout<< PatternToFollow->getListOfCards()[i]->getElement_Type()<<" ";
+	//}
+	//cout << endl;
+	//for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+	//{
+	//	cout << PatternInserted->getListOfCards()[i]->getElement_Type() << " ";
+	//}
+	//cout << endl;
+	//cout << endl;
+	sceneManager2D.modelStack.PopMatrix();
 
-		sceneManager2D.modelStack.PopMatrix();
-
-		//Render Instructions
-		sceneManager2D.Render2DMesh(Instructions->getMesh(), false, Instructions->getMeshScale().x, Instructions->getMeshScale().y, Instructions->getMeshPosition().x, Instructions->getMeshPosition().y, 0);
 	/*for (int i = 0; i < HandPileRed->getListOfCards().size(); ++i)
 	{
 		RenderCard(HandPileRed->getListOfCards()[i]);
@@ -593,8 +733,6 @@ void SceneGame4::Render()
 	}
 */
 	
-	// Render GUI
-	RenderGUI();
 	
 }
 
@@ -627,29 +765,6 @@ void SceneGame4::RenderGUI()
 	ss << ": " << noOfJellybeans;
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
-	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
-	ss.str(std::string());
-	ss.precision(3);
-	ss << timer;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
-
-	switch (currentState)
-	{
-	case PLAY:
-	{
-		break;
-	}
-	case PAUSE:
-	{
-		break;
-	}
-
-	case TIME_UP:
-	{
-					break;
-	}
-	}
 }
 
 /********************************************************************************

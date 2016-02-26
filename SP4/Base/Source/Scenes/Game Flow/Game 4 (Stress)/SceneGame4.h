@@ -3,7 +3,7 @@
 #include "..\..\Base\Source\GameMechanics\Objects\Deck.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Trigger.h"
 #include "..\..\Base\Source\AI\ProbabilitySystem.h"
-
+#include "..\..\Base\Source\UISystem.h"
 class SceneGame4 : public CSceneGameBase
 {
 
@@ -21,54 +21,74 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
-	enum STATE
+	enum State
 	{
 		PLAY,
 		TIME_UP,
 		PAUSE,
-		WIN,
-		LOSE,
 		NUM_OF_STATE
 	};
 
-	enum TutorialStage
+	enum DifficultyLevel
 	{
-		Stage1,
-		Stage2,
-		Stage3
+		TUTORIAL,
+		EASY,
+		NORMAL,
+		HARD
 	};
 
-	TutorialStage currentStage;
-
-	int currentState;
+	enum TutorialPhase
+	{
+		PHASE_1,
+		PHASE_2,
+		PHASE_3,
+		PHASE_4,
+		PHASE_5
+	};
+	State CurrentState;
+	int CurrentLevel;
+	TutorialPhase CurrentPhase;
 
 private:
 	void InitMeshes();
+
+	void UpdateHero(double dt);
+	void UpdateTutorialInstructions(double dt);
+	void UpdateDecks(double dt);
+	void UpdateRGBCard(double dt);
+	void UpdateTimer(double dt);
 	// Handle to the GUI
 	void RenderGUI();
+
+
+	void RenderTutorialInstructions();
+	void RenderTrigger();
+	void RenderDeck();
+	void RenderRGBCards();
+	void RenderTimer();
+	void RenderScore();
 	// Handle to the tilemaps
 	void RenderTileMap();
 	// Hero's information
 	void RenderHero();
-
 	void RenderRearTileMap(){}
 
 	// Enemies
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
 
-	float timer;
+	float Timer;
 
-	float ScoreToBeat;
-	float Score;
+	int ScoreToBeat;
+	int Score;
 
 	Deck* PatternToFollow;
 
 	Deck* PatternInserted;
 
-	Card* RedPile;
-	Card* GreenPile;
-	Card* BluePile;
+	Card* RedCard;
+	Card* GreenCard;
+	Card* BlueCard;
 
 	Card* SelectedCard;
 	Card* NoneCard;
@@ -78,5 +98,7 @@ private:
 	CProbabilitySystem ps;
 
 	Trigger* Instructions;
+
+	UISystem* UIManager;
 };
 
