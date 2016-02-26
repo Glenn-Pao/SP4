@@ -12,6 +12,6 @@ heroMapOffsetX = 0
 heroMapOffsetY = 50
 
 DifficultyUnlocked0 = 3
-DifficultyUnlocked1 = 1
+DifficultyUnlocked1 = 3
 DifficultyUnlocked2 = 3
 DifficultyUnlocked3 = 3

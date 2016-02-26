@@ -55,6 +55,8 @@ public:
 	void UpdateLevel1(double dt);
 	void UpdateLevel2(double dt);
 	void UpdateLevel3(double dt);
+	void UpdateRight4Pt(double dt);
+	void UpdateLeft4Pt(double dt);
 
 	void RenderTutorial();
 	void RenderLevel1();
@@ -95,6 +97,7 @@ private:
 	std::vector<CDoor*> GreenDoors;
 	std::vector<CColour*> ColoursSet;
 	std::vector<std::string> ColoursThePlayerHas;
+	
 	std::vector<string> scriptDialogues;
 
 	CDoor* greenDoor;
@@ -107,16 +110,18 @@ private:
 
 	string scriptExit, scriptFinished, scriptLevelEnd;
 
-	int castedColoursCounter;
+	int Colours;
 	float timer;
 	int tileSize;
 
 	UseLuaFiles* L;
 
-	vector<AI*> AIsList;
+	vector<AI*> AIsList4ptRight, AIsList4ptLeft;
 
 	bool catchcooldown;
 	double cooldownTimer;
+
+	int smallSquare, medSquare, bigSquare;
 };
 
 #endif

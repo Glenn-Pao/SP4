@@ -22,8 +22,9 @@ public:
 	CFSM::STATES getFSM();
 
 
-	void SetAIvariables(Vector3 point1, Vector3 point2, Vector3 point3);
-	
+	void SetAIvariables4pt(Vector3 point1, Vector3 point2, Vector3 point3);
+	void SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4);
+
 	void UpdateFSM(double dt);
 
 private:
@@ -34,4 +35,5 @@ private:
 	int AIType;
 	CFSM fsm;
 	float timer;
+	
 };

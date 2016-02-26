@@ -57,7 +57,7 @@ CFSM::STATES AI::getFSM()
 	return fsm.state;
 }
 
-void AI::SetAIvariables(Vector3 point1, Vector3 point2, Vector3 point3)
+void AI::SetAIvariables4pt(Vector3 point1, Vector3 point2, Vector3 point3)
 {
 	wayPoints.push_back(Vector3(originalPos + point1));
 	wayPoints.push_back(Vector3(originalPos + point1 + point2));
@@ -67,8 +67,27 @@ void AI::SetAIvariables(Vector3 point1, Vector3 point2, Vector3 point3)
 	timer = 0;
 }
 
+void AI::SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4)
+{
+	wayPoints.push_back(Vector3(originalPos + point1));
+	wayPoints.push_back(Vector3(originalPos + point1 + point2));
+	wayPoints.push_back(Vector3(originalPos + point1 + point2 + point3));
+	wayPoints.push_back(Vector3(originalPos + point1 + point2 + point3 + point4));
+	
+	waypointsindex = 1;
+	nextPoint = wayPoints[waypointsindex];
+	timer = 0;
+}
+
 void AI::UpdateFSM(double dt)
 {
+	//Define the topleft and bottomright for the bounding box
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+
+	//put it inside the bounding box (from object class)
+	setBoundingBox(topleft, bottomright);
+
 	switch (fsm.state)
 	{
 	case CFSM::MOVING:
@@ -83,7 +102,9 @@ void AI::UpdateFSM(double dt)
 		break;
 	case CFSM::REACHED:
 	{
-		waypointsindex = (waypointsindex + 1) % 4;
+		waypointsindex = (waypointsindex + 1) % wayPoints.size();
+		//waypointsindex = (wayPoints.size() - 1) <--- starting
+		//waypointsindex = (waypointsindex - 1) % wayPoints.size();
 		nextPoint = wayPoints[waypointsindex];
 		fsm.state = CFSM::IDLE;
 	}
