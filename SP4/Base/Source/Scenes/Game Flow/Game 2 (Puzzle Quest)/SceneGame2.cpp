@@ -30,7 +30,6 @@ CSceneGame2::~CSceneGame2()
 
 void CSceneGame2::Init(int level)
 {
-	level = 0;
 	this->level = level;
 	// Init the base scene
 	sceneManager2D.Init(level);
@@ -43,6 +42,7 @@ void CSceneGame2::Init(int level)
 
 	scriptFinished = L->DoLuaString("scriptFinished");
 	scriptExit = L->DoLuaString("scriptExit");
+	scriptLevelEnd = L->DoLuaString("scriptLevelEnd");
 
 	// Dialogues scripts
 	for (int i = 0; i < 6; i++)
@@ -1055,10 +1055,10 @@ void CSceneGame2::Render()
 	////ss << "theEnemy: " << theEnemy->GetPos_x() << ", " << theEnemy->GetPos_y();
 	//ss << "theEnemiesLeft: " << theEnemies.size();
 	//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
-	ss.str(std::string());
+	/*ss.str(std::string());
 	ss.precision(5);
 	ss << "mapOffset_x: " << theHero->GetMapOffset_x();
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 30);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 30);*/
 	// Jellybean
 	sceneManager2D.Render2DMesh(meshList[GEO_JELLYBEAN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
 	ss.str(std::string());
@@ -1086,7 +1086,7 @@ void CSceneGame2::Render()
 		castedColour += "Blue and Yellow";
 
 	ss << "Casted colour: " << castedColour;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 50);
 
 }
 
@@ -1424,11 +1424,27 @@ void CSceneGame2::RenderGUI()
 		break;
 	case COMPLETED:
 	{
-		int textSize = m_cMap->GetTileSize();
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
+		switch (level)
+		{
+		case 0:
+		{
+			int textSize = m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
 
-		textSize = m_cMap->GetTileSize() * 0.5;
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
+			textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
+		}
+			break;
+		case 1 || 2 || 3:
+		{
+			int textSize = m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptLevelEnd, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.24), sceneManager2D.m_window_height * 0.5 + textSize);
+
+			textSize = m_cMap->GetTileSize() * 0.5;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
+		}
+			break;
+		}
 	}
 		break;
 

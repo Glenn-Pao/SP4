@@ -105,7 +105,7 @@ private:
 
 	vector<CObjects*> dialogueTiles;
 
-	string scriptExit, scriptFinished;
+	string scriptExit, scriptFinished, scriptLevelEnd;
 
 	int castedColoursCounter;
 	float timer;

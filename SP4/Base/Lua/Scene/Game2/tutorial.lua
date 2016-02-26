@@ -14,3 +14,5 @@ script5 = "Press space to combine 2 colours after casting."
 
 scriptFinished = "Tutorial completed!"
 scriptExit = "<Click anywhere to exit>"
+
+scriptLevelEnd = "Level completed!"
