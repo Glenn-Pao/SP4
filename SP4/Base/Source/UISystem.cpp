@@ -42,18 +42,18 @@ void UISystem::Render(CSceneManager2D& scene)
 
 			case UIFeature::UT_IMAGE:
 			{
-										Image* image;
+				Image* image;
 
-										image = static_cast<Image*>((*CurrentFeature));
+				image = static_cast<Image*>((*CurrentFeature));
 
-										scene.Render2DMesh(image->getMesh(), false,
-											image->getScale().x,
-											image->getScale().y,
-											image->getCurrentPos().x,
-											image->getCurrentPos().y,
-											 0,
-											 false);
-										 break;
+				scene.Render2DMesh(image->getMesh(), false,
+					image->getScale().x,
+					image->getScale().y,
+					image->getCurrentPos().x,
+					image->getCurrentPos().y,
+					0,
+					false);
+				break;
 			}
 		}
 	}

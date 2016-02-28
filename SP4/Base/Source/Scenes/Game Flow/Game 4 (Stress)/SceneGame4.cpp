@@ -179,12 +179,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		Score = 0;
 		Timer = 60;
 
-		UIManager = new UISystem();
-
-		//Button* OK = new Button("OKButton",);
-		//UIManager->addFeature(OK);
-		//UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("OKButton"), );
-
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(250, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(250, 425, 1), Vector3(80, 0, 0));
@@ -224,8 +218,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		Score = 0;
 		Timer = 60;
 
-		UIManager = new UISystem();
-
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(175, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(175, 425, 1), Vector3(80, 0, 0));
@@ -260,12 +252,10 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	case HARD:
 	{
 		//GamePlay Variables
-		MissingCardTimer = -1;
+		MissingCardTimer = -2;
 		ScoreToBeat = 20;
 		Score = 0;
 		Timer = 60;
-
-		UIManager = new UISystem();
 
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(85, 300, 1), Vector3(80, 0, 0));
@@ -631,6 +621,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 				}
 				Score += 8;
+				MissingCardTimer = 0;
 			}
 
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
@@ -696,6 +687,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 				}
 				Score += 8;
+				MissingCardTimer = 0;
 			}
 
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
@@ -761,6 +753,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 				}
 				Score += 8;
+				MissingCardTimer = 0;
 			}
 
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
@@ -830,7 +823,6 @@ void SceneGame4::UpdateTimer(double dt)
 
 void SceneGame4::Update(double dt)
 {
-
 	if (Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2'))
@@ -866,7 +858,6 @@ void SceneGame4::Update(double dt)
 	}
 	case DifficultyLevel::EASY:
 	{
-		UIManager->Update(dt);
 		switch (CurrentState)
 		{
 		case PLAY:
@@ -925,6 +916,8 @@ void SceneGame4::Update(double dt)
 	}
 	case DifficultyLevel::HARD:
 	{
+
+		cout << MissingCardTimer << endl;
 		switch (CurrentState)
 		{
 		case PLAY:
@@ -1090,8 +1083,6 @@ Render this scene
 void SceneGame4::Render()
 {
 	sceneManager2D.Render();
-
-	UIManager->Render(sceneManager2D);
 
 	sceneManager2D.modelStack.PushMatrix();
 
