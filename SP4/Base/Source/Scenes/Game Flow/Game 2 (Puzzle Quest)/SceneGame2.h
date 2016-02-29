@@ -47,19 +47,22 @@ public:
 	void RenderGUI();
 
 	void InitTutorial();
-	void InitLevel1();
 	void InitLevel2();
 	void InitLevel3();
 
 	void UpdateTutorial(double dt);
-	void UpdateLevel1(double dt);
 	void UpdateLevel2(double dt);
 	void UpdateLevel3(double dt);
-	void UpdateRight4Pt(double dt);
-	void UpdateLeft4Pt(double dt);
+
+	void UpdateRight4PtS(double dt);
+	void UpdateLeft4PtS(double dt);
+	void UpdateRight4PtM(double dt);
+	void UpdateLeft4PtM(double dt);
+	void UpdateRight4PtB(double dt);
+	void UpdateLeft4PtB(double dt);
+	void UpdateAI(double dt);
 
 	void RenderTutorial();
-	void RenderLevel1();
 	void RenderLevel2();
 	void RenderLevel3();
 
@@ -89,6 +92,8 @@ private:
 	void RenderGoodies(void);
 
 	CSceneManager2D sceneManager2D;
+	
+	CDoor* endDoor;
 	std::vector<CDoor*> GreyDoors;
 	std::vector<CDoor*> BlueDoors;
 	std::vector<CDoor*> YellowDoors;
@@ -96,12 +101,10 @@ private:
 	std::vector<CDoor*> PurpleDoors;
 	std::vector<CDoor*> GreenDoors;
 	std::vector<CColour*> ColoursSet;
-	std::vector<std::string> ColoursThePlayerHas;
-	
-	std::vector<string> scriptDialogues;
 
-	CDoor* greenDoor;
-	CDoor* endDoor;
+	std::vector<std::string> ColoursThePlayerHas;
+	std::vector<string> scriptDialogues;
+	
 	bool hasBlue, hasYellow, hasRed, hasPurple;
 	bool castedBlue, castedYellow, castedGreen, castedOrange, castedRed, castedPurple;
 	Vector3 prevHeroPos;
@@ -116,12 +119,17 @@ private:
 
 	UseLuaFiles* L;
 
-	vector<AI*> AIsList4ptRight, AIsList4ptLeft;
+	vector<AI*> AIsList4ptRightS, AIsList4ptLeftS, AIsList4ptRightM, AIsList4ptLeftM, AIsList4ptRightB, AIsList4ptLeftB;
 
 	bool catchcooldown;
 	double cooldownTimer;
 
 	int smallSquare, medSquare, bigSquare;
+	
+	double TRightS, TLeftS, TRightM, TLeftM, TRightB, TLeftB;
+	std::string showTextBlue, showTextYellow, showTextGreen, showTextRed, showTextOrange, showTextPurple;
+
+	Vector3 slot1, slot2, slot3, slot4;
 };
 
 #endif
