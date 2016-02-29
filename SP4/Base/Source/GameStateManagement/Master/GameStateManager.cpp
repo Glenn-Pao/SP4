@@ -106,6 +106,12 @@ void CGameStateManager::PushState(CGameState* state, int level)
 
 void CGameStateManager::PopState()
 {
+	//if (StackOfStates.back()->GetStateID() == 8 && (StackOfStates.back() - 1)->GetStateID() == 10)
+	//{
+	//	//saveAndLoadsys->SaveToFile();
+	//	//cout << "File saved" << endl;
+	//}
+
 	// cleanup the current state
 	if ( !StackOfStates.empty() ) {
 		prevI = StackOfStates.back()->GetStateID();		//store the stack's state id before cleaning it up

@@ -3,6 +3,7 @@ using namespace std;
 
 #include "../Master/GameStateManager.h"
 #include "../Master/GameState.h"
+#include "../Game Flow/Lobby/HubState.h"
 #include "PauseState.h"
 #include "MenuState.h"
 
@@ -133,33 +134,142 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
-	// Resume
-	if (width * 0.355 <= mouse_x && mouse_x <= width * 0.645 &&
-		height * 0.425 <= mouse_y && mouse_y <= height * 0.515)
+
+	//UI component
+	switch (scene->currentState)
 	{
-		scene->choice = CScenePause::RESUME;
-		if (button_Left == true)
-		{
-			theGSM->m_bHideMouse = true;
-			theGSM->m_bWarpMouse = true;
-			theGSM->PopState();
-		}
+		//when accessed while playing in lobby
+	case CScenePause::LOBBY:
+	{
+		scene->firstState = CScenePause::LOBBY;
+		// Play
+		scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 	}
-	// Level Selection
-	else if (width * 0.42 <= mouse_x && mouse_x <= width * 0.58 &&
-		height * 0.535 <= mouse_y && mouse_y <= height * 0.63)
+		break;
+		//when accessed while playing mini game
+	case CScenePause::GAME:
 	{
-		scene->choice = CScenePause::QUIT;
-		if (button_Left == true)
-		{
-			//theGSM->Cleanup();
-			theGSM->PopState();
-			theGSM->ChangeState(CMenuState::Instance());
-		}
+		scene->firstState = CScenePause::GAME;
+		// Play
+		scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 	}
-	else
+		break;
+		//confirmation of choice
+	case CScenePause::CONFIRMATION:
 	{
-		scene->choice = CScenePause::NONE;
+		scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+	}
+		break;
+	}
+	if (button_Left == true)
+	{
+		switch (scene->currentState)
+		{
+			//has the save button
+		case CScenePause::LOBBY:
+		{
+			if (scene->UIManager->FindButton("ResumeButton")->getisHovered() == true)
+			{
+				//resume the game
+				theGSM->PopState();
+				return;
+			}
+			//save the game's progress or quit game shows confirm window
+			if (scene->UIManager->FindButton("SaveButton")->getisHovered() == true)
+			{
+				scene->prevState = CScenePause::SAVE_GAME;
+				scene->currentState = CScenePause::CONFIRMATION;
+				scene->ShowConfirmation();
+			}
+			//quit game should show confirm window
+			if (scene->UIManager->FindButton("QuitButton")->getisHovered() == true)
+			{
+				scene->prevState = CScenePause::TO_MAIN_MENU;
+				scene->currentState = CScenePause::CONFIRMATION;
+				scene->ShowConfirmation();
+			}
+		}
+			break;
+			//does not have the save button
+		case CScenePause::GAME:
+		{
+			if (scene->UIManager->FindButton("ResumeButton")->getisHovered() == true)
+			{
+				//resume the game
+				theGSM->PopState();
+				return;
+			}
+			//quit game should show confirm window, returns to game hub
+			if (scene->UIManager->FindButton("QuitButton")->getisHovered() == true)
+			{
+				scene->prevState = CScenePause::QUIT_GAME;
+				scene->currentState = CScenePause::CONFIRMATION;
+				scene->ShowConfirmation();
+			}
+			//quit game should show confirm window, returns to main menu
+			if (scene->UIManager->FindButton("MainMenuButton")->getisHovered() == true)
+			{
+				scene->prevState = CScenePause::TO_MAIN_MENU;
+				scene->currentState = CScenePause::CONFIRMATION;
+				scene->ShowConfirmation();
+			}
+		}
+			break;
+		case CScenePause::CONFIRMATION:
+		{
+			// Yes Button
+			if (scene->UIManagerConfirmation->FindButton("YesButton")->getisHovered() == true)
+			{
+				if (scene->prevState == CScenePause::SAVE_GAME)
+				{
+					//save the progress
+					theGSM->saveAndLoadsys->SaveToFile();
+					theGSM->PopState();
+					cout << "Saved!" << endl;
+					return;
+				}
+				if (scene->prevState == CScenePause::QUIT_GAME)
+				{
+					if (scene->firstState == CScenePause::LOBBY)
+					{
+						//add a confirmation window before proceeding
+						theGSM->PopState();
+						theGSM->ChangeState(CMenuState::Instance());
+						return;
+					}
+					else if (scene->firstState == CScenePause::GAME)
+					{
+						//add a confirmation window before proceeding
+						theGSM->PopState();
+						theGSM->ChangeState(CHubState::Instance());
+						return;
+					}
+				}
+				if (scene->prevState == CScenePause::TO_MAIN_MENU)
+				{
+					//add a confirmation window before proceeding
+					theGSM->PopState();
+					theGSM->ChangeState(CMenuState::Instance());
+					return;
+				}
+
+			}
+			// No Button
+			if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)
+			{
+				if (scene->firstState == CScenePause::LOBBY)
+				{
+					scene->currentState = CScenePause::LOBBY;
+				}
+				else if (scene->firstState == CScenePause::GAME)
+				{
+					scene->currentState = CScenePause::GAME;
+				}
+				scene->HideConfirmation();
+			}
+		}
+			break;
+		}
 	}
 }
 

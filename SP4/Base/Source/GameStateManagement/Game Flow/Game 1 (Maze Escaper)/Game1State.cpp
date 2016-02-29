@@ -145,7 +145,7 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const unsigned char ke
 		theGSM->m_bUnhideMouse = true;
 		theGSM->m_bWarpMouse = false;
 
-		theGSM->PushState(CPauseState::Instance());
+		theGSM->PushState(CPauseState::Instance(), 1);
 	}
 #endif
 }

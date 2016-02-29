@@ -146,7 +146,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->m_bUnhideMouse = true;
 		theGSM->m_bWarpMouse = false;
 
-		theGSM->PushState(CPauseState::Instance());
+		theGSM->PushState(CPauseState::Instance(), 0);						//indicates that it is from hub state
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
 	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
