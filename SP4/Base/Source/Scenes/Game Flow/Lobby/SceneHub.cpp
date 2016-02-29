@@ -9,11 +9,7 @@
 #include <sstream>
 #include "..\..\Base\Source\Strategy_Kill.h"
 
-extern "C" {
-#include "..\..\..\Lua\lua.h"
-#include "..\..\..\Lua\lualib.h"
-#include "..\..\..\Lua\lauxlib.h"
-}
+#include "..\..\..\UsingLua.h"
 
 CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	: currentState(PLAYING)
@@ -25,11 +21,14 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	, noOfJellybeansDeposited(0)
 	, difficultySelected(0)
 	, UI_Speed(0.f)
+	, targetNPC(NULL)
+	, jellybeansRequiredToFinish(100)
 {
 }
 
 CSceneHub::~CSceneHub()
 {
+	 // Door
 	for (int i = 0; i < theDoor.size(); i++)
 	{
 		if (theDoor[i])
@@ -38,7 +37,7 @@ CSceneHub::~CSceneHub()
 			theDoor[i] = NULL;
 		}
 	}
-
+	// UI
 	if (UIManagerDifficultySelection)
 	{
 		delete UIManagerDifficultySelection;
@@ -59,33 +58,29 @@ CSceneHub::~CSceneHub()
 		delete UIManagerConfirmation;
 		UIManagerConfirmation = NULL;
 	}
+	// Guardian
+	for (int i = 0; i < theNPCs.size(); i++)
+	{
+		if (theNPCs[i])
+		{
+			delete theNPCs[i];
+			theNPCs[i] = NULL;
+		}
+	}
 }
 
 void CSceneHub::Init(int level)
 {
-	UI_Speed = 20.0f;
-
 	// Init the base scene
 	sceneManager2D.Init(level);
 
-	lua_State *L = lua_open();
-
 	//Read a value from the lua text file
-	luaL_openlibs(L);
+	UseLuaFiles L;
 
-	if (luaL_loadfile(L, "Lua//scenePlay2D.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
+	L.ReadFiles("Lua//Scene/GameHub.lua");
 
-	// Fullscreen
-	lua_getglobal(L, "tileSize");
-	if (!lua_isnumber(L, -1)) {
-		printf("`tileSize' should be a number\n");
-	}
-	int tileSize = (int)lua_tointeger(L, -1);
-
-	lua_close(L);
+	int tileSize = L.DoLuaInt("tileSize");
+	jellybeansRequiredToFinish = L.DoLuaInt("noOfJellybeansRequiredToFinish");
 
 	// Initialise and load the tile map
 	m_cMap = new CMap();
@@ -98,11 +93,6 @@ void CSceneHub::Init(int level)
 	temp = waypoints->getWaypointsVector();
 
 
-	// Initialise and load the REAR tile map
-	/*m_cRearMap = new CMap();
-	m_cRearMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, sceneManager2D.m_window_height / tileSize, sceneManager2D.m_window_width / tileSize, 24 * tileSize, 64 * tileSize, tileSize);
-	m_cRearMap->LoadMap("Image//MapDesign_Rear.csv");*/
-
 	// Load the texture for minimap
 	m_cMinimap = new CMinimap();
 	m_cMinimap->SetBackground(MeshBuilder::GenerateMinimap("MINIMAP", Color(1, 1, 1), 1.f));
@@ -110,6 +100,10 @@ void CSceneHub::Init(int level)
 	m_cMinimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MINIMAPBORDER", Color(1, 1, 0), 1.f));
 	m_cMinimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MINIMAPAVATAR", Color(1, 1, 0), 1.f));
 
+	// Find object positions in map 
+	Vector3 GuardianPos;
+	Vector3 DoorPos[5];
+	int currentDoorIndex = 0;
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
@@ -122,14 +116,16 @@ void CSceneHub::Init(int level)
 				theHero->setPositionX(k*m_cMap->GetTileSize());
 				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());				
 			}
-			// Enemies
+			// Guardian
 			else if (m_cMap->theScreenMap[i][k] == 100)
 			{
-				// Set the strategy for the enemy
-				theEnemies.push_back(new CEnemy());
-				theEnemies.back()->ChangeStrategy(NULL, false);
-				theEnemies.back()->SetPos_x(k*m_cMap->GetTileSize());
-				theEnemies.back()->SetPos_y(sceneManager2D.m_window_height - i*m_cMap->GetTileSize() - m_cMap->GetTileSize());
+				GuardianPos.Set(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+			}
+			// Door
+			else if (m_cMap->theScreenMap[i][k] == 20)
+			{
+				DoorPos[currentDoorIndex].Set(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				currentDoorIndex++;
 			}
 		}
 	}
@@ -137,121 +133,22 @@ void CSceneHub::Init(int level)
 	// Initialise the Meshes
 	InitMeshes();
 
-	/*theArrayOfGoodies = new CGoodies*[10];
-	for (int i = 0; i<10; i++)
-	{
-	theArrayOfGoodies[i] = theGoodiesFactory.Create(TREASURECHEST);
-	theArrayOfGoodies[i]->SetPos(150 + i * 25, 150);
-	theArrayOfGoodies[i]->SetMesh(MeshBuilder::Generate2DMesh("GEO_TILE_TREASURECHEST", Color(1, 1, 1), 0, 0, 1, 1));
-	theArrayOfGoodies[i]->SetTextureID(LoadTGA("Image//tile4_treasurechest.tga"));
-	}*/
+	// Guardian
+	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(GuardianPos.x, GuardianPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_JELLYBEAN], CAI_Idling::GUARDIAN));
+	theNPCs.back()->setDialogue(L.DoLuaString("GuardianScript"));
 
+	// Exit
+	theDoor.push_back(new CDoor(CObjects::DOOR, 5, Vector3(DoorPos[0].x, DoorPos[0].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 
-	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 1.5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(sceneManager2D.m_window_width / 4, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(sceneManager2D.m_window_width / 1.5, sceneManager2D.m_window_height / 5, 0), Vector3(50, 50, 50), meshList[GEO_TILE_DOOR]));
+	// Doors
+	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(DoorPos[1].x, DoorPos[1].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(DoorPos[2].x, DoorPos[2].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(DoorPos[3].x, DoorPos[3].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(DoorPos[4].x, DoorPos[4].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	
 
 	// UI
-	// AlphaQuad
-	UIManagerBlackQuad = new UISystem();
-
-	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
-	UIManagerBlackQuad->addFeature(AlphaQuad);
-
-	// Difficulty
-	UIManagerDifficultySelection = new UISystem();
-
-	// Background
-	Image* SelectionBackground;
-	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
-	UIManagerDifficultySelection->addFeature(SelectionBackground);
-
-	// Difficulty
-	// header
-	Image* DifficultyHeader;
-	DifficultyHeader = new Image("DifficultyHeader", meshList[GEO_DIFFICULTY], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
-	UIManagerDifficultySelection->addFeature(DifficultyHeader);
-
-	// Buttons
-	// Tutorial button
-	Button* TutorialButton;
-	TutorialButton = new Button("TutorialButton", meshList[GEO_TUTORIAL_BUTTON_UP], meshList[GEO_TUTORIAL_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerDifficultySelection->addFeature(TutorialButton);
-
-	// Easy Button
-	Button* EasyButton;
-	EasyButton = new Button("EasyButton", meshList[GEO_EASY_BUTTON_UP], meshList[GEO_EASY_BUTTON_DOWN], meshList[GEO_EASY_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerDifficultySelection->addFeature(EasyButton);
-
-	// Medium Button
-	Button* MediumButton;
-	MediumButton = new Button("MediumButton", meshList[GEO_MEDIUM_BUTTON_UP], meshList[GEO_MEDIUM_BUTTON_DOWN], meshList[GEO_MEDIUM_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerDifficultySelection->addFeature(MediumButton);
-
-	// Hard Button
-	Button* HardButton;
-	HardButton = new Button("HardButton", meshList[GEO_HARD_BUTTON_UP], meshList[GEO_HARD_BUTTON_DOWN], meshList[GEO_HARD_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerDifficultySelection->addFeature(HardButton);
-
-	// Back button
-	Button* BackButton;
-	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
-	UIManagerDifficultySelection->addFeature(BackButton);
-
-
-	// Jellybean
-	UIManagerJellybeanSelection = new UISystem();
-
-	// Background
-	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
-	UIManagerJellybeanSelection->addFeature(SelectionBackground);
-
-	// Header
-	Image* JellybeanHeader;
-	JellybeanHeader = new Image("JellybeanHeader", meshList[GEO_JELLYBEAN_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
-	UIManagerJellybeanSelection->addFeature(JellybeanHeader);
-
-	// Buttons
-	// Up Arrow button
-	Button* UpArrowButton;
-	UpArrowButton = new Button("UpArrowButton", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], meshList[GEO_UPARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.7, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerJellybeanSelection->addFeature(UpArrowButton);
-
-	// Down Arrow button
-	Button* DownArrowButton;
-	DownArrowButton = new Button("DownArrowButton", meshList[GEO_DOWNARROW_BUTTON_UP], meshList[GEO_DOWNARROW_BUTTON_DOWN], meshList[GEO_DOWNARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.3, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerJellybeanSelection->addFeature(DownArrowButton);
-
-
-	// Enter Arrow button
-	Button* EnterButton;
-	EnterButton = new Button("EnterButton", meshList[GEO_ENTER_BUTTON_UP], meshList[GEO_ENTER_BUTTON_DOWN], meshList[GEO_ENTER_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.25, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
-	UIManagerJellybeanSelection->addFeature(EnterButton);
-
-	// Back button
-	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
-	UIManagerJellybeanSelection->addFeature(BackButton);
-
-	// Confiramtion
-	UIManagerConfirmation = new UISystem();
-
-	// Confirmation Window
-	Image* ConfirmationWindow;
-	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
-	UIManagerConfirmation->addFeature(ConfirmationWindow);
-
-	// Yes button
-	Button* YesButton;
-	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
-	UIManagerConfirmation->addFeature(YesButton);
-
-	// No button
-	Button* NoButton;
-	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
-	UIManagerConfirmation->addFeature(NoButton);
+	InitUI();
 }
 
 void CSceneHub::PreInit()
@@ -271,6 +168,8 @@ void CSceneHub::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
 	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
@@ -407,6 +306,113 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_BACK_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Back_Button_Pressed.tga");
 }
 
+
+/********************************************************************************
+Initialise the UIs. This is a private function for use in this class only
+********************************************************************************/
+void CSceneHub::InitUI()
+{
+	// Animation speed
+	UI_Speed = 20.0f;
+	/*AlphaQuad*/
+	UIManagerBlackQuad = new UISystem();
+
+	Image* AlphaQuad;
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManagerBlackQuad->addFeature(AlphaQuad);
+
+	/*Difficulty*/
+	UIManagerDifficultySelection = new UISystem();
+
+	// Background
+	Image* SelectionBackground;
+	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManagerDifficultySelection->addFeature(SelectionBackground);
+
+	// Header
+	Image* DifficultyHeader;
+	DifficultyHeader = new Image("DifficultyHeader", meshList[GEO_DIFFICULTY], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
+	UIManagerDifficultySelection->addFeature(DifficultyHeader);
+
+	// Buttons
+	// Tutorial button
+	Button* TutorialButton;
+	TutorialButton = new Button("TutorialButton", meshList[GEO_TUTORIAL_BUTTON_UP], meshList[GEO_TUTORIAL_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerDifficultySelection->addFeature(TutorialButton);
+
+	// Easy Button
+	Button* EasyButton;
+	EasyButton = new Button("EasyButton", meshList[GEO_EASY_BUTTON_UP], meshList[GEO_EASY_BUTTON_DOWN], meshList[GEO_EASY_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerDifficultySelection->addFeature(EasyButton);
+
+	// Medium Button
+	Button* MediumButton;
+	MediumButton = new Button("MediumButton", meshList[GEO_MEDIUM_BUTTON_UP], meshList[GEO_MEDIUM_BUTTON_DOWN], meshList[GEO_MEDIUM_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerDifficultySelection->addFeature(MediumButton);
+
+	// Hard Button
+	Button* HardButton;
+	HardButton = new Button("HardButton", meshList[GEO_HARD_BUTTON_UP], meshList[GEO_HARD_BUTTON_DOWN], meshList[GEO_HARD_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerDifficultySelection->addFeature(HardButton);
+
+	// Back button
+	Button* BackButton;
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
+	UIManagerDifficultySelection->addFeature(BackButton);
+
+
+	/*Jellybean*/
+	UIManagerJellybeanSelection = new UISystem();
+
+	// Background
+	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManagerJellybeanSelection->addFeature(SelectionBackground);
+
+	// Header
+	Image* JellybeanHeader;
+	JellybeanHeader = new Image("JellybeanHeader", meshList[GEO_JELLYBEAN_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
+	UIManagerJellybeanSelection->addFeature(JellybeanHeader);
+
+	// Buttons
+	// Up Arrow button
+	Button* UpArrowButton;
+	UpArrowButton = new Button("UpArrowButton", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], meshList[GEO_UPARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.7, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerJellybeanSelection->addFeature(UpArrowButton);
+
+	// Down Arrow button
+	Button* DownArrowButton;
+	DownArrowButton = new Button("DownArrowButton", meshList[GEO_DOWNARROW_BUTTON_UP], meshList[GEO_DOWNARROW_BUTTON_DOWN], meshList[GEO_DOWNARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.3, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerJellybeanSelection->addFeature(DownArrowButton);
+
+
+	// Enter Arrow button
+	Button* EnterButton;
+	EnterButton = new Button("EnterButton", meshList[GEO_ENTER_BUTTON_UP], meshList[GEO_ENTER_BUTTON_DOWN], meshList[GEO_ENTER_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.25, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UIManagerJellybeanSelection->addFeature(EnterButton);
+
+	// Back button
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
+	UIManagerJellybeanSelection->addFeature(BackButton);
+
+	// Confiramtion
+	UIManagerConfirmation = new UISystem();
+
+	// Confirmation Window
+	Image* ConfirmationWindow;
+	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManagerConfirmation->addFeature(ConfirmationWindow);
+
+	// Yes button
+	Button* YesButton;
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(YesButton);
+
+	// No button
+	Button* NoButton;
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(NoButton);
+}
+
 void CSceneHub::Update(double dt)
 {
 	if (Application::IsKeyPressed('1'))
@@ -420,107 +426,168 @@ void CSceneHub::Update(double dt)
 
 	sceneManager2D.Update(dt);
 
-	if (currentState == PLAYING)
+	switch (currentState)
 	{
-		Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
-		// Update the hero
-		if (Application::IsKeyPressed('W'))
-			this->theHero->MoveUpDown(true, dt, m_cMap);
-		if (Application::IsKeyPressed('S'))
-			this->theHero->MoveUpDown(false, dt, m_cMap);
-		if (Application::IsKeyPressed('A'))
-			this->theHero->MoveLeftRight(true, dt, m_cMap);
-		if (Application::IsKeyPressed('D'))
-			this->theHero->MoveLeftRight(false, dt, m_cMap);
-		/*if (Application::IsKeyPressed(' '))
-		this->theHero->SetToJumpUpwards(true);*/
-		// Update Hero animation counter if hero moved
-		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+		case PLAYING:
 		{
-			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
-			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-				theHero->SetAnimationCounter(1);
-		}
-		else
-		{
-			theHero->SetAnimationCounter(0);
-		}
-		theHero->HeroUpdate(m_cMap, dt);
-	}
+			Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
+			// Update the hero
+			if (Application::IsKeyPressed('W'))
+				this->theHero->MoveUpDown(true, dt, m_cMap);
+			if (Application::IsKeyPressed('S'))
+				this->theHero->MoveUpDown(false, dt, m_cMap);
+			if (Application::IsKeyPressed('A'))
+				this->theHero->MoveLeftRight(true, dt, m_cMap);
+			if (Application::IsKeyPressed('D'))
+				this->theHero->MoveLeftRight(false, dt, m_cMap);
+			/*if (Application::IsKeyPressed(' '))
+			this->theHero->SetToJumpUpwards(true);*/
+			// Update Hero animation counter if hero moved
+			if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
+			{
+				theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+				if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
+					theHero->SetAnimationCounter(1);
+			}
+			else
+			{
+				theHero->SetAnimationCounter(0);
+			}
+			theHero->HeroUpdate(m_cMap, dt);
 
-	// ReCalculate the tile offsets
-	tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
-	if (tileOffset_x + m_cMap->GetNumOfTiles_Width() > m_cMap->getNumOfTiles_MapWidth())
-		tileOffset_x = m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width();
-	tileOffset_y = (int)(theHero->GetMapOffset_y() / m_cMap->GetTileSize());
-	if (tileOffset_y + m_cMap->GetNumOfTiles_Height() > m_cMap->getNumOfTiles_MapHeight())
-		tileOffset_y = m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height();
+			// Check Door
+			for (int i = 0; i < theDoor.size(); i++)
+			{
+				if (theDoor[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+				{
+					game_interacted = NO_GAME + theDoor[i]->getId();
+					break;
+				}
+				// No collide
+				if (i == theDoor.size() - 1)
+				{
+					game_interacted = NO_GAME;
+				}
+			}
 
-	// if the hero enters the kill zone, then enemy goes into kill strategy mode
-	int typeCollided = theHero->CheckCollision(m_cMap);
-	if (typeCollided == 10)
-	{
-		for (int i = 0; i < theEnemies.size(); i++)
-		{
-			theEnemies[i]->ChangeStrategy(new CStrategy_Kill());
-		}
-	}
-	else if (typeCollided == 11)
-	{
-		for (int i = 0; i < theEnemies.size(); i++)
-		{
-			theEnemies[i]->ChangeStrategy(NULL);
-		}
-	}
-	else
-	{
-		//theEnemy->ChangeStrategy(NULL);
-	}
+			// Update NPCs
+			for (int i = 0; i < theNPCs.size(); i++)
+			{
+				// Update those NPCs that are movable
+				if (theNPCs[i]->GetAI_Type() == CAI_Idling::MOVABLE)
+				{
+					theNPCs[i]->Update(dt, theHero);
+				}
 
-	// Update the enemies
-	for (int i = 0; i < theEnemies.size(); i++)
-	{
-		int theDestination_x = theHero->getPositionX() + theHero->GetMapOffset_x();
-		int theDestination_y = theHero->getPositionY() - theHero->GetMapOffset_y();
-		theEnemies[i]->SetDestination(theDestination_x, theDestination_y);
-		theEnemies[i]->Update(m_cMap);
-	}
+				// Check if the Hero collided with the NPCs
+				if (theNPCs[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+				{
+					theHero->setPosition(prevHeroPos);
+				}
 
-	if (theDoor[0]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-	{
-		if (theDoor[0]->getId() == 1)
-		{
-			game_interacted = GAME1;
+				// Check if the Hero can interact with NPC or not
+				if (CheckIfThisNPCIsInteractable(theNPCs[i]) == true)
+				{
+					// Interactable
+					theNPCs[i]->SetIfInteractable(true);
+				}
+				else
+				{
+					// Not interactable
+					theNPCs[i]->SetIfInteractable(false);
+				}
+			}
+			// Set target
+			for (int i = 0; i < theNPCs.size(); i++)
+			{
+				// Check if the Hero can interact with NPC or not
+				if (theNPCs[i]->IfInteractable() == true)
+				{
+					targetNPC = theNPCs[i];
+					break;
+				}
+				// if no target
+				if (i == theNPCs.size() - 1)
+				{
+					targetNPC = NULL;
+				}
+			}
 		}
-	}
-	else if (theDoor[1]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-	{
-		if (theDoor[1]->getId() == 2)
+		break;
+		case GIVING_JELLYBEANS:
 		{
-			game_interacted = GAME2;
+			if (noOfJellybeans >= jellybeansRequiredToFinish)
+			{
+
+			}
 		}
-	}
-	else if (theDoor[2]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-	{
-		if (theDoor[2]->getId() == 3)
-		{
-			game_interacted = GAME3;
-		}
-	}
-	else if (theDoor[3]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
-	{
-		if (theDoor[3]->getId() == 4)
-		{
-			game_interacted = GAME4;
-		}
-	}
-	else
-	{
-		game_interacted = NO_GAME;
+		break;
 	}
 
 	// UI
 	UpdateUI(dt);
+}
+
+/********************************************************************************
+Check If This NPC Is Interactable
+********************************************************************************/
+bool CSceneHub::CheckIfThisNPCIsInteractable(CAI_Idling* theNPC)
+{
+	// Check Distance between hero and this NPC
+	if ((theNPC->getPosition() - theHero->getPosition()).Length() <= m_cMap->GetTileSize())
+	{
+		// Check direction if hero facing the NPC
+		switch (theHero->GetAnimationDirection())
+		{
+			// Check Y, for Left/Right
+		case CPlayerInfo::RIGHT:
+		{
+			if (Vector3(0, theNPC->getPosition().y - theHero->getPosition().y).Length() <= m_cMap->GetTileSize() * 0.6)
+			{
+				if (theNPC->getPosition().x > theHero->getPosition().x)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+		case CPlayerInfo::LEFT:
+		{
+			if (Vector3(0, theNPC->getPosition().y - theHero->getPosition().y).Length() <= m_cMap->GetTileSize() * 0.6)
+			{
+				if (theNPC->getPosition().x < theHero->getPosition().x)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+		// Check X, for Up/Down
+		case CPlayerInfo::UP:
+		{
+			if (Vector3(theNPC->getPosition().x - theHero->getPosition().x).Length() <= m_cMap->GetTileSize() * 0.5)
+			{
+				if (theNPC->getPosition().y > theHero->getPosition().y)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+		case CPlayerInfo::DOWN:
+		{
+			if (Vector3(theNPC->getPosition().x - theHero->getPosition().x).Length() <= m_cMap->GetTileSize() * 0.5)
+			{
+				if (theNPC->getPosition().y < theHero->getPosition().y)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+		}
+	}
+	return false;
 }
 
 /********************************************************************************
@@ -812,11 +879,6 @@ void CSceneHub::Render()
 
 	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
 
-
-	//sceneManager2D.RenderBackground();
-
-	// Render the rear tile map
-	RenderRearTileMap();
 	// Render the tile map
 	RenderTileMap();
 	for (int i = 0; i < theDoor.size(); i++)
@@ -827,71 +889,11 @@ void CSceneHub::Render()
 	RenderHero();
 	// Render AIs
 	RenderAIs();
-	//Render Waypoints
-	//RenderWaypoints();
-	// Render the goodies
-	//RenderGoodies();
-
 
 	sceneManager2D.modelStack.PopMatrix();
 
-	//On screen text
-	std::ostringstream ss;
-	ss.precision(5);
-	//ss << "theEnemy: " << theEnemy->GetPos_x() << ", " << theEnemy->GetPos_y();
-	ss << "theEnemiesLeft: " << theEnemies.size();
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 6);
-	ss.str(std::string());
-	ss.precision(5);
-	ss << "mapOffset_x: " << theHero->GetMapOffset_x();
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), 30, 0, 30);
-	// Jellybean
-	sceneManager2D.Render2DMesh(meshList[GEO_JELLYBEAN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
-	ss.str(std::string());
-	ss.precision(3);
-	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
-
-	// UI
-	switch (currentState)
-	{
-	case PLAYING:
-		UIManagerBlackQuad->Render(sceneManager2D);
-		UIManagerDifficultySelection->Render(sceneManager2D);
-		UIManagerJellybeanSelection->Render(sceneManager2D);
-		UIManagerConfirmation->Render(sceneManager2D);
-		break;
-	case DIFFICULTY_SELECTION:
-		UIManagerBlackQuad->Render(sceneManager2D);
-		UIManagerDifficultySelection->Render(sceneManager2D);
-		UIManagerJellybeanSelection->Render(sceneManager2D);
-		UIManagerConfirmation->Render(sceneManager2D);
-		break;
-	case JELLYBEAN_SELECTION:
-		UIManagerBlackQuad->Render(sceneManager2D);
-		UIManagerDifficultySelection->Render(sceneManager2D);
-		UIManagerJellybeanSelection->Render(sceneManager2D);
-		UIManagerConfirmation->Render(sceneManager2D);
-		break;
-	case CONFIRMATION:
-		UIManagerDifficultySelection->Render(sceneManager2D);
-		UIManagerJellybeanSelection->Render(sceneManager2D);
-		UIManagerBlackQuad->Render(sceneManager2D);
-		UIManagerConfirmation->Render(sceneManager2D);
-		break;
-	}
-
-	if (currentState == JELLYBEAN_SELECTION)
-	{
-		if (noOfJellybeansDeposited >= 10)
-		{
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize() * 1.75, sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
-		}
-		else
-		{
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize(), sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
-		}
-	}
+	// Render GUI
+	RenderGUI();
 }
 
 /********************************************************************************
@@ -933,10 +935,6 @@ void CSceneHub::RenderTileMap()
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_SAFEZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
 			}
-			//else if (m_cMap->theScreenMap[i][k] == 30)
-			//{
-			//	sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
-			//}
 			else
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cMap->GetTileSize(), sceneManager2D.m_window_height - i*m_cMap->GetTileSize());
@@ -980,62 +978,90 @@ Render the AIs. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneHub::RenderAIs()
 {
-	// Render the enemy
-	for (int i = 0; i < theEnemies.size(); i++)
+	// Render the NPCs
+	for (int i = 0; i < theNPCs.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemies[i]->GetPos_x(), theEnemies[i]->GetPos_y());
-	}
-}
-
-/********************************************************************************
-Render the rear tile map. This is a private function for use in this class only
-********************************************************************************/
-void CSceneHub::RenderRearTileMap()
-{
-	if (m_cRearMap)
-	{
-		rearWallOffset_x = (int)(theHero->GetMapOffset_x() / 2);
-		rearWallOffset_y = 0;
-		rearWallTileOffset_y = 0;
-		rearWallTileOffset_x = (int)(rearWallOffset_x / m_cRearMap->GetTileSize());
-		if (rearWallTileOffset_x + m_cRearMap->GetNumOfTiles_Width() > m_cRearMap->getNumOfTiles_MapWidth())
-			rearWallTileOffset_x = m_cRearMap->getNumOfTiles_MapWidth() - m_cRearMap->GetNumOfTiles_Width();
-		rearWallFineOffset_x = rearWallOffset_x % m_cRearMap->GetTileSize();
-
-		int m = 0;
-		for (int i = 0; i < m_cRearMap->GetNumOfTiles_Height(); i++)
+		if (theNPCs[i])
 		{
-			for (int k = 0; k < m_cRearMap->GetNumOfTiles_Width() + 1; k++)
-			{
-				m = rearWallTileOffset_x + k;
-				// If we have reached the right side of the Map, then do not display the extra column of tiles.
-				if ((rearWallTileOffset_x + k) >= m_cRearMap->getNumOfTiles_MapWidth())
-					break;
-				if (m_cRearMap->theScreenMap[i][m] == 3)
-				{
-					sceneManager2D.Render2DMesh(meshList[GEO_TILESTRUCTURE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), k*m_cRearMap->GetTileSize() - rearWallFineOffset_x, sceneManager2D.m_window_height - (i + 1)*m_cRearMap->GetTileSize());
-				}
-			}
+			if ((theNPCs[i]->getPosition() - theHero->getPosition()).Length() <= sceneManager2D.m_window_width)
+			sceneManager2D.Render2DMesh(theNPCs[i]->getMesh(), false, theNPCs[i]->getScale().x, theNPCs[i]->getScale().y, theNPCs[i]->getPositionX(), theNPCs[i]->getPositionY());
 		}
 	}
 }
 
-/********************************************************************************
-Render the goodies. This is a private function for use in this class only
-********************************************************************************/
-void CSceneHub::RenderGoodies()
-{
-	// Render the goodies
-	for (int i = 0; i<10; i++)
-	{
-		sceneManager2D.Render2DMesh(theArrayOfGoodies[i]->GetMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theArrayOfGoodies[i]->GetPos_x(), theArrayOfGoodies[i]->GetPos_y());
-	}
-}
 
 void CSceneHub::RenderWaypoints()
 {
 	for (int i = 0; i < temp.size(); i++)
 	{
 		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x, temp.at(i).y);
+	}
+}
+
+/********************************************************************************
+Render the GUI. This is a private function for use in this class only
+********************************************************************************/
+void CSceneHub::RenderGUI()
+{
+	//On screen text
+	std::ostringstream ss;
+	// Jellybean
+	sceneManager2D.Render2DMesh(meshList[GEO_JELLYBEAN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	//ss.str(std::string());
+	ss.precision(3);
+	ss << ": " << noOfJellybeans;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+
+	// UI
+	switch (currentState)
+	{
+	case PLAYING:
+		UIManagerBlackQuad->Render(sceneManager2D);
+		UIManagerDifficultySelection->Render(sceneManager2D);
+		UIManagerJellybeanSelection->Render(sceneManager2D);
+		UIManagerConfirmation->Render(sceneManager2D);
+		break;
+	case DIFFICULTY_SELECTION:
+		UIManagerBlackQuad->Render(sceneManager2D);
+		UIManagerDifficultySelection->Render(sceneManager2D);
+		UIManagerJellybeanSelection->Render(sceneManager2D);
+		UIManagerConfirmation->Render(sceneManager2D);
+		break;
+	case JELLYBEAN_SELECTION:
+		UIManagerBlackQuad->Render(sceneManager2D);
+		UIManagerDifficultySelection->Render(sceneManager2D);
+		UIManagerJellybeanSelection->Render(sceneManager2D);
+		UIManagerConfirmation->Render(sceneManager2D);
+		break;
+	case CONFIRMATION:
+		UIManagerDifficultySelection->Render(sceneManager2D);
+		UIManagerJellybeanSelection->Render(sceneManager2D);
+		UIManagerBlackQuad->Render(sceneManager2D);
+		UIManagerConfirmation->Render(sceneManager2D);
+		break;
+	}
+
+	// Render the number of jellybeans deposited
+	if (currentState == JELLYBEAN_SELECTION)
+	{
+		if (noOfJellybeansDeposited >= 10)
+		{
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize() * 1.75, sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
+		}
+		else
+		{
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize(), sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
+		}
+	}
+
+	// Dialogue
+	if (currentState == INTERACTING || currentState == GIVING_JELLYBEANS)
+	{
+		// Dialogue box
+		sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+
+		// Text
+		int textSize = m_cMap->GetTileSize() * 0.5;
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], targetNPC->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
 	}
 }

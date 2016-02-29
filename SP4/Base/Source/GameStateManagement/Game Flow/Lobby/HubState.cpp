@@ -149,27 +149,43 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->PushState(CPauseState::Instance());
 		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
 	}
-	if (key == 'f' && scene->currentState == CSceneHub::PLAYING && scene->game_interacted != CSceneHub::NO_GAME)
+	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
-		// Set current state to difficulty selection
-		scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
-		// check unlocked difficulty
-		int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
-
-		// Set each difficulty buttons to be locked or unlocked
-		string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
-		for (int i = 0; i < 4; i++)
+		if (scene->game_interacted != CSceneHub::NO_GAME)
 		{
-			if (i <= unlocked)
+			// Set current state to difficulty selection
+			scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
+			// check unlocked difficulty
+			int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
+
+			// Set each difficulty buttons to be locked or unlocked
+			string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
+			for (int i = 0; i < 4; i++)
 			{
-				scene->UIManagerDifficultySelection->FindButton(buttonName[i])->setisLocked(false);
+				if (i <= unlocked)
+				{
+					scene->UIManagerDifficultySelection->FindButton(buttonName[i])->setisLocked(false);
+				}
+				else
+				{
+					scene->UIManagerDifficultySelection->FindButton(buttonName[i])->setisLocked(true);
+				}
+			}
+			scene->ChangeUI_DifficultySelection();
+		}
+		else if (scene->targetNPC != NULL)
+		{
+			if (scene->targetNPC->GetAI_Type() == CAI_Idling::GUARDIAN)
+			{
+				// Set current state to GIVING_JELLYBEANS
+				scene->currentState = CSceneHub::GIVING_JELLYBEANS;
 			}
 			else
 			{
-				scene->UIManagerDifficultySelection->FindButton(buttonName[i])->setisLocked(true);
+				// Set current state to INTERACTING
+				scene->currentState = CSceneHub::INTERACTING;
 			}
 		}
-		scene->ChangeUI_DifficultySelection();
 	}
 #endif
 }
@@ -377,6 +393,16 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 					scene->ChangeUI_JellybeanSelection();
 				}
 			}
+		}
+		break;
+		case CSceneHub::INTERACTING:
+		{
+			scene->currentState = CSceneHub::PLAYING;
+		}
+		break;
+		case CSceneHub::GIVING_JELLYBEANS:
+		{
+			scene->currentState = CSceneHub::PLAYING;
 		}
 		break;
 		}

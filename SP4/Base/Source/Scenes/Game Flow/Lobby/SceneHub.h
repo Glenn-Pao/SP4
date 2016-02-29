@@ -5,6 +5,7 @@
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\Base\Source\GameMechanics\Objects\Door.h"
 #include "..\..\..\UISystem.h"
+#include "..\..\Base\Source\AI\AI_Idling.h"
 
 class CSceneHub : public CSceneGameBase
 {
@@ -22,84 +23,71 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	void RenderWaypoints();
+
+	// Game Interacted
 	enum GAME_INTERACTED
 	{
 		NO_GAME,
 		GAME1,
 		GAME2,
 		GAME3,
-		GAME4
+		GAME4,
+		EXIT_GAME,
+		NUM_OF_GAME_INTERACTION
 	};
 	int game_interacted;
 	
-	enum WEAPON_ACTION
-	{
-		WA_NIL = 0,
-		WA_FIRE,
-		WA_RELOAD,
-		WA_CHANGEWEAPON,
-		WA_TOTAL,
-	};
-	void RenderWaypoints();
-	
+	// State
 	enum STATE
 	{
 		PLAYING,
+		INTERACTING,
+		GIVING_JELLYBEANS,
 		DIFFICULTY_SELECTION,
 		JELLYBEAN_SELECTION,
 		CONFIRMATION
 	};
-
 	STATE currentState;
+
+	// UIs
 	UISystem* UIManagerDifficultySelection;
 	UISystem* UIManagerJellybeanSelection;
 	UISystem* UIManagerBlackQuad;
 	UISystem* UIManagerConfirmation;
 
-	CSceneManager2D sceneManager2D;
-
-	int noOfJellybeansDeposited;
-
-	int difficultySelected;
-
 	void ChangeUI_Playing();
 	void ChangeUI_DifficultySelection();
 	void ChangeUI_JellybeanSelection();
 	void ChangeUI_Confirmation();
+
+	// Number of jellybean Deposited
+	int noOfJellybeansDeposited;
+	// Difficulty selected
+	int difficultySelected;
+
+	// Currently the target NPC, the player can interact with
+	CAI_Idling* targetNPC;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 	void InitMeshes();
 
-	// Handle to the minimap
-	//CMinimap* m_cMinimap;
-
 	// Handle to the tilemaps
-	//CMap* m_cMap;
 	void RenderTileMap();
-	// Hero's information
-	//CPlayerInfo* theHero;
 	void RenderHero();
 
-	// Codes for Scrolling
-	//int tileOffset_x, tileOffset_y;
-
-	// Codes for Parallax Scrolling
-	//CMap* m_cRearMap;
-	void RenderRearTileMap();
-	//int rearWallOffset_x, rearWallOffset_y;
-	//int rearWallTileOffset_x, rearWallTileOffset_y;
-	//int rearWallFineOffset_x, rearWallFineOffset_y;
-
-	// Enemies
-	//vector<CEnemy*> theEnemies;
+	// AI
 	void RenderAIs();
+	// NPCs
+	std::vector<CAI_Idling*> theNPCs;
+	bool CheckIfThisNPCIsInteractable(CAI_Idling* theNPC);
 
-	// Goodies and Goodies Factory
-	//CGoodiesFactory theGoodiesFactory;
-	//CGoodies** theArrayOfGoodies;
-	void RenderGoodies(void);
+	// Doors
+	std::vector<CDoor*> theDoor;
 
+	// UIs
+	void InitUI();
 	void UpdateUI(double dt);
 
 	void Show_DifficultySelection();
@@ -111,9 +99,13 @@ private:
 	void HideConfirmation();
 	void ShowConfirmation();
 
-	std::vector<CDoor*> theDoor;
-
 	float UI_Speed;
+
+	// GUI
+	void RenderGUI();
+
+	// Number of jellybeans required to finish the game
+	int jellybeansRequiredToFinish;
 };
 
 #endif

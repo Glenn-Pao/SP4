@@ -31,7 +31,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	//Read a value from the lua text file
 	UseLuaFiles L;
 
-	L.ReadFiles("Lua//Scene/Game1/tutorial.lua");
+	L.ReadFiles("Lua//Scene/Game1/game1.lua");
 
 	int tileSize = L.DoLuaInt("tileSize");
 
@@ -908,6 +908,15 @@ void SceneGame4::Update(double dt)
 		}
 		case State::TIME_UP:
 		{
+			if (Score >= ScoreToBeat)
+			{
+				CurrentState = State::WIN;
+			}
+			else
+			{
+				CurrentState = State::LOSE;
+			}
+			
 			break;
 		}
 

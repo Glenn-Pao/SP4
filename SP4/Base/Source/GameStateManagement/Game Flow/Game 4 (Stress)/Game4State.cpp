@@ -173,16 +173,30 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
-	switch (scene->CurrentState)
+	if (button_Left == true)
 	{
-	case SceneGame4::TIME_UP:
-	{
-								 if (button_Left == true)
-								 {
-									 theGSM->ChangeState(CHubState::Instance());
-								 }
-	}
-		break;
+		switch (scene->CurrentState)
+		{
+			case SceneGame4::WIN:
+			{
+				// Unlock new difficulty
+				if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[2].getCurrentDifficultyUnlocked() <= scene->CurrentLevel)
+				{
+					theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[2].setCurrentDifficultyUnlocked(scene->CurrentLevel + 1);
+				}
+				// Withdraw jellybean
+				theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
+
+				theGSM->ChangeState(CHubState::Instance());
+				break;
+			}
+
+			case SceneGame4::LOSE:
+			{
+				theGSM->ChangeState(CHubState::Instance());
+				break;
+			}
+		}
 	}
 #if	TYPE_OF_VIEW == 3
 	switch (scene->currentState)

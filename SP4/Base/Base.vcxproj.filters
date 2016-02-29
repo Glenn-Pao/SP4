@@ -280,6 +280,9 @@
     <ClCompile Include="Source\Image.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AI\AI_Idling.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -572,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="Source\Image.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AI\AI_Idling.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

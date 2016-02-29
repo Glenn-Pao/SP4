@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AI\AIBase.cpp" />
+    <ClCompile Include="Source\AI\AI_Idling.cpp" />
     <ClCompile Include="Source\AI\FSM.cpp" />
     <ClCompile Include="Source\AI\ProbabilitySystem.cpp" />
     <ClCompile Include="Source\AI\Waypoints.cpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\AI\AIBase.h" />
+    <ClInclude Include="Source\AI\AI_Idling.h" />
     <ClInclude Include="Source\AI\FSM.h" />
     <ClInclude Include="Source\AI\ProbabilitySystem.h" />
     <ClInclude Include="Source\AI\Waypoints.h" />

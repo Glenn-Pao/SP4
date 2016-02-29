@@ -48,7 +48,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	//Read a value from the lua text file
 	UseLuaFiles L;
 
-	L.ReadFiles("Lua//Scene/Game1/tutorial.lua");
+	L.ReadFiles("Lua//Scene/Game1/game1.lua");
 
 	int tileSize = L.DoLuaInt("tileSize");
 	scriptTimeUp = L.DoLuaString("scriptTimeUp");

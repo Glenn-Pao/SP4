@@ -26,6 +26,8 @@ public:
 		PREPARE,
 		PLAY,
 		TIME_UP,
+		WIN,
+		LOSE,
 		PAUSE,
 		NUM_OF_STATE
 	};
