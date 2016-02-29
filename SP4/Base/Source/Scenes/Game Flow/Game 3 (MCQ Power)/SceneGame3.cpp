@@ -347,6 +347,8 @@ void CSceneGame3::InitMeshes()
 	meshList[GEO_HEART]->textureID = LoadTGA("Image//heart.tga");
 	meshList[GEO_TILE_ANS] = MeshBuilder::Generate2DMesh("GEO_TILE_ANS", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_ANS]->textureID = LoadTGA("Image//tile42_ans.tga");
+	meshList[GEO_POINTER] = MeshBuilder::Generate2DMesh("GEO_POINTER", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_POINTER]->textureID = LoadTGA("Image//pointer.tga");
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -747,10 +749,6 @@ void CSceneGame3::RenderTileMap()
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_DOOR], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
 			}
-			else if (m_cMap->theScreenMap[j][m] == 41)
-			{
-				sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
-			}
 			else
 			{
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_GROUND], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m*m_cMap->GetTileSize(), sceneManager2D.m_window_height - j*m_cMap->GetTileSize());
@@ -774,6 +772,24 @@ void CSceneGame3::RenderTileMap()
 				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
 				theAnswers[i]->setPosition(Vector3(theHero->getPositionX(), theHero->getPositionY(), 0));
 			}		
+		}
+	}
+	for (int i = 0; i < theQuestions.size(); i++)
+	{
+		if (!theQuestions[i]->getActive() && theQuestions[i]->getInteractivity())
+		{
+			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX() * 2, theQuestions[i]->getScaleY() * 2, theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
+			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
+		}
+		else if (theQuestions[i]->getActive() && theQuestions[i]->getInteractivity())
+		{
+			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX(), theQuestions[i]->getScaleY(), theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
+			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
+		}
+		else if (!theQuestions[i]->getInteractivity())
+		{
+			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX(), theQuestions[i]->getScaleY(), theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
+			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
 		}
 	}
 }
@@ -861,6 +877,16 @@ void CSceneGame3::RenderGUI()
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 2.5);
 			break;
 		}
+		if (theQuestions[i]->getInteractivity() /*&& (theQuestions[i]->getPosition() - theHero->getPosition()).Length() > 1*/)
+		{
+			//sceneManager2D.Render2DMesh(meshList[GEO_POINTER], false, 20.0f, -63, 28);
+			Vector3 temp = theHero->getPosition() - theQuestions[i]->getPosition();
+			//Vector3 temp2 = theHero->GetAnimationDirection() - theHero->getPosition();	//get the distance btwn avatar and translate
+			float theta1 = -Math::RadianToDegree(atan2(temp.x, temp.z));
+			//float theta2 = -Math::RadianToDegree(atan2(temp2.x, temp2.z));
+
+			sceneManager2D.Render2DMesh(meshList[GEO_POINTER], false, 5, 5, theHero->getPositionX(), theHero->getPositionY(), theta1);
+		}
 	}
 	for (int i = 0; i < theAnswers.size(); i++)
 	{
@@ -926,6 +952,8 @@ void CSceneGame3::RenderGUI()
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptWrong, Color(0, 0, 0), textSize, 0, textSize * 0.5);
 		}
 	}
+
+	//RenderMeshIn2D(meshList[GEO_WARNING_TEXT], false, 80.f, 0, -45);
 	}
 		break;
 	case COMPLETED:
