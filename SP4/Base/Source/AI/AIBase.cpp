@@ -65,6 +65,18 @@ void AI::SetAIvariables4pt(Vector3 point1, Vector3 point2, Vector3 point3)
 	waypointsindex = 1;
 	nextPoint = wayPoints[waypointsindex];
 	timer = 0;
+	timerCap = rand() % 15 + 10;
+	speedInt = rand() % 5 + 1;
+	if (speedInt == 1)
+		speedFloat = 0.1f;
+	else if (speedInt == 2)
+		speedFloat = 0.2f;
+	else if (speedInt == 3)
+		speedFloat = 0.3f;
+	else if (speedInt == 4)
+		speedFloat = 0.4f;
+	else if (speedInt == 5)
+		speedFloat = 0.5f;
 }
 
 void AI::SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4)
@@ -77,6 +89,18 @@ void AI::SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vecto
 	waypointsindex = 1;
 	nextPoint = wayPoints[waypointsindex];
 	timer = 0;
+	timerCap = rand() % 15 + 10;
+	speedInt = rand() % 5 + 1;
+	if (speedInt == 1)
+		speedFloat = 0.1f;
+	else if (speedInt == 2)
+		speedFloat = 0.2f;
+	else if (speedInt == 3)
+		speedFloat = 0.3f;
+	else if (speedInt == 4)
+		speedFloat = 0.4f;
+	else if (speedInt == 5)
+		speedFloat = 0.5f;
 }
 
 void AI::UpdateFSM(double dt)
@@ -93,7 +117,7 @@ void AI::UpdateFSM(double dt)
 	case CFSM::MOVING:
 	{
 		Vector3 direction = (nextPoint - getPosition()).Normalize();
-		setPosition(getPosition() + direction + 0.1f);
+		setPosition(getPosition() + direction + speedFloat);
 		if ((nextPoint - getPosition()).Length() < 0.5)
 		{
 			fsm.state = CFSM::REACHED;
@@ -112,7 +136,7 @@ void AI::UpdateFSM(double dt)
 	case CFSM::IDLE:
 	{
 		timer += 0.1f;
-		if (timer > 10.f)
+		if (timer > timerCap)
 		{
 			fsm.state = CFSM::MOVING;
 			timer = 0;

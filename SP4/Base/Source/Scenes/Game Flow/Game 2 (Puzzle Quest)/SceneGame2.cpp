@@ -246,7 +246,7 @@ void CSceneGame2::InitTutorial()
 				ColoursSet.back()->setActive(true);
 				
 			}
-			else if (m_cMap->theScreenMap[i][k] == 200)
+			else if (m_cMap->theScreenMap[i][k] == 200)		//Right smallBox
 			{
 				// Set the strategy for the enemy
 				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
@@ -254,13 +254,47 @@ void CSceneGame2::InitTutorial()
 				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
 				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(-tileSize * smallSquare, 0, 1));
 			}
-			else if (m_cMap->theScreenMap[i][k] == 201)
+			else if (m_cMap->theScreenMap[i][k] == 201)		//Left smallBox
 			{
 				// Set the strategy for the enemy
 				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptLeft.back()->setActive(true);
 				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
-				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * medSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(tileSize * smallSquare, 0, 1));
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(tileSize * smallSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 202)		//Right MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(-tileSize * medSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 203)		//Left MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(tileSize * medSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 204)		//Right BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(-tileSize * bigSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 205)		//Left BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(tileSize * bigSquare, 0, 1));
 			}
 		}
 	}
@@ -331,13 +365,55 @@ void CSceneGame2::InitLevel2()
 				ColoursSet.push_back(new CColour(CObjects::COLOR, "ORANGE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_ORANGE]));
 				ColoursSet.back()->setActive(true);
 			}
-			else if (m_cMap->theScreenMap[i][k] == 200)
+			else if (m_cMap->theScreenMap[i][k] == 200)		//Right smallBox
 			{
 				// Set the strategy for the enemy
 				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRight.back()->setActive(true);
 				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * 2, 0, 1), Vector3(0, -tileSize * 2, 1), Vector3(-tileSize * 2, 0, 1));
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(-tileSize * smallSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 201)		//Left smallBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(tileSize * smallSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 202)		//Right MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(-tileSize * medSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 203)		//Left MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(tileSize * medSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 204)		//Right BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(-tileSize * bigSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 205)		//Left BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(tileSize * bigSquare, 0, 1));
 			}
 		}
 	}
@@ -412,13 +488,55 @@ void CSceneGame2::InitLevel3()
 				ColoursSet.push_back(new CColour(CObjects::COLOR, "ORANGE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_ORANGE]));
 				ColoursSet.back()->setActive(true);
 			}
-			else if (m_cMap->theScreenMap[i][k] == 200)
+			else if (m_cMap->theScreenMap[i][k] == 200)		//Right smallBox
 			{
 				// Set the strategy for the enemy
 				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRight.back()->setActive(true);
 				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * 2, 0, 1), Vector3(0, -tileSize * 2, 1), Vector3(-tileSize * 2, 0, 1));
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(-tileSize * smallSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 201)		//Left smallBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(tileSize * smallSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 202)		//Right MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(-tileSize * medSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 203)		//Left MedBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(tileSize * medSquare, 0, 1));
+			}
+
+			else if (m_cMap->theScreenMap[i][k] == 204)		//Right BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptRight.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRight.back()->setActive(true);
+				AIsList4ptRight.back()->setFSM(CFSM::MOVING);
+				AIsList4ptRight.back()->SetAIvariables4pt(Vector3(tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(-tileSize * bigSquare, 0, 1));
+			}
+			else if (m_cMap->theScreenMap[i][k] == 205)		//Left BigBox
+			{
+				// Set the strategy for the enemy
+				AIsList4ptLeft.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeft.back()->setActive(true);
+				AIsList4ptLeft.back()->setFSM(CFSM::MOVING);
+				AIsList4ptLeft.back()->SetAIvariables4pt(Vector3(-tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(tileSize * bigSquare, 0, 1));
 			}
 		}
 	}

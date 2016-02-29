@@ -1,3 +1,3 @@
-smallSquare = 2
+smallSquare = 1
 medSquare = 3
 bigSquare = 4

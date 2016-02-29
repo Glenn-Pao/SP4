@@ -35,5 +35,7 @@ private:
 	int AIType;
 	CFSM fsm;
 	float timer;
-	
+	float timerCap;
+	float speedFloat;
+	float speedInt;
 };
