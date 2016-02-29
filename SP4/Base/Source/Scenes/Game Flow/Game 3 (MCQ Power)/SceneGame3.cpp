@@ -825,27 +825,10 @@ void CSceneGame3::RenderHero()
 }
 void CSceneGame3::RenderGUI()
 {
-	// Jellybean
-	sceneManager2D.Render2DMesh(meshList[GEO_JELLYBEAN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0, sceneManager2D.m_window_height - m_cMap->GetTileSize());
-
-	//On screen text
-	std::ostringstream ss;
-	// Jellybean
-	ss.precision(3);
-	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
-
-	//On screen text
-	std::ostringstream ss1;
-	// Jellybean
-	ss1.precision(3);
-	ss1 << "FPS: " << fps;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss1.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - (m_cMap->GetTileSize() *2));
-
 	for (int i = 0; i < lives; i++)
 	{
 		// Lives left
-		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), m_cMap->GetScreenWidth() - (i *m_cMap->GetTileSize()) - m_cMap->GetTileSize(), sceneManager2D.m_window_height - (m_cMap->GetTileSize()));
+		sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + i*(m_cMap->GetTileSize()), sceneManager2D.m_window_height - (m_cMap->GetTileSize()));
 	}
 
 	switch (currentState)
