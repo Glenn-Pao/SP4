@@ -848,7 +848,7 @@ void SceneGame4::Update(double dt)
 			UpdateHero(dt);
 			break;
 		}
-		case State::TIME_UP:
+		case TIME_UP:
 		{
 			break;
 		}
@@ -879,6 +879,14 @@ void SceneGame4::Update(double dt)
 		}
 		case State::TIME_UP:
 		{
+			if (Score >= ScoreToBeat)
+			{
+				CurrentState = State::WIN;
+			}
+			else
+			{
+				CurrentState = State::LOSE;
+			}
 			break;
 		}
 
@@ -948,6 +956,14 @@ void SceneGame4::Update(double dt)
 		}
 		case State::TIME_UP:
 		{
+			if (Score >= ScoreToBeat)
+			{
+				CurrentState = State::WIN;
+			}
+			else
+			{
+				CurrentState = State::LOSE;
+			}
 			break;
 		}
 
@@ -1159,6 +1175,28 @@ void SceneGame4::Render()
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
+		case State::WIN:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+
+		case State::LOSE:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+
 		}
 		break;
 	}
@@ -1191,6 +1229,27 @@ void SceneGame4::Render()
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
+		case State::WIN:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+
+		case State::LOSE:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
 		}
 		break;
 	}
@@ -1214,6 +1273,27 @@ void SceneGame4::Render()
 			break;
 		}
 		case State::TIME_UP:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+		case State::WIN:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			sceneManager2D.modelStack.PopMatrix();
+
+			RenderGUI();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			break;
+		}
+
+		case State::LOSE:
 		{
 			RenderRearTileMap();
 			RenderTileMap();

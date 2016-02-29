@@ -175,8 +175,14 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 #endif
 	if (button_Left == true)
 	{
-		switch (scene->CurrentState)
+		if (scene->CurrentLevel == SceneGame4::DifficultyLevel::TUTORIAL)
 		{
+			theGSM->ChangeState(CHubState::Instance());
+		}
+		else
+		{
+			switch (scene->CurrentState)
+			{
 			case SceneGame4::WIN:
 			{
 				// Unlock new difficulty
@@ -195,6 +201,7 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 			{
 				theGSM->ChangeState(CHubState::Instance());
 				break;
+			}
 			}
 		}
 	}
