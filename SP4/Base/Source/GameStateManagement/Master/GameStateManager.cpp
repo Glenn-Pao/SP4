@@ -202,7 +202,7 @@ void CGameStateManager::Update(const double m_dElapsedTime, GLFWwindow* m_window
 	}
 
 	//Update the sound
-	UpdateSound(m_dElapsedTime);
+	//UpdateSound(m_dElapsedTime);
 
 	// let the state update the theGSM
 	StackOfStates.back()->Update(this, m_dElapsedTime);

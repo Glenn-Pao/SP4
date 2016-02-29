@@ -137,8 +137,10 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 #endif
 	// Play
 	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
-
-	if (scene->UIManager->FindButton("PlayButton")->getisHovered() == true)
+	if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
+	{
+	}
+	else if(scene->UIManager->FindButton("LoadGameButton")->getisHovered() == true)
 	{
 		scene->choice = CSceneMenu::PLAY;
 		if (button_Left == true)
@@ -146,7 +148,13 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 			theGSM->ChangeState(CLoadGameSelect::Instance());
 		}
 	}
-
+	else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
+	{
+		if (button_Left == true)
+		{
+			theGSM->Quit();
+		}
+	}
 
 	//// Time-Limit
 	//else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
