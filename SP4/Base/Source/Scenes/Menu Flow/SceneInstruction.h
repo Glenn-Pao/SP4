@@ -3,16 +3,17 @@
 
 //#include "..\SceneManager2D.h"
 #include "..\Master\SceneManager2D.h"
+#include "..\..\UISystem.h"
 
 class CSceneInstruction : public Scene
 {
 	enum GEOMETRY_TYPE
 	{
-		GRAY_QUAD,
-		LIGHT_GRAY_QUAD,
-		BLACK_QUAD,
 		PAGE_1,
-		PAGE_2,
+
+		BACK_BUTTON_UP,
+		BACK_BUTTON,
+		BACKGROUND,
 		NUM_GEOMETRY,
 	};
 
@@ -30,8 +31,6 @@ public:
 	{
 		NONE,
 		BACK,
-		NEXT,
-		PREVIOUS,
 		NUM_CHOICES,
 	};
 
@@ -40,17 +39,17 @@ public:
 	enum PAGE
 	{
 		FIRST_PAGE,
-		SECOND_PAGE,
 		NUM_PAGES,
 	};
-
 	int currentPage;
-
+	UISystem* UIManager;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
 
 	CSceneManager2D sceneManager2D;
+
+	float UI_Speed;
 };
 
 #endif

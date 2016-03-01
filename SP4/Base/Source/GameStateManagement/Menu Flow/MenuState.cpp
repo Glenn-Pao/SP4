@@ -148,6 +148,13 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 			theGSM->ChangeState(CLoadGameSelect::Instance());
 		}
 	}
+	else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
+	{
+		if (button_Left == true)
+		{
+			theGSM->ChangeState(CInstructionState::Instance());
+		}
+	}
 	else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
 	{
 		if (button_Left == true)

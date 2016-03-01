@@ -46,6 +46,7 @@ public:
 		//Game3
 		GEO_TILE_QN,
 		GEO_TILE_ANS,
+		GEO_TILE_ANS_GUI,
 		GEO_POINTER,
 		GEO_HEART,
 

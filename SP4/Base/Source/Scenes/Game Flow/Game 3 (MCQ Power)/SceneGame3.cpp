@@ -310,6 +310,7 @@ void CSceneGame3::Init(int level)
 	{
 		theAnswers.back()->setMesh(meshList[GEO_TILE_ANS]);
 	}
+	slot.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 12), 0);
 }
 
 void CSceneGame3::PreInit()
@@ -347,8 +348,10 @@ void CSceneGame3::InitMeshes()
 	meshList[GEO_HEART]->textureID = LoadTGA("Image//heart.tga");
 	meshList[GEO_TILE_ANS] = MeshBuilder::Generate2DMesh("GEO_TILE_ANS", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_ANS]->textureID = LoadTGA("Image//tile42_ans.tga");
-	meshList[GEO_POINTER] = MeshBuilder::Generate2DMesh("GEO_POINTER", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_POINTER]->textureID = LoadTGA("Image//pointer.tga");
+	meshList[GEO_TILE_ANS_GUI] = MeshBuilder::Generate2DMesh("GEO_TILE_ANS_GUI", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILE_ANS_GUI]->textureID = LoadTGA("Image//tile42_ans_gui.tga");
+	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -860,17 +863,8 @@ void CSceneGame3::RenderGUI()
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 2.5);
 			break;
 		}
-		if (theQuestions[i]->getInteractivity() /*&& (theQuestions[i]->getPosition() - theHero->getPosition()).Length() > 1*/)
-		{
-			//sceneManager2D.Render2DMesh(meshList[GEO_POINTER], false, 20.0f, -63, 28);
-			Vector3 temp = theHero->getPosition() - theQuestions[i]->getPosition();
-			//Vector3 temp2 = theHero->GetAnimationDirection() - theHero->getPosition();	//get the distance btwn avatar and translate
-			float theta1 = -Math::RadianToDegree(atan2(temp.x, temp.z));
-			//float theta2 = -Math::RadianToDegree(atan2(temp2.x, temp2.z));
-
-			sceneManager2D.Render2DMesh(meshList[GEO_POINTER], false, 5, 5, theHero->getPositionX(), theHero->getPositionY(), theta1);
-		}
 	}
+	sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
 	for (int i = 0; i < theAnswers.size(); i++)
 	{
 		//show the picked up item's answer
@@ -888,6 +882,12 @@ void CSceneGame3::RenderGUI()
 			}
 			else if (tempID == theAnswers[i]->getID())
 			{
+				std::ostringstream ss;
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
+				ss.str(std::string());
+				ss << "F";
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot.x, slot.y);
+				
 				//show the currently selected answer
 				std::ostringstream answer;
 				answer << "You chose: " << theAnswers[tempID]->getDialogue();
@@ -913,6 +913,12 @@ void CSceneGame3::RenderGUI()
 
 				//as long as an alternate answer is active nearby, render it
 				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+
+				std::ostringstream ss;
+				sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
+				ss.str(std::string());
+				ss << "F";
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot.x, slot.y);
 			}
 			break;
 		}

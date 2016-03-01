@@ -137,40 +137,6 @@ void CInstructionState::HandleEvents(CGameStateManager* theGSM, const double mou
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
-	// Back
-	if (0 <= mouse_x && mouse_x <= width * 0.2 &&
-		height * 0.9 <= mouse_y && mouse_y <= height)
-	{
-		scene->choice = CSceneInstruction::BACK;
-		if (button_Left == true)
-		{
-			theGSM->ChangeState(CMenuState::Instance());
-		}
-	}
-	// Next
-	else if (width * 0.93 <= mouse_x && mouse_x <= width * 0.99 &&
-		height * 0.9 <= mouse_y && mouse_y <= height)
-	{
-		scene->choice = CSceneInstruction::NEXT;
-		if (button_Left == true && scene->currentPage + 1 != CSceneInstruction::NUM_PAGES)
-		{
-			scene->currentPage++;
-		}
-	}
-	// Previous
-	else if (width * 0.855 <= mouse_x && mouse_x <= width * 0.915 &&
-		height * 0.9 <= mouse_y && mouse_y <= height)
-	{
-		scene->choice = CSceneInstruction::PREVIOUS;
-		if (button_Left == true && scene->currentPage != CSceneInstruction::FIRST_PAGE)
-		{
-			scene->currentPage--;
-		}
-	}
-	else
-	{
-		scene->choice = CSceneMenu::NONE;
-	}
 }
 
 void CInstructionState::Update(CGameStateManager* theGSM) 
