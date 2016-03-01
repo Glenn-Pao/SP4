@@ -18,7 +18,7 @@ scriptAnswerQn1Type1 = "200"
 scriptAnswerQn1Type2 = "400"
 
 -- Question to be asked for the second question tile
-scriptQn2 = "What is one difference between liquid and solid?"
+scriptQn2 = "What's a difference between liquid and solid?"
 
 -- Possible answers to the second question tile
 scriptAnswerQn2Type0 = "Solid flows easily but not liquid."

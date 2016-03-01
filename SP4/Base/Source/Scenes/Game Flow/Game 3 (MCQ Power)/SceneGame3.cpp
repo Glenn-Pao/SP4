@@ -317,8 +317,8 @@ void CSceneGame3::Init(int level)
 	{
 		theAnswers.back()->setMesh(meshList[GEO_TILE_ANS]);
 	}
-	slot.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 12), 0);
-
+	slot.Set(sceneManager2D.m_window_width * 0.77, sceneManager2D.m_window_width * 0.31, 0);
+	//sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
 	InitUI();
 }
 
@@ -378,8 +378,18 @@ void CSceneGame3::InitMeshes()
 	meshList[GEO_TILE_ANS]->textureID = LoadTGA("Image//tile42_ans.tga");
 	meshList[GEO_TILE_ANS_GUI] = MeshBuilder::Generate2DMesh("GEO_TILE_ANS_GUI", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_ANS_GUI]->textureID = LoadTGA("Image//tile42_ans_gui.tga");
+	meshList[GEO_ANSWER_TEMPLATE] = MeshBuilder::Generate2DMesh("GEO_ANSWER_TEMPLATE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_ANSWER_TEMPLATE]->textureID = LoadTGA("Image//answer_template.tga");
+	meshList[GEO_ANSWER_OPTION] = MeshBuilder::Generate2DMesh("GEO_ANSWER_OPTION", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_ANSWER_OPTION]->textureID = LoadTGA("Image//answer_option.tga");
+	meshList[GEO_QN_TEMPLATE] = MeshBuilder::Generate2DMesh("GEO_QN_TEMPLATE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_QN_TEMPLATE]->textureID = LoadTGA("Image//question_template.tga");
+	meshList[GEO_HELP_TEMPLATE] = MeshBuilder::Generate2DMesh("GEO_HELP_TEMPLATE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_HELP_TEMPLATE]->textureID = LoadTGA("Image//help_window.tga");
 	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
+
+
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -496,9 +506,8 @@ void CSceneGame3::Update(double dt)
 				//reveal the question
 				theQuestions[i]->setActive(true);
 			}
-			else
+			if (!theQuestions[i]->getInteractivity())
 			{
-				//hide the question
 				theQuestions[i]->setActive(false);
 			}
 			int num = i * 3;					//the first index of the possible answers of that question
@@ -885,11 +894,62 @@ void CSceneGame3::RenderGUI()
 			if (dialogueTiles[i]->getActive())
 			{
 				// Dialogue box
-				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+				sceneManager2D.Render2DMesh(meshList[GEO_HELP_TEMPLATE], false, sceneManager2D.m_window_width, m_cMap->GetTileSize() * 2, 0, 0);
 
 				// Text
 				int textSize = m_cMap->GetTileSize() * 0.5;
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 3.5);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(1, 1, 1), textSize, 5, textSize * 0.5);
+				break;
+			}
+		}
+		for (int i = 0; i < theAnswers.size(); i++)
+		{
+			//show the picked up item's answer
+			if (theAnswers[i]->getActive())
+			{
+				// Text
+				int textSize = m_cMap->GetTileSize();
+
+				if (tempID == -1)
+				{
+					// Dialogue box
+					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_OPTION], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+
+					//as long as an alternate answer is active nearby, render it
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+				}
+				else if (tempID == theAnswers[i]->getID())
+				{
+					// Dialogue box
+					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_TEMPLATE], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
+
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[tempID]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
+
+					if (tempID == theAnswers[i]->getID())
+					{
+						continue;
+					}
+					else
+					{
+						// Dialogue box
+						sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_OPTION], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+						//as long as an alternate answer is active nearby, render it
+						sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+					}
+
+				}
+				else if (tempID != theAnswers[i]->getID())
+				{
+					// Dialogue box
+					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_TEMPLATE], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[tempID]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
+
+					// Dialogue box
+					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_OPTION], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+
+					//as long as an alternate answer is active nearby, render it
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+				}
 				break;
 			}
 		}
@@ -898,69 +958,20 @@ void CSceneGame3::RenderGUI()
 			if (theQuestions[i]->getActive())
 			{
 				// Dialogue box
-				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+				sceneManager2D.Render2DMesh(meshList[GEO_QN_TEMPLATE], false, sceneManager2D.m_window_width, m_cMap->GetTileSize() * 2, 0, sceneManager2D.m_window_height * 0.8);
 
 				// Text
-				int textSize = m_cMap->GetTileSize() * 0.5;
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 2.5);
-				break;
-			}
-		}
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
-		for (int i = 0; i < theAnswers.size(); i++)
-		{
-			//show the picked up item's answer
-			if (theAnswers[i]->getActive())
-			{
-				// Dialogue box
-				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize() * 2, 0, 0);
-				// Text
-				int textSize = m_cMap->GetTileSize() * 0.5;
-
-				if (tempID == -1)
+				int textSize = m_cMap->GetTileSize() * 0.6;
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theQuestions[i]->getDialogue(), Color(1, 1, 1), textSize, 0, sceneManager2D.m_window_height * 0.85);
+				
+				if (tempID != -1)
 				{
-					//as long as an alternate answer is active nearby, render it
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
-				}
-				else if (tempID == theAnswers[i]->getID())
-				{
+					sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
 					std::ostringstream ss;
 					sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
 					ss.str(std::string());
 					ss << "F";
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot.x, slot.y);
-
-					//show the currently selected answer
-					std::ostringstream answer;
-					answer << "You chose: " << theAnswers[tempID]->getDialogue();
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], answer.str(), Color(0, 0, 0), textSize, 0, textSize * 1.5);
-
-					if (tempID == theAnswers[i]->getID())
-					{
-						continue;
-					}
-					else
-					{
-						//as long as an alternate answer is active nearby, render it
-						sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
-					}
-
-				}
-				else if (tempID != theAnswers[i]->getID())
-				{
-					//show the currently selected answer
-					std::ostringstream answer;
-					answer << "You chose: " << theAnswers[tempID]->getDialogue();
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], answer.str(), Color(0, 0, 0), textSize, 0, textSize * 1.5);
-
-					//as long as an alternate answer is active nearby, render it
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
-
-					std::ostringstream ss;
-					sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot.x, slot.y);
-					ss.str(std::string());
-					ss << "F";
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot.x, slot.y);
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), m_cMap->GetTileSize(), slot.x, slot.y);
 				}
 				break;
 			}
@@ -968,19 +979,19 @@ void CSceneGame3::RenderGUI()
 		if (feedback)
 		{
 			// Dialogue box
-			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+			sceneManager2D.Render2DMesh(meshList[GEO_HELP_TEMPLATE], false, sceneManager2D.m_window_width, m_cMap->GetTileSize() * 2, 0, 0);
 			//if it is the correct answer
 			if (correct)
 			{
 				// Text
 				int textSize = m_cMap->GetTileSize() * 0.5;
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptCorrect, Color(0, 0, 0), textSize, 0, textSize * 1.5);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptCorrect, Color(1, 1, 1), textSize, 5, textSize * 0.5);
 			}
 			else
 			{
 				// Text
 				int textSize = m_cMap->GetTileSize() * 0.5;
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptWrong, Color(0, 0, 0), textSize, 0, textSize * 0.5);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptWrong, Color(1, 1, 1), textSize, 5, textSize * 0.5);
 			}
 		}
 
