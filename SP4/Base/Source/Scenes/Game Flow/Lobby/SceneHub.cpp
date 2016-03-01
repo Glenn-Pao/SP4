@@ -17,12 +17,15 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	, UIManagerJellybeanSelection(NULL)
 	, UIManagerBlackQuad(NULL)
 	, UIManagerConfirmation(NULL)
+	, UIManagerGivingJellybeans(NULL)
 	, game_interacted(NO_GAME)
 	, noOfJellybeansDeposited(0)
 	, difficultySelected(0)
 	, UI_Speed(0.f)
 	, targetNPC(NULL)
 	, jellybeansRequiredToFinish(100)
+	, sizeOfDarkSurrounding(0)
+	, timerForEnd(0.0f)
 {
 }
 
@@ -58,6 +61,11 @@ CSceneHub::~CSceneHub()
 		delete UIManagerConfirmation;
 		UIManagerConfirmation = NULL;
 	}
+	if (UIManagerGivingJellybeans)
+	{
+		delete UIManagerGivingJellybeans;
+		UIManagerGivingJellybeans = NULL;
+	}
 	// Guardian
 	for (int i = 0; i < theNPCs.size(); i++)
 	{
@@ -81,7 +89,10 @@ void CSceneHub::Init(int level)
 
 	int tileSize = L.DoLuaInt("tileSize");
 	jellybeansRequiredToFinish = L.DoLuaInt("noOfJellybeansRequiredToFinish");
-
+	sizeOfDarkSurrounding = tileSize * L.DoLuaFloat("sizeOfScalingDarkSurrounding");
+	speedOfDarkSurrounding = L.DoLuaFloat("speedOfScalingDarkSurrounding");
+	MinSizeOfScalingDarkSurrounding = L.DoLuaFloat("minSizeOfScalingDarkSurrounding");
+	timerForEnd = L.DoLuaFloat("timerForEnd");
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
@@ -102,6 +113,8 @@ void CSceneHub::Init(int level)
 
 	// Find object positions in map 
 	Vector3 GuardianPos;
+	const int numOfGuardianWaypointPos = 2;
+	Vector3 GuardianWaypointPos[numOfGuardianWaypointPos];
 	Vector3 DoorPos[5];
 	int currentDoorIndex = 0;
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
@@ -127,6 +140,15 @@ void CSceneHub::Init(int level)
 				DoorPos[currentDoorIndex].Set(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 				currentDoorIndex++;
 			}
+			// Guardian waypoint
+			else if (m_cMap->theScreenMap[i][k] == 101)
+			{
+				GuardianWaypointPos[0] = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+			}
+			else if (m_cMap->theScreenMap[i][k] == 102)
+			{
+				GuardianWaypointPos[1] = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+			}
 		}
 	}
 
@@ -134,8 +156,11 @@ void CSceneHub::Init(int level)
 	InitMeshes();
 
 	// Guardian
-	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(GuardianPos.x, GuardianPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_JELLYBEAN], CAI_Idling::GUARDIAN));
+	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(GuardianPos.x, GuardianPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_GUARDIAN], CAI_Idling::GUARDIAN));
 	theNPCs.back()->setDialogue(L.DoLuaString("GuardianScript"));
+	theNPCs.back()->AddWaypoint(GuardianPos);
+	for (int i = 0; i < numOfGuardianWaypointPos; i++)
+		theNPCs.back()->AddWaypoint(GuardianWaypointPos[i]);
 
 	// Exit
 	theDoor.push_back(new CDoor(CObjects::DOOR, 5, Vector3(DoorPos[0].x, DoorPos[0].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
@@ -168,6 +193,9 @@ void CSceneHub::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
+	meshList[GEO_DARK_SURROUNDING] = MeshBuilder::Generate2DMesh("GEO_DARK_SURROUNDING", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_DARK_SURROUNDING]->textureID = LoadTGA("Image//DarkSurrounding.tga");
+	meshList[GEO_BLACK_QUAD] = MeshBuilder::Generate2DMesh("GEO_BLACK_QUAD", Color(0, 0, 0), 0, 0, 1, 1);
 	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
@@ -182,6 +210,10 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
 	meshList[GEO_TILE_DOOR] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
+
+	// Guardian
+	meshList[GEO_GUARDIAN] = MeshBuilder::Generate2DMesh("GEO_GUARDIAN", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_GUARDIAN]->textureID = LoadTGA("Image//guardian.tga");
 
 	// Hero
 	// Side
@@ -290,6 +322,10 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_NO_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_NO_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/No_Button_Pressed.tga");
 
+	// Giving jellybeans
+	// Window
+	meshList[GEO_GIVE_JELLYBEANS_WINDOW] = MeshBuilder::GenerateQuad("GEO_GIVE_JELLYBEANS_WINDOW", Color(1, 1, 1), 1);
+	meshList[GEO_GIVE_JELLYBEANS_WINDOW]->textureID = LoadTGA("Image//UI/GiveJellybeans_Window.tga");
 
 	// Selection Background
 	meshList[GEO_SELECTION_BACKGROUND] = MeshBuilder::GenerateQuad("GEO_SELECTION_BACKGROUND", Color(0, 0, 0), 1.f);
@@ -394,7 +430,7 @@ void CSceneHub::InitUI()
 	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
 	UIManagerJellybeanSelection->addFeature(BackButton);
 
-	// Confiramtion
+	/*Confiramtion*/
 	UIManagerConfirmation = new UISystem();
 
 	// Confirmation Window
@@ -411,6 +447,22 @@ void CSceneHub::InitUI()
 	Button* NoButton;
 	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
 	UIManagerConfirmation->addFeature(NoButton);
+
+	/*Giving Jellybeans*/
+	UIManagerGivingJellybeans = new UISystem();
+
+	// Giving Jelybeans Window
+	Image* GivingJelybeansWindow;
+	GivingJelybeansWindow = new Image("GivingJelybeansWindow", meshList[GEO_GIVE_JELLYBEANS_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.2, 0));
+	UIManagerGivingJellybeans->addFeature(GivingJelybeansWindow);
+
+	// Yes button
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerGivingJellybeans->addFeature(YesButton);
+
+	// No button
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerGivingJellybeans->addFeature(NoButton);
 }
 
 void CSceneHub::Update(double dt)
@@ -514,11 +566,40 @@ void CSceneHub::Update(double dt)
 			}
 		}
 		break;
-		case GIVING_JELLYBEANS:
+		case CLEARING_WAY:
 		{
-			if (noOfJellybeans >= jellybeansRequiredToFinish)
+			if (targetNPC->GetCurrentWaypointIndex() != targetNPC->GetTargetWaypointIndex())
 			{
+				targetNPC->Update(dt, theHero);
+			}
+			else
+			{
+				//Read a value from the lua text file
+				UseLuaFiles L;
 
+				L.ReadFiles("Lua//Scene/GameHub.lua");
+
+				targetNPC->setDialogue(L.DoLuaString("GuardianFinishedScript"));
+				currentState = PLAYING;
+			}
+		}
+		break;
+		case EXITING:
+		{
+			sizeOfDarkSurrounding -= dt * m_cMap->GetTileSize() * speedOfDarkSurrounding * (sizeOfDarkSurrounding - MinSizeOfScalingDarkSurrounding);
+			if (sizeOfDarkSurrounding <= m_cMap->GetTileSize() * MinSizeOfScalingDarkSurrounding)
+			{
+				sizeOfDarkSurrounding = m_cMap->GetTileSize() * MinSizeOfScalingDarkSurrounding;
+				currentState = EXIT;
+			}
+		}
+		break;
+		case EXIT:
+		{
+			timerForEnd -= dt;
+			if (timerForEnd <= 0.0f)
+			{
+				timerForEnd = 0.0f;
 			}
 		}
 		break;
@@ -599,6 +680,7 @@ void CSceneHub::UpdateUI(double dt)
 	UIManagerJellybeanSelection->Update(dt);
 	UIManagerBlackQuad->Update(dt);
 	UIManagerConfirmation->Update(dt);
+	UIManagerGivingJellybeans->Update(dt);
 }
 
 /********************************************************************************
@@ -606,11 +688,11 @@ Change UI - playing
 ********************************************************************************/
 void CSceneHub::ChangeUI_Playing()
 {
+	UIManagerGivingJellybeans->InvokeAnimator()->StopAnimations();
+	HideGivingJellybeans();
 	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	Hide_DifficultySelection();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(0, 0, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
@@ -620,12 +702,12 @@ Change UI - difficulty selection
 void CSceneHub::ChangeUI_DifficultySelection()
 {
 	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
-	HideConfirmation();
-	Hide_JellybeanSelection();
 	Show_DifficultySelection();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	Hide_JellybeanSelection();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	HideConfirmation();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
@@ -635,11 +717,10 @@ Change UI - jellybean selection
 void CSceneHub::ChangeUI_JellybeanSelection()
 {
 	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	Hide_DifficultySelection();
+	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
 	Show_JellybeanSelection();
+	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
 	HideConfirmation();
 }
 /********************************************************************************
@@ -647,11 +728,20 @@ Change UI - Confirmation
 ********************************************************************************/
 void CSceneHub::ChangeUI_Confirmation()
 {
-	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
 	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
 	ShowConfirmation();
+}
+
+/********************************************************************************
+Change UI - Giving Jellybeans
+********************************************************************************/
+void CSceneHub::ChangeUI_GivingJellybeans()
+{
+	UIManagerGivingJellybeans->InvokeAnimator()->StopAnimations();
+	ShowGivingJellybeans();
+	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
+	// AlphaQuad
+	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -847,6 +937,32 @@ void CSceneHub::HideConfirmation()
 }
 
 /********************************************************************************
+Show Giving Jellybeans
+********************************************************************************/
+void CSceneHub::ShowGivingJellybeans()
+{
+	// Giving Jellybeans Window
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// Yes button
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.385, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// No button
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.615, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+}
+
+/********************************************************************************
+Hide Giving Jellybeans
+********************************************************************************/
+void CSceneHub::HideGivingJellybeans()
+{
+	// Giving Jellybeans Window
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// Yes button
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// No button
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+}
+
+/********************************************************************************
 Update Camera position
 ********************************************************************************/
 void CSceneHub::UpdateCameraStatus(const unsigned char key, const bool status)
@@ -1039,6 +1155,12 @@ void CSceneHub::RenderGUI()
 		UIManagerBlackQuad->Render(sceneManager2D);
 		UIManagerConfirmation->Render(sceneManager2D);
 		break;
+	case GIVING_JELLYBEANS:
+		UIManagerBlackQuad->Render(sceneManager2D);
+		UIManagerDifficultySelection->Render(sceneManager2D);
+		UIManagerJellybeanSelection->Render(sceneManager2D);
+		UIManagerGivingJellybeans->Render(sceneManager2D);
+		break;
 	}
 
 	// Render the number of jellybeans deposited
@@ -1063,5 +1185,22 @@ void CSceneHub::RenderGUI()
 		// Text
 		int textSize = m_cMap->GetTileSize() * 0.5;
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], targetNPC->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+
+		if (currentState == INTERACTING)
+		{
+			// Click anywhere to continue
+			textSize = m_cMap->GetTileSize() * 0.25;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width - textSize * 31 * 0.6, textSize * 0.5);
+		}
+	}
+
+	// Dark Surrounding
+	if (currentState == EXITING)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_DARK_SURROUNDING], false, sizeOfDarkSurrounding, sizeOfDarkSurrounding, theHero->getPositionX() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5, theHero->getPositionY() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5);
+	}
+	else if (currentState == EXIT)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, sizeOfDarkSurrounding, sizeOfDarkSurrounding, theHero->getPositionX() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5, theHero->getPositionY() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5);
 	}
 }

@@ -30,6 +30,7 @@ public:
 
 	// Waypoints
 	void AddWaypoint(Vector3 waypoint);
+	std::vector<Vector3> GetWaypoints();
 	// Get AI Types
 	AI_TYPE GetAI_Type();
 	// Interactable
@@ -38,13 +39,22 @@ public:
 	// Interacted
 	bool IfInteracted();
 	void SetIfInteracted(bool interacted);
+	// Current Waypoint Index
+	int GetCurrentWaypointIndex();
+	void SetCurrentWaypointIndex(int currentWaypointIndex);
+	// Target Waypoint Index
+	int GetTargetWaypointIndex();
+	void SetTargetWaypointIndex(int targetWaypointIndex);
 
 private:
 	std::vector<Vector3> waypoints;
+	int currentWaypointIndex;
+	int targetWaypointIndex;
 	AI_TYPE ai_type;
 	FSM fsm;
 	float idlingTimeLeft;
 	Vector3 vel;
 	bool interactable;
 	bool interacted;
+	float speed;
 };

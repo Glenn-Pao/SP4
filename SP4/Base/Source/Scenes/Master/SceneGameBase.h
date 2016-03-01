@@ -114,8 +114,19 @@ public:
 		GEO_NO_BUTTON_UP,
 		GEO_NO_BUTTON_DOWN,
 
+		// Give Jellybeans
+		GEO_GIVE_JELLYBEANS_WINDOW,
+
 		// Alpha Black Quad
 		GEO_ALPHA_BLACK_QUAD,
+
+
+		// Dark Surrounding
+		GEO_DARK_SURROUNDING,
+		GEO_BLACK_QUAD,
+
+		// Guardian
+		GEO_GUARDIAN,
 
 		NUM_GEOMETRY,
 	};

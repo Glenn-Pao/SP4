@@ -151,7 +151,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 	}
 	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
-		if (scene->game_interacted != CSceneHub::NO_GAME)
+		if (scene->game_interacted > CSceneHub::NO_GAME && scene->game_interacted < CSceneHub::EXIT_GAME)
 		{
 			// Set current state to difficulty selection
 			scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
@@ -173,12 +173,29 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			}
 			scene->ChangeUI_DifficultySelection();
 		}
+		else if (scene->game_interacted == CSceneHub::EXIT_GAME)
+		{
+			scene->currentState = CSceneHub::EXITING;
+		}
 		else if (scene->targetNPC != NULL)
 		{
-			if (scene->targetNPC->GetAI_Type() == CAI_Idling::GUARDIAN)
+			if (scene->targetNPC->GetAI_Type() == CAI_Idling::GUARDIAN && scene->targetNPC->GetCurrentWaypointIndex() == 0)
 			{
 				// Set current state to GIVING_JELLYBEANS
 				scene->currentState = CSceneHub::GIVING_JELLYBEANS;
+
+				scene->ChangeUI_GivingJellybeans();
+
+
+				// Check if enought jellybeans to finish
+				if (scene->noOfJellybeans >= scene->jellybeansRequiredToFinish)
+				{
+					scene->UIManagerGivingJellybeans->FindButton("YesButton")->setisLocked(false);
+				}
+				else
+				{
+					scene->UIManagerGivingJellybeans->FindButton("YesButton")->setisLocked(true);
+				}
 			}
 			else
 			{
@@ -281,6 +298,11 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 		case CSceneHub::CONFIRMATION:
 		{
 			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		}
+		break;
+		case CSceneHub::GIVING_JELLYBEANS:
+		{
+			scene->UIManagerGivingJellybeans->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 		}
 		break;
 	}
@@ -402,7 +424,23 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 		break;
 		case CSceneHub::GIVING_JELLYBEANS:
 		{
-			scene->currentState = CSceneHub::PLAYING;
+			// Yes Button
+			if (scene->UIManagerGivingJellybeans->FindButton("YesButton")->getisHovered() == true)
+			{
+				// Take jeelybeans
+				scene->noOfJellybeans -= scene->jellybeansRequiredToFinish;
+				theGSM->saveAndLoadsys->GetGameInfo()->jellybean.SetNumOfJellybeans(theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans() - scene->jellybeansRequiredToFinish);
+
+				scene->currentState = CSceneHub::CLEARING_WAY;
+				scene->ChangeUI_Playing();
+				scene->targetNPC->SetTargetWaypointIndex(1);
+			}
+			// No Button
+			if (scene->UIManagerGivingJellybeans->FindButton("NoButton")->getisHovered() == true)
+			{
+				scene->currentState = CSceneHub::PLAYING;
+				scene->ChangeUI_Playing();
+			}
 		}
 		break;
 		}
@@ -489,6 +527,11 @@ void CHubState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
 	// Update the scene
 	scene->Update(m_dElapsedTime);
+
+	if (scene->timerForEnd == 0.0f)
+	{
+		theGSM->ChangeState(CMenuState::Instance());
+	}
 }
 
 void CHubState::Draw(CGameStateManager* theGSM)

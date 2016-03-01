@@ -44,6 +44,9 @@ public:
 		PLAYING,
 		INTERACTING,
 		GIVING_JELLYBEANS,
+		EXITING,
+		CLEARING_WAY,
+		EXIT,
 		DIFFICULTY_SELECTION,
 		JELLYBEAN_SELECTION,
 		CONFIRMATION
@@ -55,11 +58,13 @@ public:
 	UISystem* UIManagerJellybeanSelection;
 	UISystem* UIManagerBlackQuad;
 	UISystem* UIManagerConfirmation;
+	UISystem* UIManagerGivingJellybeans;
 
 	void ChangeUI_Playing();
 	void ChangeUI_DifficultySelection();
 	void ChangeUI_JellybeanSelection();
 	void ChangeUI_Confirmation();
+	void ChangeUI_GivingJellybeans();
 
 	// Number of jellybean Deposited
 	int noOfJellybeansDeposited;
@@ -68,6 +73,12 @@ public:
 
 	// Currently the target NPC, the player can interact with
 	CAI_Idling* targetNPC;
+
+	// Number of jellybeans required to finish the game
+	int jellybeansRequiredToFinish;
+
+	// Timer to Change Scene
+	float timerForEnd;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -99,13 +110,18 @@ private:
 	void HideConfirmation();
 	void ShowConfirmation();
 
+	void HideGivingJellybeans();
+	void ShowGivingJellybeans();
+
 	float UI_Speed;
 
 	// GUI
 	void RenderGUI();
 
-	// Number of jellybeans required to finish the game
-	int jellybeansRequiredToFinish;
+	// Dark surrounding
+	float sizeOfDarkSurrounding;
+	float speedOfDarkSurrounding;
+	float MinSizeOfScalingDarkSurrounding;
 };
 
 #endif
