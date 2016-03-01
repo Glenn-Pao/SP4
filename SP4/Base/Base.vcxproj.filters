@@ -145,9 +145,6 @@
     <ClCompile Include="Source\GameStateManagement\Menu Flow\WinState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.cpp">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\HubState.cpp">
       <Filter>Game State Management\Game Flow\Game Lobby</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.cpp">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.cpp">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Menu Flow\SceneInstruction.cpp">
       <Filter>Scenes\Menu Flow</Filter>
@@ -441,9 +435,6 @@
     <ClInclude Include="Source\GameStateManagement\Menu Flow\WinState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Game Flow\Tutorial Games\TutorialGame1.h">
-      <Filter>Game State Management\Game Flow\Tutorial Games</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\HubState.h">
       <Filter>Game State Management\Game Flow\Game Lobby</Filter>
     </ClInclude>
@@ -458,9 +449,6 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.h">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Game Flow\Tutorial Games\SceneTutorialGame1.h">
-      <Filter>Scenes\Game Flow\Tutorial Games</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Menu Flow\SceneInstruction.h">
       <Filter>Scenes\Menu Flow</Filter>
@@ -647,9 +635,6 @@
     <Filter Include="Game Mechanics\SavingAndLoading">
       <UniqueIdentifier>{8a285260-2e17-4ebe-b477-09c8aeabfca3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game State Management\Game Flow\Tutorial Games">
-      <UniqueIdentifier>{59967a78-df72-45c6-ab9d-f80e73a7dbfc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game State Management\Game Flow\Game 3%28MCQ%29">
       <UniqueIdentifier>{169854e1-00ca-4ddf-94f0-42486d30ea6f}</UniqueIdentifier>
     </Filter>
@@ -679,9 +664,6 @@
     </Filter>
     <Filter Include="Scenes\Game Flow\Game Lobby">
       <UniqueIdentifier>{159fba70-4ac9-40d6-b765-532441cee939}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\Game Flow\Tutorial Games">
-      <UniqueIdentifier>{f9a76df5-7081-44df-805e-f6de3491447b}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{180c5301-eeff-46d7-9f90-87cbc6a47724}</UniqueIdentifier>

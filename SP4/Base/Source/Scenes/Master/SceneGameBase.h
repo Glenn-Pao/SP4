@@ -146,10 +146,6 @@ public:
 	virtual void Render() = 0;
 	virtual void Exit()= 0;
 
-	// Read and store data
-	void ReadData(CGameInfo* Data);
-	void StoreData(CGameInfo* Data);
-
 	// Find and Set the actual offset of hero
 	void SetHeroOffset();
 

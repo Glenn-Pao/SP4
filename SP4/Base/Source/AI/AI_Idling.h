@@ -46,6 +46,8 @@ public:
 	int GetTargetWaypointIndex();
 	void SetTargetWaypointIndex(int targetWaypointIndex);
 
+	// Update BoundingBox
+	void UpdateBoundingBox();
 private:
 	std::vector<Vector3> waypoints;
 	int currentWaypointIndex;

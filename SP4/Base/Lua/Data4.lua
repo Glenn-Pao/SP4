@@ -15,3 +15,5 @@ DifficultyUnlocked0 = 3
 DifficultyUnlocked1 = 0
 DifficultyUnlocked2 = 0
 DifficultyUnlocked3 = 0
+
+guardianCleared = 0

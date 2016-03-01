@@ -31,6 +31,9 @@ void CGameInfo::ResetData()
 	{
 		DifficultySystems[i].setCurrentDifficultyUnlocked(CDifficultySystem::TUTORIAL);
 	}
+
+	// Guardian
+	guardianCleared = false;
 }
 
 /********************************************************************************
@@ -60,6 +63,8 @@ void CGameInfo::LoadFile()
 		{
 			DifficultySystems[i].setCurrentDifficultyUnlocked(L.DoLuaInt("DifficultyUnlocked" + std::to_string(i)));
 		}
+
+		guardianCleared = L.DoLuaInt("guardianCleared");
 	}
 }
 
@@ -89,6 +94,8 @@ void CGameInfo::SaveToFile()
 		{
 			myfile << "DifficultyUnlocked" << i << " = " << DifficultySystems[i].getCurrentDifficultyUnlocked() << endl;
 		}
+		myfile << endl;
+		myfile << "guardianCleared = " << guardianCleared << endl;
 	}
 }
 
@@ -120,5 +127,7 @@ void CGameInfo::ClearFile()
 		{
 			myfile << "DifficultyUnlocked" << i << " = " << DifficultySystems[i].getCurrentDifficultyUnlocked() << endl;
 		}
+		myfile << endl;
+		myfile << "guardianCleared = " << guardianCleared << endl;
 	}
 }

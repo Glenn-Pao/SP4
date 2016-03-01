@@ -79,6 +79,10 @@ public:
 
 	// Timer to Change Scene
 	float timerForEnd;
+
+	// Read and store data
+	void ReadData(CGameInfo* Data);
+	void StoreData(CGameInfo* Data);
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
@@ -93,6 +97,8 @@ private:
 	// NPCs
 	std::vector<CAI_Idling*> theNPCs;
 	bool CheckIfThisNPCIsInteractable(CAI_Idling* theNPC);
+	bool guardianCleared;
+	void SetGuardianCleared();
 
 	// Doors
 	std::vector<CDoor*> theDoor;

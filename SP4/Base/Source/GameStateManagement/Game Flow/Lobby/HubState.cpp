@@ -176,6 +176,9 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		else if (scene->game_interacted == CSceneHub::EXIT_GAME)
 		{
 			scene->currentState = CSceneHub::EXITING;
+
+			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			theGSM->saveAndLoadsys->SaveToFile();
 		}
 		else if (scene->targetNPC != NULL)
 		{

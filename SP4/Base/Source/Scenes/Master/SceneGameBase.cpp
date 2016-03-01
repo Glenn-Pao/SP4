@@ -76,29 +76,6 @@ CSceneGameBase::~CSceneGameBase()
 		waypoints = NULL;
 	}
 }
-
-// Read and store data
-void CSceneGameBase::ReadData(CGameInfo* Data)
-{
-	if (Data->ifNew == false)
-	{
-		theHero->setPositionX(Data->heroPosition.x);
-		theHero->setPositionY(Data->heroPosition.y);
-		theHero->SetAnimationDirection(Data->heroAnimationDir);
-		theHero->SetMapOffset_x(Data->heroMapOffset.x);
-		theHero->SetMapOffset_y(Data->heroMapOffset.y);
-	}
-
-	noOfJellybeans = Data->jellybean.GetNumOfJellybeans();
-}
-void CSceneGameBase::StoreData(CGameInfo* Data)
-{
-	Data->heroPosition.x = theHero->getPositionX();
-	Data->heroPosition.y = theHero->getPositionY();
-	Data->heroAnimationDir = theHero->GetAnimationDirection();
-	Data->heroMapOffset.x = theHero->GetMapOffset_x();
-	Data->heroMapOffset.y = theHero->GetMapOffset_y();
-}
 // Find and Set the actual offset of hero
 void CSceneGameBase::SetHeroOffset()
 {

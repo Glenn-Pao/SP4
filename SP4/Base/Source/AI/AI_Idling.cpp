@@ -59,13 +59,6 @@ CAI_Idling::~CAI_Idling()
 
 void CAI_Idling::Update(double dt, CPlayerInfo* theHero)
 {
-	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
-
-	//put it inside the bounding box (from object class)
-	setBoundingBox(topleft, bottomright);
-
 	switch (ai_type)
 	{
 		case GUARDIAN:
@@ -100,38 +93,8 @@ void CAI_Idling::Update(double dt, CPlayerInfo* theHero)
 		}
 		break;
 	}
-	//switch (fsm.state)
-	//{
-	//case CFSM::MOVING:
-	//{
-	//	Vector3 direction = (nextPoint - getPosition()).Normalize();
-	//	setPosition(getPosition() + direction + speedFloat);
-	//	if ((nextPoint - getPosition()).Length() < 0.5)
-	//	{
-	//		fsm.state = CFSM::REACHED;
-	//	}
-	//}
-	//	break;
-	//case CFSM::REACHED:
-	//{
-	//	waypointsindex = (waypointsindex + 1) % wayPoints.size();
-	//	//waypointsindex = (wayPoints.size() - 1) <--- starting
-	//	//waypointsindex = (waypointsindex - 1) % wayPoints.size();
-	//	nextPoint = wayPoints[waypointsindex];
-	//	fsm.state = CFSM::IDLE;
-	//}
-	//	break;
-	//case CFSM::IDLE:
-	//{
-	//	timer += 0.1f;
-	//	if (timer > timerCap)
-	//	{
-	//		fsm.state = CFSM::MOVING;
-	//		timer = 0;
-	//	}
-	//}
-	//	break;
-	//}
+
+	UpdateBoundingBox();
 }
 
 // Waypoints
@@ -188,4 +151,15 @@ int CAI_Idling::GetTargetWaypointIndex()
 void CAI_Idling::SetTargetWaypointIndex(int targetWaypointIndex)
 {
 	this->targetWaypointIndex = targetWaypointIndex;
+}
+
+// Update BoundingBox
+void CAI_Idling::UpdateBoundingBox()
+{
+	//Define the topleft and bottomright for the bounding box
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+
+	//put it inside the bounding box (from object class)
+	setBoundingBox(topleft, bottomright);
 }

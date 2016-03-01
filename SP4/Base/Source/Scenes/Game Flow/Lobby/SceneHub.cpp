@@ -26,6 +26,7 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	, jellybeansRequiredToFinish(100)
 	, sizeOfDarkSurrounding(0)
 	, timerForEnd(0.0f)
+	, guardianCleared(false)
 {
 }
 
@@ -574,12 +575,8 @@ void CSceneHub::Update(double dt)
 			}
 			else
 			{
-				//Read a value from the lua text file
-				UseLuaFiles L;
-
-				L.ReadFiles("Lua//Scene/GameHub.lua");
-
-				targetNPC->setDialogue(L.DoLuaString("GuardianFinishedScript"));
+				guardianCleared = true;
+				SetGuardianCleared();
 				currentState = PLAYING;
 			}
 		}
@@ -1202,5 +1199,59 @@ void CSceneHub::RenderGUI()
 	else if (currentState == EXIT)
 	{
 		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, sizeOfDarkSurrounding, sizeOfDarkSurrounding, theHero->getPositionX() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5, theHero->getPositionY() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5);
+	}
+}
+
+// Read and store data
+void CSceneHub::ReadData(CGameInfo* Data)
+{
+	if (Data->ifNew == false)
+	{
+		theHero->setPositionX(Data->heroPosition.x);
+		theHero->setPositionY(Data->heroPosition.y);
+		theHero->SetAnimationDirection(Data->heroAnimationDir);
+		theHero->SetMapOffset_x(Data->heroMapOffset.x);
+		theHero->SetMapOffset_y(Data->heroMapOffset.y);
+		guardianCleared = Data->guardianCleared;
+
+		if (guardianCleared == true)
+		{
+			SetGuardianCleared();
+		}
+	}
+
+	noOfJellybeans = Data->jellybean.GetNumOfJellybeans();
+}
+void CSceneHub::StoreData(CGameInfo* Data)
+{
+	Data->heroPosition.x = theHero->getPositionX();
+	Data->heroPosition.y = theHero->getPositionY();
+	Data->heroAnimationDir = theHero->GetAnimationDirection();
+	Data->heroMapOffset.x = theHero->GetMapOffset_x();
+	Data->heroMapOffset.y = theHero->GetMapOffset_y();
+	Data->guardianCleared = guardianCleared;
+}
+
+// Set the Guardian to cleared
+void CSceneHub::SetGuardianCleared()
+{
+	for (int i = 0; i < theNPCs.size(); i++)
+	{
+		if (theNPCs[i]->GetAI_Type() == CAI_Idling::GUARDIAN)
+		{
+			//Read a value from the lua text file
+			UseLuaFiles L;
+
+			L.ReadFiles("Lua//Scene/GameHub.lua");
+
+			// Set Cleared Dialogue
+			theNPCs[i]->setDialogue(L.DoLuaString("GuardianFinishedScript"));
+
+			// Set the guardian at the last position
+			theNPCs[i]->setPosition(theNPCs[i]->GetWaypoints().back());
+			theNPCs[i]->SetCurrentWaypointIndex(theNPCs[i]->GetWaypoints().size() - 1);
+			theNPCs[i]->SetTargetWaypointIndex(theNPCs[i]->GetCurrentWaypointIndex());
+			theNPCs[i]->UpdateBoundingBox();
+		}
 	}
 }
