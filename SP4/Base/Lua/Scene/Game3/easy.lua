@@ -10,7 +10,7 @@ script2 = "......"
 script3 = "Is this the right door?"
 
 -- Question to be asked for the first question tile
-scriptQn1 = "I am the first superhero from DC Comics. Who am I?"
+scriptQn1 = "Who is the first superhero?"
 
 -- Possible answers to the first question tile
 scriptAnswerQn1Type0 = "Human Torch"
