@@ -8,6 +8,7 @@
 #include "..\..\Base\Source\LoadTGA.h"
 #include <sstream>
 #include "..\..\Base\Source\Strategy_Kill.h"
+#include "..\..\..\AI\ProbabilitySystem.h"
 
 #include "..\..\..\UsingLua.h"
 
@@ -116,6 +117,7 @@ void CSceneHub::Init(int level)
 	Vector3 GuardianPos;
 	const int numOfGuardianWaypointPos = 2;
 	Vector3 GuardianWaypointPos[numOfGuardianWaypointPos];
+	Vector3 TipGiverPos;
 	Vector3 DoorPos[5];
 	int currentDoorIndex = 0;
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
@@ -150,6 +152,11 @@ void CSceneHub::Init(int level)
 			{
 				GuardianWaypointPos[1] = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
+			// Tip Giver
+			else if (m_cMap->theScreenMap[i][k] == 150)
+			{
+				TipGiverPos = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+			}
 		}
 	}
 
@@ -162,15 +169,23 @@ void CSceneHub::Init(int level)
 	theNPCs.back()->AddWaypoint(GuardianPos);
 	for (int i = 0; i < numOfGuardianWaypointPos; i++)
 		theNPCs.back()->AddWaypoint(GuardianWaypointPos[i]);
+	// Tip Giver
+	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(TipGiverPos.x, TipGiverPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_GREEN_MONSTER], CAI_Idling::TIP_ADVISOR));
+	ChangeTip();
 
 	// Exit
 	theDoor.push_back(new CDoor(CObjects::DOOR, 5, Vector3(DoorPos[0].x, DoorPos[0].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.back()->setDialogue(L.DoLuaString("door5"));
 
 	// Doors
 	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(DoorPos[1].x, DoorPos[1].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.back()->setDialogue(L.DoLuaString("door1"));
 	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(DoorPos[2].x, DoorPos[2].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.back()->setDialogue(L.DoLuaString("door2"));
 	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(DoorPos[3].x, DoorPos[3].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.back()->setDialogue(L.DoLuaString("door3"));
 	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(DoorPos[4].x, DoorPos[4].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.back()->setDialogue(L.DoLuaString("door4"));
 	
 
 	// UI
@@ -215,6 +230,10 @@ void CSceneHub::InitMeshes()
 	// Guardian
 	meshList[GEO_GUARDIAN] = MeshBuilder::Generate2DMesh("GEO_GUARDIAN", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_GUARDIAN]->textureID = LoadTGA("Image//guardian.tga");
+
+	// Green Monster
+	meshList[GEO_GREEN_MONSTER] = MeshBuilder::Generate2DMesh("GEO_GREEN_MONSTER", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_GREEN_MONSTER]->textureID = LoadTGA("Image//monsterGreen.tga");
 
 	// Hero
 	// Side
@@ -997,6 +1016,12 @@ void CSceneHub::Render()
 	for (int i = 0; i < theDoor.size(); i++)
 	{
 		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
+		// Text
+		int textSize = m_cMap->GetTileSize() * 0.4;
+		if (theDoor[i]->getDialogue().size() > 4)
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+		else
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
 	}
 	// Render Hero
 	RenderHero();
@@ -1181,13 +1206,13 @@ void CSceneHub::RenderGUI()
 
 		// Text
 		int textSize = m_cMap->GetTileSize() * 0.5;
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], targetNPC->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], targetNPC->getDialogue(), Color(0, 0, 0), textSize, 0, textSize);
 
 		if (currentState == INTERACTING)
 		{
 			// Click anywhere to continue
 			textSize = m_cMap->GetTileSize() * 0.25;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width - textSize * 31 * 0.6, textSize * 0.5);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width - textSize * 31 * 0.6, 0);
 		}
 	}
 
@@ -1252,6 +1277,29 @@ void CSceneHub::SetGuardianCleared()
 			theNPCs[i]->SetCurrentWaypointIndex(theNPCs[i]->GetWaypoints().size() - 1);
 			theNPCs[i]->SetTargetWaypointIndex(theNPCs[i]->GetCurrentWaypointIndex());
 			theNPCs[i]->UpdateBoundingBox();
+		}
+	}
+}
+
+// Change Tip for tip advisor
+void CSceneHub::ChangeTip()
+{
+	for (int i = 0; i < theNPCs.size(); i++)
+	{
+		if (theNPCs[i]->GetAI_Type() == CAI_Idling::TIP_ADVISOR)
+		{
+			//Read a value from the lua text file
+			UseLuaFiles L;
+
+			L.ReadFiles("Lua//Scene/GameHub.lua");
+
+			CProbabilitySystem p_s;
+			for (int j = 0; j < L.DoLuaInt("numOfTips"); j++)
+			{
+				p_s.AddProbability(1);
+			}
+			// Set Cleared Dialogue
+			theNPCs[i]->setDialogue(L.DoLuaString("tip" + to_string(p_s.GetARandIntProbability())));
 		}
 	}
 }

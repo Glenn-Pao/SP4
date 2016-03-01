@@ -129,6 +129,9 @@ public:
 		// Guardian
 		GEO_GUARDIAN,
 
+		// NPC
+		GEO_GREEN_MONSTER,
+
 		NUM_GEOMETRY,
 	};
 public:

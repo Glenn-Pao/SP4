@@ -73,6 +73,7 @@ public:
 
 	// Currently the target NPC, the player can interact with
 	CAI_Idling* targetNPC;
+	void ChangeTip();
 
 	// Number of jellybeans required to finish the game
 	int jellybeansRequiredToFinish;

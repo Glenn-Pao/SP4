@@ -422,6 +422,9 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 		break;
 		case CSceneHub::INTERACTING:
 		{
+			if (scene->targetNPC->GetAI_Type() == CAI_Idling::TIP_ADVISOR)
+				scene->ChangeTip();
+
 			scene->currentState = CSceneHub::PLAYING;
 		}
 		break;

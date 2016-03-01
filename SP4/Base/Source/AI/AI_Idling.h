@@ -18,6 +18,7 @@ public:
 	enum AI_TYPE
 	{
 		GUARDIAN,
+		TIP_ADVISOR,
 		STATIONARY,
 		MOVABLE,
 		NUM_OF_AI_TYPE

@@ -11,3 +11,14 @@ timerForEnd = 0.5
 
 GuardianScript = "Gimme 100 jellybeans!!!"
 GuardianFinishedScript = "JEALLYBEANS NICE! ME LIKE!"
+
+numOfTips = 3
+tip0 = "Game will  autosave when you go to next area."
+tip1 = "Can't win the minigame? Try playing other minigames."
+tip2 = "Too hard? How about trying an easier difficulty."
+
+door1 = "Maze"
+door2 = "Puzzle"
+door3 = "MCQ"
+door4 = "Stress"
+door5 = "Exit"
