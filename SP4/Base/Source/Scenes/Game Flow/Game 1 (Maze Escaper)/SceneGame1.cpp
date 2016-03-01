@@ -15,7 +15,7 @@
 
 CSceneGame1::CSceneGame1(const int m_window_width, const int m_window_height)
 	: theDoor(NULL)
-	, currentState(PLAYING)
+	, currentState(PREPARING)
 	, timer(30.0f)
 	, level(0)
 {
@@ -580,11 +580,11 @@ void CSceneGame1::RenderGUI()
 	}
 
 	// Fps
-	ss.str(std::string());
+	/*ss.str(std::string());
 	ss.precision(3);
 	ss << "FPS:" << fps;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), 25, sceneManager2D.m_window_width - 250, 5);
-
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), 25, sceneManager2D.m_window_width - 140, 5);
+*/
 }
 
 /********************************************************************************

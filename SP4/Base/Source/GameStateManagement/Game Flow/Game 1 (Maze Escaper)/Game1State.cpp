@@ -175,6 +175,14 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 #endif
 	switch (scene->currentState)
 	{
+		case CSceneGame1::PREPARING:
+		{
+			if (button_Left == true)
+			{
+				scene->currentState = CSceneGame1::PLAYING;
+			}
+		}
+		break;
 		case CSceneGame1::COMPLETED:
 		{
 			if (button_Left == true)

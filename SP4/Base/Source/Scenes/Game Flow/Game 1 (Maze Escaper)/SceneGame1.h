@@ -32,6 +32,7 @@ public:
 
 	enum STATE
 	{
+		PREPARING,
 		PLAYING,
 		EXITING,
 		COMPLETED,

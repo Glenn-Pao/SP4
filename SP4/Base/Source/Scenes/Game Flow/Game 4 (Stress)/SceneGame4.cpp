@@ -1019,7 +1019,7 @@ void SceneGame4::RenderDeck()
 			}
 		}
 	}
-	sceneManager2D.Render2DMesh(meshList[GEO_PATTERN], false, 200, 30, PatternToFollow->getPosition().x, PatternToFollow->getPosition().y + 75, 0);
+	sceneManager2D.Render2DMesh(meshList[GEO_PATTERN], false, 200, 30, PatternToFollow->getPosition().x, PatternToFollow->getPosition().y + 110, 0);
 
 	//Render Pattern To Insert
 	for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
