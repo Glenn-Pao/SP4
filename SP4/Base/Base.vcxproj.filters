@@ -593,9 +593,6 @@
     <Filter Include="Game State Management\Game Flow">
       <UniqueIdentifier>{15e45a54-4f30-4365-8cd9-ecfb6c929971}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game State Management\Menu Flow">
-      <UniqueIdentifier>{1757cd9f-a679-4f74-a6b1-6d6bb9300f80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scenes\Master">
       <UniqueIdentifier>{b4a970cc-3ad8-4f39-8e7a-a870d35715bd}</UniqueIdentifier>
     </Filter>
@@ -655,6 +652,9 @@
     </Filter>
     <Filter Include="Game Mechanics\Objects\Game4">
       <UniqueIdentifier>{228eb41f-116f-4241-b232-a8b54a086c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game State Management\Menu Flow">
+      <UniqueIdentifier>{1757cd9f-a679-4f74-a6b1-6d6bb9300f80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

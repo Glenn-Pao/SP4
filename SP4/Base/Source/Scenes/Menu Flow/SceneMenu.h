@@ -20,8 +20,8 @@ class CSceneMenu : public Scene
 		INSTRUCTIONS_BUTTON_UP,
 		INSTRUCTIONS_BUTTON_DOWN,
 
-		OPTION_BUTTON_UP,
-		OPTION_BUTTON_DOWN,
+		SETTINGS_BUTTON_UP,
+		SETTINGS_BUTTON_DOWN,
 
 		EXIT_BUTTON_UP,
 		EXIT_BUTTON_DOWN,
@@ -66,6 +66,11 @@ public:
 	UISystem* UIInstructionPage2;
 
 	CSceneManager2D sceneManager2D;
+
+	float MainMenuAnimationTimer;
+
+	bool isSettingsAnimationStarted;
+	float TimeSinceSettingsAnimation;
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

@@ -178,7 +178,7 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	{
 		if (button_Left == true)
 		{
-			if (scene->UIManager->FindButton("MusicIcon")->getActive())
+			if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
 			{
 				theGSM->sound->setActive(false);
 			}

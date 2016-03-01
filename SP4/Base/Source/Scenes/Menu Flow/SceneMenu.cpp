@@ -86,6 +86,12 @@ void CSceneMenu::Init(int level)
 	meshList[MUSIC_ICON_OFF] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
 	meshList[MUSIC_ICON_OFF]->textureID = LoadTGA("Image//Music_Icon_Off.tga");
 	
+	meshList[SETTINGS_BUTTON_UP] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
+	meshList[SETTINGS_BUTTON_UP]->textureID = LoadTGA("Image//SettingsIcon.tga");
+
+	meshList[SETTINGS_BUTTON_DOWN] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
+	meshList[SETTINGS_BUTTON_DOWN]->textureID = LoadTGA("Image//SettingsIconPressed.tga");
+
 	choice = NONE;
 
 	UIManager = new UISystem();
@@ -96,18 +102,21 @@ void CSceneMenu::Init(int level)
 	Button* LoadGameButton;
 	LoadGameButton = new Button("LoadGameButton", meshList[LOAD_BUTTON_UP], meshList[LOAD_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 4.5, 1), Vector3(20, 10, 1));
 
-	Button* Instructions;
-	Instructions = new Button("Instructions", meshList[INSTRUCTIONS_BUTTON_UP], meshList[INSTRUCTIONS_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 3, 1), Vector3(20, 10, 1));
-
-
 	Button* ExitButton;
-	ExitButton = new Button("ExitButton", meshList[EXIT_BUTTON_UP], meshList[EXIT_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 1.5, 1), Vector3(20, 10, 1));
+	ExitButton = new Button("ExitButton", meshList[EXIT_BUTTON_UP], meshList[EXIT_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 3, 1), Vector3(20, 10, 1));
+
+	Button* Instructions;
+	Instructions = new Button("Instructions", meshList[INSTRUCTIONS_BUTTON_UP], meshList[INSTRUCTIONS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
 
 	Button* MusicIcon;
-	MusicIcon = new Button("MusicIcon", meshList[MUSIC_ICON], meshList[MUSIC_ICON], NULL, Vector3(sceneManager2D.m_window_width - (sceneManager2D.m_window_width * 0.1), 100, 1), Vector3(100, 100, 1));
+	MusicIcon = new Button("MusicIcon", meshList[MUSIC_ICON], meshList[MUSIC_ICON], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
 
 	Button* MusicIconOff;
-	MusicIconOff = new Button("MusicIconOff", meshList[MUSIC_ICON_OFF], meshList[MUSIC_ICON_OFF], NULL, Vector3(sceneManager2D.m_window_width - (sceneManager2D.m_window_width * 0.1), 100, 1), Vector3(100, 100, 1), false);
+	MusicIconOff = new Button("MusicIconOff", meshList[MUSIC_ICON_OFF], meshList[MUSIC_ICON_OFF], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), false);
+
+	Button* SettingsButton;
+	SettingsButton = new Button("SettingsButton", meshList[SETTINGS_BUTTON_UP], meshList[SETTINGS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), true);
+
 
 	Image* Title;
 	Title = new Image("Title", meshList[TITLE], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height + 200, 0), Vector3(300, 150, 0));
@@ -151,7 +160,6 @@ void CSceneMenu::Init(int level)
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 8.8, sceneManager2D.m_window_height / 10 * 7.5, 0), 4, 0);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(70, 35, 0), 4, 2);
 
-
 	UIManager->addFeature(StartGameButton);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"), 0, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"),0.5, Vector3(150, 75, 1), 5, 2);
@@ -160,22 +168,75 @@ void CSceneMenu::Init(int level)
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 4.5, 0), 10, 0);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.7, Vector3(150, 75, 1), 5, 2);
 
-	UIManager->addFeature(Instructions);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0.4, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 3, 0), 10, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0.9, Vector3(150, 75, 1), 5, 2);
-
 	UIManager->addFeature(ExitButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 0.6, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 1.5, 0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 0.6, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 3, 0), 10, 0);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 1.1, Vector3(150, 75, 1), 5, 2);
 
+	UIManager->addFeature(Instructions);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 1.9, Vector3(50, 50, 1), 5, 2);
+
 	UIManager->addFeature(MusicIcon);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 1.9, Vector3(50, 50, 1), 5, 2);
+
 	UIManager->addFeature(MusicIconOff);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 1.9, Vector3(50, 50, 1), 5, 2);
+
+
+	UIManager->addFeature(SettingsButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SettingsButton"), 1.9, Vector3(80,80,1), 5, 2);
+
+	MainMenuAnimationTimer = 0;
+
+	isSettingsAnimationStarted = false;
+	TimeSinceSettingsAnimation = 0;
 }
 
 void CSceneMenu::Update(double dt)
 {
 	UIManager->Update(dt);
+	TimeSinceSettingsAnimation += dt;
+	MainMenuAnimationTimer += dt;
 
+	cout << TimeSinceSettingsAnimation << endl;
+
+	if (MainMenuAnimationTimer > 2.9)
+	{
+		if (UIManager->FindButton("SettingsButton")->getisHovered() == true)
+		{
+			TimeSinceSettingsAnimation = 0;
+			if (isSettingsAnimationStarted == false)
+			{
+				isSettingsAnimationStarted = true;
+				UIManager->InvokeAnimator()->StopAnimations();
+				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 80, 1), 5, 0);
+				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 150, 1), 5, 0);
+				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 150, 1), 5, 0);
+			}
+		}
+		else if (UIManager->FindButton("SettingsButton")->getisHovered() == false && isSettingsAnimationStarted == true && TimeSinceSettingsAnimation > 0.2)
+		{
+			isSettingsAnimationStarted = false;
+			UIManager->InvokeAnimator()->StopAnimations();
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 80, 1), 5, 0);
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 150, 1), 5, 0);
+			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 150, 1), 5, 0);
+		}
+
+		if (UIManager->FindButton("Instructions")->getisHovered() == true)
+		{
+			TimeSinceSettingsAnimation = 0;
+		}
+
+		if (UIManager->FindButton("MusicIcon")->getisHovered() == true)
+		{
+			TimeSinceSettingsAnimation = 0;
+		}
+
+		if (UIManager->FindButton("MusicIconOff")->getisHovered() == true)
+		{
+			TimeSinceSettingsAnimation = 0;
+		}
+	}
 	/*if (UIManager->FindButton("MusicIcon")->getActive())
 	{
 		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0.5, Vector3(100, 100, 0), 5, UIAnimation::SCALING);
