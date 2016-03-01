@@ -1238,6 +1238,7 @@ void CSceneHub::ReadData(CGameInfo* Data)
 		theHero->SetMapOffset_x(Data->heroMapOffset.x);
 		theHero->SetMapOffset_y(Data->heroMapOffset.y);
 		guardianCleared = Data->guardianCleared;
+		musicActive = Data->musicActive;
 
 		if (guardianCleared == true)
 		{
@@ -1255,6 +1256,7 @@ void CSceneHub::StoreData(CGameInfo* Data)
 	Data->heroMapOffset.x = theHero->GetMapOffset_x();
 	Data->heroMapOffset.y = theHero->GetMapOffset_y();
 	Data->guardianCleared = guardianCleared;
+	Data->musicActive = musicActive;
 }
 
 // Set the Guardian to cleared

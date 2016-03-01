@@ -34,6 +34,7 @@ void CGameInfo::ResetData()
 
 	// Guardian
 	guardianCleared = false;
+	musicActive = true;
 }
 
 /********************************************************************************
@@ -65,6 +66,7 @@ void CGameInfo::LoadFile()
 		}
 
 		guardianCleared = L.DoLuaInt("guardianCleared");
+		musicActive = L.DoLuaInt("musicActive");
 	}
 }
 
@@ -96,6 +98,7 @@ void CGameInfo::SaveToFile()
 		}
 		myfile << endl;
 		myfile << "guardianCleared = " << guardianCleared << endl;
+		myfile << "musicActive = " << musicActive << endl;
 	}
 }
 
@@ -129,5 +132,6 @@ void CGameInfo::ClearFile()
 		}
 		myfile << endl;
 		myfile << "guardianCleared = " << guardianCleared << endl;
+		myfile << "musicActive = " << musicActive << endl;
 	}
 }

@@ -99,6 +99,7 @@ private:
 	std::vector<CAI_Idling*> theNPCs;
 	bool CheckIfThisNPCIsInteractable(CAI_Idling* theNPC);
 	bool guardianCleared;
+	bool musicActive;
 	void SetGuardianCleared();
 
 	// Doors

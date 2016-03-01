@@ -779,21 +779,8 @@ void CSceneGame3::RenderTileMap()
 	}
 	for (int i = 0; i < theQuestions.size(); i++)
 	{
-		if (!theQuestions[i]->getActive() && theQuestions[i]->getInteractivity())
-		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX() * 2, theQuestions[i]->getScaleY() * 2, theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
-			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
-		}
-		else if (theQuestions[i]->getActive() && theQuestions[i]->getInteractivity())
-		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX(), theQuestions[i]->getScaleY(), theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
-			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
-		}
-		else if (!theQuestions[i]->getInteractivity())
-		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX(), theQuestions[i]->getScaleY(), theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
-			theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
-		}
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_QN], false, theQuestions[i]->getScaleX() * 2, theQuestions[i]->getScaleY() * 2, theQuestions[i]->getPositionX(), theQuestions[i]->getPositionY());
+		theQuestions[i]->setPosition(theQuestions[i]->getDefaultPosition());
 	}
 }
 

@@ -35,4 +35,5 @@ public:
 	Vector2 heroMapOffset;// Hero map offset
 	CDifficultySystem DifficultySystems[4]; // Difficulty System Of the 4 Minigames
 	bool guardianCleared; // whether guradian is cleared
+	bool musicActive;		//whether music is active or not
 };
