@@ -30,6 +30,9 @@ class CSceneMenu : public Scene
 		SMOKE_LEFT,
 		SMOKE_RIGHT,
 
+		INSTRUCTION_PAGE_1,
+		INSTRUCTION_PAGE_2,
+
 		BACKGROUND,
 		NUM_GEOMETRY,
 	};
@@ -58,6 +61,8 @@ public:
 
 	int choice;
 	UISystem* UIManager;
+	UISystem* UIInstructionPage1;
+	UISystem* UIInstructionPage2;
 
 	CSceneManager2D sceneManager2D;
 private:

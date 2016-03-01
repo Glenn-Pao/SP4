@@ -103,13 +103,13 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const unsigned cha
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
-	if (status)
+	/*if (status)
 	{
 		if (key == 32)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
 		}
-	}
+	}*/
 }
 
 void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,

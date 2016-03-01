@@ -41,7 +41,6 @@
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\HubState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.cpp" />
     <ClCompile Include="Source\GameStateManagement\Master\GameStateManager.cpp" />
-    <ClCompile Include="Source\GameStateManagement\Menu Flow\InstructionState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Menu Flow\LoseState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Menu Flow\MenuState.cpp" />
     <ClCompile Include="Source\GameStateManagement\Menu Flow\OptionsState.cpp" />
@@ -80,7 +79,6 @@
     <ClCompile Include="Source\Scenes\Master\SceneGameBase.cpp" />
     <ClCompile Include="Source\Scenes\Master\SceneManager.cpp" />
     <ClCompile Include="Source\Scenes\Master\SceneManager2D.cpp" />
-    <ClCompile Include="Source\Scenes\Menu Flow\SceneInstruction.cpp" />
     <ClCompile Include="Source\Scenes\Menu Flow\SceneLose.cpp" />
     <ClCompile Include="Source\Scenes\Menu Flow\SceneMenu.cpp" />
     <ClCompile Include="Source\Scenes\Menu Flow\SceneOptions.cpp" />
@@ -136,7 +134,6 @@
     <ClInclude Include="Source\GameStateManagement\Game Flow\Lobby\LoadGameSelect.h" />
     <ClInclude Include="Source\GameStateManagement\Master\GameState.h" />
     <ClInclude Include="Source\GameStateManagement\Master\GameStateManager.h" />
-    <ClInclude Include="Source\GameStateManagement\Menu Flow\InstructionState.h" />
     <ClInclude Include="Source\GameStateManagement\Menu Flow\LoseState.h" />
     <ClInclude Include="Source\GameStateManagement\Menu Flow\MenuState.h" />
     <ClInclude Include="Source\GameStateManagement\Menu Flow\OptionsState.h" />
@@ -177,7 +174,6 @@
     <ClInclude Include="Source\Scenes\Master\SceneGameBase.h" />
     <ClInclude Include="Source\Scenes\Master\SceneManager.h" />
     <ClInclude Include="Source\Scenes\Master\SceneManager2D.h" />
-    <ClInclude Include="Source\Scenes\Menu Flow\SceneInstruction.h" />
     <ClInclude Include="Source\Scenes\Menu Flow\SceneLose.h" />
     <ClInclude Include="Source\Scenes\Menu Flow\SceneMenu.h" />
     <ClInclude Include="Source\Scenes\Menu Flow\SceneOptions.h" />

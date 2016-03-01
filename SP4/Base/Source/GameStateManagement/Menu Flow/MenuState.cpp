@@ -5,7 +5,6 @@ using namespace std;
 #include "menustate.h"
 #include "../Game Flow/Lobby/LoadGameSelect.h"
 #include "playstate.h"
-#include "InstructionState.h"
 #include "RankingsState.h"
 #include "OptionsState.h"
 
@@ -152,7 +151,7 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	{
 		if (button_Left == true)
 		{
-			theGSM->ChangeState(CInstructionState::Instance());
+			//theGSM->ChangeState(CInstructionState::Instance());
 		}
 	}
 	else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
