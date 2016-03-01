@@ -39,6 +39,8 @@ public:
 	bool m_bWarpMouse;
 
 	CSavingAndLoadingSystem* saveAndLoadsys;
+	//Sound system
+	CSound *sound;
 private:
 	// the stack of states
 	vector<CGameState*> StackOfStates;
@@ -48,9 +50,6 @@ private:
 
 	bool m_bRunning;
 	bool m_bFullscreen;
-
-	//Sound system
-	CSound *sound;
 
 	short i;			//identity of stack
 	short prevI;	//previous identity of stack

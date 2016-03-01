@@ -27,7 +27,7 @@ public:
 	static CMenuState* Instance() {
 		return &theMenuState;
 	}
-
+	bool soundActive;
 protected:
 	CMenuState() { }
 

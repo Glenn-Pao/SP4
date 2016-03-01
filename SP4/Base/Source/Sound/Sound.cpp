@@ -16,6 +16,7 @@ CSound::CSound()
 	, volPP(0)
 	, volS(0)
 	, maxVol(1)
+	, active(true)
 {
 	//create the new sound system
 	TheSound = createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_MULTI_THREADED | ESEO_LOAD_PLUGINS | ESEO_USE_3D_BUFFERS);
@@ -293,86 +294,99 @@ int CSound::getSoundType(void)
 }
 void CSound::PlaySong()
 {
-	//play song depending on type
-	switch (m_Sound_Type)
+	if (active)
 	{
-	case LOBBY:
-	{
-		PlayLobby();
+		//play song depending on type
+		switch (m_Sound_Type)
+		{
+		case LOBBY:
+		{
+			PlayLobby();
 
+			StopMainMenu();
+			StopMazeEscaper();
+			StopPuzzleParty();
+			StopMCQPower();
+			StopStress();
+		}
+			break;
+		case MAIN_MENU:
+		{
+			PlayMainMenu();
+
+			StopLobby();
+			StopMazeEscaper();
+			StopPuzzleParty();
+			StopMCQPower();
+			StopStress();
+		}
+			break;
+		case MAZE:
+		{
+			PlayMazeEscaper();
+
+			StopLobby();
+			StopMainMenu();
+			StopPuzzleParty();
+			StopMCQPower();
+			StopStress();
+		}
+			break;
+		case PUZZLE:
+		{
+			PlayPuzzleParty();
+
+			StopLobby();
+			StopMainMenu();
+			StopMazeEscaper();
+			StopMCQPower();
+			StopStress();
+		}
+			break;
+		case MCQ:
+		{
+			PlayMCQPower();
+
+			StopLobby();
+			StopMainMenu();
+			StopMazeEscaper();
+			StopPuzzleParty();
+			StopStress();
+		}
+			break;
+		case STRESS:
+		{
+			PlayStress();
+
+			StopLobby();
+			StopMainMenu();
+			StopMazeEscaper();
+			StopPuzzleParty();
+			StopMCQPower();
+		}
+			break;
+		default:
+		{
+			StopLobby();
+			StopMainMenu();
+			StopMazeEscaper();
+			StopPuzzleParty();
+			StopMCQPower();
+			StopStress();
+		}
+			break;
+		}
+	}
+	else
+	{
+		StopLobby();
 		StopMainMenu();
 		StopMazeEscaper();
 		StopPuzzleParty();
 		StopMCQPower();
 		StopStress();
 	}
-		break;
-	case MAIN_MENU:
-	{
-		PlayMainMenu();
-
-		StopLobby();
-		StopMazeEscaper();
-		StopPuzzleParty();
-		StopMCQPower();
-		StopStress();
-	}
-		break;
-	case MAZE:
-	{
-		PlayMazeEscaper();
-
-		StopLobby();
-		StopMainMenu();
-		StopPuzzleParty();
-		StopMCQPower();
-		StopStress();
-	}	
-		break;
-	case PUZZLE:
-	{
-		PlayPuzzleParty();
-
-		StopLobby();
-		StopMainMenu();
-		StopMazeEscaper();
-		StopMCQPower();
-		StopStress();
-	}		
-		break;
-	case MCQ:
-	{
-		PlayMCQPower();
-
-		StopLobby();
-		StopMainMenu();
-		StopMazeEscaper();
-		StopPuzzleParty();
-		StopStress();
-	}		
-		break;
-	case STRESS:
-	{
-		PlayStress();
-
-		StopLobby();
-		StopMainMenu();
-		StopMazeEscaper();
-		StopPuzzleParty();
-		StopMCQPower();
-	}
-		break;
-	default:
-	{
-		StopLobby();
-		StopMainMenu();
-		StopMazeEscaper();
-		StopPuzzleParty();
-		StopMCQPower();
-		StopStress();
-	}
-		break;
-	}
+	
 }
 //dump the sound once done
 void CSound::Exit()
@@ -405,4 +419,12 @@ void CSound::Exit()
 	{
 		Lobby->drop();
 	}
+}
+void CSound::setActive(bool active)
+{
+	this->active = active;
+}
+bool CSound::getActive(void)
+{
+	return active;
 }

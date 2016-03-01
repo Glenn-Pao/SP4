@@ -26,6 +26,7 @@ void CMenuState::Init(CGameStateManager* theGSM, const int width, const int heig
 #endif
 	scene = new CSceneMenu(800, 600);
 	scene->Init(level);
+	soundActive = true;
 }
 
 void CMenuState::Cleanup()
@@ -134,6 +135,18 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
+	//The sound system. Check if it is active or not. Then display the sprite accordingly
+	if (theGSM->sound->getActive())
+	{
+		scene->UIManager->FindButton("MusicIcon")->setActive(true);
+		scene->UIManager->FindButton("MusicIconOff")->setActive(false);
+	}
+	else
+	{
+		scene->UIManager->FindButton("MusicIcon")->setActive(false);
+		scene->UIManager->FindButton("MusicIconOff")->setActive(true);
+	}
+	
 	// Play
 	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 	if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
@@ -161,7 +174,20 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 			theGSM->Quit();
 		}
 	}
-
+	else if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
+	{
+		if (button_Left == true)
+		{
+			if (scene->UIManager->FindButton("MusicIcon")->getActive())
+			{
+				theGSM->sound->setActive(false);
+			}
+			else
+			{
+				theGSM->sound->setActive(true);
+			}
+		}
+	}
 	//// Time-Limit
 	//else if (width * 0.28 <= mouse_x && mouse_x <= width * 0.72 &&
 	//	height * 0.355 <= mouse_y && mouse_y <= height * 0.45)
@@ -214,10 +240,6 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	//		theGSM->Quit();
 	//	}
 	//}
-	else
-	{
-		scene->choice = CSceneMenu::NONE;
-	}
 }
 
 void CMenuState::Update(CGameStateManager* theGSM) 

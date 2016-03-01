@@ -80,6 +80,11 @@ void CSceneMenu::Init(int level)
 	meshList[SMOKE_RIGHT] = MeshBuilder::GenerateQuad("PLAYBUTTON_UP", Color(0, 0, 0), 1.f);
 	meshList[SMOKE_RIGHT]->textureID = LoadTGA("Image//MainMenuSmokeRight.tga");
 
+	meshList[MUSIC_ICON] = MeshBuilder::GenerateQuad("MUSIC_ICON", Color(0, 0, 0), 1.f);
+	meshList[MUSIC_ICON]->textureID = LoadTGA("Image//Music_Icon.tga");
+
+	meshList[MUSIC_ICON_OFF] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
+	meshList[MUSIC_ICON_OFF]->textureID = LoadTGA("Image//Music_Icon_Off.tga");
 	
 	choice = NONE;
 
@@ -98,6 +103,11 @@ void CSceneMenu::Init(int level)
 	Button* ExitButton;
 	ExitButton = new Button("ExitButton", meshList[EXIT_BUTTON_UP], meshList[EXIT_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 1.5, 1), Vector3(20, 10, 1));
 
+	Button* MusicIcon;
+	MusicIcon = new Button("MusicIcon", meshList[MUSIC_ICON], meshList[MUSIC_ICON], NULL, Vector3(sceneManager2D.m_window_width - (sceneManager2D.m_window_width * 0.1), 100, 1), Vector3(100, 100, 1));
+
+	Button* MusicIconOff;
+	MusicIconOff = new Button("MusicIconOff", meshList[MUSIC_ICON_OFF], meshList[MUSIC_ICON_OFF], NULL, Vector3(sceneManager2D.m_window_width - (sceneManager2D.m_window_width * 0.1), 100, 1), Vector3(100, 100, 1), false);
 
 	Image* Title;
 	Title = new Image("Title", meshList[TITLE], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height + 200, 0), Vector3(300, 150, 0));
@@ -158,11 +168,23 @@ void CSceneMenu::Init(int level)
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 0.6, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 1.5, 0), 10, 0);
 	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 1.1, Vector3(150, 75, 1), 5, 2);
 
+	UIManager->addFeature(MusicIcon);
+	UIManager->addFeature(MusicIconOff);
 }
 
 void CSceneMenu::Update(double dt)
 {
 	UIManager->Update(dt);
+
+	/*if (UIManager->FindButton("MusicIcon")->getActive())
+	{
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0.5, Vector3(100, 100, 0), 5, UIAnimation::SCALING);
+	}
+	else
+	{
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0.5, Vector3(0.001, 0.001, 0), 5, UIAnimation::SCALING);
+	}*/
+
 	/*
 	if (Application::IsKeyPressed('1'))
 	glEnable(GL_CULL_FACE);

@@ -121,9 +121,6 @@
     <ClCompile Include="Source\GameStateManagement\Master\GameStateManager.cpp">
       <Filter>Game State Management\Master</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\Menu Flow\InstructionState.cpp">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameStateManagement\Menu Flow\LoseState.cpp">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
     </ClCompile>
     <ClCompile Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.cpp">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scenes\Menu Flow\SceneInstruction.cpp">
-      <Filter>Scenes\Menu Flow</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scenes\Menu Flow\SceneLose.cpp">
       <Filter>Scenes\Menu Flow</Filter>
@@ -204,9 +198,6 @@
     </ClCompile>
     <ClCompile Include="Source\GameMechanics\Objects\BoundingBox.cpp">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Bar.cpp">
-      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Source\Button.cpp">
       <Filter>UI</Filter>
@@ -411,9 +402,6 @@
     <ClInclude Include="Source\GameStateManagement\Master\GameStateManager.h">
       <Filter>Game State Management\Master</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\Menu Flow\InstructionState.h">
-      <Filter>Game State Management\Menu Flow</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\Menu Flow\LoseState.h">
       <Filter>Game State Management\Menu Flow</Filter>
     </ClInclude>
@@ -449,9 +437,6 @@
     </ClInclude>
     <ClInclude Include="Source\Scenes\Game Flow\Game 2 (Puzzle Quest)\SceneGame2.h">
       <Filter>Scenes\Game Flow\Game 2%28Puzzle Quest%29</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scenes\Menu Flow\SceneInstruction.h">
-      <Filter>Scenes\Menu Flow</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scenes\Menu Flow\SceneLose.h">
       <Filter>Scenes\Menu Flow</Filter>
@@ -494,9 +479,6 @@
     </ClInclude>
     <ClInclude Include="Source\GameMechanics\Objects\BoundingBox.h">
       <Filter>Game Mechanics\Objects\BoundingBox</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Bar.h">
-      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Source\Button.h">
       <Filter>UI</Filter>

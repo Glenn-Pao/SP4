@@ -54,6 +54,9 @@ public:
 
 	void PlaySong();
 
+	void setActive(bool);
+	bool getActive(void);
+
 private:
 	//Handles to play different sounds
 	ISoundEngine *TheSound;	//main sound system
@@ -74,5 +77,7 @@ private:
 	float volS;					//current volume of stress
 	float volLob;				//current volume of lobby
 	float maxVol;				//volume defined by lua script
+
+	bool active;				//play sound if active
 };
 

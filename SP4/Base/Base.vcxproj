@@ -17,7 +17,6 @@
     <ClCompile Include="Source\AI\ProbabilitySystem.cpp" />
     <ClCompile Include="Source\AI\Waypoints.cpp" />
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\Bar.cpp" />
     <ClCompile Include="Source\Button.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
@@ -109,7 +108,6 @@
     <ClInclude Include="Source\AI\ProbabilitySystem.h" />
     <ClInclude Include="Source\AI\Waypoints.h" />
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\Bar.h" />
     <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera3.h" />

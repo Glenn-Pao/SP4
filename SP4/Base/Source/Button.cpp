@@ -7,7 +7,7 @@ Button::Button()
 {
 }
 
-Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* ButtonMeshLOCKED, Vector3 CurrentPos, Vector3 Scale)
+Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* ButtonMeshLOCKED, Vector3 CurrentPos, Vector3 Scale, bool active)
 {
 	//Parent class variables
 	this->setID(ID);
@@ -24,6 +24,7 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* Button
 	this->isClicked = false;
 	this->isHovered = false;
 	this->isLocked = false;
+	this->active = active;
 
 	//External Class variables
 	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
@@ -129,7 +130,14 @@ Mesh* Button::getCurrentMesh()
 {
 	return CurrentMesh;
 }
-
+void Button::setActive(bool active)
+{
+	this->active = active;
+}
+bool Button::getActive(void)
+{
+	return active;
+}
 Button::~Button()
 {
 }
