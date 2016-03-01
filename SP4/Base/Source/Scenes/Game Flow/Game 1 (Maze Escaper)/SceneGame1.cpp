@@ -15,7 +15,7 @@
 
 CSceneGame1::CSceneGame1(const int m_window_width, const int m_window_height)
 	: theDoor(NULL)
-	, currentState(PREPARING)
+	, currentState(PLAYING)
 	, timer(30.0f)
 	, level(0)
 	, UIManager(NULL)
@@ -69,9 +69,10 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	{
 		case 0:
 		{
+			currentState = PREPARING;
 			timer = 30.f;
 
-			for (int i = 0; i < 6; i++)
+			for (int i = 0; i < 7; i++)
 			{
 				scriptDialogues.push_back(L.DoLuaString("script" + to_string(i)));
 			}
@@ -121,6 +122,12 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	// Exit positions
 	vector<Vector3> exitPositions;
 
+
+	// Start positions
+	vector<Vector3> blockerPositions;
+	// Exit positions
+	vector<Vector3> blockerWaypointPositions;
+
 	// Check objects' position in the map
 	for (int i = 0; i < m_cMap->getNumOfTiles_MapHeight(); i++)
 	{
@@ -159,6 +166,16 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				// Create a new exit pos
 				exitPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
+			// Blockers
+			else if (m_cMap->theScreenMap[i][k] == 10)
+			{
+				blockerPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+			}
+			// Blockers waypoints
+			else if (m_cMap->theScreenMap[i][k] == 11)
+			{
+				blockerWaypointPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+			}
 			// Tutorial
 			if (level == 0)
 			{
@@ -195,8 +212,8 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
-				// Exit found Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 104)
+				// Blockers Dialogue
+				else if (m_cMap->theScreenMap[i][k] == 105)
 				{
 					float pos_x = k*m_cMap->GetTileSize();
 					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
@@ -206,13 +223,24 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
-				// Deadend Dialogue
+				// Exit found Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 105)
 				{
 					float pos_x = k*m_cMap->GetTileSize();
 					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[5], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
+					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
+					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
+				}
+				// Deadend Dialogue
+				else if (m_cMap->theScreenMap[i][k] == 106)
+				{
+					float pos_x = k*m_cMap->GetTileSize();
+					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+
+					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[6], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
 					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
 					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
@@ -264,6 +292,14 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[0], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
 	}
 
+	// Blockers
+	for (int i = 0; i < blockerPositions.size(); i++)
+	{
+		theBlockers.push_back(new CAI_Idling(CObjects::AI, Vector3(blockerPositions[i].x, blockerPositions[i].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILEENEMY_FRAME0], CAI_Idling::MOVINGAROUND));
+		theBlockers.back()->AddWaypoint(blockerPositions[i]);
+		theBlockers.back()->AddWaypoint(blockerWaypointPositions[i]);
+		theBlockers.back()->ChooseWhetherToIdling();
+	}
 	InitUI();
 }
 
@@ -283,6 +319,10 @@ void CSceneGame1::InitUI()
 	Image* WinScreen;
 	WinScreen = new Image("WinScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
 	UIManager->addFeature(WinScreen);
+
+	Image* LoseScreen;
+	LoseScreen = new Image("LoseScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManager->addFeature(LoseScreen);
 
 	Button* ReturnToHubButton;
 	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
@@ -315,6 +355,8 @@ void CSceneGame1::InitMeshes()
 	meshList[GEO_TILESTRUCTURE]->textureID = LoadTGA("Image//tile3_structure.tga");
 	meshList[GEO_TILE_DOOR] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_DOOR]->textureID = LoadTGA("Image//tile30_hubdoor.tga");
+	meshList[GEO_TILEENEMY_FRAME0] = MeshBuilder::Generate2DMesh("GEO_TILEENEMY_FRAME0", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_TILEENEMY_FRAME0]->textureID = LoadTGA("Image//tile20_enemy.tga");
 
 	// Hero
 	// Side
@@ -441,6 +483,22 @@ void CSceneGame1::Update(double dt)
 			else if (theDoor->getPositionY() < theHero->getPositionY())
 			{
 				theHero->SetAnimationDirection(CPlayerInfo::DOWN);
+			}
+		}
+		// Update NPCs
+		for (int i = 0; i < theBlockers.size(); i++)
+		{
+			// Before Check if the Hero collided with the NPCs
+			if (theBlockers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+				theHero->setPosition(prevHeroPos);
+				theHero->ConstrainHero((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(),	dt, m_cMap);
+			}
+
+			// Update those NPCs that are movable
+			if (theBlockers[i]->GetAI_Type() == CAI_Idling::MOVINGAROUND)
+			{
+				theBlockers[i]->Update(dt, theHero, m_cMap);
 			}
 		}
 		// Timer
@@ -586,14 +644,14 @@ void CSceneGame1::RenderGUI()
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
 	ss.str(std::string());
 	ss.precision(3);
 	ss << timer;
 	if (timer > 10.f)
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.2, 0.2, 0.2), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
 	else
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
 
 	switch (currentState)
 	{
@@ -713,15 +771,13 @@ Render the AIs. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame1::RenderAIs()
 {
-	// Render the enemy
-	for (int i = 0; i < theEnemies.size(); i++)
+	// Render the Blockers
+	for (int i = 0; i < theBlockers.size(); i++)
 	{
-		int theEnemy_x = theEnemies[i]->GetPos_x();
-		int theEnemy_y = theEnemies[i]->GetPos_y();
-		if (((theEnemy_x >= 0 - m_cMap->GetTileSize()) && (theEnemy_x < sceneManager2D.m_window_width + m_cMap->GetTileSize())) &&
-			((theEnemy_y >= 0 - m_cMap->GetTileSize()) && (theEnemy_y < sceneManager2D.m_window_height + m_cMap->GetTileSize())))
+		if (theBlockers[i])
 		{
-			sceneManager2D.Render2DMesh(meshList[GEO_TILEENEMY_FRAME0], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theEnemy_x, theEnemy_y);
+			if ((theBlockers[i]->getPosition() - theHero->getPosition()).Length() <= sceneManager2D.m_window_width)
+				sceneManager2D.Render2DMesh(theBlockers[i]->getMesh(), false, theBlockers[i]->getScale().x, theBlockers[i]->getScale().y, theBlockers[i]->getPositionX(), theBlockers[i]->getPositionY());
 		}
 	}
 }

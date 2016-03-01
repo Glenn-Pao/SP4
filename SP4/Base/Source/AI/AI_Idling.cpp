@@ -1,6 +1,7 @@
 #include "AI_Idling.h"
 
 #include "..\UsingLua.h"
+#include "ProbabilitySystem.h"
 
 CAI_Idling::CAI_Idling()
 	: ai_type(STATIONARY)
@@ -57,10 +58,46 @@ CAI_Idling::~CAI_Idling()
 {
 }
 
-void CAI_Idling::Update(double dt, CPlayerInfo* theHero)
+void CAI_Idling::Update(double dt, CPlayerInfo* theHero, CMap* map)
 {
+	Vector3 prevPos = getPosition();
 	switch (ai_type)
 	{
+		case MOVINGAROUND:
+		{
+			switch (fsm)
+			{
+				case IDLE:
+				{
+					// reduce idling time
+					idlingTimeLeft = -dt;
+
+					// Check Time Left
+					if (idlingTimeLeft <= 0.0f)
+					{
+						idlingTimeLeft = 0.0f;
+						ChooseWhetherToIdling();
+					}
+				}
+				break;
+				case MOVING:
+				{
+					// moved AI
+					setPosition(getPosition() + vel * dt);
+
+					// Check Distance
+					if ((waypoints[currentWaypointIndex] - getPosition()).Length() >= (waypoints[currentWaypointIndex] - waypoints[targetWaypointIndex]).Length())
+					{
+						setPosition(waypoints[targetWaypointIndex]);
+						vel.SetZero();
+						currentWaypointIndex = targetWaypointIndex;
+						ChooseWhetherToIdling();
+					}
+				}
+				break;
+			}
+		}
+		break;
 		case GUARDIAN:
 		{
 			if (currentWaypointIndex != targetWaypointIndex)
@@ -95,6 +132,27 @@ void CAI_Idling::Update(double dt, CPlayerInfo* theHero)
 	}
 
 	UpdateBoundingBox();
+	if (getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+	{
+		theHero->setPosition(theHero->getPosition() + getPosition() - prevPos);
+
+		// If Hero Collide with anything
+		if (theHero->CheckCollision(map) > 0)
+		{
+			// Push Hero back
+			theHero->setPosition(theHero->getPosition() - getPosition() + prevPos);
+
+			// Push AI back
+			setPosition(prevPos);
+
+			if (fsm == MOVING)
+			{
+				vel.SetZero();
+				currentWaypointIndex = targetWaypointIndex;
+				ChooseWhetherToIdling();
+			}
+		}
+	}
 }
 
 // Waypoints
@@ -162,4 +220,47 @@ void CAI_Idling::UpdateBoundingBox()
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);
+}
+
+
+// For MovingAround
+void CAI_Idling::ChooseWhetherToIdling()
+{
+	CProbabilitySystem p_s;
+
+	// Idling
+	p_s.AddProbability(2);
+	// MOVING
+	p_s.AddProbability(1);
+
+	fsm = (FSM)p_s.GetARandIntProbability();
+
+	switch (fsm)
+	{
+		case IDLE:
+		{
+			// Set idling time
+			idlingTimeLeft = Math::RandFloatMinMax(1.f, 5.f);
+		}
+		break;
+		case MOVING:
+		{
+			// Set target to next waypoint if not the last waypoint
+			if (currentWaypointIndex != waypoints.size() - 1)
+			{
+				targetWaypointIndex++;
+			}
+			else
+			{
+				targetWaypointIndex = 0;
+			}
+
+			// Set velocity
+			if (vel.IsZero() == true)
+			{
+				vel = (waypoints[targetWaypointIndex] - waypoints[currentWaypointIndex]).Normalized() * speed;
+			}
+		}
+		break;
+	}
 }

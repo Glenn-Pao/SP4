@@ -4,6 +4,8 @@
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\..\GameMechanics\Objects\Door.h"
 #include "..\..\..\UISystem.h"
+#include "..\..\Base\Source\AI\AI_Idling.h"
+
 class CSceneGame1 : public CSceneGameBase
 {
 public:
@@ -57,8 +59,8 @@ private:
 
 	void RenderRearTileMap(){}
 
-	// Enemies
-	//vector<CEnemy*> theEnemies;
+	// NPCs
+	std::vector<CAI_Idling*> theBlockers;
 	void RenderAIs();
 	void RenderObjects();
 

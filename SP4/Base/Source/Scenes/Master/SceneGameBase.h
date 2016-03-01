@@ -43,6 +43,9 @@ public:
 		GEO_TILE_DOOR,
 		GEO_OBJECT,
 
+		// Game 1
+		
+
 		//Game3
 		GEO_TILE_QN,
 		GEO_TILE_ANS,

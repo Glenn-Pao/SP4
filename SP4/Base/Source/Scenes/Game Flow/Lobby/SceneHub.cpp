@@ -212,8 +212,8 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_DARK_SURROUNDING] = MeshBuilder::Generate2DMesh("GEO_DARK_SURROUNDING", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_DARK_SURROUNDING]->textureID = LoadTGA("Image//DarkSurrounding.tga");
 	meshList[GEO_BLACK_QUAD] = MeshBuilder::Generate2DMesh("GEO_BLACK_QUAD", Color(0, 0, 0), 0, 0, 1, 1);
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 0, 0, 1, 1);
+	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
 	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
@@ -546,9 +546,9 @@ void CSceneHub::Update(double dt)
 			for (int i = 0; i < theNPCs.size(); i++)
 			{
 				// Update those NPCs that are movable
-				if (theNPCs[i]->GetAI_Type() == CAI_Idling::MOVABLE)
+				if (theNPCs[i]->GetAI_Type() == CAI_Idling::MOVINGAROUND)
 				{
-					theNPCs[i]->Update(dt, theHero);
+					theNPCs[i]->Update(dt, theHero, m_cMap);
 				}
 
 				// Check if the Hero collided with the NPCs
@@ -590,7 +590,7 @@ void CSceneHub::Update(double dt)
 		{
 			if (targetNPC->GetCurrentWaypointIndex() != targetNPC->GetTargetWaypointIndex())
 			{
-				targetNPC->Update(dt, theHero);
+				targetNPC->Update(dt, theHero, m_cMap);
 			}
 			else
 			{
@@ -1015,13 +1015,25 @@ void CSceneHub::Render()
 	RenderTileMap();
 	for (int i = 0; i < theDoor.size(); i++)
 	{
+		// Door
 		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
-		// Text
+
 		int textSize = m_cMap->GetTileSize() * 0.4;
+
 		if (theDoor[i]->getDialogue().size() > 4)
+		{
+			// Dialogue box
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (theDoor[i]->getDialogue().size() - 2) * textSize, textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			// Text
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+		}
 		else
+		{
+			// Dialogue box
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (theDoor[i]->getDialogue().size() - 1) * textSize, textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			// Text
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+		}
 	}
 	// Render Hero
 	RenderHero();

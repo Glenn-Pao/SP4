@@ -20,14 +20,14 @@ public:
 		GUARDIAN,
 		TIP_ADVISOR,
 		STATIONARY,
-		MOVABLE,
+		MOVINGAROUND,
 		NUM_OF_AI_TYPE
 	};
 	CAI_Idling();
 	CAI_Idling(CObjects::OBJECT_TYPE m_Object_Type, Vector3 pos, Vector3 scale, Mesh* mesh, AI_TYPE ai_type);
 	~CAI_Idling();
 
-	void Update(double dt, CPlayerInfo* theHero);
+	void Update(double dt, CPlayerInfo* theHero, CMap* map);
 
 	// Waypoints
 	void AddWaypoint(Vector3 waypoint);
@@ -49,6 +49,9 @@ public:
 
 	// Update BoundingBox
 	void UpdateBoundingBox();
+
+	// For MovingAround
+	void ChooseWhetherToIdling();
 private:
 	std::vector<Vector3> waypoints;
 	int currentWaypointIndex;
