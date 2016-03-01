@@ -18,12 +18,12 @@ scriptAnswerQn1Type1 = "200"
 scriptAnswerQn1Type2 = "400"
 
 -- Question to be asked for the second question tile
-scriptQn2 = "What's a difference between liquid and solid?"
+scriptQn2 = "What's 1 property of liquid state?"
 
 -- Possible answers to the second question tile
-scriptAnswerQn2Type0 = "Solid flows easily but not liquid."
-scriptAnswerQn2Type1 = "Liquid flows easily but not solid."
-scriptAnswerQn2Type2 = "‎Liquid has a fixed arrangement but not solid."
+scriptAnswerQn2Type0 = "Have shape"
+scriptAnswerQn2Type1 = "Able to flow"
+scriptAnswerQn2Type2 = "‎Compressible"
 
 -- Question to be asked for the third question tile
 scriptQn3 = "If 12 X 12 = 144, then 12 X 24 = ?"
@@ -34,12 +34,12 @@ scriptAnswerQn3Type1 = "288"
 scriptAnswerQn3Type2 = "260"
 
 -- Question to be asked for the fourth question tile
-scriptQn4 = "What does the gas state have that liquid don't?"
+scriptQn4 = "What's 1 property of gas state?"
 
 -- Possible answers to the fourth question tile
-scriptAnswerQn4Type0 = "Liquid can flow, gas doesn't."
-scriptAnswerQn4Type1 = "Gas is compressible, liquid isn't."
-scriptAnswerQn4Type2 = "Gas assumes shape of container but not liquid."
+scriptAnswerQn4Type0 = "Non-compressible"
+scriptAnswerQn4Type1 = "Compressible"
+scriptAnswerQn4Type2 = "Unable to flow"
 
 -- Question to be asked for the fifth question tile
 scriptQn5 = "This thing ____ a lot about you."

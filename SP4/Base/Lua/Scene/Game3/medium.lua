@@ -38,7 +38,7 @@ scriptQn4 = "What is one property of solid matter?"
 
 -- Possible answers to the fourth question tile
 scriptAnswerQn4Type0 = "It flow easily"
-scriptAnswerQn4Type1 = "It does not flow easily."
+scriptAnswerQn4Type1 = "Can't flow easily"
 scriptAnswerQn4Type2 = "It is compressible"
 
 -- Question to be asked for the fifth question tile
