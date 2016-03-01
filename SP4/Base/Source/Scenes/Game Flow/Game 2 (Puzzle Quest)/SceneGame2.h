@@ -8,6 +8,7 @@
 #include "..\..\..\AI\AIBase.h"
 #include "..\..\..\AI\FSM.h"
 #include "..\..\..\UsingLua.h"
+#include "..\..\..\UISystem.h"
 class CSceneGame2 : public CSceneGameBase
 {
 public:
@@ -38,9 +39,11 @@ public:
 		PLAYING,
 		COMPLETED,
 		TIME_UP,
+		INTERACTING,
+		CONFIRMATION,
 		NUM_OF_STATE
 	};
-	int currentState;
+	STATE currentState;
 
 	void RenderWaypoints();
 	void RenderObjects();
@@ -67,6 +70,11 @@ public:
 	void RenderLevel3();
 
 	int level;
+
+	UISystem* UIManager;
+	//UISystem* UIManagerConfirmation;
+
+	CSceneManager2D sceneManager2D;
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -91,7 +99,13 @@ private:
 	//CGoodies** theArrayOfGoodies;
 	void RenderGoodies(void);
 
-	CSceneManager2D sceneManager2D;
+	// UIs
+	void InitUI();
+	void UpdateUI(double dt);
+
+	float UI_Speed;
+
+	
 	
 	CDoor* endDoor;
 	std::vector<CDoor*> GreyDoors;

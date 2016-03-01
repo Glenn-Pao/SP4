@@ -6,7 +6,7 @@
 #include "..\..\..\GameMechanics\Objects\Question.h"
 #include "..\..\..\GameMechanics\Objects\Answer.h"
 #include "..\..\..\GameMechanics\Objects\Door.h"
-
+#include "..\..\..\UISystem.h"
 class CSceneGame3 : public CSceneGameBase
 {
 public:
@@ -38,11 +38,16 @@ public:
 		EXITING,
 		COMPLETED,
 		FAILED,
+		RETURN,
 		NUM_OF_STATE
 	};
 	int currentState;
 	void RenderWaypoints();
 	int level;
+
+	UISystem* UIManager;
+
+	CSceneManager2D sceneManager2D;
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -75,7 +80,7 @@ private:
 	// Dialogues scripts
 	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
 
-	CSceneManager2D sceneManager2D;	
+	
 	int tileSize;						//the tile size
 	int Qcount;						//number of questions
 	int Acount;							//number of answers
@@ -93,6 +98,10 @@ private:
 
 	float fps;		//debugging frames
 	Vector3 slot;
+
+	// UIs
+	void InitUI();
+	void UpdateUI(double dt);
 };
 
 #endif

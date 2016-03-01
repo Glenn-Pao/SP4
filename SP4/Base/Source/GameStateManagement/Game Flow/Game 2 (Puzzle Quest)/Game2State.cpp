@@ -7,6 +7,7 @@ using namespace std;
 #include "Game2State.h"
 #include "..\..\Menu Flow\pausestate.h"
 #include "..\..\Game Flow\Lobby\HubState.h"
+#include "..\..\..\UISystem.h"
 
 CGame2State CGame2State::theGame2State;
 
@@ -26,6 +27,7 @@ void CGame2State::Init(CGameStateManager* theGSM)
 	scene->Init(1);
 	scene->SetHeroOffset();
 	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
+
 }
 
 void CGame2State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -222,23 +224,36 @@ void CGame2State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		break;
 	}
 #endif
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 	switch (scene->currentState)
 	{
 	case CSceneGame2::COMPLETED:
 	{
-		if (button_Left == true)
+
+		// Unlock new difficulty
+		if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].getCurrentDifficultyUnlocked() <= scene->level)
 		{
-			// Unlock new difficulty
-			if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].getCurrentDifficultyUnlocked() <= scene->level)
-			{
-				theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].setCurrentDifficultyUnlocked(scene->level + 1);
-			}
-			// Withdraw jellybean
-			theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
-			theGSM->ChangeState(CHubState::Instance());
+			theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[1].setCurrentDifficultyUnlocked(scene->level + 1);
 		}
+		// Withdraw jellybean
+		theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
+		theGSM->ChangeState(CHubState::Instance());
+
 	}
 	break;
+	case CSceneGame2::CONFIRMATION:
+	{
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+		// Return to hub Button
+		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
+		{
+			if (button_Left)
+				scene->currentState = CSceneGame2::COMPLETED;
+		}
+	}
+		break;
 	}
 }
 

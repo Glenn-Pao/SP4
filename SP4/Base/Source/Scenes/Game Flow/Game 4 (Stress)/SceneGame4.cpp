@@ -13,12 +13,18 @@
 
 SceneGame4::SceneGame4(const int m_window_width, const int m_window_height)
 	: CurrentState(PLAY)
+	, UIManager(NULL)
 	, Timer(0)
 {
 }
 
 SceneGame4::~SceneGame4()
 {
+	if (UIManager)
+	{
+		delete UIManager;
+		UIManager = NULL;
+	}
 }
 
 void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium), = 3(Hard)
@@ -296,11 +302,40 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	SelectedCard = new  Card(Card::CARD, false, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 	NoneCard = new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 	SendPattern = new Trigger(meshList[GEO_STRESS], Vector3(100, 150, 1), Vector3(50, 50, 50), Vector3(100, 150, 1), Vector3(50, 50, 50), true);
+
+
+	InitUI();
 }
 
 void SceneGame4::PreInit()
 {
 	sceneManager2D.PreInit();
+}
+
+void SceneGame4::InitUI()
+{
+	UIManager = new UISystem();
+
+	Image* AlphaQuad;
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(AlphaQuad);
+
+	Image* WinScreen;
+	WinScreen = new Image("WinScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManager->addFeature(WinScreen);
+
+	Image* LoseScreen;
+	LoseScreen = new Image("LoseScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManager->addFeature(LoseScreen);
+
+	Image* CompletedScreen;
+	CompletedScreen = new Image("CompletedScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManager->addFeature(CompletedScreen);
+
+	Button* ReturnToHubButton;
+	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManager->addFeature(ReturnToHubButton);
+
 }
 
 /********************************************************************************
@@ -379,7 +414,25 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_JELLYBEAN] = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_JELLYBEAN]->textureID = LoadTGA("Image//jellybean.tga");
 
+	// RETURN
+	// Window
+	meshList[GEO_CONFIRMATION_WINDOW] = MeshBuilder::GenerateQuad("GEO_RETURN_WINDOW", Color(1, 1, 1), 1);
+	meshList[GEO_CONFIRMATION_WINDOW]->textureID = LoadTGA("Image//UI/Confirmation_Window.tga");
+	// Buttons
+	// Yes
+	meshList[GEO_YES_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_UP]->textureID = LoadTGA("Image//UI/Yes_Button.tga");
+	meshList[GEO_YES_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Yes_Button_Pressed.tga");
+	// No
+	meshList[GEO_NO_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_UP]->textureID = LoadTGA("Image//UI/No_Button.tga");
+	meshList[GEO_NO_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/No_Button_Pressed.tga");
 
+	// Alpha Black Quad
+	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
+	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
 }
 
 void SceneGame4::UpdateHero(double dt)
@@ -776,6 +829,11 @@ void SceneGame4::UpdateDecks(double dt)
 	
 }
 
+void SceneGame4::UpdateUI(double dt)
+{
+	UIManager->Update(dt);
+}
+
 void SceneGame4::UpdateRGBCard(double dt)
 {
 	if (RedCard->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -823,6 +881,9 @@ void SceneGame4::UpdateTimer(double dt)
 
 void SceneGame4::Update(double dt)
 {
+
+	UpdateUI(dt);
+
 	if (Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
 	if (Application::IsKeyPressed('2'))
@@ -882,16 +943,19 @@ void SceneGame4::Update(double dt)
 			if (Score >= ScoreToBeat)
 			{
 				CurrentState = State::WIN;
+				//Do UI
 			}
 			else
 			{
 				CurrentState = State::LOSE;
+				//DO UI
 			}
 			break;
 		}
-
+		
 		}
 		break;
+
 	}
 	case DifficultyLevel::NORMAL:
 	{
@@ -971,7 +1035,6 @@ void SceneGame4::Update(double dt)
 		break;
 	}
 	}
-
 }
 
 /********************************************************************************
@@ -1136,13 +1199,14 @@ void SceneGame4::Render()
 		{
 			RenderRearTileMap();
 			RenderTileMap();
-			RenderTutorialInstructions();
+			//RenderTutorialInstructions();
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
+		
 		}
 		break;
 	}
@@ -1172,7 +1236,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 		case State::WIN:
@@ -1182,7 +1246,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 
@@ -1193,7 +1257,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 
@@ -1226,7 +1290,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 		case State::WIN:
@@ -1236,7 +1300,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 
@@ -1247,7 +1311,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 		}
@@ -1279,7 +1343,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 		case State::WIN:
@@ -1289,7 +1353,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 
@@ -1300,7 +1364,7 @@ void SceneGame4::Render()
 			sceneManager2D.modelStack.PopMatrix();
 
 			RenderGUI();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
+			//sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[sceneManager2D.GEO_TEXT], "<Click anywhere to exit>", Color(0, 0, 0), 50, sceneManager2D.m_window_width / 20, sceneManager2D.m_window_height / 2);
 			break;
 		}
 		}
@@ -1371,6 +1435,30 @@ void SceneGame4::RenderGUI()
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+
+	switch (CurrentState)
+	{
+	case PLAY:
+	{
+		UIManager->Render(sceneManager2D);
+	}
+		break;
+	case WIN:
+	{
+		UIManager->Render(sceneManager2D);
+	}
+		break;
+	case LOSE:
+	{
+		UIManager->Render(sceneManager2D);
+	}
+		break;
+	case TIME_UP:
+	{
+		UIManager->Render(sceneManager2D);
+	}
+		break;
+	}
 
 }
 

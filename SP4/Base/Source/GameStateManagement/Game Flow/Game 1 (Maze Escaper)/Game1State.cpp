@@ -173,6 +173,7 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
+	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 	switch (scene->currentState)
 	{
 		case CSceneGame1::PREPARING:
@@ -185,27 +186,43 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		break;
 		case CSceneGame1::COMPLETED:
 		{
-			if (button_Left == true)
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+			// Return to hub Button
+			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 			{
-				// Unlock new difficulty
-				if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
-				{
-					theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
-				}
-				// Withdraw jellybean
-				theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
-				theGSM->ChangeState(CHubState::Instance());
+				if (button_Left)
+					scene->currentState = CSceneGame1::RETURN;
 			}
 		}
 		break;
 		case CSceneGame1::TIME_UP:
 		{
-			if (button_Left == true)
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("LoseScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+			// Return to hub Button
+			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 			{
-				theGSM->ChangeState(CHubState::Instance());
+				if (button_Left)
+					scene->currentState = CSceneGame1::RETURN;
 			}
 		}
 		break;
+		case CSceneGame1::RETURN:
+		{
+			// Unlock new difficulty
+			if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
+			{
+				theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
+			}
+			// Withdraw jellybean
+			theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
+			theGSM->ChangeState(CHubState::Instance());
+
+		}
+			break;
 	}
 #if	TYPE_OF_VIEW == 3
 	switch (scene->currentState)

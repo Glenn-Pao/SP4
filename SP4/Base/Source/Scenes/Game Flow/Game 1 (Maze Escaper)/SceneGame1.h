@@ -3,7 +3,7 @@
 
 #include "..\..\Master\SceneGameBase.h"
 #include "..\..\..\GameMechanics\Objects\Door.h"
-
+#include "..\..\..\UISystem.h"
 class CSceneGame1 : public CSceneGameBase
 {
 public:
@@ -37,11 +37,15 @@ public:
 		EXITING,
 		COMPLETED,
 		TIME_UP,
+		RETURN,
 		NUM_OF_STATE
 	};
 	int currentState;
 
 	int level;
+
+	UISystem* UIManager;
+
 private:
 	void InitMeshes();
 	// Handle to the GUI
@@ -67,6 +71,10 @@ private:
 	string scriptTimeUp, scriptFinished, scriptExit;
 
 	float fps;
+
+	// UIs
+	void InitUI();
+	void UpdateUI(double dt);
 };
 
 #endif

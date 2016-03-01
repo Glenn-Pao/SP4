@@ -29,6 +29,7 @@ public:
 		WIN,
 		LOSE,
 		PAUSE,
+		RETURN,
 		NUM_OF_STATE
 	};
 
@@ -106,5 +107,10 @@ private:
 
 
 	float MissingCardTimer;
+
+	//UI
+	void InitUI();
+	void UpdateUI(double dt);
+
 };
 

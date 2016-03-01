@@ -12,6 +12,8 @@
 
 CSceneGame2::CSceneGame2(const int m_window_width, const int m_window_height)
 	: currentState(PLAYING)
+	, UIManager(NULL)
+	, UI_Speed(0.f)
 {
 }
 
@@ -26,6 +28,13 @@ CSceneGame2::~CSceneGame2()
 			dialogueTiles[i] = NULL;
 		}
 	}
+
+	if (UIManager)
+	{
+		delete UIManager;
+		UIManager = NULL;
+	}
+
 }
 
 void CSceneGame2::Init(int level)
@@ -166,11 +175,33 @@ void CSceneGame2::Init(int level)
 	slot3.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
 	slot4.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 11), 0);
 	
+	InitUI();
 }
 
 void CSceneGame2::PreInit()
 {
 	sceneManager2D.PreInit();
+}
+
+void CSceneGame2::InitUI()
+{
+	//Animation speed
+	UI_Speed = 20.0f;
+
+	UIManager = new UISystem();
+
+	Image* AlphaQuad;
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(AlphaQuad);
+
+	Image* WinScreen;
+	WinScreen = new Image("WinScreen", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManager->addFeature(WinScreen);
+
+	Button* ReturnToHubButton;
+	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManager->addFeature(ReturnToHubButton);
+
 }
 
 void CSceneGame2::InitTutorial()
@@ -445,6 +476,26 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_JELLYBEAN] = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_JELLYBEAN]->textureID = LoadTGA("Image//jellybean.tga");
 
+
+	// Confirmation
+	// Window
+	meshList[GEO_CONFIRMATION_WINDOW] = MeshBuilder::GenerateQuad("GEO_CONFIRMATION_WINDOW", Color(1, 1, 1), 1);
+	meshList[GEO_CONFIRMATION_WINDOW]->textureID = LoadTGA("Image//UI/Confirmation_Window.tga");
+	// Buttons
+	// Yes
+	meshList[GEO_YES_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_UP]->textureID = LoadTGA("Image//UI/Yes_Button.tga");
+	meshList[GEO_YES_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Yes_Button_Pressed.tga");
+	// No
+	meshList[GEO_NO_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_UP]->textureID = LoadTGA("Image//UI/No_Button.tga");
+	meshList[GEO_NO_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/No_Button_Pressed.tga");
+
+	// Alpha Black Quad
+	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
+	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
 }
 
 void CSceneGame2::Update(double dt)
@@ -594,6 +645,12 @@ void CSceneGame2::Update(double dt)
 		}
 
 	}
+	UpdateUI(dt);
+}
+
+void CSceneGame2::UpdateUI(double dt)
+{
+	UIManager->Update(dt);
 }
 
 void CSceneGame2::UpdateTutorial(double dt)
@@ -676,7 +733,7 @@ void CSceneGame2::UpdateTutorial(double dt)
 
 	if (endDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 	{
-		currentState = COMPLETED;
+		currentState = CONFIRMATION;
 	}
 }
 
@@ -1549,6 +1606,8 @@ void CSceneGame2::RenderGUI()
 	{
 	case PLAYING:
 	{
+		UIManager->Render(sceneManager2D);
+		
 		for (int i = 0; i < dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getActive())
@@ -1564,30 +1623,10 @@ void CSceneGame2::RenderGUI()
 		}
 	}
 		break;
-	case COMPLETED:
-	{
-		switch (level)
-		{
-		case 0:
-		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
-
-			textSize = m_cMap->GetTileSize() * 0.5;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
-		}
-			break;
-		case 1 : case 2 : case 3:
-		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptLevelEnd, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.24), sceneManager2D.m_window_height * 0.5 + textSize);
-
-			textSize = m_cMap->GetTileSize() * 0.5;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptExit, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptExit.size() * 0.31), sceneManager2D.m_window_height * 0.5 - textSize);
-		}
-			break;
-		}
-	}
+	
+	case CONFIRMATION:
+		UIManager->Render(sceneManager2D);
+		//UIManagerConfirmation->Render(sceneManager2D);
 		break;
 
 	}
