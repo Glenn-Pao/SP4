@@ -135,6 +135,14 @@ public:
 		// NPC
 		GEO_GREEN_MONSTER,
 
+		//Win/Lose
+		GEO_WIN_BG,
+		GEO_LOSE_BG,
+		GEO_TUT_BG,
+		GEO_HUB_BTN_UP,
+		GEO_HUB_BTN_DOWN,
+		GEO_TUTLOSE_BG,
+
 		NUM_GEOMETRY,
 	};
 public:

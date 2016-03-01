@@ -40,7 +40,8 @@ public:
 		COMPLETED,
 		TIME_UP,
 		INTERACTING,
-		CONFIRMATION,
+		WIN,
+		LOSE,
 		NUM_OF_STATE
 	};
 	STATE currentState;

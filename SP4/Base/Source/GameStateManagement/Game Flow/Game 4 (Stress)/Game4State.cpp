@@ -179,7 +179,7 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		if (scene->CurrentState == SceneGame4::TIME_UP)
 		{
 			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("CompletedScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("TutScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
 			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
 			// Return to hub Button
 			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
