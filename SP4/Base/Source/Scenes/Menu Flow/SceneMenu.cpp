@@ -247,8 +247,6 @@ void CSceneMenu::Update(double dt)
 	TimeSinceSettingsAnimation += dt;
 	MainMenuAnimationTimer += dt;
 
-	cout << TimeSinceSettingsAnimation << endl;
-
 	if (MainMenuAnimationTimer > 2.9)
 	{
 		if (UIManager->FindButton("SettingsButton")->getisHovered() == true)

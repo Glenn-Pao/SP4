@@ -55,6 +55,7 @@ public:
 
 	UISystem* UIManager;
 
+	int numOfInstructionsLeft;
 private:
 	void InitMeshes();
 

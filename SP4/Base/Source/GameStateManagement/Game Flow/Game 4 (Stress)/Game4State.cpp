@@ -176,9 +176,55 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	//} while (m_iUserChoice == -1);
 #endif
 	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
-	if (scene->CurrentLevel == SceneGame4::DifficultyLevel::TUTORIAL)
+
+	switch (scene->CurrentState)
 	{
-		if (scene->CurrentState == SceneGame4::TIME_UP)
+	case SceneGame4::State::PREPARE:
+	{
+		if (button_Left == true && scene->UIManager->FindButton("Next_Button")->getisHovered() == true)
+		{
+			// if there is instruction left
+			if (scene->numOfInstructionsLeft > 1)
+			{
+				// Skip all animations
+				scene->UIManager->InvokeAnimator()->SkipAllAnimations();
+
+				// Close current instruction
+				int index = scene->UIManager->getUI_List().size() - scene->numOfInstructionsLeft;
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], 0, Vector3(), 5.0f, UIAnimation::SCALING);
+
+				// Remove one instruction
+				scene->numOfInstructionsLeft--;
+
+				// Open next instruction
+				index = scene->UIManager->getUI_List().size() - scene->numOfInstructionsLeft;
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.65, scene->sceneManager2D.m_window_height * 0.65), 5.0f, UIAnimation::SCALING);
+			}
+			else
+			{
+				// Skip all animations
+				scene->UIManager->InvokeAnimator()->SkipAllAnimations();
+
+				// Close all window
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Header"), 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 1.3), 5.0f, UIAnimation::TRANSLATION);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Background"), 0.1, Vector3(), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("Next_Button"), 0.15, Vector3(), 5.0f, UIAnimation::SCALING);
+
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), 0.2, Vector3(), 5.0f, UIAnimation::SCALING);
+
+				scene->CurrentState = SceneGame4::PLAY;
+			}
+		}
+		break;
+	}
+	case SceneGame4::State::PLAY:
+	{
+		break;
+	}
+	case SceneGame4::State::TIME_UP:
+	{
+		if (scene->CurrentLevel == SceneGame4::DifficultyLevel::TUTORIAL)
 		{
 			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
 			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("TutScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
@@ -190,105 +236,101 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 					theGSM->ChangeState(CHubState::Instance());
 			}
 		}
+		break;
 	}
-	else
+	case SceneGame4::State::WIN:
 	{
-		switch (scene->CurrentState)
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+		// Return to hub Button
+		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 		{
-		case SceneGame4::WIN:
-		{
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
-			// Return to hub Button
-			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
-			{
-				if (button_Left)
-					scene->CurrentState = SceneGame4::RETURN;
-			}
+			if (button_Left)
+				scene->CurrentState = SceneGame4::RETURN;
 		}
-			break;
-
-		case SceneGame4::LOSE:
-		{
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("LoseScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
-			// Return to hub Button
-			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
-			{
-				if (button_Left)
-					scene->CurrentState = SceneGame4::RETURN;
-			}
-			break;
-		}
-
-		case SceneGame4::RETURN:
-		{
-			// Unlock new difficulty
-			if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].getCurrentDifficultyUnlocked() <= scene->CurrentLevel)
-			{
-				theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].setCurrentDifficultyUnlocked(scene->CurrentLevel + 1);
-			}
-			// Withdraw jellybean
-			theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
-
-			theGSM->ChangeState(CHubState::Instance());
-		}
-			break;
-		}
+		break;
 	}
-	
+	case SceneGame4::State::LOSE:
+	{
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("LoseScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+		// Return to hub Button
+		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
+		{
+			if (button_Left)
+				scene->CurrentState = SceneGame4::RETURN;
+		}
+		break;
+	}
+
+	case SceneGame4::State::RETURN:
+	{
+		// Unlock new difficulty
+		if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].getCurrentDifficultyUnlocked() <= scene->CurrentLevel)
+		{
+			theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].setCurrentDifficultyUnlocked(scene->CurrentLevel + 1);
+		}
+		// Withdraw jellybean
+		theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
+
+		theGSM->ChangeState(CHubState::Instance());
+		break;
+	}
+	}
+
+
 #if	TYPE_OF_VIEW == 3
 	switch (scene->currentState)
 	{
 	case CSceneManager::PRE_START:
 	{
-									 if (button_Left == true)
-										 scene->currentState = CSceneManager::STARTING;
+		if (button_Left == true)
+			scene->currentState = CSceneManager::STARTING;
 	}
-		break;
+	break;
 	case CSceneManager::LEVEL_COMPLETED:
 	{
-										   if (button_Left == true)
-										   {
-											   theGSM->m_bUnhideMouse = true;
-											   theGSM->m_bWarpMouse = false;
+		if (button_Left == true)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
 
-											   theGSM->ChangeState(CLevelSelectionState::Instance());
-										   }
+			theGSM->ChangeState(CLevelSelectionState::Instance());
+		}
 	}
-		break;
+	break;
 	case CSceneManager::GAMEOVER:
 	{
-									if (button_Left == true)
-									{
-										theGSM->m_bUnhideMouse = true;
-										theGSM->m_bWarpMouse = false;
+		if (button_Left == true)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
 
-										theGSM->ChangeState(CLevelSelectionState::Instance());
-									}
+			theGSM->ChangeState(CLevelSelectionState::Instance());
+		}
 	}
-		break;
+	break;
 	case CSceneManager::GAMEOVER_TIME_LIMIT_END:
 	{
-												   if (button_Left == true)
-												   {
-													   theGSM->m_bUnhideMouse = true;
-													   theGSM->m_bWarpMouse = false;
+		if (button_Left == true)
+		{
+			theGSM->m_bUnhideMouse = true;
+			theGSM->m_bWarpMouse = false;
 
-													   theGSM->ChangeState(CMenuState::Instance());
-												   }
+			theGSM->ChangeState(CMenuState::Instance());
+		}
 	}
-		break;
+	break;
 	case CSceneManager::PLAYING:
 	{
-								   if (button_Left == true)
-									   scene->UpdateWeaponStatus(scene->WA_FIRE);
-								   else if (button_Right == true)
-									   scene->UpdateWeaponStatus(scene->WA_FIRE_SECONDARY);
+		if (button_Left == true)
+			scene->UpdateWeaponStatus(scene->WA_FIRE);
+		else if (button_Right == true)
+			scene->UpdateWeaponStatus(scene->WA_FIRE_SECONDARY);
 	}
-		break;
+	break;
 	}
 #endif
 }
@@ -317,4 +359,4 @@ void CGame4State::Draw(CGameStateManager* theGSM)
 
 	// Render the scene
 	scene->Render();
-}
+		}
