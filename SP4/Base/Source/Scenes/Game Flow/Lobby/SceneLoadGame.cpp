@@ -78,31 +78,46 @@ void  CSceneLoadGame::Init(int level)
 	meshList[GEO_DATA1_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data1_Button.tga");
 	meshList[GEO_DATA1_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA1_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_DATA1_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data1_Button_Pressed.tga");
+	meshList[GEO_DATA1_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_DATA1_BUTTON_LOCKED", Color(1, 1, 1), 1);
+	meshList[GEO_DATA1_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Data1_Button_Locked.tga");
 	// Data 2
 	meshList[GEO_DATA2_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA2_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_DATA2_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data2_Button.tga");
 	meshList[GEO_DATA2_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA2_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_DATA2_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data2_Button_Pressed.tga");
+	meshList[GEO_DATA2_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_DATA2_BUTTON_LOCKED", Color(1, 1, 1), 1);
+	meshList[GEO_DATA2_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Data2_Button_Locked.tga");
 	// Data 3
 	meshList[GEO_DATA3_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA3_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_DATA3_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data3_Button.tga");
 	meshList[GEO_DATA3_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA3_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_DATA3_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data3_Button_Pressed.tga");
+	meshList[GEO_DATA3_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_DATA3_BUTTON_LOCKED", Color(1, 1, 1), 1);
+	meshList[GEO_DATA3_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Data3_Button_Locked.tga");
 	// Data 4
 	meshList[GEO_DATA4_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA4_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_DATA4_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data4_Button.tga");
 	meshList[GEO_DATA4_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA4_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_DATA4_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data4_Button_Pressed.tga");
+	meshList[GEO_DATA4_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_DATA4_BUTTON_LOCKED", Color(1, 1, 1), 1);
+	meshList[GEO_DATA4_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Data4_Button_Locked.tga");
 	// Data 5
 	meshList[GEO_DATA5_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DATA5_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_DATA5_BUTTON_UP]->textureID = LoadTGA("Image//UI/Data5_Button.tga");
 	meshList[GEO_DATA5_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DATA5_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_DATA5_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Data5_Button_Pressed.tga");
+	meshList[GEO_DATA5_BUTTON_LOCKED] = MeshBuilder::GenerateQuad("GEO_DATA5_BUTTON_LOCKED", Color(1, 1, 1), 1);
+	meshList[GEO_DATA5_BUTTON_LOCKED]->textureID = LoadTGA("Image//UI/Data5_Button_Locked.tga");
 	// Back
 	meshList[GEO_BACK_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_BACK_BUTTON_UP]->textureID = LoadTGA("Image//UI/Back_Button.tga");
 	meshList[GEO_BACK_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_BACK_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Back_Button_Pressed.tga");
+	// Delete
+	meshList[GEO_DELETE_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_DELETE_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_DELETE_BUTTON_UP]->textureID = LoadTGA("Image//UI/Cross_Button.tga");
+	meshList[GEO_DELETE_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_DELETE_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_DELETE_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Cross_Button_Pressed.tga");
 
 	// Confirmation
 	// Window
@@ -144,29 +159,54 @@ void  CSceneLoadGame::Init(int level)
 	// Buttons
 	// Data 1 button
 	Button* Data1Button;
-	Data1Button = new Button("Data1Button", meshList[GEO_DATA1_BUTTON_UP], meshList[GEO_DATA1_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	Data1Button = new Button("Data1Button", meshList[GEO_DATA1_BUTTON_UP], meshList[GEO_DATA1_BUTTON_DOWN], meshList[GEO_DATA1_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
 	UIManagerSelecting->addFeature(Data1Button);
 	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Data1Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+	// Delete 1 button
+	Button* Delete1Button;
+	Delete1Button = new Button("Delete1Button", meshList[GEO_DELETE_BUTTON_UP], meshList[GEO_DELETE_BUTTON_DOWN], meshList[GEO_DELETE_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.4, 0), Vector3(0, 0, 0));
+	UIManagerSelecting->addFeature(Delete1Button);
+	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Delete1Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.05, sceneManager2D.m_window_width * 0.05, 0), UI_Speed, UIAnimation::SCALING);
 	// Data 2 button
 	Button* Data2Button;
-	Data2Button = new Button("Data2Button", meshList[GEO_DATA2_BUTTON_UP], meshList[GEO_DATA2_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	Data2Button = new Button("Data2Button", meshList[GEO_DATA2_BUTTON_UP], meshList[GEO_DATA2_BUTTON_DOWN], meshList[GEO_DATA2_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
 	UIManagerSelecting->addFeature(Data2Button);
 	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Data2Button"), 0.35, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+	// Delete 2 button
+	Button* Delete2Button;
+	Delete2Button = new Button("Delete2Button", meshList[GEO_DELETE_BUTTON_UP], meshList[GEO_DELETE_BUTTON_DOWN], meshList[GEO_DELETE_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.4, 0), Vector3(0, 0, 0));
+	UIManagerSelecting->addFeature(Delete2Button);
+	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Delete2Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.05, sceneManager2D.m_window_width * 0.05, 0), UI_Speed, UIAnimation::SCALING);
 	// Data 3 button
 	Button* Data3Button;
-	Data3Button = new Button("Data3Button", meshList[GEO_DATA3_BUTTON_UP], meshList[GEO_DATA3_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.8, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
+	Data3Button = new Button("Data3Button", meshList[GEO_DATA3_BUTTON_UP], meshList[GEO_DATA3_BUTTON_DOWN], meshList[GEO_DATA3_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.8, sceneManager2D.m_window_height * 0.6, 0), Vector3(0, 0, 0));
 	UIManagerSelecting->addFeature(Data3Button);
 	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Data3Button"), 0.4, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+	// Delete 3 button
+	Button* Delete3Button;
+	Delete3Button = new Button("Delete3Button", meshList[GEO_DELETE_BUTTON_UP], meshList[GEO_DELETE_BUTTON_DOWN], meshList[GEO_DELETE_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.8, sceneManager2D.m_window_height * 0.4, 0), Vector3(0, 0, 0));
+	UIManagerSelecting->addFeature(Delete3Button);
+	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Delete3Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.05, sceneManager2D.m_window_width * 0.05, 0), UI_Speed, UIAnimation::SCALING);
 	// Data 4 button
 	Button* Data4Button;
-	Data4Button = new Button("Data4Button", meshList[GEO_DATA4_BUTTON_UP], meshList[GEO_DATA4_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.35, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
+	Data4Button = new Button("Data4Button", meshList[GEO_DATA4_BUTTON_UP], meshList[GEO_DATA4_BUTTON_DOWN], meshList[GEO_DATA4_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.35, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
 	UIManagerSelecting->addFeature(Data4Button);
 	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Data4Button"), 0.45, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+	// Delete 4 button
+	Button* Delete4Button;
+	Delete4Button = new Button("Delete4Button", meshList[GEO_DELETE_BUTTON_UP], meshList[GEO_DELETE_BUTTON_DOWN], meshList[GEO_DELETE_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.35, sceneManager2D.m_window_height * 0.05, 0), Vector3(0, 0, 0));
+	UIManagerSelecting->addFeature(Delete4Button);
+	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Delete4Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.05, sceneManager2D.m_window_width * 0.05, 0), UI_Speed, UIAnimation::SCALING);
 	// Data 5 button
 	Button* Data5Button;
-	Data5Button = new Button("Data5Button", meshList[GEO_DATA5_BUTTON_UP], meshList[GEO_DATA5_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
+	Data5Button = new Button("Data5Button", meshList[GEO_DATA5_BUTTON_UP], meshList[GEO_DATA5_BUTTON_DOWN], meshList[GEO_DATA5_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.25, 0), Vector3(0, 0, 0));
 	UIManagerSelecting->addFeature(Data5Button);
 	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Data5Button"), 0.5, Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_width * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+	// Delete 5 button
+	Button* Delete5Button;
+	Delete5Button = new Button("Delete5Button", meshList[GEO_DELETE_BUTTON_UP], meshList[GEO_DELETE_BUTTON_DOWN], meshList[GEO_DELETE_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.05, 0), Vector3(0, 0, 0));
+	UIManagerSelecting->addFeature(Delete5Button);
+	UIManagerSelecting->InvokeAnimator()->StartTransformation(UIManagerSelecting->FindButton("Delete5Button"), 0.3, Vector3(sceneManager2D.m_window_width * 0.05, sceneManager2D.m_window_width * 0.05, 0), UI_Speed, UIAnimation::SCALING);
 
 
 	// Back button

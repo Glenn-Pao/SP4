@@ -22,6 +22,7 @@ Add new data
 void CSavingAndLoadingSystem::AddData(const char* fileName)
 {
 	Data.push_back(new CGameInfo(fileName));
+	Data.back()->LoadFile();
 }
 
 /********************************************************************************
@@ -32,10 +33,27 @@ bool CSavingAndLoadingSystem::LoadFile(int index)
 	// check if index is higher than 0 and lower than number of Datas
 	if (index >= 0 && index < Data.size())
 	{
-		Data[index]->LoadFile();
 		currentIndex = index;
 
 		return true;
+	}
+	return false;
+}
+
+/********************************************************************************
+Read a new file and load the game
+********************************************************************************/
+bool CSavingAndLoadingSystem::LoadNewFile()
+{
+	// Check every Data
+	for (int i = 0; i < 0; i++)
+	{
+		// check if file is new
+		if (Data[i]->ifNew)
+		{
+			currentIndex = i;
+			return true;
+		}
 	}
 	return false;
 }
@@ -59,9 +77,23 @@ void CSavingAndLoadingSystem::ClearFile()
 
 
 /********************************************************************************
-Get GameInfo
+Get number of Data Stored
 ********************************************************************************/
-CGameInfo* CSavingAndLoadingSystem::GetGameInfo()
+int CSavingAndLoadingSystem::GetNumOfData()
+{
+	return Data.size();
+}
+/********************************************************************************
+Get Current GameInfo
+********************************************************************************/
+CGameInfo* CSavingAndLoadingSystem::GetCurrentGameInfo()
 {
 	return Data[currentIndex];
+}
+/********************************************************************************
+Get a specific GameInfo
+********************************************************************************/
+CGameInfo* CSavingAndLoadingSystem::GetGameInfo(int index)
+{
+	return Data[index];
 }

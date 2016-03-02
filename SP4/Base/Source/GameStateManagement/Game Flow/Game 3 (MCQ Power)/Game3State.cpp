@@ -26,7 +26,7 @@ void CGame3State::Init(CGameStateManager* theGSM)
 #endif
 	scene->Init(1);
 	scene->SetHeroOffset();
-	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame3State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -44,7 +44,7 @@ void CGame3State::Init(CGameStateManager* theGSM, const int width, const int hei
 #endif
 	scene->Init(level);
 	scene->SetHeroOffset();
-	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
 }
 
 void CGame3State::Cleanup()
@@ -262,12 +262,12 @@ void CGame3State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	case CSceneGame3::RETURN:
 	{
 		// Unlock new difficulty
-		if (theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[2].getCurrentDifficultyUnlocked() <= scene->level)
+		if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].getCurrentDifficultyUnlocked() <= scene->level)
 		{
-			theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[2].setCurrentDifficultyUnlocked(scene->level + 1);
+			theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[2].setCurrentDifficultyUnlocked(scene->level + 1);
 		}
 		// Withdraw jellybean
-		theGSM->saveAndLoadsys->GetGameInfo()->jellybean.WithdrawJellybeans();
+		theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
 		theGSM->ChangeState(CHubState::Instance());
 
 	}

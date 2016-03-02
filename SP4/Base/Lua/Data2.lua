@@ -2,11 +2,11 @@
 Use these values to initialise the Data's Infomations
 ]]--
 
-ifNew = 1
+ifNew = 0
 
-heroPositionX = 710
-heroPositionY = 508
-heroAnimationDir = 3
+heroPositionX = 358
+heroPositionY = 228
+heroAnimationDir = 1
 noOfJellybeans = 10
 heroMapOffsetX = 0
 heroMapOffsetY = 50

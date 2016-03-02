@@ -29,7 +29,7 @@ void CHubState::Init(CGameStateManager* theGSM)
 #endif
 	scene->Init(1);
 	scene->SetHeroOffset();
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->ReadData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
 }
 
 void CHubState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -47,7 +47,7 @@ void CHubState::Init(CGameStateManager* theGSM, const int width, const int heigh
 #endif
 	scene->Init(level);
 	scene->SetHeroOffset();
-	scene->ReadData(theGSM->saveAndLoadsys->GetGameInfo());
+	scene->ReadData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
 }
 
 void CHubState::Cleanup()
@@ -147,7 +147,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->m_bWarpMouse = false;
 
 		theGSM->PushState(CPauseState::Instance(), 0);						//indicates that it is from hub state
-		scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+		scene->StoreData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
 	}
 	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
@@ -156,7 +156,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 			// Set current state to difficulty selection
 			scene->currentState = CSceneHub::DIFFICULTY_SELECTION;
 			// check unlocked difficulty
-			int unlocked = theGSM->saveAndLoadsys->GetGameInfo()->DifficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
+			int unlocked = theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[scene->game_interacted - 1].getCurrentDifficultyUnlocked();
 
 			// Set each difficulty buttons to be locked or unlocked
 			string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };
@@ -177,7 +177,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		{
 			scene->currentState = CSceneHub::EXITING;
 
-			scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+			scene->StoreData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
 			theGSM->saveAndLoadsys->SaveToFile();
 		}
 		else if (scene->targetNPC != NULL)
@@ -332,7 +332,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 					else
 					{
 						// Set current deposit jellybean to min
-						scene->noOfJellybeansDeposited = theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(i);
+						scene->noOfJellybeansDeposited = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(i);
 						CheckJellybeanSelectionButtons(theGSM);
 
 						// Set State to jellybean selection state
@@ -435,7 +435,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 			{
 				// Take jeelybeans
 				scene->noOfJellybeans -= scene->jellybeansRequiredToFinish;
-				theGSM->saveAndLoadsys->GetGameInfo()->jellybean.SetNumOfJellybeans(theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans() - scene->jellybeansRequiredToFinish);
+				theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.SetNumOfJellybeans(theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans() - scene->jellybeansRequiredToFinish);
 
 				scene->currentState = CSceneHub::CLEARING_WAY;
 				scene->ChangeUI_Playing();
@@ -456,7 +456,7 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
 {
 	// Check if current more than or equal to max
-	if (scene->noOfJellybeansDeposited >= theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMaxNumOfJellybeansCanBeDeposited(scene->difficultySelected))
+	if (scene->noOfJellybeansDeposited >= theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetMaxNumOfJellybeansCanBeDeposited(scene->difficultySelected))
 	{
 		scene->UIManagerJellybeanSelection->FindButton("UpArrowButton")->setisLocked(true);
 	}
@@ -465,7 +465,7 @@ void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
 		scene->UIManagerJellybeanSelection->FindButton("UpArrowButton")->setisLocked(false);
 	}
 	// Check if current less than or equal to min
-	if (scene->noOfJellybeansDeposited <= theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(scene->difficultySelected))
+	if (scene->noOfJellybeansDeposited <= theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetMinNumOfJellybeansCanBeDeposited(scene->difficultySelected))
 	{
 		scene->UIManagerJellybeanSelection->FindButton("DownArrowButton")->setisLocked(true);
 	}
@@ -474,7 +474,7 @@ void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
 		scene->UIManagerJellybeanSelection->FindButton("DownArrowButton")->setisLocked(false);
 	}
 	// Check if player has enough jellybeans
-	if (scene->noOfJellybeansDeposited > theGSM->saveAndLoadsys->GetGameInfo()->jellybean.GetNumOfJellybeans())
+	if (scene->noOfJellybeansDeposited > theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans())
 	{
 		scene->UIManagerJellybeanSelection->FindButton("EnterButton")->setisLocked(true);
 	}
@@ -486,8 +486,8 @@ void CHubState::CheckJellybeanSelectionButtons(CGameStateManager* theGSM)
 
 void CHubState::PlayMiniGame(CGameStateManager* theGSM)
 {
-	theGSM->saveAndLoadsys->GetGameInfo()->jellybean.DepositJellybeans(scene->noOfJellybeansDeposited);
-	scene->StoreData(theGSM->saveAndLoadsys->GetGameInfo());
+	theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.DepositJellybeans(scene->noOfJellybeansDeposited);
+	scene->StoreData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
 	theGSM->saveAndLoadsys->SaveToFile();
 	switch (scene->game_interacted)
 	{

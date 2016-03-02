@@ -17,6 +17,14 @@ void CLoadGameSelect::Init(CGameStateManager* theGSM)
 #endif
 	scene = new CSceneLoadGame(800, 600);
 	scene->Init(0);
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		{
+			scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
+			scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);
+		}
+	}
 }
 
 void CLoadGameSelect::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -26,6 +34,14 @@ void CLoadGameSelect::Init(CGameStateManager* theGSM, const int width, const int
 #endif
 	scene = new CSceneLoadGame(800, 600);
 	scene->Init(level);
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		{
+			scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
+			scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);
+		}
+	}
 }
 
 void CLoadGameSelect::Cleanup()
@@ -151,6 +167,10 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		{
 			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 		}
+		case CSceneLoadGame::DELETING_CONFIRMATION:
+		{
+			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		}
 		break;
 	}
 	if ((bool)button_Left == true)
@@ -159,14 +179,20 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 		{
 		case CSceneLoadGame::SELECTING:
 		{
-			const int noOfNbuttons = 5;
-			string buttonName[noOfNbuttons] = { "Data1Button", "Data2Button", "Data3Button", "Data4Button", "Data5Button" };
-			for (int i = 0; i < noOfNbuttons; i++)
+			for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 			{
-				if (scene->UIManagerSelecting->FindButton(buttonName[i])->getisHovered() == true)
+				// Data
+				if (scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->getisHovered() == true)
 				{
 					scene->DataSelected = i;
 					scene->currentState = CSceneLoadGame::CONFIRMATION;
+					scene->ShowConfirmation();
+				}
+				// Delete
+				else if (scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->getisHovered() == true)
+				{
+					scene->DataSelected = i;
+					scene->currentState = CSceneLoadGame::DELETING_CONFIRMATION;
 					scene->ShowConfirmation();
 				}
 			}
@@ -188,6 +214,39 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 				theGSM->saveAndLoadsys->LoadFile(scene->DataSelected);
 				theGSM->ChangeState(CHubState::Instance());
 				return;
+			}
+			// No Button
+			if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)
+			{
+				scene->DataSelected = -1;
+				scene->currentState = CSceneLoadGame::SELECTING;
+				scene->HideConfirmation();
+			}
+		}
+		break;
+		case CSceneLoadGame::DELETING_CONFIRMATION:
+		{
+			// Yes Button
+			if (scene->UIManagerConfirmation->FindButton("YesButton")->getisHovered() == true)
+			{
+				// Delete file
+				theGSM->saveAndLoadsys->GetGameInfo(scene->DataSelected)->ClearFile();
+				for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+				{
+					if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+					{
+						scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
+						scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);
+					}
+					else
+					{
+						scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(false);
+						scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(false);
+					}
+				}
+				scene->DataSelected = -1;
+				scene->currentState = CSceneLoadGame::SELECTING;
+				scene->HideConfirmation();
 			}
 			// No Button
 			if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)

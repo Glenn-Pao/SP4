@@ -13,13 +13,19 @@ public:
 	void AddData(const char* fileName);
 	// Read the file and load the game
 	bool LoadFile(int index);
+	// Read a new file and load the game
+	bool LoadNewFile();
 	// Save information into the file
 	void SaveToFile();
 	// Clear information of the file
 	void ClearFile();
 
-	// Get GameInfo
-	CGameInfo* GetGameInfo();
+	// Get number of Data Stored
+	int GetNumOfData();
+	// Get Current GameInfo
+	CGameInfo* GetCurrentGameInfo();
+	// Get a specific GameInfo
+	CGameInfo* GetGameInfo(int index);
 
 private:
 	// Game Info

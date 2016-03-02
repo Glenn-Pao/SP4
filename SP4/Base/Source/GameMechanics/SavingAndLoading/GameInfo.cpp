@@ -21,7 +21,7 @@ Reset information of the Game
 void CGameInfo::ResetData()
 {
 	// if new
-	ifNew = false;
+	ifNew = true;
 
 	// Player's Infomation
 	heroPosition.Set(0, 0);
