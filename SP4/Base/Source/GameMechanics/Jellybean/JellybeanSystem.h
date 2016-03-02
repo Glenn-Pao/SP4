@@ -20,6 +20,8 @@ public:
 	void SetNumOfJellybeans(int noOfJellybeans){ this->noOfJellybeans = noOfJellybeans; };
 	// Get number of jellybeans player have
 	int GetNumOfJellybeans(){ return noOfJellybeans; };
+	// Get number of jellybeans player deposited
+	int GetNumOfJellybeansDeposited(){ return noOfJellybeansDeposited; };
 
 	// Get min number of jellybeans can be deposited
 	int GetMinNumOfJellybeansCanBeDeposited(int difficulty){ return minNoOfJellybeansDeposited[difficulty]; };

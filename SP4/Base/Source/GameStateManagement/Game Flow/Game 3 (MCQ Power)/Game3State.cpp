@@ -27,6 +27,7 @@ void CGame3State::Init(CGameStateManager* theGSM)
 	scene->Init(1);
 	scene->SetHeroOffset();
 	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeansMayWin = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeansDeposited() * 2;
 }
 
 void CGame3State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -45,6 +46,7 @@ void CGame3State::Init(CGameStateManager* theGSM, const int width, const int hei
 	scene->Init(level);
 	scene->SetHeroOffset();
 	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeansMayWin = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeansDeposited() * 2;
 }
 
 void CGame3State::Cleanup()

@@ -190,6 +190,7 @@ public:
 
 	// Jellybeans
 	int noOfJellybeans;
+	int noOfJellybeansMayWin;
 
 	CSceneManager2D sceneManager2D;
 

@@ -28,6 +28,7 @@ void CGame1State::Init(CGameStateManager* theGSM)
 	scene->SetHeroOffset();
 
 	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeansMayWin = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeansDeposited() * 2;
 }
 
 void CGame1State::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -47,6 +48,7 @@ void CGame1State::Init(CGameStateManager* theGSM, const int width, const int hei
 	scene->SetHeroOffset();
 
 	scene->noOfJellybeans = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeans();
+	scene->noOfJellybeansMayWin = theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.GetNumOfJellybeansDeposited() * 2;
 }
 
 void CGame1State::Cleanup()
@@ -227,7 +229,16 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 			{
 				if (button_Left)
+				{
+					// Unlock new difficulty
+					if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
+					{
+						theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
+					}
+					// Withdraw jellybean
+					theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
 					scene->currentState = CSceneGame1::RETURN;
+				}
 			}
 		}
 		break;
@@ -249,15 +260,7 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		break;
 		case CSceneGame1::RETURN:
 		{
-			// Unlock new difficulty
-			if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[0].getCurrentDifficultyUnlocked() <= scene->level)
-			{
-				theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[0].setCurrentDifficultyUnlocked(scene->level + 1);
-			}
-			// Withdraw jellybean
-			theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
 			theGSM->ChangeState(CHubState::Instance());
-
 		}
 			break;
 	}

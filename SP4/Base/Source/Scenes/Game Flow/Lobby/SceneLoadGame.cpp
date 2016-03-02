@@ -123,6 +123,9 @@ void  CSceneLoadGame::Init(int level)
 	// Window
 	meshList[GEO_CONFIRMATION_WINDOW] = MeshBuilder::GenerateQuad("GEO_CONFIRMATION_WINDOW", Color(1, 1, 1), 1);
 	meshList[GEO_CONFIRMATION_WINDOW]->textureID = LoadTGA("Image//UI/Confirmation_Window.tga");
+	// Delete window
+	meshList[GEO_CONFIRMATION_DELETE_WINDOW] = MeshBuilder::GenerateQuad("GEO_CONFIRMATION_DELETE_WINDOW", Color(1, 1, 1), 1);
+	meshList[GEO_CONFIRMATION_DELETE_WINDOW]->textureID = LoadTGA("Image//UI/Confirmation_Delete_Window.tga");
 	// Yes
 	meshList[GEO_YES_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_UP", Color(1, 1, 1), 1);
 	meshList[GEO_YES_BUTTON_UP]->textureID = LoadTGA("Image//UI/Yes_Button.tga");
@@ -228,6 +231,11 @@ void  CSceneLoadGame::Init(int level)
 	Image* ConfirmationWindow;
 	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
 	UIManagerConfirmation->addFeature(ConfirmationWindow);
+
+	// Confirmation Window
+	Image* ConfirmationDeleteWindow;
+	ConfirmationDeleteWindow = new Image("ConfirmationDeleteWindow", meshList[GEO_CONFIRMATION_DELETE_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManagerConfirmation->addFeature(ConfirmationDeleteWindow);
 
 	// Yes button
 	Button* YesButton;

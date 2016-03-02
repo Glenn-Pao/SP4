@@ -776,6 +776,21 @@ void CSceneGame1::RenderGUI()
 	}
 	UIManager->Render(sceneManager2D);
 
+	switch (currentState)
+	{
+	case COMPLETED:
+	{
+		int textSize = m_cMap->GetTileSize();
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.6, sceneManager2D.m_window_height * 0.47);
+	}
+	break;
+	case TIME_UP:
+	{
+		int textSize = m_cMap->GetTileSize();
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.6, sceneManager2D.m_window_height * 0.47);
+	}
+	break;
+	}
 	// Fps
 	/*ss.str(std::string());
 	ss.precision(3);
