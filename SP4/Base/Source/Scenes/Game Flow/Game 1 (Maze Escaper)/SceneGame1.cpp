@@ -355,6 +355,13 @@ void CSceneGame1::InitUI()
 		UIManager->addFeature(Instruction_Background);
 		// Scale the background third
 		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+
+		// Next Button
+		Button* Next_Button;
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		UIManager->addFeature(Next_Button);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
 		
 		numOfInstructionsLeft = 5;
 		
@@ -478,6 +485,11 @@ void CSceneGame1::InitMeshes()
 	meshList[GEO_INSTRUCTION_BLOCKER]->textureID = LoadTGA("Image//Game1/Instruction_Blocker.tga");
 	meshList[GEO_INSTRUCTION_CONDITION] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_CONDITION", Color(1, 1, 1), 1);
 	meshList[GEO_INSTRUCTION_CONDITION]->textureID = LoadTGA("Image//Game1/Instruction_Condition.tga");
+	// Up arrow
+	meshList[GEO_UPARROW_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_UP", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_UP]->textureID = LoadTGA("Image//UI/Right_Button.tga");
+	meshList[GEO_UPARROW_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_DOWN", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Right_Button_Pressed.tga");
 }
 
 void CSceneGame1::Update(double dt)

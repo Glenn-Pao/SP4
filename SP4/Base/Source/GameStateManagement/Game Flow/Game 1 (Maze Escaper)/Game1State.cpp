@@ -178,7 +178,7 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	{
 		case CSceneGame1::PREPARING:
 		{
-			if (button_Left == true)
+			if (button_Left == true && scene->UIManager->FindButton("Next_Button")->getisHovered() == true)
 			{
 				// if there is instruction left
 				if (scene->numOfInstructionsLeft > 1)
@@ -206,8 +206,9 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(), 5.0f, UIAnimation::SCALING);
 					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Header"), 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 1.3), 5.0f, UIAnimation::TRANSLATION);
 					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Background"), 0.1, Vector3(), 5.0f, UIAnimation::SCALING);
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("Next_Button"), 0.15, Vector3(), 5.0f, UIAnimation::SCALING);
 
-					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), 0.15, Vector3(), 5.0f, UIAnimation::SCALING);
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), 0.2, Vector3(), 5.0f, UIAnimation::SCALING);
 
 					scene->currentState = CSceneGame1::PLAYING;
 				}
