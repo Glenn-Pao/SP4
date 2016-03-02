@@ -207,7 +207,7 @@ void CSceneMenu::Update(double dt)
 			if (isSettingsAnimationStarted == false)
 			{
 				isSettingsAnimationStarted = true;
-				UIManager->InvokeAnimator()->StopAnimations();
+				UIManager->InvokeAnimator()->SkipAllAnimations();
 				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 80, 1), 5, 0);
 				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 150, 1), 5, 0);
 				UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 + 150, 1), 5, 0);
@@ -216,7 +216,7 @@ void CSceneMenu::Update(double dt)
 		else if (UIManager->FindButton("SettingsButton")->getisHovered() == false && isSettingsAnimationStarted == true && TimeSinceSettingsAnimation > 0.2)
 		{
 			isSettingsAnimationStarted = false;
-			UIManager->InvokeAnimator()->StopAnimations();
+			UIManager->InvokeAnimator()->SkipAllAnimations();
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 80, 1), 5, 0);
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 150, 1), 5, 0);
 			UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 0, Vector3(sceneManager2D.m_window_width * 0.05, 40 - 150, 1), 5, 0);
