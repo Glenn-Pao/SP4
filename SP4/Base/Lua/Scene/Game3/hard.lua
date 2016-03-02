@@ -21,7 +21,7 @@ scriptAnswerQn1Type2 = "400"
 scriptQn2 = "What's 1 property of liquid state?"
 
 -- Possible answers to the second question tile
-scriptAnswerQn2Type0 = "Have shape"
+scriptAnswerQn2Type0 = "Have form"
 scriptAnswerQn2Type1 = "Able to flow"
 scriptAnswerQn2Type2 = "‎Compressible"
 
@@ -42,7 +42,7 @@ scriptAnswerQn4Type1 = "Compressible"
 scriptAnswerQn4Type2 = "Unable to flow"
 
 -- Question to be asked for the fifth question tile
-scriptQn5 = "This thing ____ a lot about you."
+scriptQn5 = "This thing _ a lot about you."
 
 -- Possible answers to the fifth question tile
 scriptAnswerQn5Type0 = "saying"
@@ -58,7 +58,7 @@ scriptAnswerQn6Type1 = "Nokia"
 scriptAnswerQn6Type2 = "Apple"
 
 -- Question to be asked for the seventh question tile
-scriptQn7 = "I ___ a few jellybeans to offer to the Guardian."
+scriptQn7 = "I _ a few jellybeans."
 
 -- Possible answers to the seventh question tile
 scriptAnswerQn7Type0 = "had"

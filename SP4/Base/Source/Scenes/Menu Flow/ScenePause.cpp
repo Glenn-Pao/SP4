@@ -99,19 +99,19 @@ void CScenePause::Init(int level)
 	meshList[SAVE_LOCKED] = MeshBuilder::GenerateQuad("SAVE_LOCKED", Color(1, 1, 1), 1.f);
 	meshList[SAVE_LOCKED]->textureID = LoadTGA("Image//Save_Button_Locked.tga");
 
-	meshList[RESUME] = MeshBuilder::GenerateQuad("RESUME", Color(1, 1, 1), 1.f);
+	meshList[RESUME] = MeshBuilder::GenerateQuad("RESUME", Color(0, 0, 0), 1.f);
 	meshList[RESUME]->textureID = LoadTGA("Image//Resume_Button.tga");
 
 	meshList[RESUME_PRESSED] = MeshBuilder::GenerateQuad("RESUME_PRESSED", Color(1, 1, 1), 1.f);
 	meshList[RESUME_PRESSED]->textureID = LoadTGA("Image//Resume_Button_Pressed.tga");
 
-	meshList[QUIT] = MeshBuilder::GenerateQuad("QUIT", Color(1, 1, 1), 1.f);
+	meshList[QUIT] = MeshBuilder::GenerateQuad("QUIT", Color(0,0, 0), 1.f);
 	meshList[QUIT]->textureID = LoadTGA("Image//Quit_Button.tga");
 
 	meshList[QUIT_PRESSED] = MeshBuilder::GenerateQuad("GEO_QUIT_PRESSED", Color(1, 1, 1), 1.f);
 	meshList[QUIT_PRESSED]->textureID = LoadTGA("Image//Quit_Button_Pressed.tga");
 
-	meshList[MAIN_MENU] = MeshBuilder::GenerateQuad("MAIN_MENU", Color(1, 1, 1), 1.f);
+	meshList[MAIN_MENU] = MeshBuilder::GenerateQuad("MAIN_MENU", Color(0, 0, 0), 1.f);
 	meshList[MAIN_MENU]->textureID = LoadTGA("Image//Menu_Button.tga");
 
 	meshList[MAIN_MENU_PRESSED] = MeshBuilder::GenerateQuad("MAIN_MENU_PRESSED", Color(1, 1, 1), 1.f);
@@ -149,7 +149,7 @@ void CScenePause::Init(int level)
 		Image* Background;
 		Background = new Image("Background", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height, 0), Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0));
 		UIManager->addFeature(Background);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 		Image* paused_icon;
 		paused_icon = new Image("paused_icon", meshList[PAUSE], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.89, 0), Vector3(0, 0, 0));
@@ -166,7 +166,7 @@ void CScenePause::Init(int level)
 
 		// save button
 		Button* SaveButton;
-		SaveButton = new Button("SaveButton", meshList[SAVE], meshList[SAVE_DOWN], meshList[SAVE_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		SaveButton = new Button("SaveButton", meshList[SAVE], meshList[SAVE_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
 		UIManager->addFeature(SaveButton);
 		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 5, 0), 10, 0);
 		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.7, Vector3(100, 50, 1), 5, 1);
