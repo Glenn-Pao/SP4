@@ -189,6 +189,7 @@ void CSceneMenu::Init(int level)
 
 	isSettingsAnimationStarted = false;
 	TimeSinceSettingsAnimation = 0;
+
 }
 
 void CSceneMenu::Update(double dt)
@@ -196,8 +197,6 @@ void CSceneMenu::Update(double dt)
 	UIManager->Update(dt);
 	TimeSinceSettingsAnimation += dt;
 	MainMenuAnimationTimer += dt;
-
-	cout << TimeSinceSettingsAnimation << endl;
 
 	if (MainMenuAnimationTimer > 2.9)
 	{

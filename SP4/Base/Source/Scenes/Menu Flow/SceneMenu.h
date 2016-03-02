@@ -70,6 +70,7 @@ public:
 	float MainMenuAnimationTimer;
 
 	bool isSettingsAnimationStarted;
+
 	float TimeSinceSettingsAnimation;
 private:
 	unsigned m_vertexArrayID;

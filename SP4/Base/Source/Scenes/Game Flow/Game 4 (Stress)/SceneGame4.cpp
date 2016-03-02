@@ -135,16 +135,13 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	// Initialise the Meshes
 	InitMeshes();
 
-
-
-	
-	
 	int Chance;
 
 	switch (CurrentLevel)
 	{
 	case TUTORIAL:
 	{
+		CurrentState = State::PREPARE;
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(300, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(300, 425, 1), Vector3(80, 0, 0));
@@ -181,7 +178,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	{
 		//GamePlay Variables
 		MissingCardTimer = 0;
-		ScoreToBeat = 20;
+		ScoreToBeat = 30;
 		Score = 0;
 		Timer = 60;
 
@@ -220,9 +217,9 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	{
 		//GamePlay Variables
 		MissingCardTimer = 0;
-		ScoreToBeat = 20;
+		ScoreToBeat = 40;
 		Score = 0;
-		Timer = 60;
+		Timer = 80;
 
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(175, 300, 1), Vector3(80, 0, 0));
@@ -259,9 +256,9 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	{
 		//GamePlay Variables
 		MissingCardTimer = -2;
-		ScoreToBeat = 20;
+		ScoreToBeat = 50;
 		Score = 0;
-		Timer = 60;
+		Timer = 120;
 
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(85, 300, 1), Vector3(80, 0, 0));
@@ -340,6 +337,58 @@ void SceneGame4::InitUI()
 	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
 	UIManager->addFeature(ReturnToHubButton);
 
+	// Instructions for Tutorial
+	if (CurrentLevel == DifficultyLevel::TUTORIAL)
+	{
+		// Scale the Alpha quad first
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+
+		// Instruction Header
+		Image* Instruction_Header;
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		UIManager->addFeature(Instruction_Header);
+		// Move the Instruction Header second
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		// Instruction Background
+		Image* Instruction_Background;
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		UIManager->addFeature(Instruction_Background);
+		// Scale the background third
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+
+		// Next Button
+		Button* Next_Button;
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		UIManager->addFeature(Next_Button);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
+
+		numOfInstructionsLeft = 5;
+
+		// Move around
+		Image* Instrution_Move_Around;
+		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Move_Around);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		// Timer
+		Image* Instrution_Timer;
+		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Timer);
+		// Exit
+		Image* Instrution_Exit;
+		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Exit);
+		// Blocker
+		Image* Instrution_Blocker;
+		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Blocker);
+		// Condition
+		Image* Instrution_Condition;
+		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Condition);
+	}
+
 }
 
 /********************************************************************************
@@ -354,7 +403,7 @@ void SceneGame4::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
 	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
@@ -434,6 +483,27 @@ void SceneGame4::InitMeshes()
 	// Alpha Black Quad
 	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
 	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
+
+
+	// Instructions
+	meshList[GEO_INSTRUCTION_HEADER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_HEADER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_HEADER]->textureID = LoadTGA("Image//Game1/Instruction_Header.tga");
+	meshList[GEO_INSTRUCTION_MOVE_AROUND] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_MOVE_AROUND", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_MOVE_AROUND]->textureID = LoadTGA("Image//Game4_Instructions_WASD.tga");
+	meshList[GEO_INSTRUCTION_TIMER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_TIMER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_TIMER]->textureID = LoadTGA("Image//Game4_Instructions_WinLoseCondition.tga");
+	meshList[GEO_INSTRUCTION_EXIT] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_EXIT", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_EXIT]->textureID = LoadTGA("Image//Game4_Instructions_Goal.tga");
+	meshList[GEO_INSTRUCTION_BLOCKER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_BLOCKER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_BLOCKER]->textureID = LoadTGA("Image//Game4_Instructions_EarnPoints.tga");
+	meshList[GEO_INSTRUCTION_CONDITION] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_CONDITION", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_CONDITION]->textureID = LoadTGA("Image//Game4_Instructions_MissingCards.tga");
+
+	// Up arrow
+	meshList[GEO_UPARROW_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_UP", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_UP]->textureID = LoadTGA("Image//UI/Right_Button.tga");
+	meshList[GEO_UPARROW_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_DOWN", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Right_Button_Pressed.tga");
 }
 
 void SceneGame4::UpdateHero(double dt)
@@ -608,8 +678,6 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 					}
 				}
-
-				Score += 8;
 			}
 
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
@@ -674,7 +742,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 					}
 				}
-				Score += 8;
+				Score += 5;
 				MissingCardTimer = 0;
 			}
 
@@ -740,7 +808,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 					}
 				}
-				Score += 8;
+				Score += 10;
 				MissingCardTimer = 0;
 			}
 
@@ -806,7 +874,7 @@ void SceneGame4::UpdateDecks(double dt)
 					}
 					}
 				}
-				Score += 8;
+				Score += 15;
 				MissingCardTimer = 0;
 			}
 
@@ -1147,22 +1215,30 @@ void SceneGame4::RenderTimer()
 {
 	std::ostringstream ss;
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
 	ss.str(std::string());
 	ss.precision(3);
 	ss << Timer;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
 
 }
 void SceneGame4::RenderScore()
 {
 	std::ostringstream ss;
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), 0, m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, 0, m_cMap->GetTileSize() * 0.5);
 	ss.str(std::string());
 	ss.precision(3);
 	ss << Score;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.5, 0.3, 0.3), m_cMap->GetTileSize(), m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize()*0.5, m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.5);
+
+	ss.clear();
+
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score To Beat:", Color(0, 0, 0), m_cMap->GetTileSize()*0.5, 0, m_cMap->GetTileSize() * 0.1);
+	ss.str(std::string());
+	ss.precision(3);
+	ss << ScoreToBeat;
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize()*0.5, m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.1);
 
 }
 
@@ -1182,6 +1258,16 @@ void SceneGame4::Render()
 	{
 		switch (CurrentState)
 		{
+		case State::PREPARE:
+		{
+			RenderRearTileMap();
+			RenderTileMap();
+			RenderDeck();
+			RenderRGBCards();
+			sceneManager2D.modelStack.PopMatrix();
+			RenderGUI();
+			break;
+		}
 		case State::PLAY:
 		{
 			RenderRearTileMap();
@@ -1439,6 +1525,10 @@ void SceneGame4::RenderGUI()
 
 	switch (CurrentState)
 	{
+	case PREPARE:
+	{
+		UIManager->Render(sceneManager2D);
+	}
 	case PLAY:
 	{
 		UIManager->Render(sceneManager2D);
