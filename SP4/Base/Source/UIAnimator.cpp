@@ -42,7 +42,7 @@ void UIAnimator::StartTransformation(UIFeature* feature, float AnimationStartTim
 	AnimationList.push_back(Animation);
 }
 
-void UIAnimator::StopAnimations()
+void UIAnimator::StopAllAnimations()
 {
 	for (int i = AnimationList.size() - 1; i >= 0; --i)
 	{
@@ -50,6 +50,14 @@ void UIAnimator::StopAnimations()
 	}
 }
 
+void UIAnimator::SkipAllAnimations()
+{
+	for (int i = AnimationList.size() - 1; i >= 0; --i)
+	{
+		AnimationList[i]->SkipAnimation();
+		AnimationList.erase(AnimationList.begin() + i);
+	}
+}
 
 int UIAnimator::GetNumOfAnimations()
 {

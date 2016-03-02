@@ -30,6 +30,7 @@ public:
 	void Update(float dt);
 
 	void DoAnimation(float dt);
+	void SkipAnimation();
 
 	UIAnimation(UIFeature* feature, float AnimationStartTime, Vector3 EndTransformation, float Speed, int choice); // choice: 1 = translation, 2 = rotation, 3 = scaling
 	~UIAnimation();

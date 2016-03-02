@@ -85,6 +85,29 @@ void UIAnimation::DoAnimation(float dt)
 	}
 }
 
+void UIAnimation::SkipAnimation()
+{
+	switch (this->choice)
+	{
+		case TRANSLATION: // if translation
+		{
+			feature->setCurrentPos(EndTransformation);
+			isComplete = true;
+			break;
+		}
+		case ROTATION:
+		{
+			break;
+		}
+		case SCALING:
+		{
+			feature->setScale(EndTransformation);
+			isComplete = true;
+			break;
+		}
+	}
+}
+
 UIAnimation::~UIAnimation()
 {
 }

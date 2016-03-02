@@ -19,6 +19,7 @@ CSceneGame1::CSceneGame1(const int m_window_width, const int m_window_height)
 	, timer(30.0f)
 	, level(0)
 	, UIManager(NULL)
+	, numOfInstructionsLeft(0)
 {
 }
 
@@ -67,7 +68,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 
 	switch (level)
 	{
-		case 0:
+		case CDifficultySystem::TUTORIAL:
 		{
 			currentState = PREPARING;
 			timer = 30.f;
@@ -83,7 +84,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			m_cMap->LoadMap("Image//Maps//Game 1/Tutorial.csv");
 		}
 		break;
-		case 1:
+		case CDifficultySystem::EASY:
 		{
 			timer = 30.f;
 			// Initialise and load the tile map
@@ -92,7 +93,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			m_cMap->LoadMap("Image//Maps//Game 1/Easy.csv");
 		}
 		break;
-		case 2:
+		case CDifficultySystem::MEDIUM:
 		{
 			timer = 50.f;
 			// Initialise and load the tile map
@@ -101,7 +102,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			m_cMap->LoadMap("Image//Maps//Game 1/Medium.csv");
 		}
 		break;
-		case 3:
+		case CDifficultySystem::HARD:
 		{
 			timer = 45.f;
 			// Initialise and load the tile map
@@ -177,7 +178,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				blockerWaypointPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
 			// Tutorial
-			if (level == 0)
+			if (level == CDifficultySystem::TUTORIAL)
 			{
 				// Timer Dialogue
 				if (m_cMap->theScreenMap[i][k] == 101)
@@ -213,7 +214,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Blockers Dialogue
-				else if (m_cMap->theScreenMap[i][k] == 105)
+				else if (m_cMap->theScreenMap[i][k] == 104)
 				{
 					float pos_x = k*m_cMap->GetTileSize();
 					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
@@ -248,8 +249,8 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			}
 		}
 	}
-	// Randomly choose an start pos for non-tutorial and easy difficulties
-	if (level != 0 && level != 1)
+	// Randomly choose an start pos for non-tutorial
+	if (level != CDifficultySystem::TUTORIAL)
 	{
 		CProbabilitySystem probabilitySystem;
 		// Add probabilties
@@ -274,7 +275,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	InitMeshes();
 
 	// Randomly choose an exit for non-tutorial difficulties
-	if (level != 0)
+	if (level != CDifficultySystem::TUTORIAL)
 	{
 		CProbabilitySystem probabilitySystem;
 		// Add probabilties
@@ -335,6 +336,51 @@ void CSceneGame1::InitUI()
 	Button* ReturnToHubButton;
 	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
 	UIManager->addFeature(ReturnToHubButton);
+
+	// Instructions for Tutorial
+	if (level == CDifficultySystem::TUTORIAL)
+	{
+		// Scale the Alpha quad first
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+
+		// Instruction Header
+		Image* Instruction_Header;
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		UIManager->addFeature(Instruction_Header);
+		// Move the Instruction Header second
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		// Instruction Background
+		Image* Instruction_Background;
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		UIManager->addFeature(Instruction_Background);
+		// Scale the background third
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+		
+		numOfInstructionsLeft = 5;
+		
+		// Move around
+		Image* Instrution_Move_Around;
+		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Move_Around);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f , Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		// Timer
+		Image* Instrution_Timer;
+		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Timer);
+		// Exit
+		Image* Instrution_Exit;
+		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Exit);
+		// Blocker
+		Image* Instrution_Blocker;
+		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Blocker);
+		// Condition
+		Image* Instrution_Condition;
+		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Condition);
+	}
 }
 
 /********************************************************************************
@@ -349,8 +395,8 @@ void CSceneGame1::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
+	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
 	meshList[GEO_TILE_GROUND] = MeshBuilder::Generate2DMesh("GEO_TILE_GROUND", Color(1, 1, 1), 0, 0, 1, 1);
@@ -417,6 +463,21 @@ void CSceneGame1::InitMeshes()
 	// Alpha Black Quad
 	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
 	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
+
+
+	// Instructions
+	meshList[GEO_INSTRUCTION_HEADER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_HEADER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_HEADER]->textureID = LoadTGA("Image//Game1/Instruction_Header.tga");
+	meshList[GEO_INSTRUCTION_MOVE_AROUND] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_MOVE_AROUND", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_MOVE_AROUND]->textureID = LoadTGA("Image//Game1/Instruction_MoveAround.tga");
+	meshList[GEO_INSTRUCTION_TIMER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_TIMER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_TIMER]->textureID = LoadTGA("Image//Game1/Instruction_Timer.tga");
+	meshList[GEO_INSTRUCTION_EXIT] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_EXIT", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_EXIT]->textureID = LoadTGA("Image//Game1/Instruction_Exit.tga");
+	meshList[GEO_INSTRUCTION_BLOCKER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_BLOCKER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_BLOCKER]->textureID = LoadTGA("Image//Game1/Instruction_Blocker.tga");
+	meshList[GEO_INSTRUCTION_CONDITION] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_CONDITION", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_CONDITION]->textureID = LoadTGA("Image//Game1/Instruction_Condition.tga");
 }
 
 void CSceneGame1::Update(double dt)
@@ -666,14 +727,12 @@ void CSceneGame1::RenderGUI()
 	{
 		case PLAYING:
 		{
-			UIManager->Render(sceneManager2D);
-
 			for (int i = 0; i < dialogueTiles.size(); i++)
 			{
 				if (dialogueTiles[i]->getActive())
 				{
 					// Dialogue box
-					sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+					sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.5, m_cMap->GetTileSize() * 0.5);
 
 					// Text
 					int textSize = m_cMap->GetTileSize() * 0.5;
@@ -685,7 +744,6 @@ void CSceneGame1::RenderGUI()
 		break;
 		case COMPLETED:
 		{
-			UIManager->Render(sceneManager2D);
 			/*int textSize = m_cMap->GetTileSize();
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptFinished.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
 
@@ -696,7 +754,6 @@ void CSceneGame1::RenderGUI()
 
 		case TIME_UP:
 		{
-			UIManager->Render(sceneManager2D);
 			/*int textSize = m_cMap->GetTileSize();
 			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptTimeUp, Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.5 - textSize * (scriptTimeUp.size() * 0.31), sceneManager2D.m_window_height * 0.5 + textSize);
 
@@ -705,6 +762,7 @@ void CSceneGame1::RenderGUI()
 		}
 		break;
 	}
+	UIManager->Render(sceneManager2D);
 
 	// Fps
 	/*ss.str(std::string());

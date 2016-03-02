@@ -48,6 +48,8 @@ public:
 
 	UISystem* UIManager;
 
+	int numOfInstructionsLeft;
+
 private:
 	void InitMeshes();
 	// Handle to the GUI

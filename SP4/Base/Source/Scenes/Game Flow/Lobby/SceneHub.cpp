@@ -704,11 +704,11 @@ Change UI - playing
 ********************************************************************************/
 void CSceneHub::ChangeUI_Playing()
 {
-	UIManagerGivingJellybeans->InvokeAnimator()->StopAnimations();
+	UIManagerGivingJellybeans->InvokeAnimator()->SkipAllAnimations();
 	HideGivingJellybeans();
-	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerDifficultySelection->InvokeAnimator()->SkipAllAnimations();
 	Hide_DifficultySelection();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->SkipAllAnimations();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(0, 0, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
@@ -717,13 +717,13 @@ Change UI - difficulty selection
 ********************************************************************************/
 void CSceneHub::ChangeUI_DifficultySelection()
 {
-	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerDifficultySelection->InvokeAnimator()->SkipAllAnimations();
 	Show_DifficultySelection();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->SkipAllAnimations();
 	Hide_JellybeanSelection();
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->SkipAllAnimations();
 	HideConfirmation();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->SkipAllAnimations();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
@@ -732,11 +732,11 @@ Change UI - jellybean selection
 ********************************************************************************/
 void CSceneHub::ChangeUI_JellybeanSelection()
 {
-	UIManagerDifficultySelection->InvokeAnimator()->StopAnimations();
+	UIManagerDifficultySelection->InvokeAnimator()->SkipAllAnimations();
 	Hide_DifficultySelection();
-	UIManagerJellybeanSelection->InvokeAnimator()->StopAnimations();
+	UIManagerJellybeanSelection->InvokeAnimator()->SkipAllAnimations();
 	Show_JellybeanSelection();
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->SkipAllAnimations();
 	HideConfirmation();
 }
 /********************************************************************************
@@ -744,7 +744,7 @@ Change UI - Confirmation
 ********************************************************************************/
 void CSceneHub::ChangeUI_Confirmation()
 {
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->SkipAllAnimations();
 	ShowConfirmation();
 }
 
@@ -753,9 +753,9 @@ Change UI - Giving Jellybeans
 ********************************************************************************/
 void CSceneHub::ChangeUI_GivingJellybeans()
 {
-	UIManagerGivingJellybeans->InvokeAnimator()->StopAnimations();
+	UIManagerGivingJellybeans->InvokeAnimator()->SkipAllAnimations();
 	ShowGivingJellybeans();
-	UIManagerBlackQuad->InvokeAnimator()->StopAnimations();
+	UIManagerBlackQuad->InvokeAnimator()->SkipAllAnimations();
 	// AlphaQuad
 	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }

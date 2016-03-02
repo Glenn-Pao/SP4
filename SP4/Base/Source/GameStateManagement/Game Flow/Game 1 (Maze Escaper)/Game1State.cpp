@@ -180,7 +180,37 @@ void CGame1State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		{
 			if (button_Left == true)
 			{
-				scene->currentState = CSceneGame1::PLAYING;
+				// if there is instruction left
+				if (scene->numOfInstructionsLeft > 1)
+				{
+					// Skip all animations
+					scene->UIManager->InvokeAnimator()->SkipAllAnimations();
+
+					// Close current instruction
+					int index = scene->UIManager->getUI_List().size() - scene->numOfInstructionsLeft;
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], 0, Vector3(), 5.0f, UIAnimation::SCALING);
+
+					// Remove one instruction
+					scene->numOfInstructionsLeft--;
+
+					// Open next instruction
+					index = scene->UIManager->getUI_List().size() - scene->numOfInstructionsLeft;
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.65, scene->sceneManager2D.m_window_height * 0.65), 5.0f, UIAnimation::SCALING);
+				}
+				else
+				{
+					// Skip all animations
+					scene->UIManager->InvokeAnimator()->SkipAllAnimations();
+
+					// Close all window
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(), 5.0f, UIAnimation::SCALING);
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Header"), 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 1.3), 5.0f, UIAnimation::TRANSLATION);
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Background"), 0.1, Vector3(), 5.0f, UIAnimation::SCALING);
+
+					scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), 0.15, Vector3(), 5.0f, UIAnimation::SCALING);
+
+					scene->currentState = CSceneGame1::PLAYING;
+				}
 			}
 		}
 		break;

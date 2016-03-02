@@ -247,7 +247,7 @@ void CScenePause::Init(int level)
 //hide the confirmation screen
 void CScenePause::HideConfirmation()
 {
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAllAnimations();
 	// Confirmation Window
 	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
@@ -260,7 +260,7 @@ void CScenePause::HideConfirmation()
 //show the confirmation screen
 void CScenePause::ShowConfirmation()
 {
-	UIManagerConfirmation->InvokeAnimator()->StopAnimations();
+	UIManagerConfirmation->InvokeAnimator()->StopAllAnimations();
 	// Confirmation Window
 	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
