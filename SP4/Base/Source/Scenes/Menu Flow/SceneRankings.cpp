@@ -88,14 +88,14 @@ void   CSceneRankings::Render()
 	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
 
 	// On screen text
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "RANK NAME SCORE" , Color(0, 0, 0), 50, 200, sceneManager2D.m_window_height - 160);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "RANK NAME SCORE" , Color(0, 0, 0), 50.f, 200.f, sceneManager2D.m_window_height - 160.f);
 
 	for (int i = 0; i < 5; ++i)
 	{
 		int temp = i;
 		std::ostringstream scoring;
 		scoring << temp + 1 << "." << highscore.record[i].getName() << " " << highscore.record[i].getScore();
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scoring.str(), Color(0, 0, 0), 50, 260, sceneManager2D.m_window_height - 220 - i * 60);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scoring.str(), Color(0, 0, 0), 50.f, 260.f, sceneManager2D.m_window_height - 220.f - i * 60.f);
 	}
 }
 

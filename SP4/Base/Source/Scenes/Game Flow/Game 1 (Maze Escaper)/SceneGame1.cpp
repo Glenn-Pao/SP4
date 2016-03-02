@@ -31,7 +31,7 @@ CSceneGame1::~CSceneGame1()
 		delete theDoor;
 	}
 	// Dialogues tiles
-	for (int i = 0; i < dialogueTiles.size(); i++)
+	for (int i = 0; i < (int)dialogueTiles.size(); i++)
 	{
 		if (dialogueTiles[i])
 		{
@@ -137,8 +137,8 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			// Hero
 			if (m_cMap->theScreenMap[i][k] == 109)
 			{
-				float pos_x = k*m_cMap->GetTileSize();
-				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+				float pos_x = (float)k*m_cMap->GetTileSize();
+				float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 				
 				startPositions.push_back(Vector3(pos_x, pos_y));
 
@@ -147,8 +147,8 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				{
 					// Control Dialogue
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 			}
@@ -165,17 +165,17 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 			else if (m_cMap->theScreenMap[i][k] == 110)
 			{
 				// Create a new exit pos
-				exitPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+				exitPositions.push_back(Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
 			// Blockers
 			else if (m_cMap->theScreenMap[i][k] == 10)
 			{
-				blockerPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+				blockerPositions.push_back(Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
 			// Blockers waypoints
 			else if (m_cMap->theScreenMap[i][k] == 11)
 			{
-				blockerWaypointPositions.push_back(Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
+				blockerWaypointPositions.push_back(Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize()));
 			}
 			// Tutorial
 			if (level == CDifficultySystem::TUTORIAL)
@@ -183,67 +183,67 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 				// Timer Dialogue
 				if (m_cMap->theScreenMap[i][k] == 101)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[1], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Objective Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 102)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[2], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Path choosing Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 103)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[3], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Blockers Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 104)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[4], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Exit found Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 105)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[5], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 				// Deadend Dialogue
 				else if (m_cMap->theScreenMap[i][k] == 106)
 				{
-					float pos_x = k*m_cMap->GetTileSize();
-					float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+					float pos_x = (float)k*m_cMap->GetTileSize();
+					float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 					dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[6], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-					Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-					Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+					Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f));
+					Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f));
 					dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 				}
 			}
@@ -254,7 +254,7 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	{
 		CProbabilitySystem probabilitySystem;
 		// Add probabilties
-		for (int i = 0; i < startPositions.size(); i++)
+		for (int i = 0; i < (int)startPositions.size(); i++)
 		{
 			probabilitySystem.AddProbability(1.f);
 		}
@@ -279,24 +279,24 @@ void CSceneGame1::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium)
 	{
 		CProbabilitySystem probabilitySystem;
 		// Add probabilties
-		for (int i = 0; i < exitPositions.size(); i++)
+		for (int i = 0; i < (int)exitPositions.size(); i++)
 		{
 			probabilitySystem.AddProbability(1.f);
 		}
 
 		// Create a new door
-		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[probabilitySystem.GetARandIntProbability()], Vector3((float)tileSize, (float)tileSize), meshList[GEO_TILE_DOOR]);
 	}
 	else
 	{
 		// Create a new door
-		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[0], Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+		theDoor = new CDoor(CObjects::DOOR, 1, exitPositions[0], Vector3((float)tileSize, (float)tileSize), meshList[GEO_TILE_DOOR]);
 	}
 
 	// Blockers
-	for (int i = 0; i < blockerPositions.size(); i++)
+	for (int i = 0; i < (int)blockerPositions.size(); i++)
 	{
-		theBlockers.push_back(new CAI_Idling(CObjects::AI, Vector3(blockerPositions[i].x, blockerPositions[i].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILEENEMY_FRAME0], CAI_Idling::MOVINGAROUND));
+		theBlockers.push_back(new CAI_Idling(CObjects::AI, Vector3(blockerPositions[i].x, blockerPositions[i].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILEENEMY_FRAME0], CAI_Idling::MOVINGAROUND));
 		theBlockers.back()->AddWaypoint(blockerPositions[i]);
 		theBlockers.back()->AddWaypoint(blockerWaypointPositions[i]);
 		theBlockers.back()->ChooseWhetherToIdling();
@@ -314,78 +314,78 @@ void CSceneGame1::InitUI()
 	UIManager = new UISystem();
 
 	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 	UIManager->addFeature(AlphaQuad);
 
 	Image* WinScreen;
-	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height + 200.f), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManager->addFeature(WinScreen);
 
 	Image* LoseScreen;
-	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height + 200.f), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f));
 	UIManager->addFeature(LoseScreen);
 
 	Image* TutScreen;
-	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height + 200.f), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f));
 	UIManager->addFeature(TutScreen);
 
 	Image* TutLoseScreen;
-	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height + 200.f), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f));
 	UIManager->addFeature(TutLoseScreen);
 
 	Button* ReturnToHubButton;
-	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -200.f), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f));
 	UIManager->addFeature(ReturnToHubButton);
 
 	// Instructions for Tutorial
 	if (level == CDifficultySystem::TUTORIAL)
 	{
 		// Scale the Alpha quad first
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
 
 		// Instruction Header
 		Image* Instruction_Header;
-		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.3f), Vector3(sceneManager2D.m_window_width * 0.3f, sceneManager2D.m_window_height * 0.125f));
 		UIManager->addFeature(Instruction_Header);
 		// Move the Instruction Header second
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.9f), 5.0f, UIAnimation::TRANSLATION);
 		// Instruction Background
 		Image* Instruction_Background;
-		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3(0, 0, 0));
 		UIManager->addFeature(Instruction_Background);
 		// Scale the background third
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675f, sceneManager2D.m_window_height * 0.675f), 5.0f, UIAnimation::SCALING);
 
 		// Next Button
 		Button* Next_Button;
-		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.1f, 0), Vector3());
 		UIManager->addFeature(Next_Button);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1f, sceneManager2D.m_window_height * 0.1f), 5.0f, UIAnimation::SCALING);
 		
 		numOfInstructionsLeft = 5;
 		
 		// Move around
 		Image* Instrution_Move_Around;
-		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 		UIManager->addFeature(Instrution_Move_Around);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f , Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f , Vector3(sceneManager2D.m_window_width * 0.65f, sceneManager2D.m_window_height * 0.65f), 5.0f, UIAnimation::SCALING);
 		// Timer
 		Image* Instrution_Timer;
-		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 		UIManager->addFeature(Instrution_Timer);
 		// Exit
 		Image* Instrution_Exit;
-		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 		UIManager->addFeature(Instrution_Exit);
 		// Blocker
 		Image* Instrution_Blocker;
-		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 		UIManager->addFeature(Instrution_Blocker);
 		// Condition
 		Image* Instrution_Condition;
-		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3());
 		UIManager->addFeature(Instrution_Condition);
 	}
 }
@@ -402,7 +402,7 @@ void CSceneGame1::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1.f, 0.8f, 0.8f));
 	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
@@ -512,29 +512,29 @@ void CSceneGame1::Update(double dt)
 		Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 		// Update the hero
 		if (Application::IsKeyPressed('W'))
-			this->theHero->MoveUpDown(true, dt, m_cMap);
+			this->theHero->MoveUpDown(true, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('S'))
-			this->theHero->MoveUpDown(false, dt, m_cMap);
+			this->theHero->MoveUpDown(false, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('A'))
-			this->theHero->MoveLeftRight(true, dt, m_cMap);
+			this->theHero->MoveLeftRight(true, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('D'))
-			this->theHero->MoveLeftRight(false, dt, m_cMap);
+			this->theHero->MoveLeftRight(false, (float)dt, m_cMap);
 		// Update Hero animation counter if hero moved
 		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 		{
-			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * (float)m_cMap->GetTileSize() * (float)dt * theHero->GetAnimationSpeed());
 			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
-				theHero->SetAnimationCounter(1);
+				theHero->SetAnimationCounter(1.f);
 		}
 		else
 		{
 			theHero->SetAnimationCounter(0);
 		}
-		theHero->HeroUpdate(m_cMap, dt);
+		theHero->HeroUpdate(m_cMap, (float)dt);
 
 
 		// Dialogues tiles
-		for (int i = 0; i < dialogueTiles.size(); i++)
+		for (int i = 0; i < (int)dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 			{
@@ -568,23 +568,23 @@ void CSceneGame1::Update(double dt)
 			}
 		}
 		// Update NPCs
-		for (int i = 0; i < theBlockers.size(); i++)
+		for (int i = 0; i < (int)theBlockers.size(); i++)
 		{
 			// Before Check if the Hero collided with the NPCs
 			if (theBlockers[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 			{
 				theHero->setPosition(prevHeroPos);
-				theHero->ConstrainHero((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(),	dt, m_cMap);
+				theHero->ConstrainHero((int)((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize()), (int)((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize()), (int)((m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize()), int((m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize()), (float)dt, m_cMap);
 			}
 
 			// Update those NPCs that are movable
 			if (theBlockers[i]->GetAI_Type() == CAI_Idling::MOVINGAROUND)
 			{
-				theBlockers[i]->Update(dt, theHero, m_cMap);
+				theBlockers[i]->Update((float)dt, theHero, m_cMap);
 			}
 		}
 		// Timer
-		timer -= dt;
+		timer -= (float)dt;
 		if (timer <= 0.0f)
 		{
 			timer = 0.0f;
@@ -599,7 +599,7 @@ void CSceneGame1::Update(double dt)
 		Vector3 theNewHeroPosition(theOldHeroPosition);
 		Vector3 theTargetPosition(theDoor->getPositionX(), theDoor->getPositionY(), 0);
 
-		theNewHeroPosition += (theTargetPosition - theNewHeroPosition).Normalized() * theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt;
+		theNewHeroPosition += (theTargetPosition - theNewHeroPosition).Normalized() * theHero->GetMovementSpeed() * (float)m_cMap->GetTileSize() * (float)dt;
 
 		if ((theOldHeroPosition - theTargetPosition).Length()  > (theOldHeroPosition - theNewHeroPosition).Length())
 		{
@@ -607,7 +607,7 @@ void CSceneGame1::Update(double dt)
 			theHero->setPositionY(theNewHeroPosition.y);
 
 			// Animation
-			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * (float)dt * theHero->GetAnimationSpeed());
 			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
 				theHero->SetAnimationCounter(1);
 		}
@@ -640,7 +640,7 @@ void CSceneGame1::Update(double dt)
 
 void CSceneGame1::UpdateUI(double dt)
 {
-	UIManager->Update(dt);
+	UIManager->Update((float)dt);
 }
 
 /********************************************************************************
@@ -674,7 +674,7 @@ void CSceneGame1::Render()
 
 	sceneManager2D.modelStack.PushMatrix();
 
-	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	sceneManager2D.modelStack.Translate((float)-theHero->GetMapOffset_x(), (float)(theHero->GetMapOffset_y() - m_cMap->GetTileSize()), 0);
 
 	//sceneManager2D.RenderBackground();
 
@@ -723,32 +723,32 @@ void CSceneGame1::RenderGUI()
 	// Jellybean
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize()));
 
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5f, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3.f, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5f);
 	ss.str(std::string());
 	ss.precision(3);
 	ss << timer;
 	if (timer > 10.f)
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.2, 0.2, 0.2), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0.2f, 0.2f, 0.2f), (float)m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3.f, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5f);
 	else
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 0, 0), (float)m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3.f, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5f);
 
 	switch (currentState)
 	{
 		case PLAYING:
 		{
-			for (int i = 0; i < dialogueTiles.size(); i++)
+			for (int i = 0; i < (int)dialogueTiles.size(); i++)
 			{
 				if (dialogueTiles[i]->getActive())
 				{
 					// Dialogue box
-					sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.5, m_cMap->GetTileSize() * 0.5);
+					sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), (int)(sceneManager2D.m_window_width * 0.5), (int)(m_cMap->GetTileSize() * 0.5));
 
 					// Text
-					int textSize = m_cMap->GetTileSize() * 0.5;
-					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+					float textSize = m_cMap->GetTileSize() * 0.5f;
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5f);
 					break;
 				}
 			}
@@ -782,14 +782,14 @@ void CSceneGame1::RenderGUI()
 		{
 		case COMPLETED:
 		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28);
+			float textSize = (float)m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195f, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28f);
 		}
 		break;
 		case TIME_UP:
 		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28);
+			float textSize = (float)m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195f, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28f);
 		}
 		break;
 		}
@@ -842,22 +842,22 @@ void CSceneGame1::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY(), 0.0f, true);
 	}
 		break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	}
@@ -869,12 +869,12 @@ Render the AIs. This is a private function for use in this class only
 void CSceneGame1::RenderAIs()
 {
 	// Render the Blockers
-	for (int i = 0; i < theBlockers.size(); i++)
+	for (int i = 0; i < (int)theBlockers.size(); i++)
 	{
 		if (theBlockers[i])
 		{
 			if ((theBlockers[i]->getPosition() - theHero->getPosition()).Length() <= sceneManager2D.m_window_width)
-				sceneManager2D.Render2DMesh(theBlockers[i]->getMesh(), false, theBlockers[i]->getScale().x, theBlockers[i]->getScale().y, theBlockers[i]->getPositionX(), theBlockers[i]->getPositionY());
+				sceneManager2D.Render2DMesh(theBlockers[i]->getMesh(), false, (int)theBlockers[i]->getScale().x, (int)theBlockers[i]->getScale().y, (int)theBlockers[i]->getPositionX(), (int)theBlockers[i]->getPositionY());
 		}
 	}
 }
@@ -885,13 +885,13 @@ Render the AIs. This is a private function for use in this class only
 void CSceneGame1::RenderObjects()
 {
 	// Door
-	sceneManager2D.Render2DMesh(theDoor->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theDoor->getPositionX(), theDoor->getPositionY());
+	sceneManager2D.Render2DMesh(theDoor->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theDoor->getPositionX(), (int)theDoor->getPositionY());
 }
 
 void CSceneGame1::RenderWaypoints()
 {
-	for (int i = 0; i < temp.size(); i++)
+	for (int i = 0; i < (int)temp.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x, temp.at(i).y);
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)temp.at(i).x, (int)temp.at(i).y);
 	}
 }
