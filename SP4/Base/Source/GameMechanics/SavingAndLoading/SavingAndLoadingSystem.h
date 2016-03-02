@@ -26,6 +26,8 @@ public:
 	CGameInfo* GetCurrentGameInfo();
 	// Get a specific GameInfo
 	CGameInfo* GetGameInfo(int index);
+	// Get Current Index
+	int GetCurrentIndex();
 
 private:
 	// Game Info

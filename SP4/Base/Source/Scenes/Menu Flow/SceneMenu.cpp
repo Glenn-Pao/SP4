@@ -10,10 +10,16 @@
 #include "..\..\Base\Source\Strategy_Kill.h"
 
 CSceneMenu::CSceneMenu()
+	: currentState(SELECTING)
+	, UI_Speed(0.0f)
+	, currentDataSelected(0)
 {
 }
 
 CSceneMenu::CSceneMenu(const int m_window_width, const int m_window_height)
+	: currentState(SELECTING)
+	, UI_Speed(0.0f)
+	, currentDataSelected(0)
 {
 	sceneManager2D.m_window_width = m_window_width;
 	sceneManager2D.m_window_height = m_window_height;
@@ -26,6 +32,7 @@ CSceneMenu::~CSceneMenu()
 
 void CSceneMenu::Init(int level)
 {
+	UI_Speed = 20.f;
 	// Init the base scene
 	sceneManager2D.Init(level);
 
@@ -91,6 +98,25 @@ void CSceneMenu::Init(int level)
 
 	meshList[SETTINGS_BUTTON_DOWN] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
 	meshList[SETTINGS_BUTTON_DOWN]->textureID = LoadTGA("Image//SettingsIconPressed.tga");
+
+	// Confirmation
+	// Window
+	meshList[GEO_CONFIRMATION_WINDOW] = MeshBuilder::GenerateQuad("GEO_CONFIRMATION_WINDOW", Color(1, 1, 1), 1);
+	meshList[GEO_CONFIRMATION_WINDOW]->textureID = LoadTGA("Image//UI/New_Data_Confirmation_Window.tga");
+	// Yes
+	meshList[GEO_YES_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_UP]->textureID = LoadTGA("Image//UI/Yes_Button.tga");
+	meshList[GEO_YES_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_YES_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_YES_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Yes_Button_Pressed.tga");
+	// No
+	meshList[GEO_NO_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_UP", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_UP]->textureID = LoadTGA("Image//UI/No_Button.tga");
+	meshList[GEO_NO_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_NO_BUTTON_DOWN", Color(1, 1, 1), 1);
+	meshList[GEO_NO_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/No_Button_Pressed.tga");
+
+	// Alpha Black Quad
+	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
+	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
 
 	choice = NONE;
 
@@ -189,11 +215,35 @@ void CSceneMenu::Init(int level)
 
 	isSettingsAnimationStarted = false;
 	TimeSinceSettingsAnimation = 0;
+
+	// Confiramtion
+	UIManagerConfirmation = new UISystem();
+
+	// AlphaQuad
+	Image* AlphaQuad;
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManagerConfirmation->addFeature(AlphaQuad);
+
+	// Confirmation Window
+	Image* ConfirmationWindow;
+	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManagerConfirmation->addFeature(ConfirmationWindow);
+
+	// Yes button
+	Button* YesButton;
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(YesButton);
+
+	// No button
+	Button* NoButton;
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(NoButton);
 }
 
 void CSceneMenu::Update(double dt)
 {
 	UIManager->Update(dt);
+	UIManagerConfirmation->Update(dt);
 	TimeSinceSettingsAnimation += dt;
 	MainMenuAnimationTimer += dt;
 
@@ -265,6 +315,32 @@ void CSceneMenu::Update(double dt)
 	}*/
 }
 
+void CSceneMenu::HideConfirmation()
+{
+	UIManagerConfirmation->InvokeAnimator()->SkipAllAnimations();
+	// Confirmation Window
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// Yes button
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// No button
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// AlphaQuad
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("AlphaQuad"), 0, Vector3(0, 0, 0), UI_Speed * 2, UIAnimation::SCALING);
+}
+
+void CSceneMenu::ShowConfirmation()
+{
+	UIManagerConfirmation->InvokeAnimator()->SkipAllAnimations();
+	// Confirmation Window
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// Yes button
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.385, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// No button
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.615, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	// AlphaQuad
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
+}
+
 /********************************************************************************
 Render this scene
 ********************************************************************************/
@@ -324,6 +400,13 @@ void CSceneMenu::Render()
 		}
 	}*/
 	UIManager->Render(sceneManager2D);
+	UIManagerConfirmation->Render(sceneManager2D);
+
+	// New Data
+	if (currentState == CONFIRMATION)
+	{
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(currentDataSelected + 1), Color(1, 1, 1), UIManagerConfirmation->FindImage("ConfirmationWindow")->getScale().y * 0.3, UIManagerConfirmation->FindImage("ConfirmationWindow")->getCurrentPos().x + UIManagerConfirmation->FindImage("ConfirmationWindow")->getScale().x * 0.195, UIManagerConfirmation->FindImage("ConfirmationWindow")->getCurrentPos().y + UIManagerConfirmation->FindImage("ConfirmationWindow")->getScale().y * 0.195);
+	}
 }
 
 /********************************************************************************

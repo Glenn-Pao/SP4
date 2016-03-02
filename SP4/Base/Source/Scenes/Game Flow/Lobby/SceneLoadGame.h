@@ -82,6 +82,8 @@ public:
 
 	void HideConfirmation();
 	void ShowConfirmation();
+	void HideDeleteConfirmation();
+	void ShowDeleteConfirmation();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

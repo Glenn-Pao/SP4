@@ -46,10 +46,10 @@ Read a new file and load the game
 bool CSavingAndLoadingSystem::LoadNewFile()
 {
 	// Check every Data
-	for (int i = 0; i < 0; i++)
+	for (int i = 0; i < Data.size(); i++)
 	{
 		// check if file is new
-		if (Data[i]->ifNew)
+		if (Data[i]->ifNew == true)
 		{
 			currentIndex = i;
 			return true;
@@ -96,4 +96,11 @@ Get a specific GameInfo
 CGameInfo* CSavingAndLoadingSystem::GetGameInfo(int index)
 {
 	return Data[index];
+}
+/********************************************************************************
+Get Current Index
+********************************************************************************/
+int CSavingAndLoadingSystem::GetCurrentIndex()
+{
+	return currentIndex;
 }

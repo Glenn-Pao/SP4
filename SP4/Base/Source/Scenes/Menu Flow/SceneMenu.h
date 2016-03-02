@@ -14,6 +14,19 @@ class CSceneMenu : public Scene
 		START_BUTTON_UP,
 		START_BUTTON_DOWN,
 
+		// CONFIRMATION
+		GEO_CONFIRMATION_WINDOW,
+		GEO_CONFIRMATION_DELETE_WINDOW,
+
+		GEO_YES_BUTTON_UP,
+		GEO_YES_BUTTON_DOWN,
+
+		GEO_NO_BUTTON_UP,
+		GEO_NO_BUTTON_DOWN,
+
+		// Alpha Black Quad
+		GEO_ALPHA_BLACK_QUAD,
+
 		LOAD_BUTTON_UP,
 		LOAD_BUTTON_DOWN,
 
@@ -48,6 +61,13 @@ public:
 	virtual void Render();
 	virtual void Exit();
 
+	enum STATE
+	{
+		SELECTING,
+		CONFIRMATION
+	};
+	int currentState;
+
 	enum CHOICE
 	{
 		NONE,
@@ -64,6 +84,10 @@ public:
 	UISystem* UIManager;
 	UISystem* UIInstructionPage1;
 	UISystem* UIInstructionPage2;
+	UISystem* UIManagerConfirmation;
+	void HideConfirmation();
+	void ShowConfirmation();
+	int currentDataSelected;
 
 	CSceneManager2D sceneManager2D;
 
@@ -74,6 +98,8 @@ public:
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];
+
+	float UI_Speed;
 };
 
 #endif

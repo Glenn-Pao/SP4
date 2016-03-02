@@ -4,6 +4,7 @@ using namespace std;
 #include "../Master/GameStateManager.h"
 #include "menustate.h"
 #include "../Game Flow/Lobby/LoadGameSelect.h"
+#include "../Game Flow/Lobby/Hubstate.h"
 #include "playstate.h"
 #include "RankingsState.h"
 #include "OptionsState.h"
@@ -17,6 +18,17 @@ void CMenuState::Init(CGameStateManager* theGSM)
 #endif
 	scene = new CSceneMenu(800, 600);
 	scene->Init(0);
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == false)
+		{
+			break;
+		}
+		else if (i == theGSM->saveAndLoadsys->GetNumOfData() - 1)
+		{
+			scene->UIManager->FindButton("LoadGameButton")->setisLocked(true);
+		}
+	}
 }
 
 void CMenuState::Init(CGameStateManager* theGSM, const int width, const int height, int level)
@@ -27,6 +39,17 @@ void CMenuState::Init(CGameStateManager* theGSM, const int width, const int heig
 	scene = new CSceneMenu(800, 600);
 	scene->Init(level);
 	soundActive = true;
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == false)
+		{
+			break;
+		}
+		else if (i == theGSM->saveAndLoadsys->GetNumOfData() - 1)
+		{
+			scene->UIManager->FindButton("LoadGameButton")->setisLocked(true);
+		}
+	}
 }
 
 void CMenuState::Cleanup()
@@ -148,44 +171,77 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	}
 	
 	// Play
-	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
-	if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
+	switch (scene->currentState)
 	{
-	}
-	else if(scene->UIManager->FindButton("LoadGameButton")->getisHovered() == true)
-	{
-		scene->choice = CSceneMenu::PLAY;
-		if (button_Left == true)
+		case CSceneMenu::SELECTING:
 		{
-			theGSM->ChangeState(CLoadGameSelect::Instance());
+			scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 		}
-	}
-	else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
-	{
-		if (button_Left == true)
+		break;
+		case CSceneMenu::CONFIRMATION:
 		{
-			//theGSM->ChangeState(CInstructionState::Instance());
+			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
 		}
+		break;
 	}
-	else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
+	if (button_Left == true)
 	{
-		if (button_Left == true)
+		switch (scene->currentState)
 		{
-			theGSM->Quit();
-		}
-	}
-	else if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
-	{
-		if (button_Left == true)
-		{
-			if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
+			case CSceneMenu::SELECTING:
 			{
-				theGSM->sound->setActive(false);
+				if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
+				{
+					if (theGSM->saveAndLoadsys->LoadNewFile() == true)
+					{
+						scene->currentDataSelected = theGSM->saveAndLoadsys->GetCurrentIndex();
+						scene->currentState = CSceneMenu::CONFIRMATION;
+						scene->ShowConfirmation();
+					}
+				}
+				else if (scene->UIManager->FindButton("LoadGameButton")->getisHovered() == true)
+				{
+					scene->choice = CSceneMenu::PLAY;
+					theGSM->ChangeState(CLoadGameSelect::Instance());
+				}
+				else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
+				{
+					//theGSM->ChangeState(CInstructionState::Instance());
+				}
+				else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
+				{
+					theGSM->Quit();
+				}
+				else if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
+				{
+					if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
+					{
+						theGSM->sound->setActive(false);
+					}
+					else
+					{
+						theGSM->sound->setActive(true);
+					}
+				}
 			}
-			else
+			break;
+			case CSceneMenu::CONFIRMATION:
 			{
-				theGSM->sound->setActive(true);
+				// Yes Button
+				if (scene->UIManagerConfirmation->FindButton("YesButton")->getisHovered() == true)
+				{
+					theGSM->saveAndLoadsys->LoadFile(theGSM->saveAndLoadsys->GetCurrentIndex());
+					theGSM->ChangeState(CHubState::Instance());
+					return;
+				}
+				// No Button
+				if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)
+				{
+					scene->currentState = CSceneMenu::SELECTING;
+					scene->HideConfirmation();
+				}
 			}
+			break;
 		}
 	}
 	//// Time-Limit

@@ -193,7 +193,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 				{
 					scene->DataSelected = i;
 					scene->currentState = CSceneLoadGame::DELETING_CONFIRMATION;
-					scene->ShowConfirmation();
+					scene->ShowDeleteConfirmation();
 				}
 			}
 			// Back Button
@@ -246,14 +246,14 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 				}
 				scene->DataSelected = -1;
 				scene->currentState = CSceneLoadGame::SELECTING;
-				scene->HideConfirmation();
+				scene->HideDeleteConfirmation();
 			}
 			// No Button
 			if (scene->UIManagerConfirmation->FindButton("NoButton")->getisHovered() == true)
 			{
 				scene->DataSelected = -1;
 				scene->currentState = CSceneLoadGame::SELECTING;
-				scene->HideConfirmation();
+				scene->HideDeleteConfirmation();
 			}
 		}
 		break;
