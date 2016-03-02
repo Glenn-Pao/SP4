@@ -97,7 +97,7 @@ private:
 	string scriptWrong, scriptCorrect, scriptFinished, scriptExit;
 
 	float fps;		//debugging frames
-	Vector3 slot;
+	Vector3 slot, slot2;
 
 	// UIs
 	void InitUI();

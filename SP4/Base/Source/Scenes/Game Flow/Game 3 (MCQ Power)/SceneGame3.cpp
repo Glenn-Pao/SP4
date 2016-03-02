@@ -318,6 +318,7 @@ void CSceneGame3::Init(int level)
 		theAnswers.back()->setMesh(meshList[GEO_TILE_ANS]);
 	}
 	slot.Set(sceneManager2D.m_window_width * 0.77, sceneManager2D.m_window_width * 0.31, 0);
+	slot2.Set(sceneManager2D.m_window_width * 0.77, sceneManager2D.m_window_width * 0.16, 0);
 	//sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
 	InitUI();
 }
@@ -605,13 +606,21 @@ void CSceneGame3::Update(double dt)
 							theAnswers[i]->setPickup(true);
 							tempID = theAnswers[i]->getID();
 						}
-						//if there is an item you can pick up but the tempID isnt the same as the one currently on hand
-						else if (tempID != theAnswers[i]->getID())
-						{
-							theAnswers[tempID]->setPickup(false);		//drop the item
-							theAnswers[i]->setPickup(true);				//replace the item
-							tempID = theAnswers[i]->getID();
-						}
+					}
+				}
+			}
+			if (Application::IsKeyPressed('Q') && !press)
+			{
+				//this is assumed to be true when the player already has an answer picked up.
+				//this should allow him to pick up the alternate answer
+				if (theAnswers[i]->getActive() && tempID != -1)
+				{
+					//if there is an item you can pick up but the tempID isnt the same as the one currently on hand
+					if (tempID != theAnswers[i]->getID())
+					{
+						theAnswers[tempID]->setPickup(false);		//drop the item
+						theAnswers[i]->setPickup(true);				//replace the item
+						tempID = theAnswers[i]->getID();
 					}
 				}
 			}
@@ -929,6 +938,13 @@ void CSceneGame3::RenderGUI()
 
 					//as long as an alternate answer is active nearby, render it
 					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+
+					sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+					std::ostringstream ss;
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+					ss.str(std::string());
+					ss << "F";
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), m_cMap->GetTileSize(), slot2.x, slot2.y);
 				}
 				else if (tempID == theAnswers[i]->getID())
 				{
@@ -947,20 +963,34 @@ void CSceneGame3::RenderGUI()
 						sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_OPTION], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
 						//as long as an alternate answer is active nearby, render it
 						sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+
+						sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+						std::ostringstream ss;
+						sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+						ss.str(std::string());
+						ss << "Q";
+						sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), m_cMap->GetTileSize(), slot2.x, slot2.y);
 					}
 
 				}
 				else if (tempID != theAnswers[i]->getID())
 				{
-					// Dialogue box
+					//Your answer
 					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_TEMPLATE], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
 					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[tempID]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.4);
 
-					// Dialogue box
+					// Possible answer
 					sceneManager2D.Render2DMesh(meshList[GEO_ANSWER_OPTION], false, sceneManager2D.m_window_width * 0.7, m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
 
 					//as long as an alternate answer is active nearby, render it
 					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theAnswers[i]->getDialogue(), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height * 0.2);
+
+					sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+					std::ostringstream ss;
+					sceneManager2D.Render2DMesh(meshList[GEO_TILE_ANS_GUI], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+					ss.str(std::string());
+					ss << "Q";
+					sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), m_cMap->GetTileSize(), slot2.x, slot2.y);
 				}
 				break;
 			}
