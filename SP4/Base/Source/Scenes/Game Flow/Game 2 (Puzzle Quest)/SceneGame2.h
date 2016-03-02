@@ -36,6 +36,7 @@ public:
 
 	enum STATE
 	{
+		PREPARING,
 		PLAYING,
 		COMPLETED,
 		TIME_UP,
@@ -77,6 +78,8 @@ public:
 	//UISystem* UIManagerConfirmation;
 
 	CSceneManager2D sceneManager2D;
+
+	int numOfInstructionsLeft;
 private:
 	void InitMeshes();
 	// Handle to the tilemaps

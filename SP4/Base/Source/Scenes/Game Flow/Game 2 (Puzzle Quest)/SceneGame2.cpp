@@ -68,6 +68,7 @@ void CSceneGame2::Init(int level)
 	{
 	case 0:
 	{
+		currentState = PREPARING;
 		// Initialise and load the tile map
 		m_cMap = new CMap();
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 18 * tileSize, 25 * tileSize, tileSize);
@@ -223,6 +224,53 @@ void CSceneGame2::InitUI()
 	Image* WarningR;
 	WarningR = new Image("WarningR", meshList[GEO_WARNING], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
 	UIManager->addFeature(WarningR);
+
+	// Instructions for Tutorial
+	if (level == 0)
+	{
+		// Scale the Alpha quad first
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+
+		// Instruction Header
+		Image* Instruction_Header;
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		UIManager->addFeature(Instruction_Header);
+		// Move the Instruction Header second
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		
+		// Instruction Background
+		Image* Instruction_Background;
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		UIManager->addFeature(Instruction_Background);
+		// Scale the background third
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+
+		// Next Button
+		Button* Next_Button;
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		UIManager->addFeature(Next_Button);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
+
+		numOfInstructionsLeft = 3;
+
+		// Instructions pt 1
+		Image* INSTRUCTIONS1;
+		INSTRUCTIONS1 = new Image("INSTRUCTIONS1", meshList[GEO_INSTRUCTION1_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(INSTRUCTIONS1);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("INSTRUCTIONS1"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		
+		// Instructions pt 1
+		Image* INSTRUCTIONS2;
+		INSTRUCTIONS2 = new Image("INSTRUCTIONS2", meshList[GEO_INSTRUCTION2_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(INSTRUCTIONS2);
+		// Instructions pt 1
+		Image* INSTRUCTIONS3;
+		INSTRUCTIONS3 = new Image("INSTRUCTIONS3", meshList[GEO_INSTRUCTION3_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		UIManager->addFeature(INSTRUCTIONS3);
+		
+	}
 }
 
 void CSceneGame2::InitTutorial()
@@ -461,7 +509,9 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_PURPLE_DOOR]->textureID = LoadTGA("Image//Tile/tile25_PurpleDoor.tga");
 	
 	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
-	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
+	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
+
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
 
 	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
@@ -525,6 +575,25 @@ void CSceneGame2::InitMeshes()
 
 	meshList[GEO_WARNING] = MeshBuilder::GenerateQuad("GEO_WARNING", Color(1, 1, 1), 1);
 	meshList[GEO_WARNING]->textureID = LoadTGA("Image//UI/Half_Alpha_Red.tga");
+
+	meshList[GEO_INSTRUCTION1_GAME2] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION1_GAME2", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION1_GAME2]->textureID = LoadTGA("Image//Game2/Instructions1.tga");
+
+	meshList[GEO_INSTRUCTION2_GAME2] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION2_GAME2", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION2_GAME2]->textureID = LoadTGA("Image//Game2/Instructions2.tga");
+
+	meshList[GEO_INSTRUCTION3_GAME2] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION3_GAME2", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION3_GAME2]->textureID = LoadTGA("Image//Game2/Instructions3.tga");
+
+
+	meshList[GEO_INSTRUCTION_HEADER] = MeshBuilder::GenerateQuad("GEO_INSTRUCTION_HEADER", Color(1, 1, 1), 1);
+	meshList[GEO_INSTRUCTION_HEADER]->textureID = LoadTGA("Image//Game1/Instruction_Header.tga");
+
+	meshList[GEO_UPARROW_BUTTON_UP] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_UP", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_UP]->textureID = LoadTGA("Image//UI/Right_Button.tga");
+	meshList[GEO_UPARROW_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_UPARROW_BUTTON_DOWN", Color(0, 0, 0), 1.f);
+	meshList[GEO_UPARROW_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Right_Button_Pressed.tga");
+
 }
 
 void CSceneGame2::Update(double dt)
@@ -1470,7 +1539,7 @@ void CSceneGame2::RenderGUI()
 		for (int i = 0; i < lives; i++)
 		{
 			// Lives left
-			sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + i*(m_cMap->GetTileSize()), sceneManager2D.m_window_height - (m_cMap->GetTileSize()));
+			sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + i*(m_cMap->GetTileSize()), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 2));
 		}
 
 		for (int i = 0; i < dialogueTiles.size(); i++)
@@ -1489,7 +1558,7 @@ void CSceneGame2::RenderGUI()
 	}
 		break;
 	
-	case WIN: case LOSE:
+	case WIN: case LOSE: case PREPARING:
 		UIManager->Render(sceneManager2D);
 		break;
 
