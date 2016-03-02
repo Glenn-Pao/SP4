@@ -7,7 +7,7 @@ ifNew = 0
 heroPositionX = 691
 heroPositionY = 157.674
 heroAnimationDir = 2
-noOfJellybeans = 915
+noOfJellybeans = 897
 heroMapOffsetX = 0
 heroMapOffsetY = 50
 

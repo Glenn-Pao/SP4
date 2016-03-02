@@ -219,7 +219,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		MissingCardTimer = 0;
 		ScoreToBeat = 40;
 		Score = 0;
-		Timer = 80;
+		Timer = 60;
 
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(175, 300, 1), Vector3(80, 0, 0));
@@ -256,7 +256,7 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	{
 		//GamePlay Variables
 		MissingCardTimer = -2;
-		ScoreToBeat = 50;
+		ScoreToBeat = 80;
 		Score = 0;
 		Timer = 120;
 

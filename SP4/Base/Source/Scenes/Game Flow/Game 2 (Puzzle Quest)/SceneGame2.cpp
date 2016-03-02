@@ -165,16 +165,22 @@ void CSceneGame2::Init(int level)
 	prevHeroPos.SetZero();
 	
 	timer = 0;
-	cooldownTimer = 0;
-	catchcooldown = false;
-	showTextBlue = showTextYellow = showTextGreen = showTextRed = showTextOrange = showTextPurple = "";
+	cooldownTimer = livesCDTimer = 0;
+	catchcooldown = livescooldown = false;
+	
 	TRightS = TLeftS = TRightM = TLeftM = TRightB = TLeftB = 0;
 
-	slot1.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
-	slot2.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
+	slot1.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
+	slot2.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
 	slot3.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
 	slot4.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 11), 0);
-	
+	slot5.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
+	slot6.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
+
+	lives = 3;
+	UIWarningScale = scaleUP = false;
+
+
 	InitUI();
 }
 
@@ -214,6 +220,9 @@ void CSceneGame2::InitUI()
 	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
 	UIManager->addFeature(ReturnToHubButton);
 
+	Image* WarningR;
+	WarningR = new Image("WarningR", meshList[GEO_WARNING], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManager->addFeature(WarningR);
 }
 
 void CSceneGame2::InitTutorial()
@@ -457,6 +466,9 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
 
+	meshList[GEO_BACKFADEON] = MeshBuilder::Generate2DMesh("GEO_BACKFADEON", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_BACKFADEON]->textureID = LoadTGA("Image//UI BackFadeOn.tga");
+
 	// Hero
 	// Side
 	for (int i = 0; i < CPlayerInfo::NUM_GEOMETRY_SIDE; i++)
@@ -488,6 +500,8 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_JELLYBEAN] = MeshBuilder::Generate2DMesh("GEO_JELLYBEAN", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_JELLYBEAN]->textureID = LoadTGA("Image//jellybean.tga");
 
+	meshList[GEO_HEART] = MeshBuilder::Generate2DMesh("GEO_HEART", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_HEART]->textureID = LoadTGA("Image//heart.tga");
 
 	// WIN
 	// Window
@@ -508,6 +522,9 @@ void CSceneGame2::InitMeshes()
 	// Alpha Black Quad
 	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
 	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
+
+	meshList[GEO_WARNING] = MeshBuilder::GenerateQuad("GEO_WARNING", Color(1, 1, 1), 1);
+	meshList[GEO_WARNING]->textureID = LoadTGA("Image//UI/Half_Alpha_Red.tga");
 }
 
 void CSceneGame2::Update(double dt)
@@ -559,7 +576,7 @@ void CSceneGame2::Update(double dt)
 				castedOrange = true;
 		}
 
-		Colours = ColoursSet.size();
+		Colours = ColoursThePlayerHas.size();
 
 
 		if (castedBlue || castedYellow || castedGreen || castedRed || castedOrange || castedPurple)
@@ -663,6 +680,20 @@ void CSceneGame2::Update(double dt)
 void CSceneGame2::UpdateUI(double dt)
 {
 	UIManager->Update(dt);
+
+	if (currentState == PLAYING && livescooldown && !UIWarningScale)
+	{
+		UIWarningScale = true;
+		UIManager->InvokeAnimator()->SkipAllAnimations();
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("WarningR"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 1), 10, 2);
+	}
+	
+	else if (currentState == PLAYING && !livescooldown && UIWarningScale)
+	{
+		UIWarningScale = false;
+		UIManager->InvokeAnimator()->SkipAllAnimations();
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("WarningR"), 0, Vector3(1, 1, 1), 10, 2);
+	}
 }
 
 void CSceneGame2::UpdateTutorial(double dt)
@@ -726,29 +757,40 @@ void CSceneGame2::UpdateTutorial(double dt)
 	//Loop that settles colours
 	for (int i = 0; i < ColoursSet.size(); i++)
 	{
-		if (ColoursSet[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+		if (ColoursSet[i]->getActive() == true)
 		{
-			if (ColoursSet[i]->getColour() == "BLUE")
-				hasBlue = true;
-			if (ColoursSet[i]->getColour() == "YELLOW")
-				hasYellow = true;
-			if (ColoursSet[i]->getColour() == "RED")
-				hasRed = true;
-			if (ColoursSet[i]->getColour() == "PURPLE")
-				hasPurple = true;
+			if (ColoursSet[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
+			{
+				if (ColoursSet[i]->getColour() == "BLUE")
+					hasBlue = true;
+				if (ColoursSet[i]->getColour() == "YELLOW")
+					hasYellow = true;
+				if (ColoursSet[i]->getColour() == "RED")
+					hasRed = true;
+				if (ColoursSet[i]->getColour() == "PURPLE")
+					hasPurple = true;
 
-			ColoursThePlayerHas.push_back(ColoursSet[i]->getColour());
-			ColoursSet[i]->setActive(false);
+				ColoursThePlayerHas.push_back(ColoursSet[i]->getColour());
+				ColoursSet[i]->setActive(false);
+			}
 		}
 	}
-
 
 	if (endDoor->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 	{
 		currentState = WIN;
 	}
 
-	//TODO: Make a losing condition, aka lives
+	if (livescooldown)
+	{
+		livesCDTimer += 0.1f;
+		if (livesCDTimer > 20.f)
+		{
+			livescooldown = false;
+			livesCDTimer = 0;
+		}
+	}
+	
 }
 
 void CSceneGame2::UpdateLevel2(double dt)
@@ -815,6 +857,95 @@ void CSceneGame2::UpdateAI(double dt)
 	UpdateRight4PtB(dt);
 }
 
+void CSceneGame2::HandleAICollisionCheck(double dt)
+{
+	if (ColoursThePlayerHas.size() <= 0)
+	{
+		if (!livescooldown)
+		{
+			if (lives > 1)
+			{
+				lives -= 1;
+				livescooldown = true;
+			}
+			else
+				currentState = LOSE;
+		}
+	}
+
+	if (!catchcooldown)
+	{
+		if (ColoursThePlayerHas.size() <= 0)
+		{ }
+		else
+		{
+			int colourToRemove = Math::RandIntMinMax(0,ColoursThePlayerHas.size() - 1);	
+
+			for (int i = 0; i < ColoursSet.size(); i++)
+			{
+				if (ColoursSet[i]->getColour() == ColoursThePlayerHas[colourToRemove])
+				{
+					ColoursSet[i]->setActive(true);
+
+					if (ColoursSet[i]->getColour() == "BLUE")
+					{
+						if (hasBlue)
+						{
+							hasBlue = false;
+							if (castedBlue)
+								castedBlue = false;
+							else if (castedGreen)
+								castedGreen = false;
+							catchcooldown = true;
+						}
+						ColoursThePlayerHas.erase(std::find(ColoursThePlayerHas.begin(), ColoursThePlayerHas.end(), ColoursSet[i]->getColour()));
+					}
+
+					else if (ColoursSet[i]->getColour() == "YELLOW")
+					{
+						if (hasYellow)
+						{
+							hasYellow = false;
+							if (castedYellow)
+								castedYellow = false;
+							else if (castedGreen)
+								castedGreen = false;
+							catchcooldown = true;
+						}
+						ColoursThePlayerHas.erase(std::find(ColoursThePlayerHas.begin(), ColoursThePlayerHas.end(), ColoursSet[i]->getColour()));
+					}
+
+					else if (ColoursSet[i]->getColour() == "RED")
+					{
+						if (hasRed)
+						{
+							hasRed = false;
+							if (castedRed)
+								castedRed = false;
+							else if (castedOrange)
+								castedOrange = false;
+							catchcooldown = true;
+						}
+						ColoursThePlayerHas.erase(std::find(ColoursThePlayerHas.begin(), ColoursThePlayerHas.end(), ColoursSet[i]->getColour()));
+					}
+					else if (ColoursSet[i]->getColour() == "PURPLE")
+					{
+						if (hasPurple)
+						{
+							hasPurple = false;
+							if (castedPurple)
+								castedPurple = false;
+							catchcooldown = true;
+						}
+						ColoursThePlayerHas.erase(std::find(ColoursThePlayerHas.begin(), ColoursThePlayerHas.end(), ColoursSet[i]->getColour()));
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
 void CSceneGame2::UpdateRight4PtS(double dt)
 {
 	for (int i = 0; i < AIsList4ptRightS.size(); i++)
@@ -832,61 +963,7 @@ void CSceneGame2::UpdateRight4PtS(double dt)
 		}
 		if (AIsList4ptRightS[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-				//Try to use vector's end/begin
-				//To do: make a vector (change ColoursThePlayerHas) then search the vector for most recent colour added
-				//Change it to: randomise the colour to lose
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -908,59 +985,7 @@ void CSceneGame2::UpdateLeft4PtS(double dt)
 		}
 		if (AIsList4ptLeftS[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-				
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -982,61 +1007,7 @@ void CSceneGame2::UpdateRight4PtM(double dt)
 		}
 		if (AIsList4ptRightM[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-				//Try to use vector's end/begin
-				//To do: make a vector (change ColoursThePlayerHas) then search the vector for most recent colour added
-				//Change it to: randomise the colour to lose
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -1058,59 +1029,7 @@ void CSceneGame2::UpdateLeft4PtM(double dt)
 		}
 		if (AIsList4ptLeftM[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -1132,61 +1051,7 @@ void CSceneGame2::UpdateRight4PtB(double dt)
 		}
 		if (AIsList4ptRightB[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-				//Try to use vector's end/begin
-				//To do: make a vector (change ColoursThePlayerHas) then search the vector for most recent colour added
-				//Change it to: randomise the colour to lose
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -1208,59 +1073,7 @@ void CSceneGame2::UpdateLeft4PtB(double dt)
 		}
 		if (AIsList4ptLeftB[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
-			if (!catchcooldown)
-			{
-
-				int colourToRemove = rand() % Colours;
-				ColoursSet[colourToRemove]->setActive(true);
-
-				if (ColoursSet[colourToRemove]->getColour() == "BLUE")
-				{
-					if (hasBlue)
-					{
-						hasBlue = false;
-						if (castedBlue)
-							castedBlue = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "YELLOW")
-				{
-					if (hasYellow)
-					{
-						hasYellow = false;
-						if (castedYellow)
-							castedYellow = false;
-						else if (castedGreen)
-							castedGreen = false;
-						catchcooldown = true;
-					}
-				}
-
-				else if (ColoursSet[colourToRemove]->getColour() == "RED")
-				{
-					if (hasRed)
-					{
-						hasRed = false;
-						if (castedRed)
-							castedRed = false;
-						else if (castedOrange)
-							castedOrange = false;
-						catchcooldown = true;
-					}
-				}
-				else if (ColoursSet[colourToRemove]->getColour() == "PURPLE")
-				{
-					if (hasPurple)
-					{
-						hasPurple = false;
-						catchcooldown = true;
-					}
-				}
-			}
+			HandleAICollisionCheck(dt);
 		}
 	}
 }
@@ -1576,10 +1389,42 @@ void CSceneGame2::RenderGUI()
 	ss << ": " << noOfJellybeans;
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
-	sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
-	sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
-	sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
-	sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+	if (castedBlue)
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
+
+	if (castedYellow)
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+
+	if (castedRed)
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
+	
+	if (castedPurple)
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+
+	if (castedGreen)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);	
+	}
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);
+
+	if (castedOrange)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
+	}
+	else
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
+
 
 	for (int i = 0; i < ColoursSet.size(); i++)
 	{
@@ -1622,6 +1467,12 @@ void CSceneGame2::RenderGUI()
 	{
 		UIManager->Render(sceneManager2D);
 		
+		for (int i = 0; i < lives; i++)
+		{
+			// Lives left
+			sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + i*(m_cMap->GetTileSize()), sceneManager2D.m_window_height - (m_cMap->GetTileSize()));
+		}
+
 		for (int i = 0; i < dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getActive())
@@ -1648,8 +1499,11 @@ void CSceneGame2::RenderGUI()
 	{
 	case WIN:
 	{
-		int textSize = m_cMap->GetTileSize();
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.6, sceneManager2D.m_window_height * 0.47);
+		if (this->level != 0)
+		{
+			int textSize = m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, sceneManager2D.m_window_width * 0.6, sceneManager2D.m_window_height * 0.47);
+		}
 	}
 	break;
 	case LOSE:

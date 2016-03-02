@@ -65,6 +65,7 @@ public:
 	void UpdateRight4PtB(double dt);
 	void UpdateLeft4PtB(double dt);
 	void UpdateAI(double dt);
+	void HandleAICollisionCheck(double dt);
 
 	void RenderTutorial();
 	void RenderLevel2();
@@ -136,15 +137,18 @@ private:
 
 	vector<AI*> AIsList4ptRightS, AIsList4ptLeftS, AIsList4ptRightM, AIsList4ptLeftM, AIsList4ptRightB, AIsList4ptLeftB;
 
-	bool catchcooldown;
-	double cooldownTimer;
+	bool catchcooldown, livescooldown;
+	double cooldownTimer, livesCDTimer;
+
+	bool UIWarningScale, scaleUP;
 
 	int smallSquare, medSquare, bigSquare;
 	
 	double TRightS, TLeftS, TRightM, TLeftM, TRightB, TLeftB;
-	std::string showTextBlue, showTextYellow, showTextGreen, showTextRed, showTextOrange, showTextPurple;
 
-	Vector3 slot1, slot2, slot3, slot4;
+	Vector3 slot1, slot2, slot3, slot4, slot5, slot6;
+
+	int lives;
 };
 
 #endif
