@@ -21,6 +21,7 @@ CSceneGame3::CSceneGame3(const int m_window_width, const int m_window_height)
 	, timer(0)
 	, tempID(-1)
 	, feedbacktimer(0)
+	, numOfInstructionsLeft(0)
 	, press(false)
 	, feedback(false)
 	, correct(false)
@@ -190,6 +191,7 @@ void CSceneGame3::Init(int level)
 	{
 	case 0:
 	{
+		currentState = PREPARING;
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 33 * tileSize, 16 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Tutorial.csv");
 	}
@@ -356,6 +358,62 @@ void CSceneGame3::InitUI()
 	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
 	UIManager->addFeature(ReturnToHubButton);
 
+	//Instructions for Tutorial
+	if (level == 0)
+	{
+		// Scale the Alpha quad first
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+
+		// Instruction Header
+		Image* Instruction_Header;
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		UIManager->addFeature(Instruction_Header);
+		// Move the Instruction Header second
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.35, sceneManager2D.m_window_height * 0.82), 5.0f, UIAnimation::TRANSLATION);
+		// Instruction Background
+		Image* Instruction_Background;
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		UIManager->addFeature(Instruction_Background);
+		// Scale the background third
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+
+		numOfInstructionsLeft = 8;
+
+		// Lives
+		Image* Instrution_Lives;
+		Instrution_Lives = new Image("Instrution_Lives", meshList[GEO_INSTRUCTION_LIVES], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Lives);
+		// Scale the first Instruction fourth
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Lives"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		// Qn Trigger
+		Image* Instrution_Qn_Trigger;
+		Instrution_Qn_Trigger = new Image("Instrution_Qn_Trigger", meshList[GEO_INSTRUCTION_QN_TRIGGER], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Qn_Trigger);
+		// Ans Trigger
+		Image* Instrution_Ans_Trigger;
+		Instrution_Ans_Trigger = new Image("Instrution_Ans_Trigger", meshList[GEO_INSTRUCTION_ANS_TRIGGER], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Ans_Trigger);
+		// Change answer
+		Image* Instrution_ChngeAns;
+		Instrution_ChngeAns = new Image("Instrution_ChngeAns", meshList[GEO_INSTRUCTION_CHNGEANS], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_ChngeAns);
+		// Answer question
+		Image* Instrution_Ans_Qn;
+		Instrution_Ans_Qn = new Image("Instrution_Ans_Qn", meshList[GEO_INSTRUCTION_ANS_QN], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Ans_Qn);
+		// Move
+		Image* Instrution_Move;
+		Instrution_Move = new Image("Instrution_Move", meshList[GEO_INSTRUCTION_MOVE], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Move);
+		// Exit
+		Image* Instrution_Exit;
+		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Exit);
+		// Condition
+		Image* Instrution_Condition;
+		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.17, sceneManager2D.m_window_height * 0.17), Vector3(0, 0, 0));
+		UIManager->addFeature(Instrution_Condition);
+	}
 }
 
 
@@ -402,6 +460,25 @@ void CSceneGame3::InitMeshes()
 	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
 
+	//instructions panel
+	meshList[GEO_INSTRUCTION_HEADER] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_HEADER", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_HEADER]->textureID = LoadTGA("Image//Game3/Instruction_Header.tga");
+	meshList[GEO_INSTRUCTION_LIVES] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTIONS_LIVES", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_LIVES]->textureID = LoadTGA("Image//Game3/Instruction_Lives.tga");
+	meshList[GEO_INSTRUCTION_QN_TRIGGER] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_QN_TRIGGER", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_QN_TRIGGER]->textureID = LoadTGA("Image//Game3/Instruction_QnTrigger.tga");
+	meshList[GEO_INSTRUCTION_ANS_TRIGGER] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_ANS_TRIGGER", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_ANS_TRIGGER]->textureID = LoadTGA("Image//Game3/Instruction_AnsTrigger.tga");
+	meshList[GEO_INSTRUCTION_CHNGEANS] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_CHNGEANS", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_CHNGEANS]->textureID = LoadTGA("Image//Game3/Instruction_ChangeAnswer.tga");
+	meshList[GEO_INSTRUCTION_ANS_QN] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_ANS_QN", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_ANS_QN]->textureID = LoadTGA("Image//Game3/Instruction_AnsQnPrompt.tga");
+	meshList[GEO_INSTRUCTION_CONDITION] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_CONDITION", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_CONDITION]->textureID = LoadTGA("Image//Game3/Instruction_Condition.tga");
+	meshList[GEO_INSTRUCTION_MOVE] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_MOVE", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_MOVE]->textureID = LoadTGA("Image//Game3/Instruction_Move.tga");
+	meshList[GEO_INSTRUCTION_EXIT] = MeshBuilder::Generate2DMesh("GEO_INSTRUCTION_EXIT", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_INSTRUCTION_EXIT]->textureID = LoadTGA("Image//Game3/Instruction_Exit.tga");
 
 	// Hero
 	// Side
@@ -907,6 +984,11 @@ void CSceneGame3::RenderGUI()
 
 	switch (currentState)
 	{
+	case PREPARING:
+	{
+		UIManager->Render(sceneManager2D);
+	}
+		break;
 	case PLAYING:
 	{
 		UIManager->Render(sceneManager2D);

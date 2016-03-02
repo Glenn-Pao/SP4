@@ -34,6 +34,7 @@ public:
 	};
 	enum STATE
 	{
+		PREPARING,
 		PLAYING,
 		EXITING,
 		COMPLETED,
@@ -48,6 +49,7 @@ public:
 	UISystem* UIManager;
 
 	CSceneManager2D sceneManager2D;
+	int numOfInstructionsLeft;	//the number of instruction panels left
 private:
 	void InitMeshes();
 	// Handle to the tilemaps
@@ -71,15 +73,11 @@ private:
 	//Answers
 	vector<CAnswer*>theAnswers;
 
-	////door
-	//CDoor* theDoor;
-
 	//tutorial dialogues
 	vector<CObjects*> dialogueTiles;
 
 	// Dialogues scripts
 	vector<string> scriptDialogues, QnDialogue, AnsDialogue;
-
 	
 	int tileSize;						//the tile size
 	int Qcount;						//number of questions
