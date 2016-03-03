@@ -13,7 +13,7 @@
 #include "..\..\..\UsingLua.h"
 
 CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
-	: currentState(PLAYING)
+	: currentState(PRESTART)
 	, UIManagerDifficultySelection(NULL)
 	, UIManagerJellybeanSelection(NULL)
 	, UIManagerBlackQuad(NULL)
@@ -28,6 +28,9 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	, sizeOfDarkSurrounding(0)
 	, timerForEnd(0.0f)
 	, guardianCleared(false)
+	, GameoverText(NULL)
+	, speedOfGameoverText(0.f)
+	, Credit(NULL)
 {
 }
 
@@ -77,6 +80,18 @@ CSceneHub::~CSceneHub()
 			theNPCs[i] = NULL;
 		}
 	}
+	// Gameover
+	if (GameoverText)
+	{
+		delete GameoverText;
+		GameoverText = NULL;
+	}
+	// Credit
+	if (Credit)
+	{
+		delete Credit;
+		Credit = NULL;
+	}
 }
 
 void CSceneHub::Init(int level)
@@ -95,6 +110,8 @@ void CSceneHub::Init(int level)
 	speedOfDarkSurrounding = L.DoLuaFloat("speedOfScalingDarkSurrounding");
 	MinSizeOfScalingDarkSurrounding = L.DoLuaFloat("minSizeOfScalingDarkSurrounding");
 	timerForEnd = L.DoLuaFloat("timerForEnd");
+	speedOfGameoverText = L.DoLuaFloat("SpeedOfGameoverText");
+
 	// Initialise and load the tile map
 	m_cMap = new CMap();
 	m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 13 * tileSize, 16 * tileSize, tileSize);
@@ -190,6 +207,11 @@ void CSceneHub::Init(int level)
 
 	// UI
 	InitUI();
+
+	// Create Gameover Object
+	float textSize = m_cMap->GetTileSize() * 2;
+	string gameoverText = L.DoLuaString("GameoverText");
+	GameoverText = new CObjects(CObjects::DIALOGUE, true, gameoverText, Vector3(sceneManager2D.m_window_width * 0.5f - (gameoverText.size() - 2.75f) * 0.5f * textSize, -textSize * 1.1f), Vector3(), Vector3(textSize, textSize, textSize), NULL);
 }
 
 void CSceneHub::PreInit()
@@ -209,9 +231,9 @@ void CSceneHub::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_DARK_SURROUNDING] = MeshBuilder::Generate2DMesh("GEO_DARK_SURROUNDING", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_DARK_SURROUNDING] = MeshBuilder::GenerateQuad("GEO_DARK_SURROUNDING", Color(1, 1, 1), 1);
 	meshList[GEO_DARK_SURROUNDING]->textureID = LoadTGA("Image//DarkSurrounding.tga");
-	meshList[GEO_BLACK_QUAD] = MeshBuilder::Generate2DMesh("GEO_BLACK_QUAD", Color(0, 0, 0), 0, 0, 1, 1);
+	meshList[GEO_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_BLACK_QUAD", Color(0, 0, 0), 1);
 	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 0.8f, 0.8f), 0, 0, 1, 1);
 	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
@@ -500,6 +522,18 @@ void CSceneHub::Update(double dt)
 
 	switch (currentState)
 	{
+		case PRESTART:
+		{
+			if (noOfJellybeans <= 0)
+			{
+				currentState = LOSING;
+			}
+			else
+			{
+				currentState = PLAYING;
+			}
+		}
+		break;
 		case PLAYING:
 		{
 			Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
@@ -616,6 +650,20 @@ void CSceneHub::Update(double dt)
 			if (timerForEnd <= 0.0f)
 			{
 				timerForEnd = 0.0f;
+			}
+		}
+		break;
+		case LOSING:
+		{
+			float TargetPosY = sceneManager2D.m_window_height * 0.5f - GameoverText->getScaleY() * 0.5f;
+			// Move Text Up
+			GameoverText->setPositionY(GameoverText->getPositionY() + speedOfGameoverText * (float)dt);
+
+			// if reached Center
+			if (GameoverText->getPositionY() >= TargetPosY)
+			{
+				GameoverText->setPositionY(TargetPosY);
+				currentState = LOST;
 			}
 		}
 		break;
@@ -1156,14 +1204,33 @@ void CSceneHub::RenderGUI()
 		}
 	}
 
-	// Dark Surrounding
-	if (currentState == EXITING)
+	// Gameover
+	if (currentState == LOSING)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_DARK_SURROUNDING], false, (int)sizeOfDarkSurrounding, (int)sizeOfDarkSurrounding, (int)(theHero->getPositionX() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f), (int)(theHero->getPositionY() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f));
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], GameoverText->getDialogue(), Color(0, 0, 0), GameoverText->getScale().x, GameoverText->getPositionX(), GameoverText->getPositionY());
 	}
+	else if (currentState == LOST)
+	{
+		// Gameover
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], GameoverText->getDialogue(), Color(0, 0, 0), GameoverText->getScale().x, GameoverText->getPositionX(), GameoverText->getPositionY());
+
+		// Click anywhere to continue
+		int textSize = m_cMap->GetTileSize() * 0.4f;
+		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.275f, sceneManager2D.m_window_height * 0.35f);
+	}
+	// Dark Surrounding
+	else if (currentState == EXITING)
+	{
+		sceneManager2D.Render2DMesh(meshList[GEO_DARK_SURROUNDING], false, (int)sizeOfDarkSurrounding, (int)sizeOfDarkSurrounding, (int)(theHero->getPositionX() + m_cMap->GetTileSize() * 0.5), (int)(theHero->getPositionY() + m_cMap->GetTileSize() * 0.5));
+	}
+	// Credits
 	else if (currentState == EXIT)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, (int)sizeOfDarkSurrounding, (int)sizeOfDarkSurrounding, (int)(theHero->getPositionX() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f), (int)(theHero->getPositionY() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f));
+		// Black Quad
+		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, sceneManager2D.m_window_width, sceneManager2D.m_window_height, (int)(sceneManager2D.m_window_width * 0.5), (int)(sceneManager2D.m_window_height * 0.5));
+
+		// Credits Image
+		//sceneManager2D.Render2DMesh(Credit->getMesh(), false, (int)Credit->getScale().x, (int)Credit->getScale().y, (int)Credit->getPositionX(), (int)Credit->getPositionY());
 	}
 }
 

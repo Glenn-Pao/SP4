@@ -319,6 +319,11 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 	{
 		switch (scene->currentState)
 		{
+		case CSceneHub::LOST:
+		{
+			scene->currentState = CSceneHub::EXITING;
+		}
+		break;
 		case CSceneHub::DIFFICULTY_SELECTION:
 		{
 			string buttonName[4] = { "TutorialButton", "EasyButton", "MediumButton", "HardButton" };

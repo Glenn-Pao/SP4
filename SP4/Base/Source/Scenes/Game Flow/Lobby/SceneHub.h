@@ -41,6 +41,9 @@ public:
 	// State
 	enum STATE
 	{
+		PRESTART,
+		LOSING,
+		LOST,
 		PLAYING,
 		INTERACTING,
 		GIVING_JELLYBEANS,
@@ -130,6 +133,10 @@ private:
 	float sizeOfDarkSurrounding;
 	float speedOfDarkSurrounding;
 	float MinSizeOfScalingDarkSurrounding;
+
+	CObjects* GameoverText;
+	float speedOfGameoverText;
+	CObjects* Credit;
 };
 
 #endif
