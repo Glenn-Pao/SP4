@@ -1190,6 +1190,7 @@ void CSceneHub::ReadData(CGameInfo* Data)
 }
 void CSceneHub::StoreData(CGameInfo* Data)
 {
+	Data->ifNew = false;
 	Data->heroPosition.x = theHero->getPositionX();
 	Data->heroPosition.y = theHero->getPositionY();
 	Data->heroAnimationDir = theHero->GetAnimationDirection();

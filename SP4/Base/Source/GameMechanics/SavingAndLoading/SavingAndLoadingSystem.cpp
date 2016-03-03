@@ -1,6 +1,7 @@
 #include "SavingAndLoadingSystem.h"
 
 CSavingAndLoadingSystem::CSavingAndLoadingSystem(void)
+	: to_save(false)
 {
 }
 

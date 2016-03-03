@@ -102,10 +102,6 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const unsigned char ke
 		}
 	} while (m_iUserChoice == -1);*/
 #endif
-	if (key == ' ')
-	{
-		theGSM->saveAndLoadsys->SaveToFile();
-	}
 }
 
 void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, const double mouse_y,
@@ -224,6 +220,7 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 				{
 					//save the progress
 					theGSM->saveAndLoadsys->SaveToFile();
+					theGSM->saveAndLoadsys->to_save = true;
 					theGSM->PopState();
 					cout << "Saved!" << endl;
 					return;

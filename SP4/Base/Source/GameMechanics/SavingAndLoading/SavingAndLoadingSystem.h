@@ -29,6 +29,7 @@ public:
 	// Get Current Index
 	int GetCurrentIndex();
 
+	bool to_save;
 private:
 	// Game Info
 	std::vector<CGameInfo*> Data;

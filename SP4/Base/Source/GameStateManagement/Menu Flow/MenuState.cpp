@@ -18,6 +18,19 @@ void CMenuState::Init(CGameStateManager* theGSM)
 #endif
 	scene = new CSceneMenu(800, 600);
 	scene->Init(0);
+	// Check if all data are full 
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		{
+			break;
+		}
+		else if (i == theGSM->saveAndLoadsys->GetNumOfData() - 1)
+		{
+			scene->UIManager->FindButton("StartGameButton")->setisLocked(true);
+		}
+	}
+	// Check any old data
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
 		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == false)
@@ -39,6 +52,19 @@ void CMenuState::Init(CGameStateManager* theGSM, const int width, const int heig
 	scene = new CSceneMenu(800, 600);
 	scene->Init(level);
 	soundActive = true;
+	// Check if all data are full 
+	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
+	{
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		{
+			break;
+		}
+		else if (i == theGSM->saveAndLoadsys->GetNumOfData() - 1)
+		{
+			scene->UIManager->FindButton("StartGameButton")->setisLocked(true);
+		}
+	}
+	// Check any old data
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
 		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == false)
