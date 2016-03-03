@@ -189,26 +189,26 @@ void CSceneGame3::Init(int level)
 
 	switch (level)
 	{
-	case 0:
+	case CDifficultySystem::TUTORIAL:
 	{
 		currentState = PREPARING;
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 33 * tileSize, 16 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Tutorial.csv");
 	}
 		break;
-	case 1:
+	case CDifficultySystem::EASY:
 	{
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 16 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Easy.csv");
 	}
 		break;
-	case 2:
+	case CDifficultySystem::MEDIUM:
 	{
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 31 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Medium.csv");
 	}
 		break;
-	case 3:
+	case CDifficultySystem::HARD:
 	{
 		m_cMap->Init(sceneManager2D.m_window_height, sceneManager2D.m_window_width, 12, 16, 61 * tileSize, 31 * tileSize, tileSize);
 		m_cMap->LoadMap("Image//Maps//Game 3/Hard.csv");
@@ -358,7 +358,7 @@ void CSceneGame3::InitUI()
 	UIManager->addFeature(ReturnToHubButton);
 
 	//Instructions for Tutorial
-	if (level == 0)
+	if (level == CDifficultySystem::TUTORIAL)
 	{
 		// Scale the Alpha quad first
 		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
@@ -997,7 +997,6 @@ void CSceneGame3::RenderGUI()
 	{
 	case PLAYING:
 	{
-		UIManager->Render(sceneManager2D);
 		for (unsigned i = 0; i < dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getActive())
@@ -1124,24 +1123,14 @@ void CSceneGame3::RenderGUI()
 				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptWrong, Color(1, 1, 1), (float)textSize, 5.f, (float)(textSize * 0.5));
 			}
 		}
-
-		//RenderMeshIn2D(meshList[GEO_WARNING_TEXT], false, 80.f, 0, -45);
 	}
 		break;
 	case COMPLETED:
-		UIManager->Render(sceneManager2D);
-		/*sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], scriptFinished, Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 4);
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "<Click to exit>", Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 5);*/
 		break;
 	case FAILED:
-	{
-		UIManager->Render(sceneManager2D);
-		/*sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "GAME OVER..", Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 4);
-		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "<Click to exit>", Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width * 0.15, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 5);*/
-	}
 		break;
 	}
-
+	UIManager->Render(sceneManager2D);
 	if (level != CDifficultySystem::TUTORIAL)
 	{
 		switch (currentState)
