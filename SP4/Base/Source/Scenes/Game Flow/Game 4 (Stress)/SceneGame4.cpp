@@ -107,8 +107,8 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 			// Hero
 			if (m_cMap->theScreenMap[i][k] == 1000 && theHero == NULL)
 			{
-				float pos_x = k*m_cMap->GetTileSize();
-				float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+				float pos_x = (float)k*m_cMap->GetTileSize();
+				float pos_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 				// Initialise the hero's position
 				theHero = new CPlayerInfo(m_cMap);
 				theHero->setPositionX(pos_x);
@@ -308,78 +308,78 @@ void SceneGame4::InitUI()
 	UIManager = new UISystem();
 
 	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), (float)0), Vector3((float)0, (float)0, (float)0));
 	UIManager->addFeature(AlphaQuad);
 
 	Image* WinScreen;
-	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height + 200), (float)0), Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.45), (float)0));
 	UIManager->addFeature(WinScreen);
 
 	Image* LoseScreen;
-	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height + 200), (float)0), Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.45), (float)0));
 	UIManager->addFeature(LoseScreen);
 
 	Image* TutScreen;
-	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height + 200), 0), Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.45), 0));
 	UIManager->addFeature(TutScreen);
 
 	Image* TutLoseScreen;
-	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height + 200), 0), Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.45), 0));
 	UIManager->addFeature(TutLoseScreen);
 
 	Button* ReturnToHubButton;
-	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3((float)(sceneManager2D.m_window_width * 0.45), -200, 0), Vector3((float)(sceneManager2D.m_window_width * 0.2), (float)(sceneManager2D.m_window_height * 0.1), 0));
 	UIManager->addFeature(ReturnToHubButton);
 
 	// Instructions for Tutorial
 	if (CurrentLevel == DifficultyLevel::TUTORIAL)
 	{
 		// Scale the Alpha quad first
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3((float)(sceneManager2D.m_window_width), (float)(sceneManager2D.m_window_height)), 5.0f, UIAnimation::SCALING);
 
 		// Instruction Header
 		Image* Instruction_Header;
-		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 1.3)), Vector3((float)(sceneManager2D.m_window_width * 0.3), (float)(sceneManager2D.m_window_height * 0.125)));
 		UIManager->addFeature(Instruction_Header);
 		// Move the Instruction Header second
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.9)), 5.0f, UIAnimation::TRANSLATION);
 		// Instruction Background
 		Image* Instruction_Background;
-		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5)), Vector3(0, 0, 0));
 		UIManager->addFeature(Instruction_Background);
 		// Scale the background third
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3((float)(sceneManager2D.m_window_width * 0.675), (float)(sceneManager2D.m_window_height * 0.675)), 5.0f, UIAnimation::SCALING);
 
 		// Next Button
 		Button* Next_Button;
-		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.1), 0), Vector3());
 		UIManager->addFeature(Next_Button);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3((float)(sceneManager2D.m_window_height * 0.1), (float)(sceneManager2D.m_window_height * 0.1), 1), 5.0f, UIAnimation::SCALING);
 
 		numOfInstructionsLeft = 5;
 
 		// Move around
 		Image* Instrution_Move_Around;
-		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Move_Around = new Image("Instrution_Move_Around", meshList[GEO_INSTRUCTION_MOVE_AROUND], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), 0), Vector3(0, 0, 0));
 		UIManager->addFeature(Instrution_Move_Around);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instrution_Move_Around"), 1.15f, Vector3((float)(sceneManager2D.m_window_width * 0.65), (float)(sceneManager2D.m_window_height * 0.65), 1), 5.0f, UIAnimation::SCALING);
 		// Timer
 		Image* Instrution_Timer;
-		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Timer = new Image("Instrution_Timer", meshList[GEO_INSTRUCTION_TIMER], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), 0), Vector3(0, 0, 0));
 		UIManager->addFeature(Instrution_Timer);
 		// Exit
 		Image* Instrution_Exit;
-		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Exit = new Image("Instrution_Exit", meshList[GEO_INSTRUCTION_EXIT], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), 0), Vector3(0, 0, 0));
 		UIManager->addFeature(Instrution_Exit);
 		// Blocker
 		Image* Instrution_Blocker;
-		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Blocker = new Image("Instrution_Blocker", meshList[GEO_INSTRUCTION_BLOCKER], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), 0), Vector3(0, 0, 0));
 		UIManager->addFeature(Instrution_Blocker);
 		// Condition
 		Image* Instrution_Condition;
-		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		Instrution_Condition = new Image("Instrution_Condition", meshList[GEO_INSTRUCTION_CONDITION], Vector3((float)(sceneManager2D.m_window_width * 0.5), (float)(sceneManager2D.m_window_height * 0.5), 0), Vector3(0, 0, 0));
 		UIManager->addFeature(Instrution_Condition);
 	}
 
@@ -397,7 +397,7 @@ void SceneGame4::InitMeshes()
 	}
 
 	// Load the ground mesh and texture
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8f, 0.8f), 1);
 	meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
@@ -510,17 +510,17 @@ void SceneGame4::UpdateHero(double dt)
 
 	// Update the hero
 	if (Application::IsKeyPressed('W'))
-		this->theHero->MoveUpDown(true, dt, m_cMap);
+		this->theHero->MoveUpDown(true, (float)dt, m_cMap);
 	if (Application::IsKeyPressed('S'))
-		this->theHero->MoveUpDown(false, dt, m_cMap);
+		this->theHero->MoveUpDown(false, (float)dt, m_cMap);
 	if (Application::IsKeyPressed('A'))
-		this->theHero->MoveLeftRight(true, dt, m_cMap);
+		this->theHero->MoveLeftRight(true, (float)dt, m_cMap);
 	if (Application::IsKeyPressed('D'))
-		this->theHero->MoveLeftRight(false, dt, m_cMap);
+		this->theHero->MoveLeftRight(false, (float)dt, m_cMap);
 
 	if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 	{
-		theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+		theHero->SetAnimationCounter((float)(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed()));
 		if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
 			theHero->SetAnimationCounter(1);
 	}
@@ -529,7 +529,7 @@ void SceneGame4::UpdateHero(double dt)
 		theHero->SetAnimationCounter(0);
 	}
 
-	theHero->HeroUpdate(m_cMap, dt);
+	theHero->HeroUpdate(m_cMap, (float)(dt));
 
 }
 
@@ -562,7 +562,7 @@ void SceneGame4::UpdateTutorialInstructions(double dt)
 	{
 		if (Application::IsKeyPressed('F') && Instructions->CheckCollision((*theHero->getBoundingBox())) == true)
 		{
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++ i)
+			for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
 				{
@@ -728,7 +728,7 @@ void SceneGame4::UpdateDecks(double dt)
 		
 
 			//Reset PatternInserted To Default Stress Cards
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+			for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
 				{
@@ -844,7 +844,7 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 				Timer -= 10;
 			}
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+			for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
 				{
@@ -962,7 +962,7 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 				Timer -= 10;
 			}
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+			for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
 				{
@@ -1080,7 +1080,7 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 				Timer -= 10;
 			}
-			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+			for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
 				{
@@ -1106,7 +1106,7 @@ void SceneGame4::UpdateDecks(double dt)
 
 void SceneGame4::UpdateUI(double dt)
 {
-	UIManager->Update(dt);
+	UIManager->Update((float)(dt));
 }
 
 void SceneGame4::UpdateRGBCard(double dt)
@@ -1198,7 +1198,7 @@ void SceneGame4::Update(double dt)
 		{
 		case PLAY:
 		{
-			MissingCardTimer += dt;
+			MissingCardTimer += (float)dt;
 
 			if (MissingCardTimer > 3)
 			{
@@ -1238,7 +1238,7 @@ void SceneGame4::Update(double dt)
 		{
 		case PLAY:
 		{
-			MissingCardTimer += dt;
+			MissingCardTimer += (float)dt;
 
 			if (MissingCardTimer > 2)
 			{
@@ -1278,7 +1278,7 @@ void SceneGame4::Update(double dt)
 		{
 		case PLAY:
 		{
-			MissingCardTimer += dt;
+			MissingCardTimer += (float)dt;
 
 			if (MissingCardTimer > 1)
 			{
@@ -1336,40 +1336,40 @@ void SceneGame4::UpdateWeaponStatus(const unsigned char key)
 void SceneGame4::RenderTutorialInstructions()
 {
 	//Render Instructions
-	sceneManager2D.Render2DMesh(Instructions->getMesh(), false, Instructions->getMeshScale().x, Instructions->getMeshScale().y, Instructions->getMeshPosition().x, Instructions->getMeshPosition().y, 0);
+	sceneManager2D.Render2DMesh(Instructions->getMesh(), false, (int)(Instructions->getMeshScale().x), (int)(Instructions->getMeshScale().y), (int)(Instructions->getMeshPosition().x), (int)(Instructions->getMeshPosition().y), 0);
 
 }
 
 void SceneGame4::RenderDeck()
 {
 	//Render Pattern To Follow
-	for (int i = 0; i < PatternToFollow->getListOfCards().size(); ++i)
+	for (int i = 0; i < (int)PatternToFollow->getListOfCards().size(); ++i)
 	{
 		if (PatternToFollow->getListOfCards()[i]->getActive() == true)
 		{
 			if (PatternToFollow->getListOfCards()[i]->getisRevealed() == true)
 			{
-				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
+				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getCardFaceUpMesh(), false, (int)PatternToFollow->getListOfCards()[i]->getScaleX(), (int)PatternToFollow->getListOfCards()[i]->getScaleY(), (int)PatternToFollow->getListOfCards()[i]->getPositionX(), (int)PatternToFollow->getListOfCards()[i]->getPositionY());
 			}
 			else
 			{
-				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getMesh(), false, PatternToFollow->getListOfCards()[i]->getScaleX(), PatternToFollow->getListOfCards()[i]->getScaleY(), PatternToFollow->getListOfCards()[i]->getPositionX(), PatternToFollow->getListOfCards()[i]->getPositionY(), 0);
+				sceneManager2D.Render2DMesh(PatternToFollow->getListOfCards()[i]->getMesh(), false, (int)PatternToFollow->getListOfCards()[i]->getScaleX(), (int)PatternToFollow->getListOfCards()[i]->getScaleY(), (int)PatternToFollow->getListOfCards()[i]->getPositionX(), (int)PatternToFollow->getListOfCards()[i]->getPositionY());
 			}
 		}
 	}
-	sceneManager2D.Render2DMesh(meshList[GEO_PATTERN], false, 200, 30, PatternToFollow->getPosition().x, PatternToFollow->getPosition().y + 110, 0);
+	sceneManager2D.Render2DMesh(meshList[GEO_PATTERN], false, 200, 30, (int)PatternToFollow->getPosition().x, (int)(PatternToFollow->getPosition().y + 110));
 
 	//Render Pattern To Insert
-	for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
+	for (int i = 0; i < (int)PatternInserted->getListOfCards().size(); ++i)
 	{
 
 		if (PatternInserted->getListOfCards()[i]->getisRevealed() == true)
 		{
-			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getCardFaceUpMesh(), false, PatternInserted->getListOfCards()[i]->getScaleX(), PatternInserted->getListOfCards()[i]->getScaleY(), PatternInserted->getListOfCards()[i]->getPositionX(), PatternInserted->getListOfCards()[i]->getPositionY(), 0);
+			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getCardFaceUpMesh(), false, (int)(PatternInserted->getListOfCards()[i]->getScaleX()), (int)(PatternInserted->getListOfCards()[i]->getScaleY()), (int)(PatternInserted->getListOfCards()[i]->getPositionX()), (int)(PatternInserted->getListOfCards()[i]->getPositionY()), 0);
 		}
 		else
 		{
-			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getMesh(), false, PatternInserted->getListOfCards()[i]->getScaleX(), PatternInserted->getListOfCards()[i]->getScaleY(), PatternInserted->getListOfCards()[i]->getPositionX(), PatternInserted->getListOfCards()[i]->getPositionY(), 0);
+			sceneManager2D.Render2DMesh(PatternInserted->getListOfCards()[i]->getMesh(), false, (int)(PatternInserted->getListOfCards()[i]->getScaleX()), (int)(PatternInserted->getListOfCards()[i]->getScaleY()), (int)(PatternInserted->getListOfCards()[i]->getPositionX()), (int)(PatternInserted->getListOfCards()[i]->getPositionY()), 0);
 		}
 	}
 }
@@ -1378,44 +1378,44 @@ void SceneGame4::RenderRGBCards()
 {
 	if (RedCard->getisRevealed() == true)
 	{
-		sceneManager2D.Render2DMesh(RedCard->getCardFaceUpMesh(), false, RedCard->getScaleX(), RedCard->getScaleY(), RedCard->getPositionX(), RedCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(RedCard->getCardFaceUpMesh(), false, (int)(RedCard->getScaleX()), (int)(RedCard->getScaleY()), (int)(RedCard->getPositionX()), (int)(RedCard->getPositionY()), 0);
 	}
 	else
 	{
-		sceneManager2D.Render2DMesh(RedCard->getMesh(), false, RedCard->getScaleX(), RedCard->getScaleY(), RedCard->getPositionX(), RedCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(RedCard->getMesh(), false, (int)(RedCard->getScaleX()), (int)(RedCard->getScaleY()), (int)(RedCard->getPositionX()), (int)(RedCard->getPositionY()), 0);
 	}
 
 
 	if (BlueCard->getisRevealed() == true)
 	{
-		sceneManager2D.Render2DMesh(BlueCard->getCardFaceUpMesh(), false, BlueCard->getScaleX(), BlueCard->getScaleY(), BlueCard->getPositionX(), BlueCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(BlueCard->getCardFaceUpMesh(), false, (int)(BlueCard->getScaleX()), (int)(BlueCard->getScaleY()), (int)(BlueCard->getPositionX()), (int)(BlueCard->getPositionY()), 0);
 	}
 	else
 	{
-		sceneManager2D.Render2DMesh(BlueCard->getMesh(), false, BlueCard->getScaleX(), BlueCard->getScaleY(), BlueCard->getPositionX(), BlueCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(BlueCard->getMesh(), false, (int)(BlueCard->getScaleX()), (int)(BlueCard->getScaleY()), (int)(BlueCard->getPositionX()), (int)(BlueCard->getPositionY()), 0);
 	}
 
 	if (GreenCard->getisRevealed() == true)
 	{
-		sceneManager2D.Render2DMesh(GreenCard->getCardFaceUpMesh(), false, GreenCard->getScaleX(), GreenCard->getScaleY(), GreenCard->getPositionX(), GreenCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(GreenCard->getCardFaceUpMesh(), false, (int)(GreenCard->getScaleX()), (int)(GreenCard->getScaleY()), (int)(GreenCard->getPositionX()), (int)(GreenCard->getPositionY()), 0);
 	}
 	else
 	{
-		sceneManager2D.Render2DMesh(GreenCard->getMesh(), false, GreenCard->getScaleX(), GreenCard->getScaleY(), GreenCard->getPositionX(), GreenCard->getPositionY(), 0);
+		sceneManager2D.Render2DMesh(GreenCard->getMesh(), false, (int)(GreenCard->getScaleX()), (int)(GreenCard->getScaleY()), (int)(GreenCard->getPositionX()), (int)(GreenCard->getPositionY()), 0);
 	}
 	//Render Card With Player;
 
 	if (SelectedCard->getActive() == true)
 	{
-		sceneManager2D.Render2DMesh(SelectedCard->getCardFaceUpMesh(), false, SelectedCard->getScaleX(), SelectedCard->getScaleY(), theHero->getPositionX(), theHero->getPositionY() + 50, 0);
+		sceneManager2D.Render2DMesh(SelectedCard->getCardFaceUpMesh(), false, (int)(SelectedCard->getScaleX()), (int)(SelectedCard->getScaleY()), (int)(theHero->getPositionX()), (int)(theHero->getPositionY() + 50), 0);
 	}
 
 }
 
 void SceneGame4::RenderTrigger()
 {
-	sceneManager2D.Render2DMesh(StressButton->getCurrentMesh(), false, StressButton->getScale().x, StressButton->getScale().y, StressButton->getCurrentPos().x, StressButton->getCurrentPos().y, 0);
-	sceneManager2D.Render2DMesh(ResetButton->getCurrentMesh(), false, ResetButton->getScale().x, ResetButton->getScale().y, ResetButton->getCurrentPos().x, ResetButton->getCurrentPos().y, 0);
+	sceneManager2D.Render2DMesh(StressButton->getCurrentMesh(), false, (int)StressButton->getScale().x, (int)StressButton->getScale().y, (int)StressButton->getCurrentPos().x, (int)StressButton->getCurrentPos().y, 0);
+	sceneManager2D.Render2DMesh(ResetButton->getCurrentMesh(), false, (int)ResetButton->getScale().x, (int)ResetButton->getScale().y, (int)ResetButton->getCurrentPos().x, (int)ResetButton->getCurrentPos().y, 0);
 
 }
 
@@ -1423,30 +1423,30 @@ void SceneGame4::RenderTimer()
 {
 	std::ostringstream ss;
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), (float)(m_cMap->GetTileSize() * 0.5), (float)(sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5));
 	ss.str(std::string());
 	ss.precision(3);
 	ss << Timer;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize(), sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), (float)(m_cMap->GetTileSize()), (float)(sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize() * 1.5));
 
 }
 void SceneGame4::RenderScore()
 {
 	std::ostringstream ss;
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5, 0, m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0, 0, 0), (float)(m_cMap->GetTileSize() * 0.5), 0, (float)(m_cMap->GetTileSize() * 0.5));
 	ss.str(std::string());
 	ss.precision(3);
 	ss << Score;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize()*0.5, m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.5);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.5));
 
 	ss.clear();
 
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score To Beat:", Color(0, 0, 0), m_cMap->GetTileSize()*0.5, 0, m_cMap->GetTileSize() * 0.1);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score To Beat:", Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), 0, (float)(m_cMap->GetTileSize() * 0.1));
 	ss.str(std::string());
 	ss.precision(3);
 	ss << ScoreToBeat;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), m_cMap->GetTileSize()*0.5, m_cMap->GetTileSize() * 4, m_cMap->GetTileSize() * 0.1);
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.1));
 
 }
 
@@ -1459,7 +1459,7 @@ void SceneGame4::Render()
 
 	sceneManager2D.modelStack.PushMatrix();
 
-	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	sceneManager2D.modelStack.Translate((float)(-theHero->GetMapOffset_x()), (float)(theHero->GetMapOffset_y() - m_cMap->GetTileSize()), 0);
 	
 	switch (CurrentLevel)
 	{
@@ -1730,7 +1730,7 @@ void SceneGame4::RenderGUI()
 	// Jellybean
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)(m_cMap->GetTileSize()), (float)(m_cMap->GetTileSize()), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize()));
 
 	switch (CurrentState)
 	{
@@ -1767,13 +1767,13 @@ void SceneGame4::RenderGUI()
 		case WIN:
 		{
 			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), (float)textSize, (float)(UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195), (float)(UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28));
 		}
 		break;
 		case LOSE:
 		{
 			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), (float)(textSize), (float)(UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195), (float)(UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28));
 		}
 		break;
 		}
@@ -1814,22 +1814,22 @@ void SceneGame4::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), (int)m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 	break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), (int)m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY(), 0.0f, true);
 	}
 	break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), (int)m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 	break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), (int)m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 	break;
 	}
@@ -1841,7 +1841,7 @@ Render the AIs. This is a private function for use in this class only
 void SceneGame4::RenderAIs()
 {
 	// Render the enemy
-	for (int i = 0; i < theEnemies.size(); i++)
+	for (int i = 0; i < (int)theEnemies.size(); i++)
 	{
 		int theEnemy_x = theEnemies[i]->GetPos_x();
 		int theEnemy_y = theEnemies[i]->GetPos_y();

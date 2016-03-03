@@ -21,7 +21,7 @@ void CMenuState::Init(CGameStateManager* theGSM)
 	// Check if all data are full 
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
-		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == 1)
 		{
 			break;
 		}
@@ -55,7 +55,7 @@ void CMenuState::Init(CGameStateManager* theGSM, const int width, const int heig
 	// Check if all data are full 
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
-		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == 1)
 		{
 			break;
 		}
@@ -201,19 +201,20 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	{
 		case CSceneMenu::SELECTING:
 		{
-			scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManager->HandleEvent((float)(mouse_x), (float)(mouse_y), (float)(width), (float)(height), (float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height));
 		
-			scene->UIManagerInformation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerInformation->HandleEvent((float)(mouse_x), (float)(mouse_y), (float)(width), (float)(height), (float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height));
 			
 		}
 		break;
 		case CSceneMenu::CONFIRMATION:
 		{
-			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerConfirmation->HandleEvent((float)(mouse_x), (float)(mouse_y), (float)(width), (float)(height), (float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height));
+
 		}
 		break;
 	}
-	if (button_Left == true)
+	if (button_Left == 1)
 	{
 		switch (scene->currentState)
 		{

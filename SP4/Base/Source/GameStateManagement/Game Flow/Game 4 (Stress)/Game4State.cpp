@@ -175,13 +175,13 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	//	}
 	//} while (m_iUserChoice == -1);
 #endif
-	scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+	scene->UIManager->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 
 	switch (scene->CurrentState)
 	{
 	case SceneGame4::State::PREPARE:
 	{
-		if (button_Left == true && scene->UIManager->FindButton("Next_Button")->getisHovered() == true)
+		if (button_Left == 1 && scene->UIManager->FindButton("Next_Button")->getisHovered() == 1)
 		{
 			// if there is instruction left
 			if (scene->numOfInstructionsLeft > 1)
@@ -198,7 +198,7 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 
 				// Open next instruction
 				index = scene->UIManager->getUI_List().size() - scene->numOfInstructionsLeft;
-				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.65, scene->sceneManager2D.m_window_height * 0.65), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List()[index], (float)(0.05), Vector3((float)(scene->sceneManager2D.m_window_width * 0.65), (float)(scene->sceneManager2D.m_window_height * 0.65)), 5.0f, UIAnimation::SCALING);
 			}
 			else
 			{
@@ -207,11 +207,11 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 
 				// Close all window
 				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(), 5.0f, UIAnimation::SCALING);
-				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Header"), 0.05, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 1.3), 5.0f, UIAnimation::TRANSLATION);
-				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Background"), 0.1, Vector3(), 5.0f, UIAnimation::SCALING);
-				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("Next_Button"), 0.15, Vector3(), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Header"), (float)(0.05), Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_height * 1.3)), 5.0f, UIAnimation::TRANSLATION);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("Instruction_Background"), (float)(0.1), Vector3(), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("Next_Button"), (float)(0.15), Vector3(), 5.0f, UIAnimation::SCALING);
 
-				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), 0.2, Vector3(), 5.0f, UIAnimation::SCALING);
+				scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->getUI_List().back(), (float)(0.2), Vector3(), 5.0f, UIAnimation::SCALING);
 
 				scene->CurrentState = SceneGame4::PLAY;
 			}
@@ -226,9 +226,9 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	{
 		if (scene->CurrentLevel == SceneGame4::DifficultyLevel::TUTORIAL)
 		{
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("TutScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
-			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3((float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height), 1), 1, 2);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("TutScreen"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_height * 0.6), 1), (float)(0.1), 0);
+			scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_width * 0.2), 0), (float)(0.1), 0);
 			// Return to hub Button
 			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 			{
@@ -240,9 +240,9 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	}
 	case SceneGame4::State::WIN:
 	{
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3((float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height), 1), (float)1, 2);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("WinScreen"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_height * 0.6), 1), (float)0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_width * 0.2), 0), (float)0.1, 0);
 		// Return to hub Button
 		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 		{
@@ -253,9 +253,9 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	}
 	case SceneGame4::State::LOSE:
 	{
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3(scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height, 1), 1, 2);
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("LoseScreen"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_height * 0.6, 1), 0.1, 0);
-		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3(scene->sceneManager2D.m_window_width * 0.5, scene->sceneManager2D.m_window_width * 0.2, 0), 0.1, 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("AlphaQuad"), 0, Vector3((float)(scene->sceneManager2D.m_window_width), (float)(scene->sceneManager2D.m_window_height), 1), 1, 2);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindImage("LoseScreen"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_height * 0.6), 1), (float)(0.1), 0);
+		scene->UIManager->InvokeAnimator()->StartTransformation(scene->UIManager->FindButton("ReturnToHubButton"), 0, Vector3((float)(scene->sceneManager2D.m_window_width * 0.5), (float)(scene->sceneManager2D.m_window_width * 0.2), 0), (float)(0.1), 0);
 		// Return to hub Button
 		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 		{

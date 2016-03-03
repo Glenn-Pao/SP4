@@ -85,7 +85,7 @@ private:
 	//vector<CEnemy*> theEnemies;
 	void RenderAIs();
 
-	float Timer;
+	double Timer;
 
 	int ScoreToBeat;
 	int Score;
