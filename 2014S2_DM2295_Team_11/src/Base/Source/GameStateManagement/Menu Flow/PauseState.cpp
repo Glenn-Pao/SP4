@@ -219,7 +219,6 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 				if (scene->prevState == CScenePause::SAVE_GAME)
 				{
 					//save the progress
-					theGSM->saveAndLoadsys->SaveToFile();
 					theGSM->saveAndLoadsys->to_save = true;
 					theGSM->PopState();
 					cout << "Saved!" << endl;

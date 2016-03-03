@@ -233,7 +233,16 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 			if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 			{
 				if (button_Left)
-					theGSM->ChangeState(CHubState::Instance());
+				{
+					// Unlock new difficulty
+					if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[3].getCurrentDifficultyUnlocked() <= scene->CurrentLevel)
+					{
+						theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[3].setCurrentDifficultyUnlocked(scene->CurrentLevel + 1);
+					}
+					// Withdraw jellybean
+					theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
+					scene->CurrentState = SceneGame4::RETURN;
+				}
 			}
 		}
 		break;
@@ -247,7 +256,16 @@ void CGame4State::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 		if (scene->UIManager->FindButton("ReturnToHubButton")->getisHovered() == true)
 		{
 			if (button_Left)
+			{
+				// Unlock new difficulty
+				if (theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[3].getCurrentDifficultyUnlocked() <= scene->CurrentLevel)
+				{
+					theGSM->saveAndLoadsys->GetCurrentGameInfo()->DifficultySystems[3].setCurrentDifficultyUnlocked(scene->CurrentLevel + 1);
+				}
+				// Withdraw jellybean
+				theGSM->saveAndLoadsys->GetCurrentGameInfo()->jellybean.WithdrawJellybeans();
 				scene->CurrentState = SceneGame4::RETURN;
+			}
 		}
 		break;
 	}

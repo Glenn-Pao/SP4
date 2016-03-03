@@ -26,6 +26,7 @@ void CGameInfo::ResetData()
 	// Player's Infomation
 	heroPosition.Set(0, 0);
 	heroMapOffset.Set(0, 0);
+	jellybean.SetNumOfJellybeans(10);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -121,9 +122,10 @@ void CGameInfo::ClearFile()
 		myfile << endl;
 		myfile << "heroPositionX = " << heroPosition.x << endl;
 		myfile << "heroPositionY = " << heroPosition.y << endl;
+		myfile << "heroAnimationDir = " << heroAnimationDir << endl;
 		myfile << "noOfJellybeans = " << jellybean.GetNumOfJellybeans() << endl;
-		myfile << "heroMapOffsetX = " << heroPosition.x << endl;
-		myfile << "heroMapOffsetY = " << heroPosition.y << endl;
+		myfile << "heroMapOffsetX = " << heroMapOffset.x << endl;
+		myfile << "heroMapOffsetY = " << heroMapOffset.y << endl;
 		myfile << endl;
 		// Minigames' informations
 		for (int i = 0; i < 4; i++)

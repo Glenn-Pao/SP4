@@ -147,11 +147,6 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const unsigned char key,
 		theGSM->m_bWarpMouse = false;
 
 		theGSM->PushState(CPauseState::Instance(), 0);						//indicates that it is from hub state
-		if (theGSM->saveAndLoadsys->to_save)
-		{
-			scene->StoreData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
-			theGSM->saveAndLoadsys->to_save = false;
-		}
 	}
 	if (key == 'f' && scene->currentState == CSceneHub::PLAYING)
 	{
@@ -540,6 +535,14 @@ void CHubState::Update(CGameStateManager* theGSM)
 
 void CHubState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 {
+	// Check need to save
+	if (theGSM->saveAndLoadsys->to_save)
+	{
+		scene->StoreData(theGSM->saveAndLoadsys->GetCurrentGameInfo());
+		theGSM->saveAndLoadsys->SaveToFile();
+		theGSM->saveAndLoadsys->to_save = false;
+	}
+
 	// Update the scene
 	scene->Update(m_dElapsedTime);
 
