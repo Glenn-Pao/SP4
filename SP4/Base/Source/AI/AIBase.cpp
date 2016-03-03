@@ -20,8 +20,8 @@ AI::AI(CObjects::OBJECT_TYPE m_Object_Type, Vector3 pos, Vector3 scale, Mesh* me
 	this->wayPoints.push_back(this->originalPos);
 
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);
@@ -65,8 +65,8 @@ void AI::SetAIvariables4pt(Vector3 point1, Vector3 point2, Vector3 point3)
 	waypointsindex = 1;
 	nextPoint = wayPoints[waypointsindex];
 	timer = 0;
-	timerCap = rand() % 15 + 10;
-	speedInt = rand() % 5 + 1;
+	timerCap = (float)(rand() % 15 + 10);
+	speedInt = (float)(rand() % 5 + 1);
 	if (speedInt == 1)
 		speedFloat = 0.1f;
 	else if (speedInt == 2)
@@ -89,8 +89,8 @@ void AI::SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vecto
 	waypointsindex = 1;
 	nextPoint = wayPoints[waypointsindex];
 	timer = 0;
-	timerCap = rand() % 15 + 10;
-	speedInt = rand() % 5 + 1;
+	timerCap = (float)(rand() % 15 + 10);
+	speedInt = (float)(rand() % 5 + 1);
 	if (speedInt == 1)
 		speedFloat = 0.1f;
 	else if (speedInt == 2)
@@ -106,8 +106,8 @@ void AI::SetAIvariables5pt(Vector3 point1, Vector3 point2, Vector3 point3, Vecto
 void AI::UpdateFSM(double dt)
 {
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);

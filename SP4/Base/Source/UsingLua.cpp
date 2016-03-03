@@ -48,19 +48,6 @@ int UseLuaFiles::DoLuaInt(std::string temp_StringToProcess)
 	return ReturnThisInt;
 }
 
-bool UseLuaFiles::DoLuaBool(std::string temp_StringToProcess)
-{
-	const char* temp = temp_StringToProcess.c_str();
-	lua_getglobal(L, temp);
-	if (!lua_isboolean(L, -1))
-	{
-		printf("Invalid Bool");
-	}
-	bool ReturnThisBool = (bool)lua_toboolean(L, -1);
-
-	return ReturnThisBool;
-}
-
 float UseLuaFiles::DoLuaFloat(std::string temp_StringToProcess)
 {
 	const char* temp = temp_StringToProcess.c_str();

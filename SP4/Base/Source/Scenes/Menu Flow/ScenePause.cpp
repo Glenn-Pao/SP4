@@ -147,36 +147,36 @@ void CScenePause::Init(int level)
 
 		//Background
 		Image* Background;
-		Background = new Image("Background", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height, 0), Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0));
+		Background = new Image("Background", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height, 0), Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 0));
 		UIManager->addFeature(Background);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 		Image* paused_icon;
-		paused_icon = new Image("paused_icon", meshList[PAUSE], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.89, 0), Vector3(0, 0, 0));
+		paused_icon = new Image("paused_icon", meshList[PAUSE], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.89f, 0), Vector3(0, 0, 0));
 		UIManager->addFeature(paused_icon);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("paused_icon"), 0.25, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("paused_icon"), 0.25f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.2f, 0), UI_Speed, UIAnimation::SCALING);
 
 		//Buttons
 		// resume button
 		Button* ResumeButton;
-		ResumeButton = new Button("ResumeButton", meshList[RESUME], meshList[RESUME_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		ResumeButton = new Button("ResumeButton", meshList[RESUME], meshList[RESUME_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(ResumeButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1.5, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1.f, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1.5f, Vector3(100, 50, 1), 5, 1);
 
 		// save button
 		Button* SaveButton;
-		SaveButton = new Button("SaveButton", meshList[SAVE], meshList[SAVE_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		SaveButton = new Button("SaveButton", meshList[SAVE], meshList[SAVE_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(SaveButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 5, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.7, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.2f, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 5, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SaveButton"), 1.7f, Vector3(100, 50, 1), 5, 1);
 
 		// Quit Button
 		Button* QuitButton;
-		QuitButton = new Button("QuitButton", meshList[MAIN_MENU], meshList[MAIN_MENU_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		QuitButton = new Button("QuitButton", meshList[MAIN_MENU], meshList[MAIN_MENU_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(QuitButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.4, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 4, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.9, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.4f, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 4, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.9f, Vector3(100, 50, 1), 5, 1);
 	}
 		break;
 		//game state does not have the save state feature
@@ -187,36 +187,36 @@ void CScenePause::Init(int level)
 
 		//Background
 		Image* Background;
-		Background = new Image("Background", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height, 0), Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0));
+		Background = new Image("Background", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height, 0), Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 0));
 		UIManager->addFeature(Background);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Background"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 		Image* paused_icon;
-		paused_icon = new Image("paused_icon", meshList[PAUSE], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.89, 0), Vector3(0, 0, 0));
+		paused_icon = new Image("paused_icon", meshList[PAUSE], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.89f, 0), Vector3(0, 0, 0));
 		UIManager->addFeature(paused_icon);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("paused_icon"), 0.25, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.2, 0), UI_Speed, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("paused_icon"), 0.25f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.2f, 0), UI_Speed, UIAnimation::SCALING);
 
 		//Buttons
 		// resume button
 		Button* ResumeButton;
-		ResumeButton = new Button("ResumeButton", meshList[RESUME], meshList[RESUME_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		ResumeButton = new Button("ResumeButton", meshList[RESUME], meshList[RESUME_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(ResumeButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1.5, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ResumeButton"), 1.5f, Vector3(100, 50, 1), 5, 1);
 
 		// Quit Button
 		Button* QuitButton;
-		QuitButton = new Button("QuitButton", meshList[QUIT], meshList[QUIT_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		QuitButton = new Button("QuitButton", meshList[QUIT], meshList[QUIT_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(QuitButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 5, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.7, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.2f, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 5, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("QuitButton"), 1.7f, Vector3(100, 50, 1), 5, 1);
 
 		// To main menu Button
 		Button* MainMenuButton;
-		MainMenuButton = new Button("MainMenuButton", meshList[MAIN_MENU], meshList[MAIN_MENU_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+		MainMenuButton = new Button("MainMenuButton", meshList[MAIN_MENU], meshList[MAIN_MENU_PRESSED], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 		UIManager->addFeature(MainMenuButton);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MainMenuButton"), 1.4, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 4, 0), 10, 0);
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MainMenuButton"), 1.9, Vector3(100, 50, 1), 5, 1);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MainMenuButton"), 1.4f, Vector3((float)sceneManager2D.m_window_width / 2, (float)sceneManager2D.m_window_height / 10 * 4, 0), 10, 0);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MainMenuButton"), 1.9f, Vector3(100, 50, 1), 5, 1);
 	}
 		break;
 	}
@@ -226,22 +226,22 @@ void CScenePause::Init(int level)
 
 	// AlphaQuad
 	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManagerConfirmation->addFeature(AlphaQuad);
 
 	// Confirmation Window
 	Image* ConfirmationWindow;
-	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManagerConfirmation->addFeature(ConfirmationWindow);
 
 	// Yes button
 	Button* YesButton;
-	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerConfirmation->addFeature(YesButton);
 
 	// No button
 	Button* NoButton;
-	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerConfirmation->addFeature(NoButton);
 }
 //hide the confirmation screen
@@ -249,11 +249,11 @@ void CScenePause::HideConfirmation()
 {
 	UIManagerConfirmation->InvokeAnimator()->StopAllAnimations();
 	// Confirmation Window
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// AlphaQuad
 	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("AlphaQuad"), 0, Vector3(0, 0, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
@@ -262,20 +262,20 @@ void CScenePause::ShowConfirmation()
 {
 	UIManagerConfirmation->InvokeAnimator()->StopAllAnimations();
 	// Confirmation Window
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.65f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.385, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.385f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.615, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.615f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// AlphaQuad
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("AlphaQuad"), 0, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
 void CScenePause::Update(double dt)
 {
 	sceneManager2D.Update(dt);
 
-	UIManager->Update(dt);
-	UIManagerConfirmation->Update(dt);
+	UIManager->Update((float)dt);
+	UIManagerConfirmation->Update((float)dt);
 }
 
 /********************************************************************************

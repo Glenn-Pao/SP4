@@ -49,7 +49,7 @@ void CGameInfo::LoadFile()
 	// if new
 	ifNew = L.DoLuaInt("ifNew");
 
-	if (ifNew == false)
+	if (!ifNew)
 	{
 		// Player's Infomation
 		heroPosition.x = L.DoLuaFloat("heroPositionX");

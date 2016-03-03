@@ -33,10 +33,10 @@ void UISystem::Render(CSceneManager2D& scene)
 				if (button->getActive() == true)
 				{
 					scene.Render2DMesh(button->getCurrentMesh(), false,
-						button->getScale().x,
-						button->getScale().y,
-						button->getCurrentPos().x,
-						button->getCurrentPos().y,
+						(int)(button->getScale().x),
+						(int)(button->getScale().y),
+						(int)(button->getCurrentPos().x),
+						(int)(button->getCurrentPos().y),
 						0,
 						false);
 				}
@@ -50,10 +50,10 @@ void UISystem::Render(CSceneManager2D& scene)
 				image = static_cast<Image*>((*CurrentFeature));
 
 				scene.Render2DMesh(image->getMesh(), false,
-					image->getScale().x,
-					image->getScale().y,
-					image->getCurrentPos().x,
-					image->getCurrentPos().y,
+					(int)(image->getScale().x),
+					(int)(image->getScale().y),
+					(int)(image->getCurrentPos().x),
+					(int)(image->getCurrentPos().y),
 					0,
 					false);
 				break;

@@ -21,8 +21,8 @@ void CWaypoints::LoadWaypoints(CMap *map)
 			if (map->theScreenMap[i][k] != 1)
 			{
 				//find the x and y value based on map data
-				float x = k * map->GetTileSize();
-				float y = map->GetScreenHeight() - i * map->GetTileSize() - map->GetTileSize();
+				float x = (float)k * map->GetTileSize();
+				float y = (float)map->GetScreenHeight() - i * map->GetTileSize() - map->GetTileSize();
 				//put the x and y values into the waypoint list
 				myWaypointList.push_back(Vector3(x, y, 0));
 			}

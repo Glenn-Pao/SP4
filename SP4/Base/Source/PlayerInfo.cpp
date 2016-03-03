@@ -35,8 +35,8 @@ CPlayerInfo::CPlayerInfo(CMap* m_cMap)
 
 
 	// Bounding Box
-	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5)),
-	Vector3(getPositionX() + (rightCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5)));
+	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5f) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5f)),
+	Vector3(getPositionX() + (rightCollision - 0.5f) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5f)));
 }
 
 CPlayerInfo::~CPlayerInfo(void)
@@ -233,34 +233,34 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			setPositionX(leftBorder + mapOffset_x);
+			setPositionX((float)leftBorder + mapOffset_x);
 		}
 	}
 	else if (getPositionX() - mapOffset_x > rightBorder)
 	{
 		mapOffset_x = mapOffset_x + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
-		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
+		int maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
 		if (mapOffset_x > maxMapOffset_x)
 		{
 			mapOffset_x = maxMapOffset_x;
 		}
 		else
 		{
-			setPositionX(rightBorder + mapOffset_x);
+			setPositionX((float)(rightBorder + mapOffset_x));
 		}
 	}
 
 	if (getPositionY() + mapOffset_y - m_cMap->GetTileSize() < topBorder)
 	{
 		mapOffset_y = mapOffset_y + (int)(movementSpeed * m_cMap->GetTileSize() * timeDiff);
-		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
+		int maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
 		if (mapOffset_y > maxMapOffset_y)
 		{
 			mapOffset_y = maxMapOffset_y;
 		}
 		else
 		{
-			setPositionY(topBorder - mapOffset_y + m_cMap->GetTileSize());
+			setPositionY((float)(topBorder - mapOffset_y + m_cMap->GetTileSize()));
 		}
 	}
 	else if (getPositionY() + mapOffset_y - m_cMap->GetTileSize() > bottomBorder)
@@ -272,7 +272,7 @@ void CPlayerInfo::ConstrainHero(const int leftBorder, const int rightBorder,
 		}
 		else
 		{
-			setPositionY(bottomBorder - mapOffset_y + m_cMap->GetTileSize());
+			setPositionY((float)(bottomBorder - mapOffset_y + m_cMap->GetTileSize()));
 		}
 	}
 }
@@ -340,17 +340,16 @@ void CPlayerInfo::HeroUpdate(CMap* m_cMap, float timeDiff)
 	}
 	}*/
 
-	ConstrainHero((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize(),
-		(m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize(),
-		timeDiff, m_cMap);
+	ConstrainHero((m_cMap->GetNumOfTiles_Width() * 0.5f) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Width() * 0.5f) * m_cMap->GetTileSize(),
+		(m_cMap->GetNumOfTiles_Height() * 0.5f) * m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() * 0.5f) * m_cMap->GetTileSize(), timeDiff, m_cMap);
 
 	// Calculate the fine offset
 	//mapFineOffset_x = mapOffset_x % m_cMap->GetTileSize();
 	//mapFineOffset_y = mapOffset_y % m_cMap->GetTileSize();
 
 	// Bounding Box
-	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5)),
-		Vector3(getPositionX() + (rightCollision - 0.5) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5)));
+	setBoundingBox(Vector3(getPositionX() + (leftCollision - 0.5f) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (topCollision - 0.5f)),
+		Vector3(getPositionX() + (rightCollision - 0.5f) * m_cMap->GetTileSize(), getPositionY() + m_cMap->GetTileSize() * (bottomCollision - 0.5f)));
 }
 
 /********************************************************************************

@@ -32,9 +32,9 @@ public:
 
 	int choice;
 
-	bool fpsSelected;
-	bool fullscreenSelected;
-	bool coloredSelected;
+	int fpsSelected;
+	int fullscreenSelected;
+	int coloredSelected;
 
 private:
 	unsigned m_vertexArrayID;

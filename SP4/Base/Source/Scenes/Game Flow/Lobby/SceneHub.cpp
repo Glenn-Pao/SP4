@@ -34,7 +34,7 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 CSceneHub::~CSceneHub()
 {
 	 // Door
-	for (int i = 0; i < theDoor.size(); i++)
+	for (int i = 0; i < (int)theDoor.size(); i++)
 	{
 		if (theDoor[i])
 		{
@@ -69,7 +69,7 @@ CSceneHub::~CSceneHub()
 		UIManagerGivingJellybeans = NULL;
 	}
 	// Guardian
-	for (int i = 0; i < theNPCs.size(); i++)
+	for (int i = 0; i < (int)theNPCs.size(); i++)
 	{
 		if (theNPCs[i])
 		{
@@ -129,33 +129,33 @@ void CSceneHub::Init(int level)
 			{
 				// Initialise the hero's position
 				theHero = new CPlayerInfo(m_cMap);
-				theHero->setPositionX(k*m_cMap->GetTileSize());
-				theHero->setPositionY((m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());				
+				theHero->setPositionX((float)k*m_cMap->GetTileSize());
+				theHero->setPositionY((float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 			// Guardian
 			else if (m_cMap->theScreenMap[i][k] == 100)
 			{
-				GuardianPos.Set(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				GuardianPos.Set((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 			// Door
 			else if (m_cMap->theScreenMap[i][k] == 20)
 			{
-				DoorPos[currentDoorIndex].Set(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				DoorPos[currentDoorIndex].Set((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 				currentDoorIndex++;
 			}
 			// Guardian waypoint
 			else if (m_cMap->theScreenMap[i][k] == 101)
 			{
-				GuardianWaypointPos[0] = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				GuardianWaypointPos[0] = Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 			else if (m_cMap->theScreenMap[i][k] == 102)
 			{
-				GuardianWaypointPos[1] = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				GuardianWaypointPos[1] = Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 			// Tip Giver
 			else if (m_cMap->theScreenMap[i][k] == 150)
 			{
-				TipGiverPos = Vector3(k*m_cMap->GetTileSize(), (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
+				TipGiverPos = Vector3((float)k*m_cMap->GetTileSize(), (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize());
 			}
 		}
 	}
@@ -164,27 +164,27 @@ void CSceneHub::Init(int level)
 	InitMeshes();
 
 	// Guardian
-	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(GuardianPos.x, GuardianPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_GUARDIAN], CAI_Idling::GUARDIAN));
+	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(GuardianPos.x, GuardianPos.y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_GUARDIAN], CAI_Idling::GUARDIAN));
 	theNPCs.back()->setDialogue(L.DoLuaString("GuardianScript"));
 	theNPCs.back()->AddWaypoint(GuardianPos);
 	for (int i = 0; i < numOfGuardianWaypointPos; i++)
 		theNPCs.back()->AddWaypoint(GuardianWaypointPos[i]);
 	// Tip Giver
-	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(TipGiverPos.x, TipGiverPos.y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_GREEN_MONSTER], CAI_Idling::TIP_ADVISOR));
+	theNPCs.push_back(new CAI_Idling(CObjects::AI, Vector3(TipGiverPos.x, TipGiverPos.y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_GREEN_MONSTER], CAI_Idling::TIP_ADVISOR));
 	ChangeTip();
 
 	// Exit
-	theDoor.push_back(new CDoor(CObjects::DOOR, 5, Vector3(DoorPos[0].x, DoorPos[0].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 5, Vector3(DoorPos[0].x, DoorPos[0].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	theDoor.back()->setDialogue(L.DoLuaString("door5"));
 
 	// Doors
-	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(DoorPos[1].x, DoorPos[1].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 1, Vector3(DoorPos[1].x, DoorPos[1].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	theDoor.back()->setDialogue(L.DoLuaString("door1"));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(DoorPos[2].x, DoorPos[2].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 2, Vector3(DoorPos[2].x, DoorPos[2].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	theDoor.back()->setDialogue(L.DoLuaString("door2"));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(DoorPos[3].x, DoorPos[3].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 3, Vector3(DoorPos[3].x, DoorPos[3].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	theDoor.back()->setDialogue(L.DoLuaString("door3"));
-	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(DoorPos[4].x, DoorPos[4].y), Vector3(m_cMap->GetTileSize(), m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
+	theDoor.push_back(new CDoor(CObjects::DOOR, 4, Vector3(DoorPos[4].x, DoorPos[4].y), Vector3((float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize()), meshList[GEO_TILE_DOOR]));
 	theDoor.back()->setDialogue(L.DoLuaString("door4"));
 	
 
@@ -212,7 +212,7 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_DARK_SURROUNDING] = MeshBuilder::Generate2DMesh("GEO_DARK_SURROUNDING", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_DARK_SURROUNDING]->textureID = LoadTGA("Image//DarkSurrounding.tga");
 	meshList[GEO_BLACK_QUAD] = MeshBuilder::Generate2DMesh("GEO_BLACK_QUAD", Color(0, 0, 0), 0, 0, 1, 1);
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 0, 0, 1, 1);
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 0.8f, 0.8f), 0, 0, 1, 1);
 	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 	meshList[GEO_TILE_WALL] = MeshBuilder::Generate2DMesh("GEO_TILE_WALL", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_TILE_WALL]->textureID = LoadTGA("Image//Tile/wall.tga");
@@ -374,7 +374,7 @@ void CSceneHub::InitUI()
 	UIManagerBlackQuad = new UISystem();
 
 	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManagerBlackQuad->addFeature(AlphaQuad);
 
 	/*Difficulty*/
@@ -382,38 +382,38 @@ void CSceneHub::InitUI()
 
 	// Background
 	Image* SelectionBackground;
-	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManagerDifficultySelection->addFeature(SelectionBackground);
 
 	// Header
 	Image* DifficultyHeader;
-	DifficultyHeader = new Image("DifficultyHeader", meshList[GEO_DIFFICULTY], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
+	DifficultyHeader = new Image("DifficultyHeader", meshList[GEO_DIFFICULTY], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.25f, 0));
 	UIManagerDifficultySelection->addFeature(DifficultyHeader);
 
 	// Buttons
 	// Tutorial button
 	Button* TutorialButton;
-	TutorialButton = new Button("TutorialButton", meshList[GEO_TUTORIAL_BUTTON_UP], meshList[GEO_TUTORIAL_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	TutorialButton = new Button("TutorialButton", meshList[GEO_TUTORIAL_BUTTON_UP], meshList[GEO_TUTORIAL_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerDifficultySelection->addFeature(TutorialButton);
 
 	// Easy Button
 	Button* EasyButton;
-	EasyButton = new Button("EasyButton", meshList[GEO_EASY_BUTTON_UP], meshList[GEO_EASY_BUTTON_DOWN], meshList[GEO_EASY_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	EasyButton = new Button("EasyButton", meshList[GEO_EASY_BUTTON_UP], meshList[GEO_EASY_BUTTON_DOWN], meshList[GEO_EASY_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerDifficultySelection->addFeature(EasyButton);
 
 	// Medium Button
 	Button* MediumButton;
-	MediumButton = new Button("MediumButton", meshList[GEO_MEDIUM_BUTTON_UP], meshList[GEO_MEDIUM_BUTTON_DOWN], meshList[GEO_MEDIUM_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	MediumButton = new Button("MediumButton", meshList[GEO_MEDIUM_BUTTON_UP], meshList[GEO_MEDIUM_BUTTON_DOWN], meshList[GEO_MEDIUM_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerDifficultySelection->addFeature(MediumButton);
 
 	// Hard Button
 	Button* HardButton;
-	HardButton = new Button("HardButton", meshList[GEO_HARD_BUTTON_UP], meshList[GEO_HARD_BUTTON_DOWN], meshList[GEO_HARD_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.5, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	HardButton = new Button("HardButton", meshList[GEO_HARD_BUTTON_UP], meshList[GEO_HARD_BUTTON_DOWN], meshList[GEO_HARD_BUTTON_LOCKED], Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerDifficultySelection->addFeature(HardButton);
 
 	// Back button
 	Button* BackButton;
-	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275f, sceneManager2D.m_window_height * 0.275f, 0), Vector3(0, 0, 0));
 	UIManagerDifficultySelection->addFeature(BackButton);
 
 
@@ -421,33 +421,33 @@ void CSceneHub::InitUI()
 	UIManagerJellybeanSelection = new UISystem();
 
 	// Background
-	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	SelectionBackground = new Image("SelectionBackground", meshList[GEO_SELECTION_BACKGROUND], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManagerJellybeanSelection->addFeature(SelectionBackground);
 
 	// Header
 	Image* JellybeanHeader;
-	JellybeanHeader = new Image("JellybeanHeader", meshList[GEO_JELLYBEAN_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 * 0.25, 0));
+	JellybeanHeader = new Image("JellybeanHeader", meshList[GEO_JELLYBEAN_HEADER], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 100, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f * 0.25f, 0));
 	UIManagerJellybeanSelection->addFeature(JellybeanHeader);
 
 	// Buttons
 	// Up Arrow button
 	Button* UpArrowButton;
-	UpArrowButton = new Button("UpArrowButton", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], meshList[GEO_UPARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.7, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	UpArrowButton = new Button("UpArrowButton", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], meshList[GEO_UPARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.7f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), Vector3(sceneManager2D.m_window_height * 0.5f * 0.2f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerJellybeanSelection->addFeature(UpArrowButton);
 
 	// Down Arrow button
 	Button* DownArrowButton;
-	DownArrowButton = new Button("DownArrowButton", meshList[GEO_DOWNARROW_BUTTON_UP], meshList[GEO_DOWNARROW_BUTTON_DOWN], meshList[GEO_DOWNARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.3, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_height * 0.5 * 0.2, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	DownArrowButton = new Button("DownArrowButton", meshList[GEO_DOWNARROW_BUTTON_UP], meshList[GEO_DOWNARROW_BUTTON_DOWN], meshList[GEO_DOWNARROW_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.3f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), Vector3(sceneManager2D.m_window_height * 0.5f * 0.2f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerJellybeanSelection->addFeature(DownArrowButton);
 
 
 	// Enter Arrow button
 	Button* EnterButton;
-	EnterButton = new Button("EnterButton", meshList[GEO_ENTER_BUTTON_UP], meshList[GEO_ENTER_BUTTON_DOWN], meshList[GEO_ENTER_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5 * 0.25, sceneManager2D.m_window_height * 0.5 * 0.2, 0));
+	EnterButton = new Button("EnterButton", meshList[GEO_ENTER_BUTTON_UP], meshList[GEO_ENTER_BUTTON_DOWN], meshList[GEO_ENTER_BUTTON_LOCKED], Vector3(sceneManager2D.m_window_width * 0.5f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f * 0.25f, sceneManager2D.m_window_height * 0.5f * 0.2f, 0));
 	UIManagerJellybeanSelection->addFeature(EnterButton);
 
 	// Back button
-	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275, sceneManager2D.m_window_height * 0.275, 0), Vector3(0, 0, 0));
+	BackButton = new Button("BackButton", meshList[GEO_BACK_BUTTON_UP], meshList[GEO_BACK_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.275f, sceneManager2D.m_window_height * 0.275f, 0), Vector3(0, 0, 0));
 	UIManagerJellybeanSelection->addFeature(BackButton);
 
 	/*Confiramtion*/
@@ -455,17 +455,17 @@ void CSceneHub::InitUI()
 
 	// Confirmation Window
 	Image* ConfirmationWindow;
-	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManagerConfirmation->addFeature(ConfirmationWindow);
 
 	// Yes button
 	Button* YesButton;
-	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerConfirmation->addFeature(YesButton);
 
 	// No button
 	Button* NoButton;
-	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerConfirmation->addFeature(NoButton);
 
 	/*Giving Jellybeans*/
@@ -473,15 +473,15 @@ void CSceneHub::InitUI()
 
 	// Giving Jelybeans Window
 	Image* GivingJelybeansWindow;
-	GivingJelybeansWindow = new Image("GivingJelybeansWindow", meshList[GEO_GIVE_JELLYBEANS_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.2, 0));
+	GivingJelybeansWindow = new Image("GivingJelybeansWindow", meshList[GEO_GIVE_JELLYBEANS_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.2f, 0));
 	UIManagerGivingJellybeans->addFeature(GivingJelybeansWindow);
 
 	// Yes button
-	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerGivingJellybeans->addFeature(YesButton);
 
 	// No button
-	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManagerGivingJellybeans->addFeature(NoButton);
 }
 
@@ -505,19 +505,19 @@ void CSceneHub::Update(double dt)
 			Vector3 prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 			// Update the hero
 			if (Application::IsKeyPressed('W'))
-				this->theHero->MoveUpDown(true, dt, m_cMap);
+				this->theHero->MoveUpDown(true, (float)dt, m_cMap);
 			if (Application::IsKeyPressed('S'))
-				this->theHero->MoveUpDown(false, dt, m_cMap);
+				this->theHero->MoveUpDown(false, (float)dt, m_cMap);
 			if (Application::IsKeyPressed('A'))
-				this->theHero->MoveLeftRight(true, dt, m_cMap);
+				this->theHero->MoveLeftRight(true, (float)dt, m_cMap);
 			if (Application::IsKeyPressed('D'))
-				this->theHero->MoveLeftRight(false, dt, m_cMap);
+				this->theHero->MoveLeftRight(false, (float)dt, m_cMap);
 			/*if (Application::IsKeyPressed(' '))
 			this->theHero->SetToJumpUpwards(true);*/
 			// Update Hero animation counter if hero moved
 			if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 			{
-				theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+				theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * (float)dt * theHero->GetAnimationSpeed());
 				if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
 					theHero->SetAnimationCounter(1);
 			}
@@ -525,10 +525,10 @@ void CSceneHub::Update(double dt)
 			{
 				theHero->SetAnimationCounter(0);
 			}
-			theHero->HeroUpdate(m_cMap, dt);
+			theHero->HeroUpdate(m_cMap, (float)dt);
 
 			// Check Door
-			for (int i = 0; i < theDoor.size(); i++)
+			for (int i = 0; i < (int)theDoor.size(); i++)
 			{
 				if (theDoor[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 				{
@@ -543,7 +543,7 @@ void CSceneHub::Update(double dt)
 			}
 
 			// Update NPCs
-			for (int i = 0; i < theNPCs.size(); i++)
+			for (int i = 0; i < (int)theNPCs.size(); i++)
 			{
 				// Update those NPCs that are movable
 				if (theNPCs[i]->GetAI_Type() == CAI_Idling::MOVINGAROUND)
@@ -570,7 +570,7 @@ void CSceneHub::Update(double dt)
 				}
 			}
 			// Set target
-			for (int i = 0; i < theNPCs.size(); i++)
+			for (int i = 0; i < (int)theNPCs.size(); i++)
 			{
 				// Check if the Hero can interact with NPC or not
 				if (theNPCs[i]->IfInteractable() == true)
@@ -602,7 +602,7 @@ void CSceneHub::Update(double dt)
 		break;
 		case EXITING:
 		{
-			sizeOfDarkSurrounding -= dt * m_cMap->GetTileSize() * speedOfDarkSurrounding * (sizeOfDarkSurrounding - MinSizeOfScalingDarkSurrounding);
+			sizeOfDarkSurrounding -= (float)dt * m_cMap->GetTileSize() * speedOfDarkSurrounding * (sizeOfDarkSurrounding - MinSizeOfScalingDarkSurrounding);
 			if (sizeOfDarkSurrounding <= m_cMap->GetTileSize() * MinSizeOfScalingDarkSurrounding)
 			{
 				sizeOfDarkSurrounding = m_cMap->GetTileSize() * MinSizeOfScalingDarkSurrounding;
@@ -612,7 +612,7 @@ void CSceneHub::Update(double dt)
 		break;
 		case EXIT:
 		{
-			timerForEnd -= dt;
+			timerForEnd -= (float)dt;
 			if (timerForEnd <= 0.0f)
 			{
 				timerForEnd = 0.0f;
@@ -692,11 +692,11 @@ Update UI
 ********************************************************************************/
 void CSceneHub::UpdateUI(double dt)
 {
-	UIManagerDifficultySelection->Update(dt);
-	UIManagerJellybeanSelection->Update(dt);
-	UIManagerBlackQuad->Update(dt);
-	UIManagerConfirmation->Update(dt);
-	UIManagerGivingJellybeans->Update(dt);
+	UIManagerDifficultySelection->Update((float)dt);
+	UIManagerJellybeanSelection->Update((float)dt);
+	UIManagerBlackQuad->Update((float)dt);
+	UIManagerConfirmation->Update((float)dt);
+	UIManagerGivingJellybeans->Update((float)dt);
 }
 
 /********************************************************************************
@@ -725,7 +725,7 @@ void CSceneHub::ChangeUI_DifficultySelection()
 	HideConfirmation();
 	UIManagerBlackQuad->InvokeAnimator()->SkipAllAnimations();
 	// AlphaQuad
-	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
+	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
 /********************************************************************************
 Change UI - jellybean selection
@@ -757,7 +757,7 @@ void CSceneHub::ChangeUI_GivingJellybeans()
 	ShowGivingJellybeans();
 	UIManagerBlackQuad->InvokeAnimator()->SkipAllAnimations();
 	// AlphaQuad
-	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
+	UIManagerBlackQuad->InvokeAnimator()->StartTransformation(UIManagerBlackQuad->FindImage("AlphaQuad"), 0, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 0), UI_Speed * 2, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -766,42 +766,22 @@ Show Difficulty Selection
 void CSceneHub::Show_DifficultySelection()
 {
 	// Difficulty Header
-	if (UIManagerDifficultySelection->FindImage("DifficultyHeader")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("DifficultyHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("DifficultyHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 2.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Tutorial Button
-	if (UIManagerDifficultySelection->FindButton("TutorialButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("TutorialButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("TutorialButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Easy Button
-	if (UIManagerDifficultySelection->FindButton("EasyButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("EasyButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("EasyButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Medium Button
-	if (UIManagerDifficultySelection->FindButton("MediumButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("MediumButton"), 0.15, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("MediumButton"), 0.15f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Hard Button
-	if (UIManagerDifficultySelection->FindButton("HardButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("HardButton"), 0.2, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("HardButton"), 0.2f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 	// Selection background
-	if (UIManagerDifficultySelection->FindImage("SelectionBackground")->getScale() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("SelectionBackground"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("SelectionBackground"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::SCALING);
 
 	// Back Button
-	if (UIManagerDifficultySelection->FindButton("BackButton")->getScale() != Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("BackButton"), 0.25, Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("BackButton"), 0.25f, Vector3(sceneManager2D.m_window_width * 0.125f, sceneManager2D.m_window_width * 0.125f, 0), UI_Speed, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -810,42 +790,22 @@ Hide Difficulty Selection
 void CSceneHub::Hide_DifficultySelection()
 {
 	// Difficulty Header
-	if (UIManagerDifficultySelection->FindImage("DifficultyHeader")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("DifficultyHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("DifficultyHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 100, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Tutorial Button
-	if (UIManagerDifficultySelection->FindButton("TutorialButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("TutorialButton"), 0.05, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("TutorialButton"), 0.05f, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Easy Button
-	if (UIManagerDifficultySelection->FindButton("EasyButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("EasyButton"), 0.1, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("EasyButton"), 0.1f, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Medium Button
-	if (UIManagerDifficultySelection->FindButton("MediumButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("MediumButton"), 0.15, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("MediumButton"), 0.15f, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Hard Button
-	if (UIManagerDifficultySelection->FindButton("HardButton")->getCurrentPos() != Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("HardButton"), 0.2, Vector3(-100, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * -1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("HardButton"), 0.2f, Vector3(-100, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * -1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 	// Selection background
-	if (UIManagerDifficultySelection->FindImage("SelectionBackground")->getScale() != Vector3(0, 0, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("SelectionBackground"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindImage("SelectionBackground"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
 
 	// Back Button
-	if (UIManagerDifficultySelection->FindButton("BackButton")->getScale() != Vector3(0, 0, 0))
-	{
-		UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("BackButton"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerDifficultySelection->InvokeAnimator()->StartTransformation(UIManagerDifficultySelection->FindButton("BackButton"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -854,37 +814,21 @@ Show Difficulty Selection
 void CSceneHub::Show_JellybeanSelection()
 {
 	// Jellybean Header
-	if (UIManagerJellybeanSelection->FindImage("JellybeanHeader")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("JellybeanHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5 + sceneManager2D.m_window_height * 0.5 * 0.25 * 2.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("JellybeanHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f + sceneManager2D.m_window_height * 0.5f * 0.25f * 2.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Up Arrow Button
-	if (UIManagerJellybeanSelection->FindButton("UpArrowButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.7, sceneManager2D.m_window_height * 0.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("UpArrowButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.7, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("UpArrowButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.7f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Down Arrow Button
-	if (UIManagerJellybeanSelection->FindButton("DownArrowButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("DownArrowButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("DownArrowButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.3f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Enter Button
-	if (UIManagerJellybeanSelection->FindButton("EnterButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.3, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("EnterButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("EnterButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 	// Selection background
-	if (UIManagerJellybeanSelection->FindImage("SelectionBackground")->getScale() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("SelectionBackground"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("SelectionBackground"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::SCALING);
 
 	// Back Button
-	if (UIManagerJellybeanSelection->FindButton("BackButton")->getScale() != Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("BackButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.125, sceneManager2D.m_window_width * 0.125, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("BackButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.125f, sceneManager2D.m_window_width * 0.125f, 0), UI_Speed, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -893,37 +837,21 @@ Hide Jellybean Selection
 void CSceneHub::Hide_JellybeanSelection()
 {
 	// Jellybean Header
-	if (UIManagerJellybeanSelection->FindImage("JellybeanHeader")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("JellybeanHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 100, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("JellybeanHeader"), 0, Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 100, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Up Arrow Button
-	if (UIManagerJellybeanSelection->FindButton("UpArrowButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.7, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("UpArrowButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.7, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("UpArrowButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.7f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Down Arrow Button
-	if (UIManagerJellybeanSelection->FindButton("DownArrowButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.3, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("DownArrowButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.3, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("DownArrowButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.3f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
+
 	// Enter Button
-	if (UIManagerJellybeanSelection->FindButton("EnterButton")->getCurrentPos() != Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("EnterButton"), 0.05, Vector3(sceneManager2D.m_window_width * 0.5, -sceneManager2D.m_window_height * 0.5 * 0.25 * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("EnterButton"), 0.05f, Vector3(sceneManager2D.m_window_width * 0.5f, -sceneManager2D.m_window_height * 0.5f * 0.25f * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 
 	// Selection background
-	if (UIManagerJellybeanSelection->FindImage("SelectionBackground")->getScale() != Vector3(0, 0, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("SelectionBackground"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindImage("SelectionBackground"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
 
 	// Back Button
-	if (UIManagerJellybeanSelection->FindButton("BackButton")->getScale() != Vector3(0, 0, 0))
-	{
-		UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("BackButton"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
-	}
+	UIManagerJellybeanSelection->InvokeAnimator()->StartTransformation(UIManagerJellybeanSelection->FindButton("BackButton"), 0, Vector3(0, 0, 0), UI_Speed, UIAnimation::SCALING);
 }
 
 /********************************************************************************
@@ -932,11 +860,11 @@ Show Confirmation
 void CSceneHub::ShowConfirmation()
 {
 	// Confirmation Window
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.65f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.385, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.385f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.615, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.615f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 }
 
 /********************************************************************************
@@ -945,11 +873,11 @@ Hide Confirmation
 void CSceneHub::HideConfirmation()
 {
 	// Confirmation Window
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindImage("ConfirmationWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerConfirmation->InvokeAnimator()->StartTransformation(UIManagerConfirmation->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 }
 
 /********************************************************************************
@@ -958,11 +886,11 @@ Show Giving Jellybeans
 void CSceneHub::ShowGivingJellybeans()
 {
 	// Giving Jellybeans Window
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.65, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.65f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.385, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.385f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.615, sceneManager2D.m_window_height * 0.3, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.615f, sceneManager2D.m_window_height * 0.3f, 0), UI_Speed, UIAnimation::TRANSLATION);
 }
 
 /********************************************************************************
@@ -971,11 +899,11 @@ Hide Giving Jellybeans
 void CSceneHub::HideGivingJellybeans()
 {
 	// Giving Jellybeans Window
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindImage("GivingJelybeansWindow"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// Yes button
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("YesButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 	// No button
-	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), UI_Speed, UIAnimation::TRANSLATION);
+	UIManagerGivingJellybeans->InvokeAnimator()->StartTransformation(UIManagerGivingJellybeans->FindButton("NoButton"), 0.1f, Vector3(sceneManager2D.m_window_width * 0.45f, -sceneManager2D.m_window_height * 0.5f, 0), UI_Speed, UIAnimation::TRANSLATION);
 }
 
 /********************************************************************************
@@ -1009,30 +937,30 @@ void CSceneHub::Render()
 
 	sceneManager2D.modelStack.PushMatrix();
 
-	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	sceneManager2D.modelStack.Translate((float)-theHero->GetMapOffset_x(), (float)theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
 
 	// Render the tile map
 	RenderTileMap();
-	for (int i = 0; i < theDoor.size(); i++)
+	for (int i = 0; i < (int)theDoor.size(); i++)
 	{
 		// Door
-		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, theDoor[i]->getScale().x, theDoor[i]->getScale().y, theDoor[i]->getPositionX(), theDoor[i]->getPositionY());
+		sceneManager2D.Render2DMesh(theDoor[i]->getMesh(), false, (int)theDoor[i]->getScale().x, (int)theDoor[i]->getScale().y, (int)theDoor[i]->getPositionX(), (int)theDoor[i]->getPositionY());
 
-		int textSize = m_cMap->GetTileSize() * 0.4;
+		int textSize = (int)(m_cMap->GetTileSize() * 0.4f);
 
 		if (theDoor[i]->getDialogue().size() > 4)
 		{
 			// Dialogue box
-			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (theDoor[i]->getDialogue().size() - 2) * textSize, textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (int)((theDoor[i]->getDialogue().size() - 2) * textSize), textSize, (int)(theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5f), (int)(theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5f));
 			// Text
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), (float)textSize, theDoor[i]->getPositionX() - textSize * (theDoor[i]->getDialogue().size() - 4) * 0.5f, theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5f);
 		}
 		else
 		{
 			// Dialogue box
-			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (theDoor[i]->getDialogue().size() - 1) * textSize, textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, (int)((theDoor[i]->getDialogue().size() - 1) * textSize), textSize, (int)theDoor[i]->getPositionX(), (int)(theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5f));
 			// Text
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], theDoor[i]->getDialogue(), Color(0, 0, 0), (float)textSize, theDoor[i]->getPositionX(), theDoor[i]->getPositionY() + m_cMap->GetTileSize() + textSize * 0.5f);
 		}
 	}
 	// Render Hero
@@ -1102,22 +1030,22 @@ void CSceneHub::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY(), 0.0f, true);
 	}
 		break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	}
@@ -1129,12 +1057,12 @@ Render the AIs. This is a private function for use in this class only
 void CSceneHub::RenderAIs()
 {
 	// Render the NPCs
-	for (int i = 0; i < theNPCs.size(); i++)
+	for (int i = 0; i < (int)theNPCs.size(); i++)
 	{
 		if (theNPCs[i])
 		{
 			if ((theNPCs[i]->getPosition() - theHero->getPosition()).Length() <= sceneManager2D.m_window_width)
-			sceneManager2D.Render2DMesh(theNPCs[i]->getMesh(), false, theNPCs[i]->getScale().x, theNPCs[i]->getScale().y, theNPCs[i]->getPositionX(), theNPCs[i]->getPositionY());
+				sceneManager2D.Render2DMesh(theNPCs[i]->getMesh(), false, (int)theNPCs[i]->getScale().x, (int)theNPCs[i]->getScale().y, (int)theNPCs[i]->getPositionX(), (int)theNPCs[i]->getPositionY());
 		}
 	}
 }
@@ -1142,9 +1070,9 @@ void CSceneHub::RenderAIs()
 
 void CSceneHub::RenderWaypoints()
 {
-	for (int i = 0; i < temp.size(); i++)
+	for (int i = 0; i < (int)temp.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x, temp.at(i).y);
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)temp.at(i).x, (int)temp.at(i).y);
 	}
 }
 
@@ -1160,7 +1088,7 @@ void CSceneHub::RenderGUI()
 	//ss.str(std::string());
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	// UI
 	switch (currentState)
@@ -1202,11 +1130,11 @@ void CSceneHub::RenderGUI()
 	{
 		if (noOfJellybeansDeposited >= 10)
 		{
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize() * 1.75, sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2.f, sceneManager2D.m_window_width * 0.5f - m_cMap->GetTileSize() * 1.75f, sceneManager2D.m_window_height * 0.5f - m_cMap->GetTileSize());
 		}
 		else
 		{
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2, sceneManager2D.m_window_width * 0.5 - m_cMap->GetTileSize(), sceneManager2D.m_window_height * 0.5 - m_cMap->GetTileSize());
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansDeposited), Color(1, 1, 1), m_cMap->GetTileSize() * 2.f, sceneManager2D.m_window_width * 0.5f - m_cMap->GetTileSize(), sceneManager2D.m_window_height * 0.5f - m_cMap->GetTileSize());
 		}
 	}
 
@@ -1217,25 +1145,25 @@ void CSceneHub::RenderGUI()
 		sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
 
 		// Text
-		int textSize = m_cMap->GetTileSize() * 0.5;
+		float textSize = m_cMap->GetTileSize() * 0.5f;
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], targetNPC->getDialogue(), Color(0, 0, 0), textSize, 0, textSize);
 
 		if (currentState == INTERACTING)
 		{
 			// Click anywhere to continue
-			textSize = m_cMap->GetTileSize() * 0.25;
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width - textSize * 31 * 0.6, 0);
+			textSize = m_cMap->GetTileSize() * 0.25f;
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width - textSize * 31 * 0.6f, 0);
 		}
 	}
 
 	// Dark Surrounding
 	if (currentState == EXITING)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_DARK_SURROUNDING], false, sizeOfDarkSurrounding, sizeOfDarkSurrounding, theHero->getPositionX() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5, theHero->getPositionY() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5);
+		sceneManager2D.Render2DMesh(meshList[GEO_DARK_SURROUNDING], false, (int)sizeOfDarkSurrounding, (int)sizeOfDarkSurrounding, (int)(theHero->getPositionX() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f), (int)(theHero->getPositionY() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f));
 	}
 	else if (currentState == EXIT)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, sizeOfDarkSurrounding, sizeOfDarkSurrounding, theHero->getPositionX() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5, theHero->getPositionY() - sizeOfDarkSurrounding * 0.5 + m_cMap->GetTileSize() * 0.5);
+		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, (int)sizeOfDarkSurrounding, (int)sizeOfDarkSurrounding, (int)(theHero->getPositionX() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f), (int)(theHero->getPositionY() - sizeOfDarkSurrounding * 0.5f + m_cMap->GetTileSize() * 0.5f));
 	}
 }
 
@@ -1247,12 +1175,12 @@ void CSceneHub::ReadData(CGameInfo* Data)
 		theHero->setPositionX(Data->heroPosition.x);
 		theHero->setPositionY(Data->heroPosition.y);
 		theHero->SetAnimationDirection(Data->heroAnimationDir);
-		theHero->SetMapOffset_x(Data->heroMapOffset.x);
-		theHero->SetMapOffset_y(Data->heroMapOffset.y);
+		theHero->SetMapOffset_x((int)Data->heroMapOffset.x);
+		theHero->SetMapOffset_y((int)Data->heroMapOffset.y);
 		guardianCleared = Data->guardianCleared;
 		musicActive = Data->musicActive;
 
-		if (guardianCleared == true)
+		if (guardianCleared)
 		{
 			SetGuardianCleared();
 		}
@@ -1265,8 +1193,8 @@ void CSceneHub::StoreData(CGameInfo* Data)
 	Data->heroPosition.x = theHero->getPositionX();
 	Data->heroPosition.y = theHero->getPositionY();
 	Data->heroAnimationDir = theHero->GetAnimationDirection();
-	Data->heroMapOffset.x = theHero->GetMapOffset_x();
-	Data->heroMapOffset.y = theHero->GetMapOffset_y();
+	Data->heroMapOffset.x = (float)theHero->GetMapOffset_x();
+	Data->heroMapOffset.y = (float)theHero->GetMapOffset_y();
 	Data->guardianCleared = guardianCleared;
 	Data->musicActive = musicActive;
 }
@@ -1274,7 +1202,7 @@ void CSceneHub::StoreData(CGameInfo* Data)
 // Set the Guardian to cleared
 void CSceneHub::SetGuardianCleared()
 {
-	for (int i = 0; i < theNPCs.size(); i++)
+	for (int i = 0; i < (int)theNPCs.size(); i++)
 	{
 		if (theNPCs[i]->GetAI_Type() == CAI_Idling::GUARDIAN)
 		{
@@ -1298,7 +1226,7 @@ void CSceneHub::SetGuardianCleared()
 // Change Tip for tip advisor
 void CSceneHub::ChangeTip()
 {
-	for (int i = 0; i < theNPCs.size(); i++)
+	for (int i = 0; i < (int)theNPCs.size(); i++)
 	{
 		if (theNPCs[i]->GetAI_Type() == CAI_Idling::TIP_ADVISOR)
 		{

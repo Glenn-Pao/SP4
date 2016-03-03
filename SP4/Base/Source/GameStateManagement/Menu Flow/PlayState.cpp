@@ -142,7 +142,7 @@ void CPlayState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 	switch (scene->getState())
 	{
 	case CScenePlay::LOADED:
-		if ((bool)button_Left == true)
+		if (button_Left)
 		{
 			scene->setState(CScenePlay::EXITING);
 		}

@@ -417,7 +417,7 @@ void Camera3::UpdateJump(const double dt)
 	if (m_bJumping == true)
 	{
 		// Factor in gravity
-		JumpVel += GRAVITY * dt;
+		JumpVel += GRAVITY * (float)dt;
 
 		// Update the camera and target position
 		position.y += JumpVel * (float)dt;

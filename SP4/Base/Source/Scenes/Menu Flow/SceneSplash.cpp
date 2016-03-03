@@ -73,12 +73,12 @@ void CSceneSplash::Update(double dt)
 	{
 		case LOADING:
 		{
-			timeElapsed += dt;
+			timeElapsed += (float)dt;
 			if (timeElapsed >= 4.f)
 			{
 				state = LOADED;
 			}
-			noOfDots += 2 * dt;
+			noOfDots += 2 * (float)dt;
 			if (noOfDots >= 4.f)
 			{
 				noOfDots = 0.f;
@@ -87,12 +87,12 @@ void CSceneSplash::Update(double dt)
 		break;
 		case LOADED:
 		{
-			timeElapsed += dt;
+			timeElapsed += (float)dt;
 		}
 		break;
 		case EXITING:
 		{
-			ringScaleOffset += 2000 * dt;
+			ringScaleOffset += 2000 * (float)dt;
 			if (ringScaleOffset >= 700.f)
 			{
 				state = EXIT;
@@ -112,7 +112,7 @@ void CSceneSplash::Render()
 	// Render the background image
 	sceneManager2D.Render2DMesh(sceneManager2D.meshList[CSceneManager2D::GEO_BACKGROUND], false, 1, 1, 1, 0);
 
-	sceneManager2D.Render2DMesh(meshList[GEO_RAINBOW_WHEEL], false, 600 + ringScaleOffset, 600 + ringScaleOffset, 100 - ringScaleOffset * 0.5, 0 - ringScaleOffset * 0.5, timeElapsed * 20);
+	sceneManager2D.Render2DMesh(meshList[GEO_RAINBOW_WHEEL], false, (int)(600 + ringScaleOffset), (int)(600 + ringScaleOffset), (int)(100 - ringScaleOffset * 0.5f), (int)(0 - ringScaleOffset * 0.5f), timeElapsed * 20);
 
 	//On screen text
 	switch (state)

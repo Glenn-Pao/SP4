@@ -50,7 +50,7 @@ CSceneGameBase::~CSceneGameBase()
 	//	//delete theArrayOfGoodies[i];
 	//}
 	//delete theArrayOfGoodies;
-	for (int i = 0; i < theEnemies.size(); i++)
+	for (int i = 0; i < (int)theEnemies.size(); i++)
 	{
 		if (theEnemies[i])
 		{
@@ -80,10 +80,10 @@ CSceneGameBase::~CSceneGameBase()
 void CSceneGameBase::SetHeroOffset()
 {
 	// X
-	int centerBorderX = (m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize();
+	int centerBorderX = (int)((m_cMap->GetNumOfTiles_Width() * 0.5) * m_cMap->GetTileSize());
 	if (theHero->getPositionX() < centerBorderX)
 	{
-		theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
+		theHero->SetMapOffset_x((int)(theHero->getPositionX() - centerBorderX));
 		if (theHero->GetMapOffset_x() < 0)
 		{
 			theHero->SetMapOffset_x(0);
@@ -95,11 +95,11 @@ void CSceneGameBase::SetHeroOffset()
 	}
 	else
 	{
-		theHero->SetMapOffset_x(theHero->getPositionX() - centerBorderX);
-		float maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
+		theHero->SetMapOffset_x((int)(theHero->getPositionX() - centerBorderX));
+		int maxMapOffset_x = (m_cMap->getNumOfTiles_MapWidth() - m_cMap->GetNumOfTiles_Width()) * m_cMap->GetTileSize();
 		if (theHero->GetMapOffset_x() > maxMapOffset_x)
 		{
-			theHero->setPositionX(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x);
+			theHero->setPositionX((float)(centerBorderX + theHero->GetMapOffset_x() - maxMapOffset_x));
 			theHero->SetMapOffset_x(maxMapOffset_x);
 		}
 		else
@@ -108,11 +108,11 @@ void CSceneGameBase::SetHeroOffset()
 		}
 	}
 	// Y
-	int centerBorderY = (m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize();
+	int centerBorderY = (int)((m_cMap->GetNumOfTiles_Height() * 0.5) * m_cMap->GetTileSize());
 	if (theHero->getPositionY() < centerBorderY)
 	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY() + m_cMap->GetTileSize());
-		float maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
+		theHero->SetMapOffset_y((int)(centerBorderY - theHero->getPositionY() + m_cMap->GetTileSize()));
+		int maxMapOffset_y = (m_cMap->getNumOfTiles_MapHeight() - m_cMap->GetNumOfTiles_Height()) * m_cMap->GetTileSize();
 		if (theHero->GetMapOffset_y() > maxMapOffset_y)
 		{
 			//theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y() - maxMapOffset_y));
@@ -125,7 +125,7 @@ void CSceneGameBase::SetHeroOffset()
 	}
 	else
 	{
-		theHero->SetMapOffset_y(centerBorderY - theHero->getPositionY());
+		theHero->SetMapOffset_y((int)(centerBorderY - theHero->getPositionY()));
 		if (theHero->GetMapOffset_y() < m_cMap->GetTileSize())
 		{
 			//theHero->setPositionY(centerBorderY - (theHero->GetMapOffset_y()));

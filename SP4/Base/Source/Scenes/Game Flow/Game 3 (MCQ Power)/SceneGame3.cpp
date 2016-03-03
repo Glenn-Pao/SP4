@@ -1148,14 +1148,14 @@ void CSceneGame3::RenderGUI()
 		{
 		case COMPLETED:
 		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28);
+			float textSize = (float)m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195f, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28f);
 		}
 		break;
 		case FAILED:
 		{
-			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28);
+			float textSize = (float)m_cMap->GetTileSize();
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195f, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28f);
 		}
 		break;
 		}

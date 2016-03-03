@@ -72,7 +72,7 @@ void CSound::PlayMainMenu()
 	//gradually fade in the music
 	if (volMM < maxVol)
 	{
-		volMM += 0.003;
+		volMM += 0.003f;
 	}
 	if (volMM > maxVol)
 	{
@@ -92,7 +92,7 @@ void CSound::PlayMazeEscaper()
 	//gradually fade in the music
 	if (volME < maxVol)
 	{
-		volME += 0.003;
+		volME += 0.003f;
 	}
 	if (volME > maxVol)
 	{
@@ -112,7 +112,7 @@ void CSound::PlayPuzzleParty()
 	//gradually fade in the music
 	if (volPP < maxVol)
 	{
-		volPP += 0.003;
+		volPP += 0.003f;
 	}
 	if (volPP > maxVol)
 	{
@@ -132,7 +132,7 @@ void CSound::PlayMCQPower()
 	//gradually fade in the music
 	if (volMP < maxVol)
 	{
-		volMP += 0.003;
+		volMP += 0.003f;
 	}
 	if (volMP > maxVol)
 	{
@@ -152,7 +152,7 @@ void CSound::PlayStress()
 	//gradually fade in the music
 	if (volS < maxVol)
 	{
-		volS += 0.003;
+		volS += 0.003f;
 	}
 	if (volS > maxVol)
 	{
@@ -172,7 +172,7 @@ void CSound::PlayLobby()
 	//gradually fade in the music
 	if (volLob <maxVol)
 	{
-		volLob += 0.003;
+		volLob += 0.003f;
 	}
 	if (volLob > maxVol)
 	{
@@ -186,7 +186,7 @@ void CSound::StopMainMenu()
 	//gradually fade out the music
 	if (volMM > 0.f)
 	{
-		volMM -= 0.01;
+		volMM -= 0.01f;
 	}
 	MainMenu->setVolume(volMM);
 	if (volMM < 0.f)
@@ -201,7 +201,7 @@ void CSound::StopMazeEscaper()
 	//gradually fade out the music
 	if (volME > 0.f)
 	{
-		volME -= 0.01;
+		volME -= 0.01f;
 	}
 	MazeEscaper->setVolume(volME);
 	if (volME < 0.f)
@@ -216,7 +216,7 @@ void CSound::StopPuzzleParty()
 	//gradually fade out the music
 	if (volPP > 0.f)
 	{
-		volPP -= 0.01;
+		volPP -= 0.01f;
 	}
 	PuzzleParty->setVolume(volPP);
 	if (volPP < 0.f)
@@ -231,7 +231,7 @@ void CSound::StopMCQPower()
 	//gradually fade out the music
 	if (volMP > 0.f)
 	{
-		volMP -= 0.01;
+		volMP -= 0.01f;
 	}
 	MCQPower->setVolume(volMP);
 	if (volMP < 0.f)
@@ -246,7 +246,7 @@ void CSound::StopStress()
 	//gradually fade out the music
 	if (volS > 0.f)
 	{
-		volS -= 0.01;
+		volS -= 0.01f;
 	}
 	Stress->setVolume(volS);
 	if (volS < 0.f)
@@ -261,7 +261,7 @@ void CSound::StopLobby()
 	//gradually fade out the music
 	if (volLob > 0.f)
 	{
-		volLob -= 0.01;
+		volLob -= 0.01f;
 	}
 	Lobby->setVolume(volLob);
 	if (volLob < 0.f)

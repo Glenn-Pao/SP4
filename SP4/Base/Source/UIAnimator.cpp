@@ -19,7 +19,7 @@ void UIAnimator::Update(float dt)
 {
 	if (isActive == true)
 	{
-		for (int i = 0; i < AnimationList.size(); ++ i)
+		for (int i = 0; i < (int)AnimationList.size(); ++ i)
 		{
 			if (AnimationList[i]->getisComplete() == false)
 			{

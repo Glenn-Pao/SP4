@@ -20,8 +20,8 @@ Card::Card(OBJECT_TYPE m_Object_Type, bool active, std::string dialogue, Vector3
 	this->setMesh(ModelMesh);
 
 
-	Vector3 TopLeft(position.x - (scale.x * 0.5), position.y + (scale.y * 0.5), 0);
-	Vector3 BottomRight(position.x + (scale.x * 0.5), position.y - (scale.y * 0.5), 0);
+	Vector3 TopLeft(position.x - (scale.x * 0.5f), position.y + (scale.y * 0.5f), 0);
+	Vector3 BottomRight(position.x + (scale.x * 0.5f), position.y - (scale.y * 0.5f), 0);
 
 	this->setBoundingBox(TopLeft, BottomRight);
 

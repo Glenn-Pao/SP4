@@ -31,11 +31,11 @@ void CProjectile::Update(const double dt)
 		return;
 
 	// Update Position
-	thePosition.Set(	thePosition.x + theDirection.x * speed * dt, 
-						thePosition.y + theDirection.y * speed * dt, 
-						thePosition.z + theDirection.z * speed * dt);
+	thePosition.Set(thePosition.x + theDirection.x * speed * (int)dt,
+		thePosition.y + theDirection.y * speed * (int)dt,
+						thePosition.z + theDirection.z * speed * (float)dt);
 
-	distanceTravelled += theDirection.Length() * speed * dt;
+	distanceTravelled += theDirection.Length() * speed * (int)dt;
 }
 
 /********************************************************************************

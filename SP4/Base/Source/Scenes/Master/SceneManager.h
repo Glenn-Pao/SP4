@@ -190,9 +190,9 @@ private:
 	bool bLightEnabled;
 
 
-	bool fpsSelected;
-	bool fullscreenSelected;
-	bool coloredSelected;
+	int fpsSelected;
+	int fullscreenSelected;
+	int coloredSelected;
 	float fps;
 
 	// Handle to 3rd Person View's avatar

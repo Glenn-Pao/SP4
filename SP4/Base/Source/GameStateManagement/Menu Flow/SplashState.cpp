@@ -141,7 +141,7 @@ void CSplashState::HandleEvents(CGameStateManager* theGSM, const double mouse_x,
 	switch (scene->getState())
 	{
 	case CSceneSplash::LOADED:
-		if (button_Left == true)
+		if (button_Left)
 		{
 			scene->setState(CSceneSplash::EXITING);
 		}

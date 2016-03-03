@@ -19,7 +19,7 @@ void CLoadGameSelect::Init(CGameStateManager* theGSM)
 	scene->Init(0);
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
-		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew)
 		{
 			scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
 			scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);
@@ -36,7 +36,7 @@ void CLoadGameSelect::Init(CGameStateManager* theGSM, const int width, const int
 	scene->Init(level);
 	for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 	{
-		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+		if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew)
 		{
 			scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
 			scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);
@@ -160,20 +160,20 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 	{
 		case CSceneLoadGame::SELECTING:
 		{
-			scene->UIManagerSelecting->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerSelecting->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		break;
 		case CSceneLoadGame::CONFIRMATION:
 		{
-			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerConfirmation->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		case CSceneLoadGame::DELETING_CONFIRMATION:
 		{
-			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerConfirmation->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		break;
 	}
-	if ((bool)button_Left == true)
+	if (button_Left == (int)true)
 	{
 		switch (scene->currentState)
 		{
@@ -233,7 +233,7 @@ void CLoadGameSelect::HandleEvents(CGameStateManager* theGSM, const double mouse
 				theGSM->saveAndLoadsys->GetGameInfo(scene->DataSelected)->ClearFile();
 				for (int i = 0; i < theGSM->saveAndLoadsys->GetNumOfData(); i++)
 				{
-					if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew == true)
+					if (theGSM->saveAndLoadsys->GetGameInfo(i)->ifNew)
 					{
 						scene->UIManagerSelecting->FindButton("Data" + to_string(i + 1) + "Button")->setisLocked(true);
 						scene->UIManagerSelecting->FindButton("Delete" + to_string(i + 1) + "Button")->setisLocked(true);

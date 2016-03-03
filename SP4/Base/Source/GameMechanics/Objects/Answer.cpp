@@ -22,8 +22,8 @@ CAnswer::CAnswer(CObjects::OBJECT_TYPE m_Object_Type, int id, bool active, bool 
 	this->setCorrect(correct);
 
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 1.5), this->getPosition().y + (getScale().y * 1.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 1.5), this->getPosition().y - (getScale().y * 1.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 1.5f), this->getPosition().y + (getScale().y * 1.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 1.5f), this->getPosition().y - (getScale().y * 1.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);

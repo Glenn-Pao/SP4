@@ -9,11 +9,7 @@
 #include <sstream>
 #include "..\..\Base\Source\Strategy_Kill.h"
 
-extern "C" {
-#include "..\..\Lua\lua.h"
-#include "..\..\Lua\lualib.h"
-#include "..\..\Lua\lauxlib.h"
-}
+#include "..\..\UsingLua.h"
 CSceneManager::CSceneManager(void)
 	: m_window_width(800)
 	, m_window_height(600)
@@ -29,38 +25,14 @@ CSceneManager::CSceneManager(void)
 		letter[i] = false;
 	}
 
-
-
-	// Show FPS
-	lua_State *L = lua_open();
-
 	//Read a value from the lua text file
-	luaL_openlibs(L);
+	UseLuaFiles L;
 
-	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
+	L.ReadFiles("Lua//Options.lua");
 
-	lua_getglobal(L, "showFPS");
-	if (!lua_isnumber(L, -1)) {
-		printf("`showFPS' should be a number\n");
-	}
-	fpsSelected = (int)lua_tointeger(L, -1);
-
-	lua_getglobal(L, "fullscreen");
-	if (!lua_isnumber(L, -1)) {
-		printf("`fullscreen' should be a number\n");
-	}
-	fullscreenSelected = (int)lua_tointeger(L, -1);
-
-	lua_getglobal(L, "colored");
-	if (!lua_isnumber(L, -1)) {
-		printf("`colored' should be a number\n");
-	}
-	coloredSelected = (int)lua_tointeger(L, -1);
-
-	lua_close(L);
+	fpsSelected = L.DoLuaInt("showFPS");
+	fullscreenSelected = L.DoLuaInt("fullscreen");
+	coloredSelected = L.DoLuaInt("colored");
 }
 
 CSceneManager::CSceneManager(const int m_window_width, const int m_window_height)
@@ -126,7 +98,7 @@ CSceneManager::~CSceneManager(void)
 		m_cSpatialPartition = NULL;
 	}
 
-	for (int i = 0; i < m_cSceneGraphObjects.size(); i++)
+	for (int i = 0; i < (int)m_cSceneGraphObjects.size(); i++)
 	{
 		if (m_cSceneGraphObjects[i])
 		{
@@ -351,7 +323,7 @@ void CSceneManager::PreInit()
 	glUniform1i(m_parameters[U_NUMLIGHTS], lights.size());
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
 
-	for (int i = 0; i < lights.size(); i++)
+	for (int i = 0; i < (int)lights.size(); i++)
 	{
 		glUniform1i(m_parameters[U_LIGHT0_TYPE] + i, lights[i].type);
 		glUniform3fv(m_parameters[U_LIGHT0_COLOR] + i, 1, &lights[i].color.r);
@@ -471,7 +443,7 @@ void CSceneManager::InitObjects()
 			newModel->Init(NULL, meshLow, meshMed, meshHigh, Vector3(4.0f, 4.0f, 4.0f), Vector3(-4.0f, -4.0f, -4.0f));
 			cout << m_cSceneGraphObjects[i]->AddChild(new CTransform(0, -4, 0), newModel) << endl;
 
-			m_cSceneGraphObjects[i]->ApplyTranslate(100 + 200 * j, 0, 100 + 200 * k);
+			m_cSceneGraphObjects[i]->ApplyTranslate((float)(100 + 200 * j), 0, (float)(100 + 200 * k));
 			m_cSceneGraphObjects[i]->SetStatus(true);
 			// Add the pointers to the scene graph to the spatial partition
 			m_cSpatialPartition->AddObject(m_cSceneGraphObjects[i]);
@@ -632,9 +604,9 @@ void CSceneManager::InitSpatialPartition()
 	{
 		for (int j = 0; j<m_cSpatialPartition->GetyNumOfGrid(); j++)
 		{
-			Mesh* mesh = MeshBuilder::GenerateQuad("GridMesh", Color(1, 1, 1), gridSizeX);
+			Mesh* mesh = MeshBuilder::GenerateQuad("GridMesh", Color(1, 1, 1), (float)gridSizeX);
 
-			if (coloredSelected == true)
+			if (coloredSelected)
 			{
 				string temp = "Image//Colors/color";
 				temp += to_string(index);
@@ -669,7 +641,7 @@ void CSceneManager::AddEnemies()
 
 	if (noOfMovingEnemies != maxMovingEnemies || noOfCrowned != maxCrownedEnemies)
 	{
-		for (int i = 0; i < m_cSceneGraphObjects.size(); i++)
+		for (int i = 0; i < (int)m_cSceneGraphObjects.size(); i++)
 		{
 			// Is Moving
 			if (m_cSceneGraphObjects[i]->GetVel().IsZero() == false)
@@ -683,7 +655,7 @@ void CSceneManager::AddEnemies()
 						if (noOfMovingEnemies < maxMovingEnemies)
 						{
 							m_cSceneGraphObjects[i]->SetStatus(true);
-							m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, m_cSpatialPartition->xSize, m_cSpatialPartition->ySize);
+							m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, (float)m_cSpatialPartition->xSize, (float)m_cSpatialPartition->ySize);
 
 							m_cSpatialPartition->CheckObjectGrid(m_cSceneGraphObjects[i]);
 							noOfMovingEnemies++;
@@ -695,7 +667,7 @@ void CSceneManager::AddEnemies()
 						if (noOfCrowned < maxCrownedEnemies)
 						{
 							m_cSceneGraphObjects[i]->SetStatus(true);
-							m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, m_cSpatialPartition->xSize, m_cSpatialPartition->ySize);
+							m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, (float)m_cSpatialPartition->xSize, (float)m_cSpatialPartition->ySize);
 
 							m_cSpatialPartition->CheckObjectGrid(m_cSceneGraphObjects[i]);
 							noOfCrowned++;
@@ -705,7 +677,7 @@ void CSceneManager::AddEnemies()
 				else
 				{
 					m_cSceneGraphObjects[i]->SetTimeDead(0.f);
-					m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, m_cSpatialPartition->xSize, m_cSpatialPartition->ySize);
+					m_cSceneGraphObjects[i]->SetRandomPos(m_cSceneGraphObjects, (float)m_cSpatialPartition->xSize, (float)m_cSpatialPartition->ySize);
 
 					m_cSpatialPartition->CheckObjectGrid(m_cSceneGraphObjects[i]);
 				}
@@ -780,7 +752,7 @@ void CSceneManager::Update(double dt)
 
 			camera.UpdatePosition(m_cAvatar->GetNewPosition(), m_cAvatar->GetNewDirection());
 
-			startingTime -= dt;
+			startingTime -= (float)dt;
 			if (startingTime < 0.f)
 			{
 				startingTime = 3.f;
@@ -961,7 +933,7 @@ void CSceneManager::Update(double dt)
 			// Time-Limit
 			if (currentLevel == 0)
 			{
-				timeLeft -= dt;
+				timeLeft -= (float)dt;
 
 				// Gameover time limit
 				if (timeLeft <= 0.f || m_cAvatar->theAvatarNode->GetTimeDead() != 0.f)
@@ -989,7 +961,7 @@ void CSceneManager::Update(double dt)
 			{
 				if (cooldownDuration[i] != 0.f)
 				{
-					cooldownDuration[i] -= dt;
+					cooldownDuration[i] -= (float)dt;
 					if (cooldownDuration[i] < 0.f)
 					{
 						cooldownDuration[i] = 0.f;
@@ -1008,11 +980,11 @@ Update Objects
 ********************************************************************************/
 void CSceneManager::UpdateObjects(double dt)
 {
-	rotateAngle = 200 * dt;
+	rotateAngle = 200 * (float)dt;
 	
 	int crownedIndex = 0;
 	// Update
-	for (int i = 0; i < m_cSceneGraphObjects.size(); i++)
+	for (int i = 0; i < (int)m_cSceneGraphObjects.size(); i++)
 	{
 		CSceneNode* object = m_cSceneGraphObjects[i];
 		if (m_cSceneGraphObjects[i]->GetStatus() == true)
@@ -1029,16 +1001,16 @@ void CSceneManager::UpdateObjects(double dt)
 				{
 					if (crownedListUpward[crownedIndex] == true)
 					{
-						object->GetNode(14)->ApplyTranslate(0, 5 * dt, 0);
-						crownedListTranslateY[crownedIndex] += 5 * dt;
+						object->GetNode(14)->ApplyTranslate(0, (float)(5 * dt), 0);
+						crownedListTranslateY[crownedIndex] += (float)(5 * dt);
 
 						if (crownedListTranslateY[crownedIndex] > 3.f)
 							crownedListUpward[crownedIndex] = false;
 					}
 					else
 					{
-						object->GetNode(14)->ApplyTranslate(0, -5 * dt, 0);
-						crownedListTranslateY[crownedIndex] += -5 * dt;
+						object->GetNode(14)->ApplyTranslate(0, (float)(-5 * dt), 0);
+						crownedListTranslateY[crownedIndex] += (float)(-5 * dt);
 
 						if (crownedListTranslateY[crownedIndex] < 1.f)
 							crownedListUpward[crownedIndex] = true;
@@ -1056,7 +1028,7 @@ void CSceneManager::UpdateObjects(double dt)
 				// Moving
 				else if (object->GetVel().IsZero() == false)
 				{
-					object->UpdateFSM(dt, m_cAvatar->theAvatarNode);
+					object->UpdateFSM((float)dt, m_cAvatar->theAvatarNode);
 
 					m_cSpatialPartition->CheckObjectGrid(object);
 
@@ -1070,7 +1042,7 @@ void CSceneManager::UpdateObjects(double dt)
 						Vector3 objectNodeRadius = object->GetOffset() - object->GetBottomRight();
 						object2NodeRadius.y = objectNodeRadius.y = 0;
 						float separationDistance = object2NodeRadius.Length() + objectNodeRadius.Length();
-						newDirection = newDirection.Normalize() * separationDistance * dt;
+						newDirection = newDirection.Normalize() * separationDistance * (float)dt;
 
 						object->ApplyTranslate(-newDirection.x, -newDirection.y, -newDirection.z);
 
@@ -1081,7 +1053,7 @@ void CSceneManager::UpdateObjects(double dt)
 						object->CheckForCollision(Vector3(1000, ObjectCenter.y, ObjectCenter.z), 0) ||// Left
 						object->CheckForCollision(Vector3(0, ObjectCenter.y, ObjectCenter.z), 0))// Right
 					{
-						object->ApplyTranslate(-object->GetVel().x * dt, -object->GetVel().y * dt, -object->GetVel().z * dt);
+						object->ApplyTranslate(-object->GetVel().x * (float)dt, -object->GetVel().y * (float)dt, -object->GetVel().z * (float)dt);
 						object->SetRandomDir();
 					}
 					else if (object->GetWalkDistanceLeft() < 0.f)
@@ -1398,35 +1370,35 @@ void CSceneManager::RenderGUI()
 	if (fpsSelected)
 	{
 		ss << "FPS:" << fps;
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 25, m_window_width - 250, 5);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 25, (float)(m_window_width - 250), 5);
 	}
 
 	// Time Limit
 	if (currentLevel == 0)
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Time-Limit", Color(1, 1, 1), 30, 0, m_window_height - 30);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Time-Limit", Color(1, 1, 1), 30, 0, (float)m_window_height - 30);
 	}
 	else
 	{
 		ss.str(std::string());
 		ss << "Level:" << currentLevel;
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, 0, m_window_height - 30);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, 0, (float)m_window_height - 30);
 	}
 
 	switch (currentState)
 	{
 	case PRE_START:
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "<CLick to Play>", Color(0, 0, 0), 40, 100, m_window_height * 0.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "<CLick to Play>", Color(0, 0, 0), 40, 100, m_window_height * 0.5f);
 	}
 	break;
 	case STARTING:
 	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "Starting In:", Color(0, 0, 0), 50, m_window_width * 0.5 - 300, m_window_height * 0.75);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Starting In:", Color(0, 0, 0), 50, m_window_width * 0.5f - 300, m_window_height * 0.75f);
 
 		ss.str(std::string());
 		ss << (int)startingTime;
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 0), 200, m_window_width * 0.5 - 50, m_window_height * 0.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 0), 200, m_window_width * 0.5f - 50, m_window_height * 0.25f);
 	}
 	break;
 	case PLAYING:
@@ -1436,26 +1408,26 @@ void CSceneManager::RenderGUI()
 		{
 			ss.str(std::string());
 			ss << "Score:" << playerRecord.getScore();
-			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, m_window_width - 250, m_window_height - 30);
+			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, (float)m_window_width - 250, (float)m_window_height - 30);
 
 			ss.str(std::string());
 			ss << "Time Left:" << timeLeft;
-			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, 175, m_window_height - 60);
+			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, 175, (float)m_window_height - 60);
 		}
 		else
 		{
 			ss.str(std::string());
 			ss << "Crowned:" << noOfCrowned;
-			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, m_window_width - 260, m_window_height - 30);
+			RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 30, (float)m_window_width - 260, (float)m_window_height - 30);
 
-			RenderTextOnScreen(meshList[GEO_TEXT], "Find & Destroy all Crowned!", Color(1, 1, 1), 30, 0, m_window_height - 60);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Find & Destroy all Crowned!", Color(1, 1, 1), 30, 0, (float)m_window_height - 60);
 		}
 
 		Render2DMesh(meshList[GEO_HEART], false, 1, 1, m_window_width - 430, m_window_height - 30);
 		ss.str(std::string());
 		ss.precision(2);
 		ss << ":" << m_cAvatar->theAvatarNode->GetHealth();
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 30, m_window_width - 390, m_window_height - 30);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 30, (float)m_window_width - 390, (float)m_window_height - 30);
 
 		ss.str(std::string());
 		ss.precision(2);
@@ -1508,7 +1480,7 @@ void CSceneManager::RenderMobileObjects()
 	modelStack.PopMatrix();
 
 	// Draw the Scene Graph
-	for (int i = 0; i < m_cSceneGraphObjects.size(); i++)
+	for (int i = 0; i < (int)m_cSceneGraphObjects.size(); i++)
 	{
 		if (m_cSceneGraphObjects[i]->GetStatus() == true)
 		{
@@ -1531,7 +1503,7 @@ void CSceneManager::RenderFixedObjects()
  ********************************************************************************/
 void CSceneManager::RenderLights()
 { 
-	for (int i = 0; i < lights.size(); i++)
+	for (int i = 0; i < (int)lights.size(); i++)
 	{
 		// Render LightBall
 		modelStack.PushMatrix();
@@ -1592,14 +1564,14 @@ void CSceneManager::RenderGround()
 		modelStack.PushMatrix();
 		modelStack.Translate(-400, 0, -400);
 		modelStack.Rotate(-90, 1, 0, 0);
-		modelStack.Translate(0, 0, -9.9);
+		modelStack.Translate(0, 0, -9.9f);
 
 		for (int i = 0; i < m_cSpatialPartition->GetxNumOfGrid(); i++)
 		{
 			for (int j = 0; j < m_cSpatialPartition->GetyNumOfGrid(); j++)
 			{
 				modelStack.PushMatrix();
-				modelStack.Translate(m_cSpatialPartition->xGridSize*i, -m_cSpatialPartition->yGridSize*j, 0.0f);
+				modelStack.Translate((float)(m_cSpatialPartition->xGridSize*i), (float)(-m_cSpatialPartition->yGridSize*j), 0.0f);
 				RenderMesh(m_cSpatialPartition->GetGridMesh(i, j), true);
 				modelStack.PopMatrix();
 			}
@@ -1736,7 +1708,7 @@ void CSceneManager::Render()
 		std::ostringstream ss;
 		ss.precision(3);
 		ss << playerRecord.getScore();
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 50.f, m_window_width * 0.4, m_window_height * 0.4);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 50.f, m_window_width * 0.4f, m_window_height * 0.4f);
 	}
 	break;
 	case LEVEL_COMPLETED:
@@ -1749,7 +1721,7 @@ void CSceneManager::Render()
 		std::ostringstream ss;
 		ss.precision(3);
 		ss << tempName;
-		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 50.f, m_window_width * 0.35, m_window_height * 0.4);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 1, 1), 50.f, m_window_width * 0.35f, m_window_height * 0.4f);
 	}
 	break;
 	default:

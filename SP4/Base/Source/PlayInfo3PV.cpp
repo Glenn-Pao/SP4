@@ -121,7 +121,7 @@ bool CPlayInfo3PV::isOnGround(void)
 // Set position x of the player
 void CPlayInfo3PV::SetPos_x(int pos_x)
 {
-	curPosition.x = pos_x;
+	curPosition.x = (float)pos_x;
 
 	theAvatarNode->SetTranslation(curPosition.x, curPosition.y, curPosition.z);
 	newPosition = curPosition;
@@ -130,7 +130,7 @@ void CPlayInfo3PV::SetPos_x(int pos_x)
 // Set position y of the player
 void CPlayInfo3PV::SetPos_y(int pos_y)
 {
-	curPosition.y = pos_y;
+	curPosition.y = (float)pos_y;
 
 	theAvatarNode->SetTranslation(curPosition.x, curPosition.y, curPosition.z);
 	newPosition = curPosition;
@@ -139,7 +139,7 @@ void CPlayInfo3PV::SetPos_y(int pos_y)
 // Set position y of the player
 void CPlayInfo3PV::SetPos_z(int pos_z)
 {
-	curPosition.z = pos_z;
+	curPosition.z = (float)pos_z;
 
 	theAvatarNode->SetTranslation(curPosition.x, curPosition.y, curPosition.z);
 	newPosition = curPosition;
@@ -237,19 +237,19 @@ void CPlayInfo3PV::RotateLeftRight(const bool mode, const float timeDiff, CSpati
 // Get position x of the player
 int CPlayInfo3PV::GetPos_x(void)
 {
-	return curPosition.x;
+	return (int)curPosition.x;
 }
 
 // Get position y of the player
 int CPlayInfo3PV::GetPos_y(void)
 {
-	return curPosition.y;
+	return (int)curPosition.y;
 }
 
 // Get position y of the player
 int CPlayInfo3PV::GetPos_z(void)
 {
-	return curPosition.z;
+	return (int)curPosition.z;
 }
 
 // Get position of the player
@@ -303,17 +303,17 @@ void CPlayInfo3PV::ConstrainHero(const int leftBorder, const int rightBorder,
 {
 	if (curPosition.x < leftBorder)
 	{
-		curPosition.x = leftBorder;
+		curPosition.x = (float)leftBorder;
 	}
 	else if (curPosition.x > rightBorder)
 	{
-		curPosition.x = rightBorder;
+		curPosition.x = (float)rightBorder;
 	}
 
 	if (curPosition.y < topBorder)
-		curPosition.y = topBorder;
+		curPosition.y = (float)topBorder;
 	else if (curPosition.y > bottomBorder)
-		curPosition.y = bottomBorder;
+		curPosition.y = (float)bottomBorder;
 }
 
 
@@ -340,28 +340,28 @@ void CPlayInfo3PV::Update(const double dt, const bool cooldowning, CSpatialParti
 		// WASD movement
 		if (myKeys['w'] == true)
 		{
-			MoveFrontBack(true, dt);
+			MoveFrontBack(true, (float)dt);
 		}
 		if (myKeys['s'] == true)
 		{
-			MoveFrontBack(false, dt);
+			MoveFrontBack(false, (float)dt);
 		}
 		if (myKeys['a'] == true)
 		{
-			MoveLeftRight(false, dt);
+			MoveLeftRight(false, (float)dt);
 		}
 		if (myKeys['d'] == true)
 		{
-			MoveLeftRight(true, dt);
+			MoveLeftRight(true, (float)dt);
 		}
 		// QE rotate
 		if (myKeys['q'] == true)
 		{
-			RotateLeftRight(true, dt, sp);
+			RotateLeftRight(true, (float)dt, sp);
 		}
 		if (myKeys['e'] == true)
 		{
-			RotateLeftRight(false, dt, sp);
+			RotateLeftRight(false, (float)dt, sp);
 		}
 		// Jump
 		if (myKeys[32] == true)
@@ -395,13 +395,13 @@ void CPlayInfo3PV::Update(const double dt, const bool cooldowning, CSpatialParti
 		{
 			if (floatingUp)
 			{
-				floatingAmount += dt + MoveVel.Length() * 0.01 * dt;
+				floatingAmount += (float)dt + MoveVel.Length() * 0.01f * (float)dt;
 				if (floatingAmount >= 0.5f)
 					floatingUp = false;
 			}
 			else
 			{
-				floatingAmount -= dt + MoveVel.Length() * 0.01 * dt;
+				floatingAmount -= (float)dt + MoveVel.Length() * 0.01f * (float)dt;
 				if (floatingAmount <= -0.5f)
 					floatingUp = true;
 			}
@@ -554,7 +554,7 @@ void CPlayInfo3PV::UpdateJump(const double dt)
 	if (m_bJumping == true)
 	{
 		// Factor in gravity
-		JumpVel += GRAVITY * dt;
+		JumpVel += GRAVITY * (float)dt;
 
 		// Update the avatar node
 		theAvatarNode->ApplyTranslate(0, JumpVel * (float)dt, 0);
@@ -584,7 +584,7 @@ void CPlayInfo3PV::UpdateMovement(const double dt, CSpatialPartition* sp)
 		{
 			Vector3 preMoveVel = MoveVel;
 
-			MoveVel += MoveVel.Normalized() * -MOVE_ACC * dt;
+			MoveVel += MoveVel.Normalized() * -MOVE_ACC * (float)dt;
 
 			if ((preMoveVel.x < 0 && MoveVel.x > 0)
 				|| (preMoveVel.x > 0 && MoveVel.x < 0))
@@ -599,16 +599,16 @@ void CPlayInfo3PV::UpdateMovement(const double dt, CSpatialPartition* sp)
 			MoveVel = MoveVel.Normalized() * 50.f;
 
 		// Update the avatar position
-		curPosition += MoveVel * dt;
+		curPosition += MoveVel * (float)dt;
 
 		// Update the avatar node
-		theAvatarNode->ApplyTranslate(MoveVel.x * dt, 0, MoveVel.z * dt);
+		theAvatarNode->ApplyTranslate(MoveVel.x * (float)dt, 0, MoveVel.z * (float)dt);
 
 		// Check collision with objects
 		if (CheckCollision(sp, 1))
 		{
-			curPosition -= MoveVel * dt;
-			theAvatarNode->ApplyTranslate(-MoveVel.x * dt, 0, -MoveVel.z * dt);
+			curPosition -= MoveVel * (float)dt;
+			theAvatarNode->ApplyTranslate(-MoveVel.x * (float)dt, 0, -MoveVel.z * (float)dt);
 			MoveVel.SetZero();
 		}
 		else
@@ -668,12 +668,12 @@ void CPlayInfo3PV::UpdateBottom(const double dt, const Vector3 prev_RotationVel)
 		// Check if to rotate up
 		if (bottomRotationLeftRightUpDown.x < 0)
 		{
-			bottomRotationLeftRightUpDown.x += ROTATE_ACC * 20 * dt * dt;
+			bottomRotationLeftRightUpDown.x += ROTATE_ACC * 20 * (float)dt * (float)dt;
 		}
 		// else to rotate down
 		else
 		{
-			bottomRotationLeftRightUpDown.x += -ROTATE_ACC * 20 * dt * dt;
+			bottomRotationLeftRightUpDown.x += -ROTATE_ACC * 20 * (float)dt * (float)dt;
 		}
 
 		// if reach 0 or more set it to zero
@@ -698,12 +698,12 @@ void CPlayInfo3PV::UpdateBottom(const double dt, const Vector3 prev_RotationVel)
 		// Check if to rotate right
 		if (bottomRotationLeftRightUpDown.z < 0)
 		{
-			bottomRotationLeftRightUpDown.z += ROTATE_ACC * 20 * dt * dt;
+			bottomRotationLeftRightUpDown.z += ROTATE_ACC * 20 * (float)dt * (float)dt;
 		}
 		// else to rotate left
 		else
 		{
-			bottomRotationLeftRightUpDown.z += -ROTATE_ACC * 20 * dt * dt;
+			bottomRotationLeftRightUpDown.z += -ROTATE_ACC * 20 * (float)dt * (float)dt;
 		}
 
 		// if reach 0 or more set it to zero
@@ -732,7 +732,7 @@ void CPlayInfo3PV::UpdateBottom(const double dt, const Vector3 prev_RotationVel)
 			// Record old to rotate amount
 			float prev_rotateX = bottomRotationLeftRightUpDown.x;
 			// Add  rotate amount to bottomRotationLeftRightUpDown
-			bottomRotationLeftRightUpDown.x += RotateVel.x * dt;
+			bottomRotationLeftRightUpDown.x += RotateVel.x * (float)dt;
 			// Backward
 			if (bottomRotationLeftRightUpDown.x > 20.f)
 			{
@@ -756,7 +756,7 @@ void CPlayInfo3PV::UpdateBottom(const double dt, const Vector3 prev_RotationVel)
 			// Record old to rotate amount
 			float prev_rotateZ = bottomRotationLeftRightUpDown.z;
 			// Add  rotate amount to bottomRotationLeftRightUpDown
-			bottomRotationLeftRightUpDown.z += RotateVel.z * dt;
+			bottomRotationLeftRightUpDown.z += RotateVel.z * (float)dt;
 			// Backward
 			if (bottomRotationLeftRightUpDown.z > 20.f)
 			{
@@ -786,7 +786,7 @@ void CPlayInfo3PV::UpdateCamera(const double dt, const Vector3 prev_Position, co
 		{
 			Vector3 prevNewDirection = newDirection;
 
-			newDirection += (curCamDirection - newDirection).Normalized() * 2 * dt;
+			newDirection += (curCamDirection - newDirection).Normalized() * 2 * (float)dt;
 
 			if ((curCamDirection - newDirection).Length() > (curCamDirection - prevNewDirection).Length())
 			{
@@ -802,7 +802,7 @@ void CPlayInfo3PV::UpdateCamera(const double dt, const Vector3 prev_Position, co
 		{
 			Vector3 prevNewPosition = newPosition;
 
-			newPosition += (curPosition - newPosition).Normalized() * MOVE_CAMERA_SPEED * dt;
+			newPosition += (curPosition - newPosition).Normalized() * MOVE_CAMERA_SPEED * (float)dt;
 
 			if ((curPosition - newPosition).Length() > (curPosition - prevNewPosition).Length())
 			{
@@ -829,7 +829,7 @@ void CPlayInfo3PV::UpdateCamera(const double dt, const Vector3 prev_Position, co
 		{
 			Vector3 prevNewDirection = newDirection;
 
-			newDirection += (maxNewDirection - newDirection).Normalized() * 2 * dt;
+			newDirection += (maxNewDirection - newDirection).Normalized() * 2 * (float)dt;
 
 			if ((maxNewDirection - newDirection).Length() > (maxNewDirection - prevNewDirection).Length())
 			{
@@ -845,7 +845,7 @@ void CPlayInfo3PV::UpdateCamera(const double dt, const Vector3 prev_Position, co
 		{
 			Vector3 prevNewPosition = newPosition;
 
-			newPosition += (maxNewPosition - newPosition).Normalized() * MOVE_CAMERA_SPEED * dt;
+			newPosition += (maxNewPosition - newPosition).Normalized() * MOVE_CAMERA_SPEED * (float)dt;
 
 			if ((maxNewPosition - newPosition).Length() > (maxNewPosition - prevNewPosition).Length())
 			{

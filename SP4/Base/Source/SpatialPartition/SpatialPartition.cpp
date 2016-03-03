@@ -491,7 +491,7 @@ int CSpatialPartition::CheckForCollision(Vector3 position_start, Vector3 positio
 		for (int i = 0; i < (int)theListOfObjects.size(); i++)
 		{
 			Vector3 hits = Vector3(0, 0, 0);
-			if (theListOfObjects[i]->CheckForCollision(position_start, position_end, hits, hitPoints) == true)
+			if (theListOfObjects[i]->CheckForCollision(position_start, position_end, hits, hitPoints))
 			{
 				if (theListOfObjects[i]->GetCrowned() == true && theListOfObjects[i]->GetStatus() == false)
 				{
@@ -568,9 +568,9 @@ Check object current grid
 ********************************************************************************/
 void CSpatialPartition::CheckObjectGrid(CSceneNode* object)
 {
-	for (int i = 0; i < object->currentGridIndex.size(); i++)
+	for (int i = 0; i < (int)object->currentGridIndex.size(); i++)
 	{
-		CGrid* grid = GetGrid(object->currentGridIndex[i].x, object->currentGridIndex[i].y);
+		CGrid* grid = GetGrid((int)(object->currentGridIndex[i].x), (int)(object->currentGridIndex[i].y));
 		Vector3 GridTopLeft = grid->GetTopLeft();
 		Vector3 GridBottomRight = grid->GetBottomRight();
 		Vector3 ObjectTopLeft = object->GetTopLeft();

@@ -20,7 +20,7 @@ CSceneGame2::CSceneGame2(const int m_window_width, const int m_window_height)
 CSceneGame2::~CSceneGame2()
 {
 	// Dialogues tiles
-	for (int i = 0; i < dialogueTiles.size(); i++)
+	for (int i = 0; i < (int)dialogueTiles.size(); i++)
 	{
 		if (dialogueTiles[i])
 		{
@@ -118,21 +118,21 @@ void CSceneGame2::Init(int level)
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
 			// Hero
-			float pos_x = k*m_cMap->GetTileSize();
-			float pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+			int pos_x = k*m_cMap->GetTileSize();
+			int pos_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 			if (m_cMap->theScreenMap[i][k] == 1000 && theHero == NULL)
 			{
 				// Initialise the hero's position
 
 				theHero = new CPlayerInfo(m_cMap);
-				theHero->setPositionX(pos_x);
-				theHero->setPositionY(pos_y);
+				theHero->setPositionX((float)pos_x);
+				theHero->setPositionY((float)pos_y);
 
 				// Control Dialogue
-				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[0], Vector3(pos_x, pos_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(pos_x - (tileSize * 0.5), pos_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(pos_x + (tileSize * 0.5), pos_y - (tileSize * 0.5), 0);
+				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[0], Vector3((float)pos_x, (float)pos_y), Vector3(), Vector3(), NULL));
+				Vector3 topleft(pos_x - (tileSize * 0.5f), pos_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(pos_x + (tileSize * 0.5f), pos_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 		}
@@ -171,12 +171,12 @@ void CSceneGame2::Init(int level)
 	
 	TRightS = TLeftS = TRightM = TLeftM = TRightB = TLeftB = 0;
 
-	slot1.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
-	slot2.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
-	slot3.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
-	slot4.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 11), 0);
-	slot5.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
-	slot6.Set(sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
+	slot1.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
+	slot2.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
+	slot3.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 10), 0);
+	slot4.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 3), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 11), 0);
+	slot5.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 4), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
+	slot6.Set((float)sceneManager2D.m_window_width - (m_cMap->GetTileSize() * 2), (float)sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 9), 0);
 
 	lives = 3;
 	UIWarningScale = scaleUP = false;
@@ -198,76 +198,76 @@ void CSceneGame2::InitUI()
 	UIManager = new UISystem();
 
 	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManager->addFeature(AlphaQuad);
 
 	Image* WinScreen;
-	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	WinScreen = new Image("WinScreen", meshList[GEO_WIN_BG], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManager->addFeature(WinScreen);
 
 	Image* LoseScreen;
-	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	LoseScreen = new Image("LoseScreen", meshList[GEO_LOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManager->addFeature(LoseScreen);
 
 	Image* TutScreen;
-	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutScreen = new Image("TutScreen", meshList[GEO_TUT_BG], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManager->addFeature(TutScreen);
 
 	Image* TutLoseScreen;
-	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	TutLoseScreen = new Image("TutLoseScreen", meshList[GEO_TUTLOSE_BG], Vector3(sceneManager2D.m_window_width * 0.5f, (float)sceneManager2D.m_window_height + 200, 0), Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.45f, 0));
 	UIManager->addFeature(TutLoseScreen);
 
 	Button* ReturnToHubButton;
-	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	ReturnToHubButton = new Button("ReturnToHubButton", meshList[GEO_HUB_BTN_UP], meshList[GEO_HUB_BTN_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45f, -200, 0), Vector3(sceneManager2D.m_window_width * 0.2f, sceneManager2D.m_window_height * 0.1f, 0));
 	UIManager->addFeature(ReturnToHubButton);
 
 	Image* WarningR;
-	WarningR = new Image("WarningR", meshList[GEO_WARNING], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	WarningR = new Image("WarningR", meshList[GEO_WARNING], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 	UIManager->addFeature(WarningR);
 
 	// Instructions for Tutorial
 	if (level == 0)
 	{
 		// Scale the Alpha quad first
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("AlphaQuad"), 1, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height), 5.0f, UIAnimation::SCALING);
 
 		// Instruction Header
 		Image* Instruction_Header;
-		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.3), Vector3(sceneManager2D.m_window_width * 0.3, sceneManager2D.m_window_height * 0.125));
+		Instruction_Header = new Image("Instruction_Header", meshList[GEO_INSTRUCTION_HEADER], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 1.3f), Vector3(sceneManager2D.m_window_width * 0.3f, sceneManager2D.m_window_height * 0.125f));
 		UIManager->addFeature(Instruction_Header);
 		// Move the Instruction Header second
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.9), 5.0f, UIAnimation::TRANSLATION);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Header"), 1.05f, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.9f), 5.0f, UIAnimation::TRANSLATION);
 		
 		// Instruction Background
 		Image* Instruction_Background;
-		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5), Vector3(0, 0, 0));
+		Instruction_Background = new Image("Instruction_Background", meshList[GEO_DIALOGUE_BOX], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f), Vector3(0, 0, 0));
 		UIManager->addFeature(Instruction_Background);
 		// Scale the background third
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675, sceneManager2D.m_window_height * 0.675), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Instruction_Background"), 1.1f, Vector3(sceneManager2D.m_window_width * 0.675f, sceneManager2D.m_window_height * 0.675f), 5.0f, UIAnimation::SCALING);
 
 		// Next Button
 		Button* Next_Button;
-		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.1, 0), Vector3());
+		Next_Button = new Button("Next_Button", meshList[GEO_UPARROW_BUTTON_UP], meshList[GEO_UPARROW_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.1f, 0), Vector3());
 		UIManager->addFeature(Next_Button);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1, sceneManager2D.m_window_height * 0.1, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Next_Button"), 1.2f, Vector3(sceneManager2D.m_window_height * 0.1f, sceneManager2D.m_window_height * 0.1f, 1), 5.0f, UIAnimation::SCALING);
 
 		numOfInstructionsLeft = 3;
 
 		// Instructions pt 1
 		Image* INSTRUCTIONS1;
-		INSTRUCTIONS1 = new Image("INSTRUCTIONS1", meshList[GEO_INSTRUCTION1_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		INSTRUCTIONS1 = new Image("INSTRUCTIONS1", meshList[GEO_INSTRUCTION1_GAME2], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 		UIManager->addFeature(INSTRUCTIONS1);
 		// Scale the first Instruction fourth
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("INSTRUCTIONS1"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65, sceneManager2D.m_window_height * 0.65, 1), 5.0f, UIAnimation::SCALING);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("INSTRUCTIONS1"), 1.15f, Vector3(sceneManager2D.m_window_width * 0.65f, sceneManager2D.m_window_height * 0.65f, 1), 5.0f, UIAnimation::SCALING);
 		
 		// Instructions pt 1
 		Image* INSTRUCTIONS2;
-		INSTRUCTIONS2 = new Image("INSTRUCTIONS2", meshList[GEO_INSTRUCTION2_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		INSTRUCTIONS2 = new Image("INSTRUCTIONS2", meshList[GEO_INSTRUCTION2_GAME2], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 		UIManager->addFeature(INSTRUCTIONS2);
 		// Instructions pt 1
 		Image* INSTRUCTIONS3;
-		INSTRUCTIONS3 = new Image("INSTRUCTIONS3", meshList[GEO_INSTRUCTION3_GAME2], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+		INSTRUCTIONS3 = new Image("INSTRUCTIONS3", meshList[GEO_INSTRUCTION3_GAME2], Vector3(sceneManager2D.m_window_width * 0.5f, sceneManager2D.m_window_height * 0.5f, 0), Vector3(0, 0, 0));
 		UIManager->addFeature(INSTRUCTIONS3);
 		
 	}
@@ -279,122 +279,122 @@ void CSceneGame2::InitTutorial()
 	{
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
-			int TSize_x = k*m_cMap->GetTileSize();
-			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+			float TSize_x = (float)k*m_cMap->GetTileSize();
+			float TSize_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 			if (m_cMap->theScreenMap[i][k] == 33)
 			{
-				GreyDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]));
+				GreyDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_TILE_DOOR]));
 				GreyDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 30)
 			{
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[2], Vector3(TSize_x, TSize_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(TSize_x - (tileSize * 0.5), TSize_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(TSize_x + (tileSize * 0.5), TSize_y - (tileSize * 0.5), 0);
+				Vector3 topleft(TSize_x - (tileSize * 0.5f), TSize_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(TSize_x + (tileSize * 0.5f), TSize_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 31)
 			{
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[1], Vector3(TSize_x, TSize_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(TSize_x - (tileSize * 0.5), TSize_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(TSize_x + (tileSize * 0.5), TSize_y - (tileSize * 0.5), 0);
+				Vector3 topleft(TSize_x - (tileSize * 0.5f), TSize_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(TSize_x + (tileSize * 0.5f), TSize_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 32)
 			{
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[3], Vector3(TSize_x, TSize_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(TSize_x - (tileSize * 0.5), TSize_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(TSize_x + (tileSize * 0.5), TSize_y - (tileSize * 0.5), 0);
+				Vector3 topleft(TSize_x - (tileSize * 0.5f), TSize_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(TSize_x + (tileSize * 0.5f), TSize_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 29)
 			{
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[4], Vector3(TSize_x, TSize_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(TSize_x - (tileSize * 0.5), TSize_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(TSize_x + (tileSize * 0.5), TSize_y - (tileSize * 0.5), 0);
+				Vector3 topleft(TSize_x - (tileSize * 0.5f), TSize_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(TSize_x + (tileSize * 0.5f), TSize_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 28)
 			{
 				dialogueTiles.push_back(new CObjects(CObjects::DIALOGUE, false, scriptDialogues[5], Vector3(TSize_x, TSize_y), Vector3(), Vector3(), NULL));
-				Vector3 topleft(TSize_x - (tileSize * 0.5), TSize_y + (tileSize * 0.5), 0);
-				Vector3 bottomright(TSize_x + (tileSize * 0.5), TSize_y - (tileSize * 0.5), 0);
+				Vector3 topleft(TSize_x - (tileSize * 0.5f), TSize_y + (tileSize * 0.5f), 0);
+				Vector3 bottomright(TSize_x + (tileSize * 0.5f), TSize_y - (tileSize * 0.5f), 0);
 				dialogueTiles.back()->setBoundingBox(topleft, bottomright);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 27)
 			{
-				endDoor = new CDoor(CObjects::DOOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_TILE_DOOR]);
+				endDoor = new CDoor(CObjects::DOOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_TILE_DOOR]);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 35)
 			{
-				GreenDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_GREEN_DOOR]));
+				GreenDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_GREEN_DOOR]));
 				GreenDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 34)
 			{
-				BlueDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_BLUE_DOOR]));
+				BlueDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_BLUE_DOOR]));
 				BlueDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 37)
 			{
-				ColoursSet.push_back(new CColour(CObjects::COLOR, "BLUE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "BLUE", Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_COLOUR_BALL_BLUE]));
 				ColoursSet.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 38)
 			{
-				ColoursSet.push_back(new CColour(CObjects::COLOR, "YELLOW", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "YELLOW", Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_COLOUR_BALL_YELLOW]));
 				ColoursSet.back()->setActive(true);
 				
 			}
 			else if (m_cMap->theScreenMap[i][k] == 200)		//Right smallBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptRightS.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRightS.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRightS.back()->setActive(true);
 				AIsList4ptRightS.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRightS.back()->SetAIvariables4pt(Vector3(tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(-tileSize * smallSquare, 0, 1));
+				AIsList4ptRightS.back()->SetAIvariables4pt(Vector3((float)tileSize * smallSquare, 0, 1), Vector3(0, (float)-tileSize * smallSquare, 1), Vector3(-(float)tileSize * smallSquare, 0, 1));
 			}
 			else if (m_cMap->theScreenMap[i][k] == 201)		//Left smallBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptLeftS.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeftS.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptLeftS.back()->setActive(true);
 				AIsList4ptLeftS.back()->setFSM(CFSM::MOVING);
-				AIsList4ptLeftS.back()->SetAIvariables4pt(Vector3(-tileSize * smallSquare, 0, 1), Vector3(0, -tileSize * smallSquare, 1), Vector3(tileSize * smallSquare, 0, 1));
+				AIsList4ptLeftS.back()->SetAIvariables4pt(Vector3((float)-tileSize * smallSquare, 0, 1), Vector3(0, (float)-tileSize * smallSquare, 1), Vector3((float)tileSize * smallSquare, 0, 1));
 			}
 
 			else if (m_cMap->theScreenMap[i][k] == 202)		//Right MedBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptRightM.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRightM.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRightM.back()->setActive(true);
 				AIsList4ptRightM.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRightM.back()->SetAIvariables4pt(Vector3(tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(-tileSize * medSquare, 0, 1));
+				AIsList4ptRightM.back()->SetAIvariables4pt(Vector3((float)tileSize * medSquare, 0, 1), Vector3(0, (float)-tileSize * medSquare, 1), Vector3((float)-tileSize * medSquare, 0, 1));
 			}
 			else if (m_cMap->theScreenMap[i][k] == 203)		//Left MedBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptLeftM.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptLeftM.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptLeftM.back()->setActive(true);
 				AIsList4ptLeftM.back()->setFSM(CFSM::MOVING);
-				AIsList4ptLeftM.back()->SetAIvariables4pt(Vector3(-tileSize * medSquare, 0, 1), Vector3(0, -tileSize * medSquare, 1), Vector3(tileSize * medSquare, 0, 1));
+				AIsList4ptLeftM.back()->SetAIvariables4pt(Vector3((float)-tileSize * medSquare, 0, 1), Vector3(0, (float)-tileSize * medSquare, 1), Vector3((float)tileSize * medSquare, 0, 1));
 			}
 
 			else if (m_cMap->theScreenMap[i][k] == 204)		//Right BigBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptRightB.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRightB.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRightB.back()->setActive(true);
 				AIsList4ptRightB.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRightB.back()->SetAIvariables4pt(Vector3(tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(-tileSize * bigSquare, 0, 1));
+				AIsList4ptRightB.back()->SetAIvariables4pt(Vector3((float)tileSize * bigSquare, 0, 1), Vector3(0, (float)-tileSize * bigSquare, 1), Vector3((float)-tileSize * bigSquare, 0, 1));
 			}
 			else if (m_cMap->theScreenMap[i][k] == 205)		//Left BigBox
 			{
 				// Set the strategy for the enemy
-				AIsList4ptRightB.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
+				AIsList4ptRightB.push_back(new AI(CObjects::AI, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, (float)tileSize), meshList[GEO_TILEENEMY_FRAME0], 0));
 				AIsList4ptRightB.back()->setActive(true);
 				AIsList4ptRightB.back()->setFSM(CFSM::MOVING);
-				AIsList4ptRightB.back()->SetAIvariables4pt(Vector3(-tileSize * bigSquare, 0, 1), Vector3(0, -tileSize * bigSquare, 1), Vector3(tileSize * bigSquare, 0, 1));
+				AIsList4ptRightB.back()->SetAIvariables4pt(Vector3((float)-tileSize * bigSquare, 0, 1), Vector3(0, (float)-tileSize * bigSquare, 1), Vector3((float)tileSize * bigSquare, 0, 1));
 			}
 		}
 	}
@@ -408,27 +408,27 @@ void CSceneGame2::InitLevel2()
 	{
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
-			int TSize_x = k*m_cMap->GetTileSize();
-			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+			float TSize_x = (float)k*m_cMap->GetTileSize();
+			float TSize_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 			if (m_cMap->theScreenMap[i][k] == 26)
 			{
-				OrangeDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_ORANGE_DOOR]));
+				OrangeDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_ORANGE_DOOR]));
 				OrangeDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 36)
 			{
-				YellowDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_YELLOW_DOOR]));
+				YellowDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_YELLOW_DOOR]));
 				YellowDoors.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 39)
 			{
-				ColoursSet.push_back(new CColour(CObjects::COLOR, "RED", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_RED]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "RED", Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_COLOUR_BALL_RED]));
 				ColoursSet.back()->setActive(true);
 			}
 			else if (m_cMap->theScreenMap[i][k] == 40)
 			{
-				ColoursSet.push_back(new CColour(CObjects::COLOR, "ORANGE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_ORANGE]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "ORANGE", Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_COLOUR_BALL_ORANGE]));
 				ColoursSet.back()->setActive(true);
 			}
 		}
@@ -442,18 +442,18 @@ void CSceneGame2::InitLevel3()
 	{
 		for (int k = 0; k < m_cMap->getNumOfTiles_MapWidth(); k++)
 		{
-			int TSize_x = k*m_cMap->GetTileSize();
-			int TSize_y = (m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
+			float TSize_x = (float)k*m_cMap->GetTileSize();
+			float TSize_y = (float)(m_cMap->GetNumOfTiles_Height() - i)*m_cMap->GetTileSize();
 
 			if (m_cMap->theScreenMap[i][k] == 25)	//Purple doors
 			{
-				PurpleDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_PURPLE_DOOR]));
+				PurpleDoors.push_back(new CDoor(CObjects::COLOR, 1, Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_PURPLE_DOOR]));
 				PurpleDoors.back()->setActive(true);
 			}
 			
 			else if (m_cMap->theScreenMap[i][k] == 24)
 			{
-				ColoursSet.push_back(new CColour(CObjects::COLOR, "PURPLE", Vector3(TSize_x, TSize_y), Vector3(tileSize, tileSize, 1), meshList[GEO_COLOUR_BALL_PURPLE]));
+				ColoursSet.push_back(new CColour(CObjects::COLOR, "PURPLE", Vector3(TSize_x, TSize_y), Vector3((float)tileSize, (float)tileSize, 1), meshList[GEO_COLOUR_BALL_PURPLE]));
 				ColoursSet.back()->setActive(true);
 			}			
 		}
@@ -511,7 +511,7 @@ void CSceneGame2::InitMeshes()
 	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::Generate2DMesh("GEO_DIALOGUE_BOX", Color(1, 1, 1), 0, 0, 1, 1);
 	//meshList[GEO_DIALOGUE_BOX]->textureID = LoadTGA("Image//dialogue_box.tga");
 
-	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8, 0.8), 1);
+	meshList[GEO_DIALOGUE_BOX] = MeshBuilder::GenerateQuad("GEO_DIALOGUE_BOX", Color(1, 0.8f, 0.8f), 1);
 
 	meshList[GEO_BACKFADE] = MeshBuilder::Generate2DMesh("GEO_BACKFADE", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_BACKFADE]->textureID = LoadTGA("Image//UI BackFade.tga");
@@ -614,13 +614,13 @@ void CSceneGame2::Update(double dt)
 		prevHeroPos = Vector3(theHero->getPositionX(), theHero->getPositionY());
 		// Update the hero
 		if (Application::IsKeyPressed('W'))
-			this->theHero->MoveUpDown(true, dt, m_cMap);
+			this->theHero->MoveUpDown(true, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('S'))
-			this->theHero->MoveUpDown(false, dt, m_cMap);
+			this->theHero->MoveUpDown(false, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('A'))
-			this->theHero->MoveLeftRight(true, dt, m_cMap);
+			this->theHero->MoveLeftRight(true, (float)dt, m_cMap);
 		if (Application::IsKeyPressed('D'))
-			this->theHero->MoveLeftRight(false, dt, m_cMap);
+			this->theHero->MoveLeftRight(false, (float)dt, m_cMap);
 		/*if (Application::IsKeyPressed(' '))
 		this->theHero->SetToJumpUpwards(true);*/
 		// Update Hero animation counter if hero moved
@@ -672,7 +672,7 @@ void CSceneGame2::Update(double dt)
 
 		if (prevHeroPos != Vector3(theHero->getPositionX(), theHero->getPositionY()))
 		{
-			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * dt * theHero->GetAnimationSpeed());
+			theHero->SetAnimationCounter(theHero->GetAnimationCounter() + theHero->GetMovementSpeed() * m_cMap->GetTileSize() * (float)dt * theHero->GetAnimationSpeed());
 			if (theHero->GetAnimationCounter() > theHero->GetAnimationMaxCounter())
 				theHero->SetAnimationCounter(1);
 		}
@@ -680,7 +680,7 @@ void CSceneGame2::Update(double dt)
 		{
 			theHero->SetAnimationCounter(0);
 		}
-		theHero->HeroUpdate(m_cMap, dt);
+		theHero->HeroUpdate(m_cMap, (float)dt);
 
 		// ReCalculate the tile offsets
 		tileOffset_x = (int)(theHero->GetMapOffset_x() / m_cMap->GetTileSize());
@@ -694,14 +694,14 @@ void CSceneGame2::Update(double dt)
 		int typeCollided = theHero->CheckCollision(m_cMap);
 		if (typeCollided == 10)
 		{
-			for (int i = 0; i < theEnemies.size(); i++)
+			for (int i = 0; i < (int)theEnemies.size(); i++)
 			{
 				theEnemies[i]->ChangeStrategy(new CStrategy_Kill());
 			}
 		}
 		else if (typeCollided == 11)
 		{
-			for (int i = 0; i < theEnemies.size(); i++)
+			for (int i = 0; i < (int)theEnemies.size(); i++)
 			{
 				theEnemies[i]->ChangeStrategy(NULL);
 			}
@@ -713,7 +713,7 @@ void CSceneGame2::Update(double dt)
 
 
 		// Dialogues tiles
-		for (int i = 0; i < dialogueTiles.size(); i++)
+		for (int i = 0; i < (int)dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 			{
@@ -748,13 +748,13 @@ void CSceneGame2::Update(double dt)
 
 void CSceneGame2::UpdateUI(double dt)
 {
-	UIManager->Update(dt);
+	UIManager->Update((float)dt);
 
 	if (currentState == PLAYING && livescooldown && !UIWarningScale)
 	{
 		UIWarningScale = true;
 		UIManager->InvokeAnimator()->SkipAllAnimations();
-		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("WarningR"), 0, Vector3(sceneManager2D.m_window_width, sceneManager2D.m_window_height, 1), 10, 2);
+		UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("WarningR"), 0, Vector3((float)sceneManager2D.m_window_width, (float)sceneManager2D.m_window_height, 1), 10, 2);
 	}
 	
 	else if (currentState == PLAYING && !livescooldown && UIWarningScale)
@@ -768,7 +768,7 @@ void CSceneGame2::UpdateUI(double dt)
 void CSceneGame2::UpdateTutorial(double dt)
 {
 	// Dialogues tiles
-	for (int i = 0; i < dialogueTiles.size(); i++)
+	for (int i = 0; i < (int)dialogueTiles.size(); i++)
 	{
 		if (dialogueTiles[i]->getBoundingBox()->CheckCollision(*theHero->getBoundingBox()))
 		{
@@ -781,7 +781,7 @@ void CSceneGame2::UpdateTutorial(double dt)
 	}
 
 	//Doors
-	for (int i = 0; i < GreyDoors.size(); i++)
+	for (int i = 0; i < (int)GreyDoors.size(); i++)
 	{
 		if (GreyDoors[i]->getActive() == true)
 		{
@@ -792,7 +792,7 @@ void CSceneGame2::UpdateTutorial(double dt)
 		}
 	}
 
-	for (int i = 0; i < GreenDoors.size(); i++)
+	for (int i = 0; i < (int)GreenDoors.size(); i++)
 	{
 		if (GreenDoors[i]->getActive() == true)
 		{
@@ -808,7 +808,7 @@ void CSceneGame2::UpdateTutorial(double dt)
 	}
 
 
-	for (int i = 0; i < BlueDoors.size(); i++)
+	for (int i = 0; i < (int)BlueDoors.size(); i++)
 	{
 		if (BlueDoors[i]->getActive() == true)
 		{
@@ -824,7 +824,7 @@ void CSceneGame2::UpdateTutorial(double dt)
 	}
 
 	//Loop that settles colours
-	for (int i = 0; i < ColoursSet.size(); i++)
+	for (int i = 0; i < (int)ColoursSet.size(); i++)
 	{
 		if (ColoursSet[i]->getActive() == true)
 		{
@@ -866,7 +866,7 @@ void CSceneGame2::UpdateLevel2(double dt)
 {
 	UpdateTutorial(dt);
 
-	for (int i = 0; i < YellowDoors.size(); i++)
+	for (int i = 0; i < (int)YellowDoors.size(); i++)
 	{
 		if (YellowDoors[i]->getActive() == true)
 		{
@@ -881,7 +881,7 @@ void CSceneGame2::UpdateLevel2(double dt)
 		}
 	}
 
-	for (int i = 0; i < OrangeDoors.size(); i++)
+	for (int i = 0; i < (int)OrangeDoors.size(); i++)
 	{
 		if (OrangeDoors[i]->getActive() == true)
 		{
@@ -900,7 +900,7 @@ void CSceneGame2::UpdateLevel2(double dt)
 void CSceneGame2::UpdateLevel3(double dt)
 {
 	UpdateLevel2(dt);
-	for (int i = 0; i < PurpleDoors.size(); i++)
+	for (int i = 0; i < (int)PurpleDoors.size(); i++)
 	{
 		if (PurpleDoors[i]->getActive() == true)
 		{
@@ -950,7 +950,7 @@ void CSceneGame2::HandleAICollisionCheck(double dt)
 		{
 			int colourToRemove = Math::RandIntMinMax(0,ColoursThePlayerHas.size() - 1);	
 
-			for (int i = 0; i < ColoursSet.size(); i++)
+			for (int i = 0; i < (int)ColoursSet.size(); i++)
 			{
 				if (ColoursSet[i]->getColour() == ColoursThePlayerHas[colourToRemove])
 				{
@@ -1017,7 +1017,7 @@ void CSceneGame2::HandleAICollisionCheck(double dt)
 
 void CSceneGame2::UpdateRight4PtS(double dt)
 {
-	for (int i = 0; i < AIsList4ptRightS.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightS.size(); i++)
 	{
 		AIsList4ptRightS[i]->UpdateFSM(dt);
 
@@ -1039,7 +1039,7 @@ void CSceneGame2::UpdateRight4PtS(double dt)
 
 void CSceneGame2::UpdateLeft4PtS(double dt)
 {
-	for (int i = 0; i < AIsList4ptLeftS.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftS.size(); i++)
 	{
 		AIsList4ptLeftS[i]->UpdateFSM(dt);
 
@@ -1061,7 +1061,7 @@ void CSceneGame2::UpdateLeft4PtS(double dt)
 
 void CSceneGame2::UpdateRight4PtM(double dt)
 {
-	for (int i = 0; i < AIsList4ptRightM.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightM.size(); i++)
 	{
 		AIsList4ptRightM[i]->UpdateFSM(dt);
 
@@ -1083,7 +1083,7 @@ void CSceneGame2::UpdateRight4PtM(double dt)
 
 void CSceneGame2::UpdateLeft4PtM(double dt)
 {
-	for (int i = 0; i < AIsList4ptLeftM.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftM.size(); i++)
 	{
 		AIsList4ptLeftM[i]->UpdateFSM(dt);
 
@@ -1105,7 +1105,7 @@ void CSceneGame2::UpdateLeft4PtM(double dt)
 
 void CSceneGame2::UpdateRight4PtB(double dt)
 {
-	for (int i = 0; i < AIsList4ptRightB.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightB.size(); i++)
 	{
 		AIsList4ptRightB[i]->UpdateFSM(dt);
 
@@ -1127,7 +1127,7 @@ void CSceneGame2::UpdateRight4PtB(double dt)
 
 void CSceneGame2::UpdateLeft4PtB(double dt)
 {
-	for (int i = 0; i < AIsList4ptLeftB.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftB.size(); i++)
 	{
 		AIsList4ptLeftB[i]->UpdateFSM(dt);
 
@@ -1180,7 +1180,7 @@ void CSceneGame2::Render()
 
 	//sceneManager2D.RenderBackground();
 
-	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	sceneManager2D.modelStack.Translate((float)-theHero->GetMapOffset_x(), (float)theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
 
 	// Render the rear tile map
 	RenderRearTileMap();
@@ -1246,22 +1246,22 @@ void CSceneGame2::RenderHero()
 	{
 	case CPlayerInfo::RIGHT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::LEFT:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY(), 0.0f, true);
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_SIDE_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY(), 0.0f, true);
 	}
 		break;
 	case CPlayerInfo::UP:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_UP_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	case CPlayerInfo::DOWN:
 	{
-		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), theHero->getPositionX(), theHero->getPositionY());
+		sceneManager2D.Render2DMesh(theHero->meshList[CPlayerInfo::GEO_TILEHERO_DOWN_FRAME0 + (int)theHero->GetAnimationCounter()], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)theHero->getPositionX(), (int)theHero->getPositionY());
 	}
 		break;
 	}
@@ -1272,34 +1272,34 @@ Render the AIs. This is a private function for use in this class only
 ********************************************************************************/
 void CSceneGame2::RenderAIs()
 {
-	for (int i = 0; i < AIsList4ptRightS.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightS.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptRightS[i]->getMesh(), false, AIsList4ptRightS[i]->getScale().x, AIsList4ptRightS[i]->getScale().y, AIsList4ptRightS[i]->getPositionX(), AIsList4ptRightS[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptRightS[i]->getMesh(), false, (int)AIsList4ptRightS[i]->getScale().x, (int)AIsList4ptRightS[i]->getScale().y, (int)AIsList4ptRightS[i]->getPositionX(), (int)AIsList4ptRightS[i]->getPositionY());
 	}
 	
-	for (int i = 0; i < AIsList4ptLeftS.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftS.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptLeftS[i]->getMesh(), false, AIsList4ptLeftS[i]->getScale().x, AIsList4ptLeftS[i]->getScale().y, AIsList4ptLeftS[i]->getPositionX(), AIsList4ptLeftS[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptLeftS[i]->getMesh(), false, (int)AIsList4ptLeftS[i]->getScale().x, (int)AIsList4ptLeftS[i]->getScale().y, (int)AIsList4ptLeftS[i]->getPositionX(), (int)AIsList4ptLeftS[i]->getPositionY());
 	}
 
-	for (int i = 0; i < AIsList4ptRightM.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightM.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptRightM[i]->getMesh(), false, AIsList4ptRightM[i]->getScale().x, AIsList4ptRightM[i]->getScale().y, AIsList4ptRightM[i]->getPositionX(), AIsList4ptRightM[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptRightM[i]->getMesh(), false, (int)AIsList4ptRightM[i]->getScale().x, (int)AIsList4ptRightM[i]->getScale().y, (int)AIsList4ptRightM[i]->getPositionX(), (int)AIsList4ptRightM[i]->getPositionY());
 	}
 
-	for (int i = 0; i < AIsList4ptLeftM.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftM.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptLeftM[i]->getMesh(), false, AIsList4ptLeftM[i]->getScale().x, AIsList4ptLeftM[i]->getScale().y, AIsList4ptLeftM[i]->getPositionX(), AIsList4ptLeftM[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptLeftM[i]->getMesh(), false, (int)AIsList4ptLeftM[i]->getScale().x, (int)AIsList4ptLeftM[i]->getScale().y, (int)AIsList4ptLeftM[i]->getPositionX(), (int)AIsList4ptLeftM[i]->getPositionY());
 	}
 
-	for (int i = 0; i < AIsList4ptRightB.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptRightB.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptRightB[i]->getMesh(), false, AIsList4ptRightB[i]->getScale().x, AIsList4ptRightB[i]->getScale().y, AIsList4ptRightB[i]->getPositionX(), AIsList4ptRightB[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptRightB[i]->getMesh(), false, (int)AIsList4ptRightB[i]->getScale().x, (int)AIsList4ptRightB[i]->getScale().y, (int)AIsList4ptRightB[i]->getPositionX(), (int)AIsList4ptRightB[i]->getPositionY());
 	}
 
-	for (int i = 0; i < AIsList4ptLeftB.size(); i++)
+	for (int i = 0; i < (int)AIsList4ptLeftB.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(AIsList4ptLeftB[i]->getMesh(), false, AIsList4ptLeftB[i]->getScale().x, AIsList4ptLeftB[i]->getScale().y, AIsList4ptLeftB[i]->getPositionX(), AIsList4ptLeftB[i]->getPositionY());
+		sceneManager2D.Render2DMesh(AIsList4ptLeftB[i]->getMesh(), false, (int)AIsList4ptLeftB[i]->getScale().x, (int)AIsList4ptLeftB[i]->getScale().y, (int)AIsList4ptLeftB[i]->getPositionX(), (int)AIsList4ptLeftB[i]->getPositionY());
 	}
 }
 
@@ -1321,39 +1321,39 @@ void CSceneGame2::RenderObjects()
 
 void CSceneGame2::RenderTutorial()
 {
-	for (int i = 0; i < GreyDoors.size(); i++)
+	for (int i = 0; i < (int)GreyDoors.size(); i++)
 	{
 		if (GreyDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(GreyDoors[i]->getMesh(), false, GreyDoors[i]->getScale().x, GreyDoors[i]->getScale().y, GreyDoors[i]->getPositionX(), GreyDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(GreyDoors[i]->getMesh(), false, (int)GreyDoors[i]->getScale().x, (int)GreyDoors[i]->getScale().y, (int)GreyDoors[i]->getPositionX(), (int)GreyDoors[i]->getPositionY());
 	}
-	for (int i = 0; i < ColoursSet.size(); i++)
+	for (int i = 0; i < (int)ColoursSet.size(); i++)
 	{
 		if (ColoursSet[i]->getActive())
-			sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, ColoursSet[i]->getScale().x, ColoursSet[i]->getScale().y, ColoursSet[i]->getPositionX(), ColoursSet[i]->getPositionY());
+			sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, (int)ColoursSet[i]->getScale().x, (int)ColoursSet[i]->getScale().y, (int)ColoursSet[i]->getPositionX(), (int)ColoursSet[i]->getPositionY());
 	}
 
 
 	if (castedBlue && !castedGreen)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_BLUE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() + m_cMap->GetTileSize());
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_BLUE], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)theHero->getPositionX(), (int)(theHero->getPositionY() + m_cMap->GetTileSize()));
 	if (castedYellow && !castedGreen)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_YELLOW], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + m_cMap->GetTileSize() - 10, theHero->getPositionY() + m_cMap->GetTileSize());
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_YELLOW], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)(theHero->getPositionX() + m_cMap->GetTileSize() - 10), (int)(theHero->getPositionY() + m_cMap->GetTileSize()));
 
 	if (castedGreen)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + 10, theHero->getPositionY() + m_cMap->GetTileSize());
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)(theHero->getPositionX() + 10), (int)(theHero->getPositionY() + m_cMap->GetTileSize()));
 
-	for (int i = 0; i < BlueDoors.size(); i++)
+	for (int i = 0; i < (int)BlueDoors.size(); i++)
 	{
 		if (BlueDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(BlueDoors[i]->getMesh(), false, BlueDoors[i]->getScale().x, BlueDoors[i]->getScale().y, BlueDoors[i]->getPositionX(), BlueDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(BlueDoors[i]->getMesh(), false, (int)BlueDoors[i]->getScale().x, (int)BlueDoors[i]->getScale().y, (int)BlueDoors[i]->getPositionX(), (int)BlueDoors[i]->getPositionY());
 	}
 
-	for (int i = 0; i < GreenDoors.size(); i++)
+	for (int i = 0; i < (int)GreenDoors.size(); i++)
 	{
 		if (GreenDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(GreenDoors[i]->getMesh(), false, GreenDoors[i]->getScale().x, GreenDoors[i]->getScale().y, GreenDoors[i]->getPositionX(), GreenDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(GreenDoors[i]->getMesh(), false, (int)GreenDoors[i]->getScale().x, (int)GreenDoors[i]->getScale().y, (int)GreenDoors[i]->getPositionX(), (int)GreenDoors[i]->getPositionY());
 	}
 
-	sceneManager2D.Render2DMesh(endDoor->getMesh(), false, endDoor->getScale().x, endDoor->getScale().y, endDoor->getPositionX(), endDoor->getPositionY());
+	sceneManager2D.Render2DMesh(endDoor->getMesh(), false, (int)endDoor->getScale().x, (int)endDoor->getScale().y, (int)endDoor->getPositionX(), (int)endDoor->getPositionY());
 }
 
 void CSceneGame2::RenderLevel2()
@@ -1362,21 +1362,21 @@ void CSceneGame2::RenderLevel2()
 
 
 	if (castedRed && !castedOrange)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_RED], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX(), theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_RED], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)theHero->getPositionX(), (int)(theHero->getPositionY() - m_cMap->GetTileSize() + 10));
 	
 	if (castedOrange)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + 10, theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)theHero->getPositionX() + 10, (int)(theHero->getPositionY() - m_cMap->GetTileSize() + 10));
 		
-	for (int i = 0; i < YellowDoors.size(); i++)
+	for (int i = 0; i < (int)YellowDoors.size(); i++)
 	{
 		if (YellowDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(YellowDoors[i]->getMesh(), false, YellowDoors[i]->getScale().x, YellowDoors[i]->getScale().y, YellowDoors[i]->getPositionX(), YellowDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(YellowDoors[i]->getMesh(), false, (int)YellowDoors[i]->getScale().x, (int)YellowDoors[i]->getScale().y, (int)YellowDoors[i]->getPositionX(), (int)YellowDoors[i]->getPositionY());
 	}
 
-	for (int i = 0; i < OrangeDoors.size(); i++)
+	for (int i = 0; i < (int)OrangeDoors.size(); i++)
 	{
 		if (OrangeDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(OrangeDoors[i]->getMesh(), false, OrangeDoors[i]->getScale().x, OrangeDoors[i]->getScale().y, OrangeDoors[i]->getPositionX(), OrangeDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(OrangeDoors[i]->getMesh(), false, (int)OrangeDoors[i]->getScale().x, (int)OrangeDoors[i]->getScale().y, (int)OrangeDoors[i]->getPositionX(), (int)OrangeDoors[i]->getPositionY());
 	}
 }
 
@@ -1386,12 +1386,12 @@ void CSceneGame2::RenderLevel3()
 
 	
 	if (castedPurple)
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_PURPLE], false, m_cMap->GetTileSize() * 0.5, m_cMap->GetTileSize() * 0.5, theHero->getPositionX() + m_cMap->GetTileSize() - 10, theHero->getPositionY() - m_cMap->GetTileSize() + 10);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_PURPLE], false, (int)(m_cMap->GetTileSize() * 0.5), (int)(m_cMap->GetTileSize() * 0.5), (int)(theHero->getPositionX() + m_cMap->GetTileSize() - 10), (int)(theHero->getPositionY() - m_cMap->GetTileSize() + 10));
 
-	for (int i = 0; i < PurpleDoors.size(); i++)
+	for (int i = 0; i < (int)PurpleDoors.size(); i++)
 	{
 		if (PurpleDoors[i]->getActive())
-			sceneManager2D.Render2DMesh(PurpleDoors[i]->getMesh(), false, PurpleDoors[i]->getScale().x, PurpleDoors[i]->getScale().y, PurpleDoors[i]->getPositionX(), PurpleDoors[i]->getPositionY());
+			sceneManager2D.Render2DMesh(PurpleDoors[i]->getMesh(), false, (int)PurpleDoors[i]->getScale().x, (int)PurpleDoors[i]->getScale().y, (int)PurpleDoors[i]->getPositionX(), (int)PurpleDoors[i]->getPositionY());
 	}
 }
 /********************************************************************************
@@ -1441,9 +1441,9 @@ void CSceneGame2::RenderGoodies()
 
 void CSceneGame2::RenderWaypoints()
 {
-	for (int i = 0; i < temp.size(); i++)
+	for (int i = 0; i < (int)temp.size(); i++)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), temp.at(i).x - theHero->GetMapOffset_x(), temp.at(i).y + theHero->GetMapOffset_y());
+		sceneManager2D.Render2DMesh(meshList[GEO_TILE_KILLZONE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)(temp.at(i).x - theHero->GetMapOffset_x()), (int)(temp.at(i).y + theHero->GetMapOffset_y()));
 	}
 }
 
@@ -1456,76 +1456,76 @@ void CSceneGame2::RenderGUI()
 	ss.str(std::string());
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), m_cMap->GetTileSize(), sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	if (castedBlue)
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot1.x, (int)slot1.y);
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot1.x, (int)slot1.y);
 
 	if (castedYellow)
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot2.x, (int)slot2.y);
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot2.x, (int)slot2.y);
 
 	if (castedRed)
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot3.x, (int)slot3.y);
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot3.x, (int)slot3.y);
 	
 	if (castedPurple)
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot4.x, (int)slot4.y);
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot4.x, (int)slot4.y);
 
 	if (castedGreen)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);	
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot5.x, (int)slot5.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_GREEN], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot5.x, (int)slot5.y);
 	}
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot5.x, slot5.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot5.x, (int)slot5.y);
 
 	if (castedOrange)
 	{
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
-		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot6.x, (int)slot6.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_COLOUR_BALL_ORANGE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot6.x, (int)slot6.y);
 	}
 	else
-		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot6.x, slot6.y);
+		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADE], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot6.x, (int)slot6.y);
 
 
-	for (int i = 0; i < ColoursSet.size(); i++)
+	for (int i = 0; i < (int)ColoursSet.size(); i++)
 	{
 		if (!ColoursSet[i]->getActive())
 		{
 			if (ColoursSet[i]->getColour() == "BLUE")
 			{
-				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot1.x, slot1.y);
+				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot1.x, (int)slot1.y);
 				ss.str(std::string());
 				ss << "Q";
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot1.x, slot1.y);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), slot1.x, slot1.y);
 			}
 			if (ColoursSet[i]->getColour() == "YELLOW")
 			{
-				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot2.x, slot2.y);
+				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot2.x, (int)slot2.y);
 				ss.str(std::string());
 				ss << "E";
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot2.x, slot2.y);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), slot2.x, slot2.y);
 			}
 			if (ColoursSet[i]->getColour() == "RED")
 			{
-				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot3.x, slot3.y);
+				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot3.x, (int)slot3.y);
 				ss.str(std::string());
 				ss << "R";
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot3.x, slot3.y);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), slot3.x, slot3.y);
 			}
 			if (ColoursSet[i]->getColour() == "PURPLE")
 			{
-				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), slot4.x, slot4.y);
+				sceneManager2D.Render2DMesh(ColoursSet[i]->getMesh(), false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot4.x, (int)slot4.y);
 				ss.str(std::string());
 				ss << "T";
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), m_cMap->GetTileSize(), slot4.x, slot4.y);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), slot4.x, slot4.y);
 			}
 		}
 	}
@@ -1542,7 +1542,7 @@ void CSceneGame2::RenderGUI()
 			sceneManager2D.Render2DMesh(meshList[GEO_HEART], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), 0 + i*(m_cMap->GetTileSize()), sceneManager2D.m_window_height - (m_cMap->GetTileSize() * 2));
 		}
 
-		for (int i = 0; i < dialogueTiles.size(); i++)
+		for (int i = 0; i < (int)dialogueTiles.size(); i++)
 		{
 			if (dialogueTiles[i]->getActive())
 			{
@@ -1550,8 +1550,8 @@ void CSceneGame2::RenderGUI()
 				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
 
 				// Text
-				int textSize = m_cMap->GetTileSize() * 0.5;
-				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), textSize, 0, textSize * 0.5);
+				int textSize = (int)(m_cMap->GetTileSize() * 0.5f);
+				sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], dialogueTiles[i]->getDialogue(), Color(0, 0, 0), (float)textSize, 0, textSize * 0.5f);
 				break;
 			}
 		}
@@ -1571,13 +1571,13 @@ void CSceneGame2::RenderGUI()
 		case WIN:
 		{
 			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], to_string(noOfJellybeansMayWin), Color(1, 1, 1), (float)textSize, UIManager->FindImage("WinScreen")->getCurrentPos().x + UIManager->FindImage("WinScreen")->getScale().x * 0.195f, UIManager->FindImage("WinScreen")->getCurrentPos().y - UIManager->FindImage("WinScreen")->getScale().y * 0.28f);
 		}
 		break;
 		case LOSE:
 		{
 			int textSize = m_cMap->GetTileSize();
-			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28);
+			sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "0", Color(1, 1, 1), (float)textSize, UIManager->FindImage("LoseScreen")->getCurrentPos().x + UIManager->FindImage("LoseScreen")->getScale().x * 0.195f, UIManager->FindImage("LoseScreen")->getCurrentPos().y - UIManager->FindImage("LoseScreen")->getScale().y * 0.28f);
 		}
 		break;
 		}

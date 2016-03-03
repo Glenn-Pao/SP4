@@ -709,7 +709,7 @@ void CSceneNode::SetRandomPos(const vector<CSceneNode*> list, const float Xsize,
 
 		// Check list
 		int i;
-		for (i = 0; i < list.size(); i++)
+		for (i = 0; i < (int)list.size(); i++)
 		{
 			if (CheckForCollision(list[i], 0))
 			{
@@ -778,8 +778,8 @@ void CSceneNode::UpdateFlickering(const double dt)
 {
 	if (flickeringTimeLeft != 0.f)
 	{
-		flickeringTimeLeft -= dt;
-		flickeringSubTimeLeft += dt;
+		flickeringTimeLeft -= (float)dt;
+		flickeringSubTimeLeft += (float)dt;
 
 		if (flickeringSubTimeLeft > 0.05f)
 		{

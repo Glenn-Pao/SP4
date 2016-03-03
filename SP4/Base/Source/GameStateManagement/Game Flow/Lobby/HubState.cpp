@@ -291,27 +291,27 @@ void CHubState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, co
 	{
 		case CSceneHub::DIFFICULTY_SELECTION:
 		{
-			scene->UIManagerDifficultySelection->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerDifficultySelection->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		case CSceneHub::JELLYBEAN_SELECTION:
 		{
-			scene->UIManagerJellybeanSelection->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerJellybeanSelection->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		break;
 		case CSceneHub::CONFIRMATION:
 		{
-			scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerConfirmation->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		break;
 		case CSceneHub::GIVING_JELLYBEANS:
 		{
-			scene->UIManagerGivingJellybeans->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			scene->UIManagerGivingJellybeans->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 		}
 		break;
 	}
 
 
-	if (button_Left == true)
+	if (button_Left)
 	{
 		switch (scene->currentState)
 		{

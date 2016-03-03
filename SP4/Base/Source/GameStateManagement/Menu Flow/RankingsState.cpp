@@ -139,7 +139,7 @@ void CRankingsState::HandleEvents(CGameStateManager* theGSM, const double mouse_
 		height * 0.9 <= mouse_y && mouse_y <= height)
 	{
 		scene->choice = CSceneRankings::BACK;
-		if (button_Left == true)
+		if (button_Left)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
 		}

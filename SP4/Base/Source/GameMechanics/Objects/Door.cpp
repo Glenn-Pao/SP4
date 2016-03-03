@@ -16,8 +16,8 @@ CDoor::CDoor(CObjects::OBJECT_TYPE m_Object_Type, int id, Vector3 pos, Vector3 s
 	this->setMesh(mesh);
 
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);
@@ -78,8 +78,8 @@ CColour::CColour(CObjects::OBJECT_TYPE m_Object_Type, std::string colour, Vector
 	this->setMesh(mesh);
 
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);

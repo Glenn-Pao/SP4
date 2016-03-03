@@ -6,7 +6,7 @@ CSavingAndLoadingSystem::CSavingAndLoadingSystem(void)
 
 CSavingAndLoadingSystem::~CSavingAndLoadingSystem(void)
 {
-	for (int i = 0; i < Data.size(); i++)
+	for (int i = 0; i < (int)Data.size(); i++)
 	{
 		if (Data[i])
 		{
@@ -31,7 +31,7 @@ Read the file and store variables
 bool CSavingAndLoadingSystem::LoadFile(int index)
 {
 	// check if index is higher than 0 and lower than number of Datas
-	if (index >= 0 && index < Data.size())
+	if (index >= 0 && index < (int)Data.size())
 	{
 		currentIndex = index;
 
@@ -46,10 +46,10 @@ Read a new file and load the game
 bool CSavingAndLoadingSystem::LoadNewFile()
 {
 	// Check every Data
-	for (int i = 0; i < Data.size(); i++)
+	for (int i = 0; i < (int)Data.size(); i++)
 	{
 		// check if file is new
-		if (Data[i]->ifNew == true)
+		if (Data[i]->ifNew)
 		{
 			currentIndex = i;
 			return true;

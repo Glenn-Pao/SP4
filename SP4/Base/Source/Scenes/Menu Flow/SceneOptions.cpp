@@ -9,11 +9,7 @@
 #include <sstream>
 #include "..\..\Base\Source\Strategy_Kill.h"
 
-extern "C" {
-#include "..\..\Lua\lua.h"
-#include "..\..\Lua\lualib.h"
-#include "..\..\Lua\lauxlib.h"
-}
+#include "..\..\UsingLua.h"
 
 CSceneOptions::CSceneOptions()
 {
@@ -52,38 +48,15 @@ void  CSceneOptions::Init(int level)
 	meshList[BLACK_SQUARE] = MeshBuilder::Generate2DMesh("BLACK_SQUARE", Color(0, 0, 0), 0, 0, 35, 30);
 
 	choice = NONE;
-
-	lua_State *L = lua_open();
-
+	
 	//Read a value from the lua text file
-	luaL_openlibs(L);
+	UseLuaFiles L;
 
-	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
+	L.ReadFiles("Lua//Options.lua");
 
-	// FPS
-	lua_getglobal(L, "showFPS");
-	if (!lua_isnumber(L, -1)) {
-		printf("`showFPS' should be a number\n");
-	}
-	fpsSelected = (bool)lua_tointeger(L, -1);
-
-	// Fullscreen
-	lua_getglobal(L, "fullscreen");
-	if (!lua_isnumber(L, -1)) {
-		printf("`fullscreen' should be a number\n");
-	}
-	fullscreenSelected = (bool)lua_tointeger(L, -1);
-
-	lua_getglobal(L, "colored");
-	if (!lua_isnumber(L, -1)) {
-		printf("`colored' should be a number\n");
-	}
-	coloredSelected = (bool)lua_tointeger(L, -1);
-
-	lua_close(L);
+	fpsSelected = L.DoLuaInt("showFPS");
+	fullscreenSelected = L.DoLuaInt("fullscreen");
+	coloredSelected = L.DoLuaInt("colored");
 }
 
 void   CSceneOptions::Update(double dt)

@@ -139,7 +139,7 @@ void COptionsState::HandleEvents(CGameStateManager* theGSM, const double mouse_x
 		height * 0.9 <= mouse_y && mouse_y <= height)
 	{
 		scene->choice = CSceneOptions::BACK;
-		if (button_Left == true)
+		if (button_Left)
 		{
 			theGSM->ChangeState(CMenuState::Instance());
 		}
@@ -148,7 +148,7 @@ void COptionsState::HandleEvents(CGameStateManager* theGSM, const double mouse_x
 	else if (width * 0.525 <= mouse_x && mouse_x <= width * 0.6 &&
 		height * 0.225 <= mouse_y && mouse_y <= height * 0.3)
 	{
-		if (button_Left == true)
+		if (button_Left)
 		{
 			if (scene->fpsSelected)
 				scene->fpsSelected = false;
@@ -160,7 +160,7 @@ void COptionsState::HandleEvents(CGameStateManager* theGSM, const double mouse_x
 	else if (width * 0.525 <= mouse_x && mouse_x <= width * 0.6 &&
 		height * 0.385 <= mouse_y && mouse_y <= height * 0.46)
 	{
-		if (button_Left == true)
+		if (button_Left )
 		{
 			if (scene->fullscreenSelected)
 			{
@@ -176,7 +176,7 @@ void COptionsState::HandleEvents(CGameStateManager* theGSM, const double mouse_x
 	else if (width * 0.525 <= mouse_x && mouse_x <= width * 0.6 &&
 		height * 0.545 <= mouse_y && mouse_y <= height * 0.62)
 	{
-		if (button_Left == true)
+		if (button_Left)
 		{
 			if (scene->coloredSelected)
 			{

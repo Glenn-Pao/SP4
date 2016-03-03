@@ -18,6 +18,6 @@ void CStrategy::Update()
 
 int CStrategy::CalculateDistance(void)
 {
-	return ((theDestination.x - theEnemyPosition.x)*(theDestination.x - theEnemyPosition.x) + 
+	return (int)((theDestination.x - theEnemyPosition.x)*(theDestination.x - theEnemyPosition.x) + 
 			(theDestination.y - theEnemyPosition.y)*(theDestination.y - theEnemyPosition.y));
 }

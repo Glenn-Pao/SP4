@@ -8,14 +8,14 @@ Deck::Deck(Vector3 Position, Vector3 GapBetweenCards)
 }
 void Deck::AddCard(Card* card)
 {
-	card->setPosition((this->Position + (this->GapBetweenCards * ListOfCards.size())));
+	card->setPosition((this->Position + (this->GapBetweenCards * (float)ListOfCards.size())));
 	card->getBoundingBox()->Reset(card->getPosition(), card->getScale());
 	this->ListOfCards.push_back(card);
 }
 
 void Deck::setAllCardTo(Card* card)
 {
-	for (int i = 0; i < this->getListOfCards().size(); ++i)
+	for (int i = 0; i < (int)this->getListOfCards().size(); ++i)
 	{
 		this->getListOfCards()[i] = card;
 	}
@@ -30,7 +30,7 @@ bool Deck::isDeckIdentical(Deck* deck)
 {
 	if (deck->getListOfCards().size() == this->getListOfCards().size())
 	{
-		for (int i = 0; i < this->getListOfCards().size(); ++i)
+		for (int i = 0; i < (int)this->getListOfCards().size(); ++i)
 		{
 			if (this->getListOfCards()[i]->getElement_Type() != deck->getListOfCards()[i]->getElement_Type())
 			{

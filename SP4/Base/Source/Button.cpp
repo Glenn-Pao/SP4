@@ -27,8 +27,8 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* Button
 	this->active = active;
 
 	//External Class variables
-	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
-	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5), CurrentPos.y - (Scale.y * 0.5), 0);
+	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5f), CurrentPos.y + (Scale.y * 0.5f), 0);
+	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5f), CurrentPos.y - (Scale.y * 0.5f), 0);
 	
 	
 	this->CollisionBox = new CBoundingBox(TopLeft, BottomRight);
@@ -56,8 +56,8 @@ Button::Button(string ID, Mesh* ButtonMeshUP, Mesh* ButtonMeshDOWN, Mesh* Button
 	this->isHovered = isHovered;
 	this->isLocked = false;
 
-	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5), CurrentPos.y + (Scale.y * 0.5), 0);
-	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5), CurrentPos.y - (Scale.y * 0.5), 0);
+	Vector3 TopLeft(CurrentPos.x - (Scale.x * 0.5f), CurrentPos.y + (Scale.y * 0.5f), 0);
+	Vector3 BottomRight(CurrentPos.x + (Scale.x * 0.5f), CurrentPos.y - (Scale.y * 0.5f), 0);
 
 
 	this->CollisionBox = new CBoundingBox(TopLeft, BottomRight);

@@ -143,7 +143,7 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	{
 		scene->firstState = CScenePause::LOBBY;
 		// Play
-		scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		scene->UIManager->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 	}
 		break;
 		//when accessed while playing mini game
@@ -151,17 +151,17 @@ void CPauseState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, 
 	{
 		scene->firstState = CScenePause::GAME;
 		// Play
-		scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		scene->UIManager->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 	}
 		break;
 		//confirmation of choice
 	case CScenePause::CONFIRMATION:
 	{
-		scene->UIManagerConfirmation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		scene->UIManagerConfirmation->HandleEvent((float)mouse_x, (float)mouse_y, (float)width, (float)height, (float)scene->sceneManager2D.m_window_width, (float)scene->sceneManager2D.m_window_height);
 	}
 		break;
 	}
-	if (button_Left == true)
+	if (button_Left)
 	{
 		switch (scene->currentState)
 		{

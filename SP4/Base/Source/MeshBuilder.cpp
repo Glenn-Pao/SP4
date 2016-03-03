@@ -22,10 +22,10 @@ Mesh* MeshBuilder::GenerateRay(const std::string &meshName, float length)
 	Vertex v;
 	std::vector<Vertex> vertex_buffer_data;
 	v.pos.Set(0, 0, 0);
-	v.color.Set(1, 0.2, 0.2);
+	v.color.Set(1, 0.2f, 0.2f);
 	vertex_buffer_data.push_back(v);
 	v.pos.Set(0, 0, length);
-	v.color.Set(1, 0.2, 0.2);
+	v.color.Set(1, 0.2f, 0.2f);
 	vertex_buffer_data.push_back(v);
 
 	std::vector<GLuint> index_buffer_data;
@@ -743,19 +743,19 @@ Mesh* MeshBuilder::Generate2DMesh(const std::string &meshName, Color color, int 
 	v.texCoord.Set(0, 0);
 	vertex_buffer_data.push_back(v);
 	// Vertex #2
-	v.pos.Set(width, 0, 0);
+	v.pos.Set((float)width, 0, 0);
 	v.color = color;
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(1.0f, 0);
 	vertex_buffer_data.push_back(v);
 	// Vertex #3
-	v.pos.Set(width, height, 0);
+	v.pos.Set((float)width, (float)height, 0);
 	v.color = color;
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(1.0f, 1.0f);
 	vertex_buffer_data.push_back(v);
 	// Vertex #4
-	v.pos.Set(0, height, 0);
+	v.pos.Set(0, (float)height, 0);
 	v.color = color;
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(0, 1.0f);
@@ -879,17 +879,17 @@ Mesh* MeshBuilder::GeneratePartOfSpriteSheet2D(const std::string &meshName, int 
 	v.texCoord.Set(u1, v1);
 	vertex_buffer_data.push_back(v);
 
-	v.pos.Set(width, 0, 0);
+	v.pos.Set((float)width, 0, 0);
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(u1 + uSize, v1);
 	vertex_buffer_data.push_back(v);
 
-	v.pos.Set(width, height, 0);
+	v.pos.Set((float)width, (float)height, 0);
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(u1 + uSize, v1 + vSize);
 	vertex_buffer_data.push_back(v);
 
-	v.pos.Set(0, height, 0);
+	v.pos.Set(0, (float)height, 0);
 	v.normal.Set(0, 0, 1);
 	v.texCoord.Set(u1, v1 + vSize);
 	vertex_buffer_data.push_back(v);

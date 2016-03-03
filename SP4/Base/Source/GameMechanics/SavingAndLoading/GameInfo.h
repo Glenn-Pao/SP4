@@ -26,7 +26,7 @@ public:
 	const char* fileName;
 
 	// If New Data
-	bool ifNew;
+	int ifNew;
 
 	// Player's Infomation
 	Vector2 heroPosition;// Hero position
@@ -34,6 +34,6 @@ public:
 	CJellybeanSystem jellybean;// jellybeans system of the player
 	Vector2 heroMapOffset;// Hero map offset
 	CDifficultySystem DifficultySystems[4]; // Difficulty System Of the 4 Minigames
-	bool guardianCleared; // whether guradian is cleared
-	bool musicActive;		//whether music is active or not
+	int guardianCleared; // whether guradian is cleared
+	int musicActive;		//whether music is active or not
 };

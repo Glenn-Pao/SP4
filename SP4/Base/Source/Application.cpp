@@ -11,11 +11,7 @@
 #include <stdio.h>
 
 
-extern "C" {
-#include "Lua\lua.h"
-#include "Lua\lualib.h"
-#include "Lua\lauxlib.h"
-}
+#include "UsingLua.h"
 
 GLFWwindow* m_window;
 // Declare the window width and height as constant integer
@@ -419,51 +415,17 @@ void Application::Exit()
 
 int Application::ReadLuaTextFile()
 {
-	lua_State *L = lua_open();
-
 	//Read a value from the lua text file
-	luaL_openlibs(L);
+	UseLuaFiles L;
 
-	if (luaL_loadfile(L, "Lua//Options.lua") || lua_pcall(L, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L, -1));
-	}
+	L.ReadFiles("Lua//Options.lua");
 
-	// Fullscreen
-	lua_getglobal(L, "fullscreen");
-	if (!lua_isnumber(L, -1)) {
-		printf("`fullscreen' should be a number\n");
-	}
-	bool fullscreenSelected = (int)lua_tointeger(L, -1);
+	int fullscreenSelected = L.DoLuaInt("fullscreen");
 
-	lua_close(L);
+	L.ReadFiles("Lua//config.lua");
 
-	lua_State *L2 = lua_open();
-
-	//Read a value from the lua text file
-	luaL_openlibs(L2);
-
-	if (luaL_loadfile(L2, "Lua//config.lua") || lua_pcall(L2, 0, 0, 0))
-	{
-		printf("error: %s", lua_tostring(L2, -1));
-		return -1;
-	}
-
-	lua_getglobal(L2, "SCREENWIDTH");
-	if (!lua_isnumber(L2, -1)) {
-		printf("`SCREENWIDTH' should be a number\n");
-		return -1;
-	}
-	int SCREENWIDTH = (int)lua_tonumber(L2, -1);
-
-	lua_getglobal(L2, "SCREENHEIGHT");
-	if (!lua_isnumber(L2, -1)) {
-		printf("`SCREENHEIGHT' should be a number\n");
-		return -1;
-	}
-	int SCREENHEIGHT = (int)lua_tonumber(L2, -1);
-
-	lua_close(L2);
+	int SCREENWIDTH = L.DoLuaInt("SCREENWIDTH");
+	int SCREENHEIGHT = L.DoLuaInt("SCREENHEIGHT");
 
 	//Create a window and create its OpenGL context
 	if (fullscreenSelected)
