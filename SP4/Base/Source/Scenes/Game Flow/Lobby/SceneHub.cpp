@@ -26,11 +26,10 @@ CSceneHub::CSceneHub(const int m_window_width, const int m_window_height)
 	, targetNPC(NULL)
 	, jellybeansRequiredToFinish(100)
 	, sizeOfDarkSurrounding(0)
-	, timerForEnd(0.0f)
 	, guardianCleared(false)
 	, GameoverText(NULL)
 	, speedOfGameoverText(0.f)
-	, Credit(NULL)
+	, Credits(NULL)
 {
 }
 
@@ -87,10 +86,10 @@ CSceneHub::~CSceneHub()
 		GameoverText = NULL;
 	}
 	// Credit
-	if (Credit)
+	if (Credits)
 	{
-		delete Credit;
-		Credit = NULL;
+		delete Credits;
+		Credits = NULL;
 	}
 }
 
@@ -109,7 +108,6 @@ void CSceneHub::Init(int level)
 	sizeOfDarkSurrounding = tileSize * L.DoLuaFloat("sizeOfScalingDarkSurrounding");
 	speedOfDarkSurrounding = L.DoLuaFloat("speedOfScalingDarkSurrounding");
 	MinSizeOfScalingDarkSurrounding = L.DoLuaFloat("minSizeOfScalingDarkSurrounding");
-	timerForEnd = L.DoLuaFloat("timerForEnd");
 	speedOfGameoverText = L.DoLuaFloat("SpeedOfGameoverText");
 
 	// Initialise and load the tile map
@@ -209,9 +207,14 @@ void CSceneHub::Init(int level)
 	InitUI();
 
 	// Create Gameover Object
-	float textSize = m_cMap->GetTileSize() * 2;
+	float textSize = (float)(m_cMap->GetTileSize() * 2);
 	string gameoverText = L.DoLuaString("GameoverText");
 	GameoverText = new CObjects(CObjects::DIALOGUE, true, gameoverText, Vector3(sceneManager2D.m_window_width * 0.5f - (gameoverText.size() - 2.75f) * 0.5f * textSize, -textSize * 1.1f), Vector3(), Vector3(textSize, textSize, textSize), NULL);
+
+
+	// Create Credit Object
+	float CreditsScaleY = L.DoLuaFloat("CreditsScaleY");
+	Credits = new CObjects(CObjects::DIALOGUE, true, "", Vector3(sceneManager2D.m_window_width * 0.5f, -CreditsScaleY * 0.5f), Vector3(), Vector3((float)sceneManager2D.m_window_width, CreditsScaleY, 1), meshList[GEO_CREDITS]);
 }
 
 void CSceneHub::PreInit()
@@ -382,6 +385,10 @@ void CSceneHub::InitMeshes()
 	meshList[GEO_BACK_BUTTON_UP]->textureID = LoadTGA("Image//UI/Back_Button.tga");
 	meshList[GEO_BACK_BUTTON_DOWN] = MeshBuilder::GenerateQuad("GEO_BACK_BUTTON_DOWN", Color(1, 1, 1), 1);
 	meshList[GEO_BACK_BUTTON_DOWN]->textureID = LoadTGA("Image//UI/Back_Button_Pressed.tga");
+
+	// Credits
+	meshList[GEO_CREDITS] = MeshBuilder::GenerateQuad("GEO_CREDITS", Color(1, 1, 1), 1);
+	meshList[GEO_CREDITS]->textureID = LoadTGA("Image//credits.tga");
 }
 
 
@@ -646,10 +653,15 @@ void CSceneHub::Update(double dt)
 		break;
 		case EXIT:
 		{
-			timerForEnd -= (float)dt;
-			if (timerForEnd <= 0.0f)
+			float TargetPosY = sceneManager2D.m_window_height + Credits->getScaleY() * 0.6f;
+			// Move Credits Up
+			Credits->setPositionY(Credits->getPositionY() + speedOfGameoverText * (float)dt);
+
+			// if reached Center
+			if (Credits->getPositionY() >= TargetPosY)
 			{
-				timerForEnd = 0.0f;
+				Credits->setPositionY(TargetPosY);
+				currentState = BACK_TO_MENU;
 			}
 		}
 		break;
@@ -1215,7 +1227,7 @@ void CSceneHub::RenderGUI()
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], GameoverText->getDialogue(), Color(0, 0, 0), GameoverText->getScale().x, GameoverText->getPositionX(), GameoverText->getPositionY());
 
 		// Click anywhere to continue
-		int textSize = m_cMap->GetTileSize() * 0.4f;
+		float textSize = m_cMap->GetTileSize() * 0.4f;
 		sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Click anywhere to continue...", Color(0, 0, 0), textSize, sceneManager2D.m_window_width * 0.275f, sceneManager2D.m_window_height * 0.35f);
 	}
 	// Dark Surrounding
@@ -1230,7 +1242,7 @@ void CSceneHub::RenderGUI()
 		sceneManager2D.Render2DMesh(meshList[GEO_BLACK_QUAD], false, sceneManager2D.m_window_width, sceneManager2D.m_window_height, (int)(sceneManager2D.m_window_width * 0.5), (int)(sceneManager2D.m_window_height * 0.5));
 
 		// Credits Image
-		//sceneManager2D.Render2DMesh(Credit->getMesh(), false, (int)Credit->getScale().x, (int)Credit->getScale().y, (int)Credit->getPositionX(), (int)Credit->getPositionY());
+		sceneManager2D.Render2DMesh(Credits->getMesh(), false, (int)Credits->getScale().x, (int)Credits->getScale().y, (int)Credits->getPositionX(), (int)Credits->getPositionY());
 	}
 }
 

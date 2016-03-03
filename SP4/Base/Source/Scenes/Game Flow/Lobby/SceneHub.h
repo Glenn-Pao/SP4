@@ -50,6 +50,7 @@ public:
 		EXITING,
 		CLEARING_WAY,
 		EXIT,
+		BACK_TO_MENU,
 		DIFFICULTY_SELECTION,
 		JELLYBEAN_SELECTION,
 		CONFIRMATION
@@ -80,9 +81,6 @@ public:
 
 	// Number of jellybeans required to finish the game
 	int jellybeansRequiredToFinish;
-
-	// Timer to Change Scene
-	float timerForEnd;
 
 	// Read and store data
 	void ReadData(CGameInfo* Data);
@@ -136,7 +134,7 @@ private:
 
 	CObjects* GameoverText;
 	float speedOfGameoverText;
-	CObjects* Credit;
+	CObjects* Credits;
 };
 
 #endif

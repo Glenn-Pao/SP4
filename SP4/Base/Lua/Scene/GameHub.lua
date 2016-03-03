@@ -7,7 +7,6 @@ noOfJellybeansRequiredToFinish = 100
 sizeOfScalingDarkSurrounding = 1500
 minSizeOfScalingDarkSurrounding = 30
 speedOfScalingDarkSurrounding = 0.05
-timerForEnd = 1
 
 GuardianScript = "Gimme 100 jellybeans!!!"
 GuardianFinishedScript = "JEALLYBEANS NICE! ME LIKE!"
@@ -25,3 +24,4 @@ door5 = "Exit"
 
 GameoverText = "GAMEOVER"
 SpeedOfGameoverText = 60
+CreditsScaleY = 2400

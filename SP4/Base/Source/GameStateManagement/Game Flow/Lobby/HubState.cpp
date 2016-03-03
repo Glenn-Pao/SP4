@@ -543,7 +543,7 @@ void CHubState::Update(CGameStateManager* theGSM, const double m_dElapsedTime)
 	// Update the scene
 	scene->Update(m_dElapsedTime);
 
-	if (scene->timerForEnd == 0.0f)
+	if (scene->currentState == CSceneHub::BACK_TO_MENU)
 	{
 		theGSM->ChangeState(CMenuState::Instance());
 	}

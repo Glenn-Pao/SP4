@@ -164,6 +164,9 @@ public:
 		GEO_HUB_BTN_DOWN,
 		GEO_TUTLOSE_BG,
 
+		// Credits
+		GEO_CREDITS,
+
 		NUM_GEOMETRY,
 	};
 public:
