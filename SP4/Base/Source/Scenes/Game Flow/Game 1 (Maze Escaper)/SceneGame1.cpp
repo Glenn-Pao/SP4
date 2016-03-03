@@ -723,7 +723,7 @@ void CSceneGame1::RenderGUI()
 	// Jellybean
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize()));
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)(sceneManager2D.m_window_height - m_cMap->GetTileSize()));
 
 	// Timer
 	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Time left:", Color(0, 0, 0), m_cMap->GetTileSize() * 0.5f, sceneManager2D.m_window_width - m_cMap->GetTileSize() * 3.f, sceneManager2D.m_window_height - m_cMap->GetTileSize() * 0.5f);

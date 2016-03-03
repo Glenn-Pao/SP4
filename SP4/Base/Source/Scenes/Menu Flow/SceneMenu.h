@@ -61,6 +61,7 @@ class CSceneMenu : public Scene
 		NUM_GEOMETRY,
 	};
 
+
 public:
 	CSceneMenu();
 	CSceneMenu(const int m_window_width, const int m_window_height);
@@ -107,6 +108,8 @@ public:
 	float MainMenuAnimationTimer;
 
 	bool isSettingsAnimationStarted;
+
+	bool isInformationDisplayed;
 
 	float TimeSinceSettingsAnimation;
 private:

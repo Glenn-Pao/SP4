@@ -220,39 +220,78 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		{
 			case CSceneMenu::SELECTING:
 			{
-				if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
+				if (scene->isInformationDisplayed == false)
 				{
-					if (theGSM->saveAndLoadsys->LoadNewFile() == true)
+					if (scene->UIManager->FindButton("StartGameButton")->getisHovered() == true)
 					{
-						scene->currentDataSelected = theGSM->saveAndLoadsys->GetCurrentIndex();
-						scene->currentState = CSceneMenu::CONFIRMATION;
-						scene->ShowConfirmation();
+						if (theGSM->saveAndLoadsys->LoadNewFile() == true)
+						{
+							scene->currentDataSelected = theGSM->saveAndLoadsys->GetCurrentIndex();
+							scene->currentState = CSceneMenu::CONFIRMATION;
+							scene->ShowConfirmation();
+						}
+					}
+					else if (scene->UIManager->FindButton("LoadGameButton")->getisHovered() == true)
+					{
+						scene->choice = CSceneMenu::PLAY;
+						theGSM->ChangeState(CLoadGameSelect::Instance());
+					}
+					else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
+					{
+						theGSM->Quit();
+					}
+					else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
+					{
+
+						if (scene->isInformationDisplayed == false)
+						{
+
+							scene->isInformationDisplayed = true;
+							scene->UIManagerInformation->InvokeAnimator()->SkipAllAnimations();
+							scene->UIManagerInformation->InvokeAnimator()->StartTransformation(scene->UIManagerInformation->FindImage("InstructionPageGameOverview"), 0, Vector3((float)(scene->sceneManager2D.m_window_width / 2), (float)(scene->sceneManager2D.m_window_height / 2), 1), 10, 0);
+						}
+					
+					}
+					else if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
+					{
+						if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
+						{
+							theGSM->sound->setActive(false);
+						}
+						else
+						{
+							theGSM->sound->setActive(true);
+						}
 					}
 				}
-				else if (scene->UIManager->FindButton("LoadGameButton")->getisHovered() == true)
+				else
 				{
-					scene->choice = CSceneMenu::PLAY;
-					theGSM->ChangeState(CLoadGameSelect::Instance());
-				}
-				else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
-				{
-					//theGSM->ChangeState(CInstructionState::Instance());
-				}
-				else if (scene->UIManager->FindButton("ExitButton")->getisHovered() == true)
-				{
-					theGSM->Quit();
-				}
-				else if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
-				{
-					if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
+					if (scene->UIManager->FindButton("MusicIcon")->getisHovered() == true)
 					{
-						theGSM->sound->setActive(false);
+						if (scene->UIManager->FindButton("MusicIcon")->getActive() == true)
+						{
+							theGSM->sound->setActive(false);
+						}
+						else
+						{
+							theGSM->sound->setActive(true);
+						}
 					}
-					else
+					else if (scene->UIManager->FindButton("Instructions")->getisHovered() == true)
 					{
-						theGSM->sound->setActive(true);
+
+						if (scene->isInformationDisplayed == true)
+						{
+							scene->isInformationDisplayed = false;
+							scene->UIManagerInformation->InvokeAnimator()->SkipAllAnimations();
+							scene->UIManagerInformation->InvokeAnimator()->StartTransformation(scene->UIManagerInformation->FindImage("InstructionPageGameOverview"), 0,
+								Vector3(scene->UIManagerInformation->FindImage("InstructionPageGameOverview")->getDefaultPos().x, scene->UIManagerInformation->FindImage("InstructionPageGameOverview")->getDefaultPos().y, 0), 10, 0);
+						}
+
 					}
 				}
+				
+				
 			}
 			break;
 			case CSceneMenu::CONFIRMATION:

@@ -115,7 +115,7 @@ void CSceneMenu::Init(int level)
 
 	//Instructions Page Game Overview
 	Image* InstructionPageGameOverview;
-	InstructionPageGameOverview = new Image("InstructionPageGameOverview", meshList[INFORMATION_GAME_OVERVIEW], Vector3((float)(sceneManager2D.m_window_width * 0.5), -50, 1), Vector3(30, 30, 1));
+	InstructionPageGameOverview = new Image("InstructionPageGameOverview", meshList[INFORMATION_GAME_OVERVIEW], Vector3((float)(sceneManager2D.m_window_width * 0.5), -300, 1), Vector3(500, 600, 1));
 
 	UIManager->addFeature(BackGround);
 
@@ -198,6 +198,9 @@ void CSceneMenu::Init(int level)
 	Button* NoButton;
 	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3((float)(sceneManager2D.m_window_width * 0.45), -(float)(sceneManager2D.m_window_height * 0.5), 0), Vector3((float)(sceneManager2D.m_window_width * 0.2), (float)(sceneManager2D.m_window_height * 0.1), 0));
 	UIManagerConfirmation->addFeature(NoButton);
+
+
+	isInformationDisplayed = false;
 }
 
 void CSceneMenu::InitMeshes()

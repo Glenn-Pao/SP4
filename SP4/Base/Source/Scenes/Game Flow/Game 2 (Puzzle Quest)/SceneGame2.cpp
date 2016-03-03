@@ -1456,7 +1456,7 @@ void CSceneGame2::RenderGUI()
 	ss.str(std::string());
 	ss.precision(3);
 	ss << ": " << noOfJellybeans;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 1, 0), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)sceneManager2D.m_window_height - m_cMap->GetTileSize());
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), (float)m_cMap->GetTileSize(), (float)m_cMap->GetTileSize(), (float)sceneManager2D.m_window_height - m_cMap->GetTileSize());
 
 	if (castedBlue)
 		sceneManager2D.Render2DMesh(meshList[GEO_BACKFADEON], false, m_cMap->GetTileSize(), m_cMap->GetTileSize(), (int)slot1.x, (int)slot1.y);

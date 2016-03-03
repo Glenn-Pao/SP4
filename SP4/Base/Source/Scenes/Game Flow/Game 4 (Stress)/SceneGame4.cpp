@@ -1434,19 +1434,19 @@ void SceneGame4::RenderScore()
 {
 	std::ostringstream ss;
 	// Timer
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(0, 0, 0), (float)(m_cMap->GetTileSize() * 0.5), 0, (float)(m_cMap->GetTileSize() * 0.5));
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score:", Color(1, 1, 1), (float)(m_cMap->GetTileSize() * 0.5), 0, (float)(m_cMap->GetTileSize() * 0.5));
 	ss.str(std::string());
 	ss.precision(3);
 	ss << Score;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.5));
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.5));
 
 	ss.clear();
 
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score To Beat:", Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), 0, (float)(m_cMap->GetTileSize() * 0.1));
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], "Score To Beat:", Color(1, 1, 1), (float)(m_cMap->GetTileSize()*0.5), 0, (float)(m_cMap->GetTileSize() * 0.1));
 	ss.str(std::string());
 	ss.precision(3);
 	ss << ScoreToBeat;
-	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(0, 0, 0), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.1));
+	sceneManager2D.RenderTextOnScreen(sceneManager2D.meshList[CSceneManager2D::GEO_TEXT], ss.str(), Color(1, 1, 1), (float)(m_cMap->GetTileSize()*0.5), (float)(m_cMap->GetTileSize() * 4), (float)(m_cMap->GetTileSize() * 0.1));
 
 }
 
