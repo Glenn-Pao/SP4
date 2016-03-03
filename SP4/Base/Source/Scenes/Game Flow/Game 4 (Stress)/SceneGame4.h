@@ -56,6 +56,7 @@ public:
 	UISystem* UIManager;
 
 	int numOfInstructionsLeft;
+
 private:
 	void InitMeshes();
 
@@ -89,6 +90,8 @@ private:
 	int ScoreToBeat;
 	int Score;
 
+
+
 	Deck* PatternToFollow;
 
 	Deck* PatternInserted;
@@ -100,12 +103,16 @@ private:
 	Card* SelectedCard;
 	Card* NoneCard;
 
-	Trigger* SendPattern;
-
 	CProbabilitySystem ps;
 
 	Trigger* Instructions;
 
+
+	Button* StressButton;
+
+	Button* ResetButton;
+
+	bool isResetButtonPressed;
 
 	float MissingCardTimer;
 

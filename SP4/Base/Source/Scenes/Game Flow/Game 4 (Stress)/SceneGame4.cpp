@@ -186,9 +186,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		PatternInserted = new Deck(Vector3(250, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(250, 425, 1), Vector3(80, 0, 0));
 
-		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
-		CurrentPhase = TutorialPhase::PHASE_1;
-
 		//Create 3 Cards Difficulty
 
 		for (int i = 0; i < 3; ++i)
@@ -224,9 +221,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		//Initialise Deck
 		PatternInserted = new Deck(Vector3(175, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(175, 425, 1), Vector3(80, 0, 0));
-
-		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
-		CurrentPhase = TutorialPhase::PHASE_1;
 
 		//Create 3 Cards Difficulty
 
@@ -264,9 +258,6 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 		PatternInserted = new Deck(Vector3(85, 300, 1), Vector3(80, 0, 0));
 		PatternToFollow = new Deck(Vector3(85, 425, 1), Vector3(80, 0, 0));
 
-		Instructions = new Trigger(meshList[GEO_INSTRUCTIONS], Vector3(275, 130, 0), Vector3(250, 100, 50), Vector3(0, 20, 0), Vector3(800, 100, 1), true);
-		CurrentPhase = TutorialPhase::PHASE_1;
-
 		//Create 3 Cards Difficulty
 
 		for (int i = 0; i < 3; ++i)
@@ -298,8 +289,11 @@ void SceneGame4::Init(int level) // level = 0(Tutorial), = 1(Easy), = 2(Medium),
 	BlueCard = new Card(Card::CARD, true, "NIL", Vector3(475, 150, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true);
 	SelectedCard = new  Card(Card::CARD, false, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
 	NoneCard = new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_STRESS_CARD], Card::Element::NONE, true);
-	SendPattern = new Trigger(meshList[GEO_STRESS], Vector3(100, 150, 1), Vector3(50, 50, 50), Vector3(100, 150, 1), Vector3(50, 50, 50), true);
-
+	
+	StressButton = new Button("StressButton", meshList[GEO_STRESS], meshList[GEO_STRESS], NULL, Vector3(125, 150, 1), Vector3(100, 100, 50), false, false);
+	ResetButton = new Button("ResetButton", meshList[GEO_RESET], meshList[GEO_RESET], NULL, Vector3(600, 150, 1), Vector3(100, 100, 50), false, false);
+	
+	isResetButtonPressed = false;
 
 	InitUI();
 }
@@ -431,6 +425,8 @@ void SceneGame4::InitMeshes()
 	meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction1.tga");
 	meshList[GEO_STRESS] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_STRESS]->textureID = LoadTGA("Image//StressButton.tga");
+	meshList[GEO_RESET] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
+	meshList[GEO_RESET]->textureID = LoadTGA("Image//StressResetButton.tga");
 	meshList[GEO_PATTERN] = MeshBuilder::Generate2DMesh("GEO_TILE_DOOR", Color(1, 1, 1), 0, 0, 1, 1);
 	meshList[GEO_PATTERN]->textureID = LoadTGA("Image//PatternToFollow.tga");
 
@@ -613,7 +609,7 @@ void SceneGame4::UpdateTutorialInstructions(double dt)
 	{
 		if (PatternToFollow->isDeckIdentical(PatternInserted) == true)
 		{
-			if (Application::IsKeyPressed('F') && SendPattern->CheckCollision((*theHero->getBoundingBox())) == true)
+			if (Application::IsKeyPressed('F') && StressButton->getCollisionBox()->CheckCollision(*theHero->getBoundingBox()) == true)
 			{
 				meshList[GEO_INSTRUCTIONS]->textureID = LoadTGA("Image//Game4TutorialInstuction6.tga");
 				CurrentState = State::TIME_UP;
@@ -634,7 +630,8 @@ void SceneGame4::UpdateDecks(double dt)
 		//Update Decks
 		if (Application::IsKeyPressed('F'))
 		{
-			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			//Hit Stress Button
+			if (StressButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
 			{
 				//Reset Time For Missing Card
 				MissingCardTimer = 0;
@@ -652,7 +649,7 @@ void SceneGame4::UpdateDecks(double dt)
 					PatternInserted->ListOfCards.pop_back();
 				}
 
-				for (int i = 0; i < 4; ++i)
+				for (int i = 0; i < 3; ++i)
 				{
 					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
 					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
@@ -680,6 +677,57 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 			}
 
+			// Hit Reset Button
+			if (ResetButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && isResetButtonPressed == false)
+			{
+				isResetButtonPressed = true;
+				//Reset Time For Missing Card
+				MissingCardTimer = 0;
+
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 3; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					//Randomize New Cards in PatternToFollow
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+				}
+			}
+		
+
+			//Reset PatternInserted To Default Stress Cards
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -689,10 +737,11 @@ void SceneGame4::UpdateDecks(double dt)
 					PatternInserted->getListOfCards()[i]->setisRevealed(true);
 					PatternInserted->getListOfCards()[i]->setActive(true);
 				}
-				else
-				{
-				}
 			}
+		}
+		else
+		{
+			isResetButtonPressed = false;
 		}
 		break;
 	}
@@ -701,7 +750,8 @@ void SceneGame4::UpdateDecks(double dt)
 		//Update Decks
 		if (Application::IsKeyPressed('F'))
 		{
-			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			//Hit Stress Button
+			if (StressButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
 			{
 				//Clear Contents of PatternToFollow Deck
 				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
@@ -745,7 +795,55 @@ void SceneGame4::UpdateDecks(double dt)
 				Score += 5;
 				MissingCardTimer = 0;
 			}
+			// Hit Reset Button
+			if (ResetButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && isResetButtonPressed == false)
+			{
+				isResetButtonPressed = true;
+				//Reset Time For Missing Card
+				MissingCardTimer = 0;
 
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 4; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					//Randomize New Cards in PatternToFollow
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+				}
+				Timer -= 10;
+			}
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -760,6 +858,10 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 			}
 		}
+		else
+		{
+			isResetButtonPressed = false;
+		}
 		break;
 	}
 	case DifficultyLevel::NORMAL:
@@ -767,7 +869,7 @@ void SceneGame4::UpdateDecks(double dt)
 		//Update Decks
 		if (Application::IsKeyPressed('F'))
 		{
-			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			if (StressButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
 			{
 				//Clear Contents of PatternToFollow Deck
 				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
@@ -811,7 +913,55 @@ void SceneGame4::UpdateDecks(double dt)
 				Score += 10;
 				MissingCardTimer = 0;
 			}
+			// Hit Reset Button
+			if (ResetButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && isResetButtonPressed == false)
+			{
+				isResetButtonPressed = true;
+				//Reset Time For Missing Card
+				MissingCardTimer = 0;
 
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 6; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					//Randomize New Cards in PatternToFollow
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+				}
+				Timer -= 10;
+			}
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -826,6 +976,10 @@ void SceneGame4::UpdateDecks(double dt)
 				}
 			}
 		}
+		else
+		{
+			isResetButtonPressed = false;
+		}
 		break;
 	}
 	case DifficultyLevel::HARD:
@@ -833,7 +987,7 @@ void SceneGame4::UpdateDecks(double dt)
 		//Update Decks
 		if (Application::IsKeyPressed('F'))
 		{
-			if (SendPattern->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
+			if (StressButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && PatternToFollow->isDeckIdentical(PatternInserted) == true)
 			{
 				//Clear Contents of PatternToFollow Deck
 				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
@@ -877,7 +1031,55 @@ void SceneGame4::UpdateDecks(double dt)
 				Score += 15;
 				MissingCardTimer = 0;
 			}
+			// Hit Reset Button
+			if (ResetButton->getCollisionBox()->CheckCollision((*theHero->getBoundingBox())) == true && isResetButtonPressed == false)
+			{
+				isResetButtonPressed = true;
+				//Reset Time For Missing Card
+				MissingCardTimer = 0;
 
+				//Clear Contents of PatternToFollow Deck
+				for (int i = PatternToFollow->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternToFollow->ListOfCards[i];
+					PatternToFollow->ListOfCards.pop_back();
+				}
+				//Clear Contents of PatternInserted Deck
+				for (int i = PatternInserted->getListOfCards().size() - 1; i >= 0; --i)
+				{
+					delete PatternInserted->ListOfCards[i];
+					PatternInserted->ListOfCards.pop_back();
+				}
+
+				for (int i = 0; i < 8; ++i)
+				{
+					//Add The Same Amount Of Card For PatternInserted According To PatternToFollow
+					PatternInserted->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_STRESS_CARD], meshList[GEO_BLUE_CARD], Card::Element::NONE, false));
+
+					int randNo = ps.GetARandIntProbability();
+
+					//Randomize New Cards in PatternToFollow
+					switch (randNo)
+					{
+					case 0:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_RED_CARD], Card::Element::FIRE, true));
+						break;
+					}
+					case 1:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_BLUE_CARD], Card::Element::WATER, true));
+						break;
+					}
+					case 2:
+					{
+						PatternToFollow->AddCard(new Card(Card::CARD, true, "NIL", Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(70, 100, 1), meshList[GEO_MISSING_CARD], meshList[GEO_GREEN_CARD], Card::Element::LEAF, true));
+						break;
+					}
+					}
+				}
+				Timer -= 10;
+			}
 			for (int i = 0; i < PatternInserted->getListOfCards().size(); ++i)
 			{
 				if (PatternInserted->getListOfCards()[i]->getBoundingBox()->CheckCollision((*theHero->getBoundingBox())) == true)
@@ -891,6 +1093,10 @@ void SceneGame4::UpdateDecks(double dt)
 				{
 				}
 			}
+		}
+		else
+		{
+			isResetButtonPressed = false;
 		}
 		break;
 	}
@@ -963,7 +1169,7 @@ void SceneGame4::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	sceneManager2D.Update(dt);
-	
+
 	switch (CurrentLevel)
 	{
 	case DifficultyLevel::TUTORIAL:
@@ -1208,7 +1414,9 @@ void SceneGame4::RenderRGBCards()
 
 void SceneGame4::RenderTrigger()
 {
-	sceneManager2D.Render2DMesh(SendPattern->getMesh(), false, SendPattern->getMeshScale().x, SendPattern->getMeshScale().y, SendPattern->getMeshPosition().x, SendPattern->getMeshPosition().y, 0);
+	sceneManager2D.Render2DMesh(StressButton->getCurrentMesh(), false, StressButton->getScale().x, StressButton->getScale().y, StressButton->getCurrentPos().x, StressButton->getCurrentPos().y, 0);
+	sceneManager2D.Render2DMesh(ResetButton->getCurrentMesh(), false, ResetButton->getScale().x, ResetButton->getScale().y, ResetButton->getCurrentPos().x, ResetButton->getCurrentPos().y, 0);
+
 }
 
 void SceneGame4::RenderTimer()
@@ -1252,6 +1460,7 @@ void SceneGame4::Render()
 	sceneManager2D.modelStack.PushMatrix();
 
 	sceneManager2D.modelStack.Translate(-theHero->GetMapOffset_x(), theHero->GetMapOffset_y() - m_cMap->GetTileSize(), 0);
+	
 	switch (CurrentLevel)
 	{
 	case DifficultyLevel::TUTORIAL:
