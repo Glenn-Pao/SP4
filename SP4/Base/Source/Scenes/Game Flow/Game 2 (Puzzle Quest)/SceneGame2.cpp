@@ -1547,7 +1547,7 @@ void CSceneGame2::RenderGUI()
 			if (dialogueTiles[i]->getActive())
 			{
 				// Dialogue box
-				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), 0, 0);
+				sceneManager2D.Render2DMesh(meshList[GEO_DIALOGUE_BOX], false, sceneManager2D.m_window_width, m_cMap->GetTileSize(), (int)(sceneManager2D.m_window_width * 0.5), (int)(m_cMap->GetTileSize() * 0.5));
 
 				// Text
 				int textSize = (int)(m_cMap->GetTileSize() * 0.5f);
