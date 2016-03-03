@@ -47,7 +47,7 @@ Add a new object to this grid
 ********************************************************************************/
 void CGrid::AddObject(CSceneNode* theObject)
 {
-	for (int i = 0; i < ListOfObjects.size(); i++)
+	for (int i = 0; i < (int)ListOfObjects.size(); i++)
 	{
 		if (ListOfObjects[i] == theObject)
 		{
@@ -55,7 +55,7 @@ void CGrid::AddObject(CSceneNode* theObject)
 		}
 	}
 	theObject->SetTextureID(theGridMesh->textureID);
-	theObject->currentGridIndex.push_back(Vector3(index_x, index_y, 0));
+	theObject->currentGridIndex.push_back(Vector3((float)index_x, (float)index_y, 0));
 
 	ListOfObjects.push_back( theObject );
 }
@@ -65,13 +65,13 @@ Remove an object to this grid
 ********************************************************************************/
 void CGrid::RemoveObject(CSceneNode* theObject)
 {
-	for (int i = 0; i < ListOfObjects.size(); i++)
+	for (int i = 0; i < (int)ListOfObjects.size(); i++)
 	{
 		if (ListOfObjects[i] == theObject)
 		{
-			for (int j = 0; j < theObject->currentGridIndex.size(); j++)
+			for (int j = 0; j < (int)theObject->currentGridIndex.size(); j++)
 			{
-				if (theObject->currentGridIndex[j] == Vector3(index_x, index_y, 0))
+				if (theObject->currentGridIndex[j] == Vector3((float)index_x, (float)index_y, 0))
 				{
 					theObject->currentGridIndex.erase(ListOfObjects[i]->currentGridIndex.begin() + j);
 					break;
@@ -166,7 +166,7 @@ void CGrid::DeleteObjects(void)
 		theGridMesh = NULL;
 	}
 
-	for( int i = 0 ; i < ListOfObjects.size(); i++)
+	for (int i = 0; i < (int)ListOfObjects.size(); i++)
 	{
 		// Do not delete the objects as they are stored in CSceneGraph and will be deleted there.
 		//delete ListOfObjects[i];
@@ -187,7 +187,7 @@ Update the grid
 ********************************************************************************/
 void CGrid::Update(const int ResolutionType)
 {
-	for (int i = 0; i < ListOfObjects.size(); i++)
+	for (int i = 0; i < (int)ListOfObjects.size(); i++)
 	{
 		// Update the resolution type for each scene node object
 		ListOfObjects[i]->Update(ResolutionType);
@@ -216,7 +216,7 @@ Get Top Left position of this grid
 ********************************************************************************/
 Vector3 CGrid::GetTopLeft()
 {
-	return Vector3(index_x * xSize, 999999.0f, index_y * ySize);
+	return Vector3((float)index_x * xSize, 999999.0f, (float)index_y * ySize);
 }
 
 /********************************************************************************
@@ -224,5 +224,5 @@ Get Bottom Right position of this grid
 ********************************************************************************/
 Vector3 CGrid::GetBottomRight()
 {
-	return Vector3(index_x * xSize + xSize, -999999.0f, index_y * ySize + ySize);
+	return Vector3((float)index_x * xSize + xSize, -999999.0f, (float)index_y * ySize + ySize);
 }

@@ -5,6 +5,7 @@
 #include "..\..\Source\GameMechanics\Objects\Objects.h"
 #include "..\PlayerInfo.h"
 #include "FSM.h"
+#include "ProbabilitySystem.h"
 
 class CAI_Idling : public CObjects
 {
@@ -63,4 +64,5 @@ private:
 	bool interactable;
 	bool interacted;
 	float speed;
+	CProbabilitySystem p_s;
 };

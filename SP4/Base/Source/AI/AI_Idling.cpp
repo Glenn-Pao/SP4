@@ -1,7 +1,6 @@
 #include "AI_Idling.h"
 
 #include "..\UsingLua.h"
-#include "ProbabilitySystem.h"
 
 CAI_Idling::CAI_Idling()
 	: ai_type(STATIONARY)
@@ -39,8 +38,8 @@ CAI_Idling::CAI_Idling(CObjects::OBJECT_TYPE m_Object_Type, Vector3 pos, Vector3
 	setMesh(mesh);
 
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);
@@ -51,6 +50,15 @@ CAI_Idling::CAI_Idling(CObjects::OBJECT_TYPE m_Object_Type, Vector3 pos, Vector3
 	L.ReadFiles("Lua//ai_idling.lua");
 
 	speed = L.DoLuaFloat("speed");
+
+
+	if (ai_type == MOVINGAROUND)
+	{
+		// Idling
+		p_s.AddProbability(2);
+		// MOVING
+		p_s.AddProbability(1);
+	}
 }
 
 
@@ -70,7 +78,7 @@ void CAI_Idling::Update(double dt, CPlayerInfo* theHero, CMap* map)
 				case IDLE:
 				{
 					// reduce idling time
-					idlingTimeLeft = -dt;
+					idlingTimeLeft -= (float)dt;
 
 					// Check Time Left
 					if (idlingTimeLeft <= 0.0f)
@@ -83,7 +91,7 @@ void CAI_Idling::Update(double dt, CPlayerInfo* theHero, CMap* map)
 				case MOVING:
 				{
 					// moved AI
-					setPosition(getPosition() + vel * dt);
+					setPosition(getPosition() + vel * (float)dt);
 
 					// Check Distance
 					if ((waypoints[currentWaypointIndex] - getPosition()).Length() >= (waypoints[currentWaypointIndex] - waypoints[targetWaypointIndex]).Length())
@@ -109,9 +117,9 @@ void CAI_Idling::Update(double dt, CPlayerInfo* theHero, CMap* map)
 				}
 
 				// moved AI
-				setPosition(getPosition() + vel * dt);
+				setPosition(getPosition() + vel * (float)dt);
 				if (currentWaypointIndex == 0)
-					theHero->setPosition(theHero->getPosition() + vel * dt);
+					theHero->setPosition(theHero->getPosition() + vel * (float)dt);
 
 				// Check Distance
 				if ((waypoints[currentWaypointIndex] - getPosition()).Length() >= (waypoints[currentWaypointIndex] - waypoints[targetWaypointIndex]).Length())
@@ -215,8 +223,8 @@ void CAI_Idling::SetTargetWaypointIndex(int targetWaypointIndex)
 void CAI_Idling::UpdateBoundingBox()
 {
 	//Define the topleft and bottomright for the bounding box
-	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5), this->getPosition().y + (getScale().y * 0.5), 0);
-	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5), this->getPosition().y - (getScale().y * 0.5), 0);
+	Vector3 topleft(this->getPosition().x - (getScale().x * 0.5f), this->getPosition().y + (getScale().y * 0.5f), 0);
+	Vector3 bottomright(this->getPosition().x + (getScale().x * 0.5f), this->getPosition().y - (getScale().y * 0.5f), 0);
 
 	//put it inside the bounding box (from object class)
 	setBoundingBox(topleft, bottomright);
@@ -226,13 +234,6 @@ void CAI_Idling::UpdateBoundingBox()
 // For MovingAround
 void CAI_Idling::ChooseWhetherToIdling()
 {
-	CProbabilitySystem p_s;
-
-	// Idling
-	p_s.AddProbability(2);
-	// MOVING
-	p_s.AddProbability(1);
-
 	fsm = (FSM)p_s.GetARandIntProbability();
 
 	switch (fsm)
@@ -240,7 +241,7 @@ void CAI_Idling::ChooseWhetherToIdling()
 		case IDLE:
 		{
 			// Set idling time
-			idlingTimeLeft = Math::RandFloatMinMax(1.f, 5.f);
+			idlingTimeLeft = Math::RandFloatMinMax(0.1f, 1.5f);
 		}
 		break;
 		case MOVING:

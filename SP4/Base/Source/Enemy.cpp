@@ -25,20 +25,20 @@ void CEnemy::Init(void)
 // Set position x of the player
 void CEnemy::SetPos_x(int pos_x)
 {
-	theENEMYPosition.x = pos_x;
+	theENEMYPosition.x = (float)pos_x;
 }
 
 // Set position y of the player
 void CEnemy::SetPos_y(int pos_y)
 {
-	theENEMYPosition.y = pos_y;
+	theENEMYPosition.y = (float)pos_y;
 }
 
 // Set the destination of this enemy
 void CEnemy::SetDestination(const int pos_x, const int pos_y)
 {
-	theDestination.x = pos_x;
-	theDestination.y = pos_y;
+	theDestination.x = (float)pos_x;
+	theDestination.y = (float)pos_y;
 	if (theStrategy != NULL)
 	{
 		theStrategy->SetDestination(theDestination.x, theDestination.y);
@@ -48,25 +48,25 @@ void CEnemy::SetDestination(const int pos_x, const int pos_y)
 // Get position x of the player
 int CEnemy::GetPos_x(void)
 {
-	return theENEMYPosition.x;
+	return (int)theENEMYPosition.x;
 }
 
 // Get position y of the player
 int CEnemy::GetPos_y(void)
 {
-	return theENEMYPosition.y;
+	return (int)theENEMYPosition.y;
 }
 
 // Set the destination of this enemy
 int CEnemy::GetDestination_x(void)
 {
-	return theDestination.x;
+	return (int)theDestination.x;
 }
 
 // Set the destination of this enemy
 int CEnemy::GetDestination_y(void)
 {
-	return theDestination.y;
+	return (int)theDestination.y;
 }
 
 // Set Animation Invert status of the player
