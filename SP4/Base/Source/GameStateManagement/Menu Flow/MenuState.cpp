@@ -176,6 +176,9 @@ void CMenuState::HandleEvents(CGameStateManager* theGSM, const double mouse_x, c
 		case CSceneMenu::SELECTING:
 		{
 			scene->UIManager->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+		
+			scene->UIManagerInformation->HandleEvent(mouse_x, mouse_y, width, height, scene->sceneManager2D.m_window_width, scene->sceneManager2D.m_window_height);
+			
 		}
 		break;
 		case CSceneMenu::CONFIRMATION:

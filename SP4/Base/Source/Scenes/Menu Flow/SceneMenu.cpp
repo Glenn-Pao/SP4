@@ -46,11 +46,166 @@ void CSceneMenu::Init(int level)
 	{
 		meshList[i] = NULL;
 	}
+	InitMeshes();
+	
+	choice = NONE;
 
+	UIManager = new UISystem();
+
+	//Start Game Button
+	Button* StartGameButton;
+	StartGameButton = new Button("StartGameButton", meshList[START_BUTTON_UP], meshList[START_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 6, 1), Vector3(20, 10, 1));
+
+	//Load Game Button
+	Button* LoadGameButton;
+	LoadGameButton = new Button("LoadGameButton", meshList[LOAD_BUTTON_UP], meshList[LOAD_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 4.5, 1), Vector3(20, 10, 1));
+
+	//Exit Button
+	Button* ExitButton;
+	ExitButton = new Button("ExitButton", meshList[EXIT_BUTTON_UP], meshList[EXIT_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 3, 1), Vector3(20, 10, 1));
+
+	//Instructions
+	Button* Instructions;
+	Instructions = new Button("Instructions", meshList[INSTRUCTIONS_BUTTON_UP], meshList[INSTRUCTIONS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
+
+	//Music Icon Button
+	Button* MusicIcon;
+	MusicIcon = new Button("MusicIcon", meshList[MUSIC_ICON], meshList[MUSIC_ICON], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
+
+	//Music Icon Button Off
+	Button* MusicIconOff;
+	MusicIconOff = new Button("MusicIconOff", meshList[MUSIC_ICON_OFF], meshList[MUSIC_ICON_OFF], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), false);
+
+	//Settings Button
+	Button* SettingsButton;
+	SettingsButton = new Button("SettingsButton", meshList[SETTINGS_BUTTON_UP], meshList[SETTINGS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), true);
+
+
+	//Title
+	Image* Title;
+	Title = new Image("Title", meshList[TITLE], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height + 200, 0), Vector3(300, 150, 0));
+	
+	//Left Smoke
+	Image* SmokeToLeft;
+	SmokeToLeft = new Image("SmokeToLeft", meshList[SMOKE_LEFT], Vector3(sceneManager2D.m_window_width / 10 * 4, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
+
+	//Upeer Left Smoke
+	Image* SmokeToLeftUp;
+	SmokeToLeftUp = new Image("SmokeToLeftUp", meshList[SMOKE_LEFT], Vector3(sceneManager2D.m_window_width / 10 * 4, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
+
+	//Right Smoke
+	Image* SmokeToRight;
+	SmokeToRight = new Image("SmokeToRight", meshList[SMOKE_RIGHT], Vector3(sceneManager2D.m_window_width / 10 * 6, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
+
+	//Upper Right Smoke
+	Image* SmokeToRightUp;
+	SmokeToRightUp = new Image("SmokeToRightUp", meshList[SMOKE_RIGHT], Vector3(sceneManager2D.m_window_width / 10 * 6, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
+
+	//Background Image
+	Image* BackGround;
+	BackGround = new Image("BackGround", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), Vector3(800, 600, 0));
+
+	//Information Pointer Left Button Off
+	Button* InformationPointerLeft;
+	InformationPointerLeft = new Button("InformationPointerLeft", meshList[INFORMATION_POINTER_LEFT], meshList[INFORMATION_POINTER_LEFT_PRESSED], NULL, Vector3(sceneManager2D.m_window_width * 0.5 - 20, -50, 1), Vector3(30, 30, 1), true);
+
+	//Information Pointer Left Button Off
+	Button* InformationPointerRight;
+	InformationPointerRight = new Button("InformationPointerRight", meshList[INFORMATION_POINTER_RIGHT], meshList[INFORMATION_POINTER_RIGHT_PRESSED], NULL, Vector3(sceneManager2D.m_window_width * 0.5 + 20, -50, 1), Vector3(30, 30, 1), true);
+
+	//Instructions Page Game Overview
+	Image* InstructionPageGameOverview;
+	InstructionPageGameOverview = new Image("InstructionPageGameOverview", meshList[INFORMATION_GAME_OVERVIEW], Vector3(sceneManager2D.m_window_width * 0.5, -50, 1), Vector3(30, 30, 1));
+
+	UIManager->addFeature(BackGround);
+
+	UIManager->addFeature(Title);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Title"), 1.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 8, 0), 10, 0);
+
+	UIManager->addFeature(SmokeToLeft);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeft"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 2, sceneManager2D.m_window_height / 10 * 7, 0), 4, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeft"), 1.5, Vector3(100, 50, 0), 4, 2);
+
+
+	UIManager->addFeature(SmokeToLeftUp);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeftUp"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 1.2, sceneManager2D.m_window_height / 10 * 7.5, 0), 4, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeftUp"), 1.5, Vector3(70, 35, 0), 4, 2);
+
+	UIManager->addFeature(SmokeToRight);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRight"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 8, sceneManager2D.m_window_height / 10 * 7, 0), 4, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRight"), 1.5, Vector3(100, 50, 0), 4, 2);
+
+	UIManager->addFeature(SmokeToRightUp);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 8.8, sceneManager2D.m_window_height / 10 * 7.5, 0), 4, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(70, 35, 0), 4, 2);
+
+	UIManager->addFeature(StartGameButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"), 0, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"), 0.5, Vector3(150, 75, 1), 5, 2);
+
+	UIManager->addFeature(LoadGameButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 4.5, 0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.7, Vector3(150, 75, 1), 5, 2);
+
+	UIManager->addFeature(ExitButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 0.6, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 3, 0), 10, 0);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 1.1, Vector3(150, 75, 1), 5, 2);
+
+	UIManager->addFeature(Instructions);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 1.9, Vector3(50, 50, 1), 5, 2);
+
+	UIManager->addFeature(MusicIcon);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 1.9, Vector3(50, 50, 1), 5, 2);
+
+	UIManager->addFeature(MusicIconOff);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 1.9, Vector3(50, 50, 1), 5, 2);
+
+	UIManager->addFeature(SettingsButton);
+	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SettingsButton"), 1.9, Vector3(80,80,1), 5, 2);
+
+	MainMenuAnimationTimer = 0;
+
+	isSettingsAnimationStarted = false;
+	TimeSinceSettingsAnimation = 0;
+
+	//Information Icon
+	UIManagerInformation = new UISystem();
+	UIManagerInformation->addFeature(InformationPointerLeft);
+
+	UIManagerInformation->addFeature(InformationPointerRight);
+
+	UIManagerInformation->addFeature(InstructionPageGameOverview);
+
+	// Confiramtion
+	UIManagerConfirmation = new UISystem();
+
+	// AlphaQuad
+	Image* AlphaQuad;
+	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
+	UIManagerConfirmation->addFeature(AlphaQuad);
+
+	// Confirmation Window
+	Image* ConfirmationWindow;
+	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
+	UIManagerConfirmation->addFeature(ConfirmationWindow);
+
+	// Yes button
+	Button* YesButton;
+	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(YesButton);
+
+	// No button
+	Button* NoButton;
+	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
+	UIManagerConfirmation->addFeature(NoButton);
+}
+
+void CSceneMenu::InitMeshes()
+{
 	// Load the ground mesh and texture
 	meshList[GRAY_QUAD] = MeshBuilder::Generate2DMesh("GRAY_QUAD", Color(0.5, 0.5, 0.5), 0, 0, 800, 600);
 	meshList[BLACK_QUAD] = MeshBuilder::Generate2DMesh("BLACK_QUAD", Color(0, 0, 0), 0, 0, 800, 55);
-		
+
 	meshList[START_BUTTON_UP] = MeshBuilder::GenerateQuad("START_BUTTON_UP", Color(0, 0, 0), 1.f);
 	meshList[START_BUTTON_UP]->textureID = LoadTGA("Image//StartGameButton.tga");
 
@@ -92,12 +247,31 @@ void CSceneMenu::Init(int level)
 
 	meshList[MUSIC_ICON_OFF] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
 	meshList[MUSIC_ICON_OFF]->textureID = LoadTGA("Image//Music_Icon_Off.tga");
-	
+
 	meshList[SETTINGS_BUTTON_UP] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
 	meshList[SETTINGS_BUTTON_UP]->textureID = LoadTGA("Image//SettingsIcon.tga");
 
 	meshList[SETTINGS_BUTTON_DOWN] = MeshBuilder::GenerateQuad("MUSIC_ICON_OFF", Color(0, 0, 0), 1.f);
 	meshList[SETTINGS_BUTTON_DOWN]->textureID = LoadTGA("Image//SettingsIconPressed.tga");
+
+	//Informations Pointers
+
+	meshList[INFORMATION_POINTER_LEFT] = MeshBuilder::GenerateQuad("INFORMATION_POINTER_LEFT", Color(1, 1, 1), 1);
+	meshList[INFORMATION_POINTER_LEFT]->textureID = LoadTGA("Image//InformationPointerLeft.tga");
+
+	meshList[INFORMATION_POINTER_LEFT_PRESSED] = MeshBuilder::GenerateQuad("INFORMATION_POINTER_LEFT_PRESSED", Color(1, 1, 1), 1);
+	meshList[INFORMATION_POINTER_LEFT_PRESSED]->textureID = LoadTGA("Image//InformationPointerLeftPressed.tga");
+
+	meshList[INFORMATION_POINTER_RIGHT] = MeshBuilder::GenerateQuad("INFORMATION_POINTER_RIGHT", Color(1, 1, 1), 1);
+	meshList[INFORMATION_POINTER_RIGHT]->textureID = LoadTGA("Image//InformationPointerRight.tga");
+
+	meshList[INFORMATION_POINTER_RIGHT_PRESSED] = MeshBuilder::GenerateQuad("INFORMATION_POINTER_RIGHT_PRESSED", Color(1, 1, 1), 1);
+	meshList[INFORMATION_POINTER_RIGHT_PRESSED]->textureID = LoadTGA("Image//InformationPointerRightPressed.tga");
+	
+	meshList[INFORMATION_GAME_OVERVIEW] = MeshBuilder::GenerateQuad("INFORMATION_POINTER_RIGHT_PRESSED", Color(1, 1, 1), 1);
+	meshList[INFORMATION_GAME_OVERVIEW]->textureID = LoadTGA("Image//InstructionPageGameOverview.tga");
+
+	
 
 	// Confirmation
 	// Window
@@ -117,133 +291,14 @@ void CSceneMenu::Init(int level)
 	// Alpha Black Quad
 	meshList[GEO_ALPHA_BLACK_QUAD] = MeshBuilder::GenerateQuad("GEO_ALPHA_BLACK_QUAD", Color(1, 1, 1), 1);
 	meshList[GEO_ALPHA_BLACK_QUAD]->textureID = LoadTGA("Image//UI/Half_Alpha_Black.tga");
-
-	choice = NONE;
-
-	UIManager = new UISystem();
-
-	Button* StartGameButton;
-	StartGameButton = new Button("StartGameButton", meshList[START_BUTTON_UP], meshList[START_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 6, 1), Vector3(20, 10, 1));
-
-	Button* LoadGameButton;
-	LoadGameButton = new Button("LoadGameButton", meshList[LOAD_BUTTON_UP], meshList[LOAD_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 4.5, 1), Vector3(20, 10, 1));
-
-	Button* ExitButton;
-	ExitButton = new Button("ExitButton", meshList[EXIT_BUTTON_UP], meshList[EXIT_BUTTON_DOWN], NULL, Vector3(-100, sceneManager2D.m_window_height / 10 * 3, 1), Vector3(20, 10, 1));
-
-	Button* Instructions;
-	Instructions = new Button("Instructions", meshList[INSTRUCTIONS_BUTTON_UP], meshList[INSTRUCTIONS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
-
-	Button* MusicIcon;
-	MusicIcon = new Button("MusicIcon", meshList[MUSIC_ICON], meshList[MUSIC_ICON], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1));
-
-	Button* MusicIconOff;
-	MusicIconOff = new Button("MusicIconOff", meshList[MUSIC_ICON_OFF], meshList[MUSIC_ICON_OFF], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), false);
-
-	Button* SettingsButton;
-	SettingsButton = new Button("SettingsButton", meshList[SETTINGS_BUTTON_UP], meshList[SETTINGS_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.05, 40, 1), Vector3(1, 1, 1), true);
-
-
-	Image* Title;
-	Title = new Image("Title", meshList[TITLE], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height + 200, 0), Vector3(300, 150, 0));
-	
-	Image* SmokeToLeft;
-	SmokeToLeft = new Image("SmokeToLeft", meshList[SMOKE_LEFT], Vector3(sceneManager2D.m_window_width / 10 * 4, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
-
-	Image* SmokeToLeftUp;
-	SmokeToLeftUp = new Image("SmokeToLeftUp", meshList[SMOKE_LEFT], Vector3(sceneManager2D.m_window_width / 10 * 4, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
-
-
-	Image* SmokeToRight;
-	SmokeToRight = new Image("SmokeToRight", meshList[SMOKE_RIGHT], Vector3(sceneManager2D.m_window_width / 10 * 6, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
-
-	Image* SmokeToRightUp;
-	SmokeToRightUp = new Image("SmokeToRightUp", meshList[SMOKE_RIGHT], Vector3(sceneManager2D.m_window_width / 10 * 6, sceneManager2D.m_window_height / 10 * 6.8), Vector3(0.1, 0.05, 0));
-
-
-	Image* BackGround;
-	BackGround = new Image("BackGround", meshList[BACKGROUND], Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 2, 0), Vector3(800, 600, 0));
-
-	UIManager->addFeature(BackGround);
-
-	UIManager->addFeature(Title);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("Title"), 1.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 8, 0), 10, 0);
-
-	UIManager->addFeature(SmokeToLeft);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeft"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 2, sceneManager2D.m_window_height / 10 * 7, 0), 4, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeft"), 1.5, Vector3(100, 50, 0), 4, 2);
-
-
-	UIManager->addFeature(SmokeToLeftUp);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeftUp"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 1.2, sceneManager2D.m_window_height / 10 * 7.5, 0), 4, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToLeftUp"), 1.5, Vector3(70, 35, 0), 4, 2);
-
-	UIManager->addFeature(SmokeToRight);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRight"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 8, sceneManager2D.m_window_height / 10 * 7, 0), 4, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRight"), 1.5, Vector3(100, 50, 0), 4, 2);
-
-	UIManager->addFeature(SmokeToRightUp);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(sceneManager2D.m_window_width / 10 * 8.8, sceneManager2D.m_window_height / 10 * 7.5, 0), 4, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindImage("SmokeToRightUp"), 1.5, Vector3(70, 35, 0), 4, 2);
-
-	UIManager->addFeature(StartGameButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"), 0, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 6, 0), 10, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("StartGameButton"),0.5, Vector3(150, 75, 1), 5, 2);
-
-	UIManager->addFeature(LoadGameButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.2, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 4.5, 0), 10, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("LoadGameButton"), 0.7, Vector3(150, 75, 1), 5, 2);
-
-	UIManager->addFeature(ExitButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 0.6, Vector3(sceneManager2D.m_window_width / 2, sceneManager2D.m_window_height / 10 * 3, 0), 10, 0);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("ExitButton"), 1.1, Vector3(150, 75, 1), 5, 2);
-
-	UIManager->addFeature(Instructions);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("Instructions"), 1.9, Vector3(50, 50, 1), 5, 2);
-
-	UIManager->addFeature(MusicIcon);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIcon"), 1.9, Vector3(50, 50, 1), 5, 2);
-
-	UIManager->addFeature(MusicIconOff);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("MusicIconOff"), 1.9, Vector3(50, 50, 1), 5, 2);
-
-
-	UIManager->addFeature(SettingsButton);
-	UIManager->InvokeAnimator()->StartTransformation(UIManager->FindButton("SettingsButton"), 1.9, Vector3(80,80,1), 5, 2);
-
-	MainMenuAnimationTimer = 0;
-
-	isSettingsAnimationStarted = false;
-	TimeSinceSettingsAnimation = 0;
-
-	// Confiramtion
-	UIManagerConfirmation = new UISystem();
-
-	// AlphaQuad
-	Image* AlphaQuad;
-	AlphaQuad = new Image("AlphaQuad", meshList[GEO_ALPHA_BLACK_QUAD], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.5, 0), Vector3(0, 0, 0));
-	UIManagerConfirmation->addFeature(AlphaQuad);
-
-	// Confirmation Window
-	Image* ConfirmationWindow;
-	ConfirmationWindow = new Image("ConfirmationWindow", meshList[GEO_CONFIRMATION_WINDOW], Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 1.5, 0), Vector3(sceneManager2D.m_window_width * 0.5, sceneManager2D.m_window_height * 0.45, 0));
-	UIManagerConfirmation->addFeature(ConfirmationWindow);
-
-	// Yes button
-	Button* YesButton;
-	YesButton = new Button("YesButton", meshList[GEO_YES_BUTTON_UP], meshList[GEO_YES_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
-	UIManagerConfirmation->addFeature(YesButton);
-
-	// No button
-	Button* NoButton;
-	NoButton = new Button("NoButton", meshList[GEO_NO_BUTTON_UP], meshList[GEO_NO_BUTTON_DOWN], NULL, Vector3(sceneManager2D.m_window_width * 0.45, -sceneManager2D.m_window_height * 0.5, 0), Vector3(sceneManager2D.m_window_width * 0.2, sceneManager2D.m_window_height * 0.1, 0));
-	UIManagerConfirmation->addFeature(NoButton);
 }
 
 void CSceneMenu::Update(double dt)
 {
 	UIManager->Update(dt);
 	UIManagerConfirmation->Update(dt);
+	UIManagerInformation->Update(dt);
+
 	TimeSinceSettingsAnimation += dt;
 	MainMenuAnimationTimer += dt;
 
@@ -399,6 +454,7 @@ void CSceneMenu::Render()
 	}*/
 	UIManager->Render(sceneManager2D);
 	UIManagerConfirmation->Render(sceneManager2D);
+	UIManagerInformation->Render(sceneManager2D);
 
 	// New Data
 	if (currentState == CONFIRMATION)

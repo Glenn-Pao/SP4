@@ -47,6 +47,14 @@ class CSceneMenu : public Scene
 		MUSIC_ICON,
 		MUSIC_ICON_OFF,
 
+		INFORMATION_POINTER_LEFT,
+		INFORMATION_POINTER_LEFT_PRESSED,
+
+		INFORMATION_POINTER_RIGHT,
+		INFORMATION_POINTER_RIGHT_PRESSED,
+
+		INFORMATION_GAME_OVERVIEW,
+
 		BACKGROUND,
 		NUM_GEOMETRY,
 	};
@@ -57,6 +65,7 @@ public:
 	~CSceneMenu();
 
 	virtual void Init(int level);
+	virtual void InitMeshes();
 	virtual void Update(double dt);
 	virtual void Render();
 	virtual void Exit();
@@ -81,10 +90,12 @@ public:
 	};
 
 	int choice;
+	
 	UISystem* UIManager;
-	UISystem* UIInstructionPage1;
-	UISystem* UIInstructionPage2;
 	UISystem* UIManagerConfirmation;
+	UISystem* UIManagerInformation;
+
+
 	void HideConfirmation();
 	void ShowConfirmation();
 	int currentDataSelected;
